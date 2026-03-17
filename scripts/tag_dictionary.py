@@ -20,15 +20,18 @@ def init(extension_dir: str):
     if _loaded:
         return
 
-    # default.yaml from prompt-aio enhanced
+    # Prefer local dictionary shipped with this extension:
+    #   extensions/sd-prompt-composer/group_tags/default.yaml
+    local_yaml_path = os.path.join(extension_dir, "group_tags", "default.yaml")
+
+    # Backward-compatible fallback (when users still rely on prompt-aio enhanced):
+    #   extensions/sd-webui-prompt-aio-enhanced/group_tags/default.yaml
     base_path = os.path.dirname(os.path.dirname(extension_dir))
-    yaml_path = os.path.join(
-        base_path,
-        "extensions",
-        "sd-webui-prompt-aio-enhanced",
-        "group_tags",
-        "default.yaml",
+    fallback_yaml_path = os.path.join(
+        base_path, "extensions", "sd-webui-prompt-aio-enhanced", "group_tags", "default.yaml"
     )
+
+    yaml_path = local_yaml_path if os.path.isfile(local_yaml_path) else fallback_yaml_path
 
     if not os.path.isfile(yaml_path):
         print(f"[Prompt Composer] Tag dictionary YAML not found: {yaml_path}")
@@ -74,7 +77,8 @@ def init(extension_dir: str):
 
     _tags = items
     _loaded = True
-    print(f"[Prompt Composer] Loaded {len(_tags)} prompt dictionary tags from default.yaml")
+    src = "local" if yaml_path == local_yaml_path else "prompt-aio"
+    print(f"[Prompt Composer] Loaded {len(_tags)} prompt dictionary tags from default.yaml (source={src})")
 
 
 def search_tags(

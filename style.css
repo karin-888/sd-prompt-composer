@@ -208,6 +208,112 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+/* ===== Tag Dictionary: searchable section/category/group dropdowns ===== */
+.pc-tag-path-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin: 6px 0 10px;
+}
+
+.pc-tag-path-hint {
+    font-size: 0.78em;
+    color: var(--body-text-color-subdued, #aaa);
+}
+
+.pc-tag-dd {
+    position: relative;
+}
+
+.pc-tag-dd::after {
+    content: "▾";
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.15em;
+    font-weight: 600;
+    color: var(--body-text-color-subdued, #6b7280);
+    pointer-events: none;
+}
+
+.pc-tag-dd-label {
+    font-size: 0.75em;
+    color: var(--body-text-color-subdued, #aaa);
+    margin: 0 0 4px 2px;
+}
+
+.pc-tag-dd-input {
+    width: 100%;
+    padding: 8px 14px;
+    padding-right: 34px;
+    border-radius: 999px;
+    border: 1px solid var(--border-color-primary, #444);
+    background: var(--background-fill-primary, #1f2933);
+    color: var(--body-text-color, #e5e7eb);
+}
+
+.pc-tag-dd-list {
+    position: absolute;
+    z-index: 50;
+    left: 0;
+    right: 0;
+    margin-top: 6px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color-primary, #444);
+    background: var(--background-fill-secondary, #222);
+    max-height: 240px;
+    overflow: auto;
+    scrollbar-width: thin;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.pc-tag-dd-item {
+    width: 100%;
+    text-align: left;
+    padding: 8px 10px;
+    border: 0;
+    background: transparent;
+    color: var(--body-text-color, #ddd);
+    cursor: pointer;
+}
+.pc-tag-dd-item:hover {
+    background: rgba(118, 185, 237, 0.12);
+}
+
+.pc-tag-path-matches {
+    margin: 6px 0 10px;
+}
+.pc-tag-path-matches-head {
+    font-size: 0.75em;
+    color: var(--body-text-color-subdued, #aaa);
+    margin: 0 0 6px 2px;
+}
+.pc-tag-path-matches-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.pc-tag-path-match {
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border-color-primary, #444);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--body-text-color, #ddd);
+    cursor: pointer;
+    font-size: 0.78em;
+}
+.pc-tag-path-match:hover {
+    border-color: var(--color-accent, #76b9ed);
+    background: rgba(118, 185, 237, 0.12);
+}
+.pc-tag-path-more {
+    width: 100%;
+    font-size: 0.75em;
+    color: var(--body-text-color-subdued, #888);
+    padding: 2px 2px 0;
+}
+
 .pc-asset-fav-btn {
     position: absolute;
     top: 4px;

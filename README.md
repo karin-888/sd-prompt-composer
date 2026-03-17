@@ -63,8 +63,12 @@ git clone <このリポジトリのURL> sd-prompt-composer
 
 ### sd-webui-prompt-aio-enhanced（タグ辞書UI）
 
-Tag Dictionary は `sd-webui-prompt-aio-enhanced/group_tags/default.yaml` を参照します。
-未導入でも拡張は動作しますが、Tag Dictionary の内容は空になります。
+Tag Dictionary は、次の優先順でYAMLを読みます。
+
+1. `extensions/sd-prompt-composer/group_tags/default.yaml`（この拡張に同梱）
+2. `extensions/sd-webui-prompt-aio-enhanced/group_tags/default.yaml`（従来の互換）
+
+未導入でも拡張は動作します。
 
 ## 使い方
 

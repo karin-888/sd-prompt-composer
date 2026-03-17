@@ -57,8 +57,15 @@
             const resp = await fetch(url);
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             let data = await resp.json();
-            
-            let filteredAssets = data.assets;
+
+            // Sort assets by displayName / name for stable ordering
+            let filteredAssets = (data.assets || []).slice().sort((a, b) => {
+                const aName = (a.displayName || a.name || '').toLowerCase();
+                const bName = (b.displayName || b.name || '').toLowerCase();
+                if (aName < bName) return -1;
+                if (aName > bName) return 1;
+                return 0;
+            });
 
             if (!append) {
                 displayedAssets = filteredAssets;

@@ -10,6 +10,7 @@ import json
 import hashlib
 import time
 from pathlib import Path
+import re
 
 from modules import shared, paths_internal
 
@@ -342,7 +343,22 @@ def get_subfolders(asset_type=None):
         sf = asset.get("subfolder", "")
         if sf:
             subfolders.add(sf)
-    return sorted(subfolders)
+
+    def _natural_key(s: str):
+        # Split into digit / non-digit chunks so "10" > "2" numerically.
+        parts = re.split(r"(\d+)", s)
+        out = []
+        for p in parts:
+            if p.isdigit():
+                try:
+                    out.append(int(p))
+                except ValueError:
+                    out.append(p)
+            else:
+                out.append(p)
+        return out
+
+    return sorted(subfolders, key=_natural_key)
 
 
 def invalidate_cache():

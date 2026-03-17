@@ -1,0 +1,15 @@
+## OS / Editor
+.DS_Store
+Thumbs.db
+
+## Python
+__pycache__/
+*.py[cod]
+
+## Prompt Composer runtime data (per-user)
+data/user-data.json
+data/assets-cache.json
+
+## Optional: If you don't want to version tag CSVs, uncomment these:
+# tags/*.csv
+

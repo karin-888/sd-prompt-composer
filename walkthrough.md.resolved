@@ -1,0 +1,74 @@
+# sd-prompt-composer Phase 1 MVP — Walkthrough
+
+## Summary
+
+Illustrious対応プロンプト管理拡張「Prompt Composer」の Phase 1 MVP を実装しました。16ファイルで構成されるWebUI拡張機能です。
+
+## Created Files (16 files)
+
+### Python Backend
+
+| File | Purpose |
+|------|---------|
+| [main.py](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/scripts/main.py) | エントリポイント: Gradio UIレイアウト + コールバック登録 |
+| [civitai_reader.py](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/scripts/civitai_reader.py) | [.civitai.info](file:///Users/hiori123/stable-diffusion-webui-reForge/embeddings_backup/IllusP0s.civitai.info) JSON解析、メタデータ抽出 |
+| [asset_indexer.py](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/scripts/asset_indexer.py) | LoRA/Embedding ディレクトリ再帰スキャン + キャッシュ |
+| [api.py](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/scripts/api.py) | FastAPI REST エンドポイント群 |
+| [preset_store.py](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/scripts/preset_store.py) | プリセット CRUD (JSON保存) |
+| [order_profiles.py](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/scripts/order_profiles.py) | Illustrious順序プロファイル管理 |
+
+### JavaScript Frontend
+
+| File | Purpose |
+|------|---------|
+| [composer.js](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/javascript/composer.js) | ブロック型プロンプトエディタ (D&D, トークン管理) |
+| [asset_browser.js](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/javascript/asset_browser.js) | 画像付きアセットカード表示 + 検索 + フィルタ |
+| [presets.js](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/javascript/presets.js) | プリセット保存/読込/削除 UI |
+| [prompt_sync.js](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/javascript/prompt_sync.js) | txt2img/img2img への適用 + クリップボードコピー |
+
+### Data & Config
+
+| File | Purpose |
+|------|---------|
+| [order-profiles.json](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/data/order-profiles.json) | 順序プロファイル定義 (3種類) |
+| [presets.json](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/data/presets.json) | プリセット保存先 |
+| [custom-metadata.json](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/data/custom-metadata.json) | 将来用独自メタデータ |
+| [style.css](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/style.css) | UIスタイルシート |
+| [README.md](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/README.md) | 説明書 |
+
+## Architecture
+
+```mermaid
+graph LR
+    subgraph Backend
+        A[main.py] --> B[asset_indexer.py]
+        B --> C[civitai_reader.py]
+        A --> D[api.py]
+        D --> B
+        D --> E[preset_store.py]
+        D --> F[order_profiles.py]
+    end
+    subgraph Frontend
+        G[composer.js] <--> D
+        H[asset_browser.js] <--> D
+        I[presets.js] <--> D
+        J[prompt_sync.js] --> K[txt2img/img2img]
+        H --> G
+    end
+```
+
+## How To Test
+
+1. **WebUI を再起動** (現在起動中の [./webui.sh](file:///Users/hiori123/stable-diffusion-webui-reForge/webui.sh) を Ctrl+C して再起動)
+2. ブラウザで WebUI を開き、**「Prompt Composer」タブ** が表示されることを確認
+3. Asset Browser でカードが表示され、クリックでブロックに挿入されること
+4. ブロックの並び替え、トークン追加/削除、ON/OFF が動作すること
+5. 「txt2imgに適用」で txt2img のプロンプト欄に反映されること
+6. プリセットの保存・読込が動作すること
+
+## Key Design Decisions
+
+- **キャッシュ戦略**: ファイル数+最新mtime ベースのfingerprint方式。7,800+ファイルの2回目以降のスキャンを高速に
+- **LoRA フォルダ活用**: 既存のカテゴリフォルダ名（ドット絵, 背景, キャラクタ等）をそのまま `preferredBlock` マッピングに使用
+- **プレビュー画像配信**: FileResponseでサムネイルを配信、Cache-Control付きで重複リクエスト回避
+- **import方式**: `sys.path` にスクリプトディレクトリを追加する直接インポート方式（WebUI拡張の標準パターン）

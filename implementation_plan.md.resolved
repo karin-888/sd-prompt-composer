@@ -1,0 +1,85 @@
+# Prompt Composer Phase 2 — 使いやすさ強化 実装計画
+
+Phase 1 MVP が動作確認済み。Phase 2 では日常利用のストレスを減らす5つの機能を追加する。
+
+## Proposed Changes
+
+### 1. お気に入り＆最近使った
+
+アセットの利用頻度を記録し、素早くアクセスできるようにする。
+
+#### [NEW] [user_data.py](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/scripts/user_data.py)
+- `data/user-data.json` にお気に入りリスト・使用履歴を保存
+- API: `POST /api/favorites/{asset_id}`, `DELETE /api/favorites/{asset_id}`, `GET /api/favorites`
+- API: `GET /api/recently-used` — 使用履歴（最新20件）
+- `record_usage(asset_id)` — アセット挿入時に呼び出し
+
+#### [MODIFY] [api.py](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/scripts/api.py)
+- お気に入り・最近使ったエンドポイント追加
+
+#### [MODIFY] [asset_browser.js](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/javascript/asset_browser.js)
+- カードに ⭐ お気に入りトグルボタン追加
+- フィルタに「お気に入りのみ」「最近使った」タブ追加
+- カードクリック時に使用履歴を記録
+
+#### [MODIFY] [style.css](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/style.css)
+- お気に入りボタン、フィルタタブのスタイル追加
+
+---
+
+### 2. 順序警告
+
+ブロック順がIllustrious推奨から外れている場合に視覚的に通知。
+
+#### [MODIFY] [composer.js](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/javascript/composer.js)
+- `checkOrderWarnings()` — 現在のブロック順序とプロファイルを比較
+- 警告がある場合、ブロックヘッダーに ⚠️ アイコン表示
+- 出力エリアに「順序がIllustrious推奨と異なります」バナー表示
+- 重複タグ警告: 同じテキストが複数ブロックにある場合にハイライト
+
+#### [MODIFY] [style.css](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/style.css)
+- 警告バナー、警告ブロックのスタイル
+
+---
+
+### 3. 推奨挿入先表示
+
+アセットカードに「このブロックに挿入されます」のヒントを表示。
+
+#### [MODIFY] [asset_browser.js](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/javascript/asset_browser.js)
+- カード下部に推奨ブロック名のバッジ表示 (例: `→ 🎨 画風`)
+- LoRA のサブフォルダから推定される挿入先をわかりやすく表示
+
+---
+
+### 4. ブロックテンプレート
+
+ワンクリックで一般的なプロンプト構成を読み込めるテンプレート。
+
+#### [MODIFY] [composer.js](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/javascript/composer.js)
+- テンプレート定義: `キャラ立ち絵`, `風景画`, `アクションシーン`
+- 各テンプレートに初期トークン（品質タグ、構図タグなど）を含む
+- テンプレート選択ドロップダウンを追加
+
+#### [MODIFY] [main.py](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/scripts/main.py)
+- テンプレート選択用 Dropdown を UI に追加
+
+---
+
+### 5. 自動整形ボタン強化
+
+#### [MODIFY] [composer.js](file:///Users/hiori123/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/javascript/composer.js)
+- 空ブロック除去機能
+- LoRA/Embedding を末尾に自動移動
+- 重複トークン検出・除去
+
+---
+
+## Verification Plan
+
+### Manual Verification
+1. お気に入り ⭐ トグルが動作し、リロード後も保持されること
+2. アセットクリック後に「最近使った」に表示されること
+3. ブロック順序がプロファイルと異なる場合に ⚠️ が表示されること
+4. テンプレート選択でブロック内容がプリセットされること
+5. 自動整形で空ブロック除去・LoRA末尾寄せが動作すること

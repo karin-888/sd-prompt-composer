@@ -1,0 +1,56 @@
+{
+  "illustrious_standard": {
+    "name": "Illustrious標準",
+    "description": "Illustrious系モデルの標準的なプロンプト順序",
+    "order": [
+      "quality",
+      "subject",
+      "character",
+      "appearance",
+      "outfit",
+      "expression",
+      "composition",
+      "background",
+      "lighting",
+      "style",
+      "lora",
+      "embedding"
+    ]
+  },
+  "character_focus": {
+    "name": "キャラ重視",
+    "description": "キャラクター描写を優先する構成",
+    "order": [
+      "character",
+      "appearance",
+      "outfit",
+      "expression",
+      "quality",
+      "subject",
+      "composition",
+      "background",
+      "lighting",
+      "style",
+      "lora",
+      "embedding"
+    ]
+  },
+  "background_focus": {
+    "name": "背景重視",
+    "description": "背景・風景描写を優先する構成",
+    "order": [
+      "quality",
+      "background",
+      "lighting",
+      "composition",
+      "style",
+      "subject",
+      "character",
+      "appearance",
+      "outfit",
+      "expression",
+      "lora",
+      "embedding"
+    ]
+  }
+}

@@ -164,6 +164,7 @@
             const hasWeight = (typeof token.weight === 'number' && !Number.isNaN(token.weight) && token.weight !== 1);
             const weightStr = hasWeight ? `:${token.weight}` : '';
             const sourceClass = token.sourceType ? `pc-token-${token.sourceType}` : '';
+            const hiddenClass = token.hidden === true ? 'pc-token-hidden' : '';
             const isLoRA = token.sourceType === 'lora';
             const isEmbedding = token.sourceType === 'embedding';
             const isTW = token.isTrigger === true;
@@ -189,6 +190,7 @@
             if (isTW) titleParts.push('[TW]');
             if (isLoRA) titleParts.push('[LoRA]');
             if (isEmbedding) titleParts.push('[Embedding]');
+            if (token.hidden === true) titleParts.push('[HIDDEN]');
             titleParts.push(token.text);
             const title = escapeHtml(titleParts.join(' '));
 
@@ -201,11 +203,12 @@
                 : '';
 
             tokensHtml += `
-                <span class="pc-token ${sourceClass}" draggable="true" data-token-id="${token.id}" data-block-id="${block.id}" data-token-idx="${tidx}" title="${title}"${previewAttr}>
+                <span class="pc-token ${sourceClass} ${hiddenClass}" draggable="true" data-token-id="${token.id}" data-block-id="${block.id}" data-token-idx="${tidx}" title="${title}"${previewAttr}>
                     ${sourceBadge}
                     <span class="pc-token-label">
                         <span class="pc-token-label-text">${escapeHtml(token.label)}</span>
                         ${hasWeight ? `<span class="pc-token-weight ${weightClass}">${escapeHtml(weightStr)}</span>` : ''}
+                        ${token.jp ? `<span class="pc-token-jp">${escapeHtml(token.jp)}</span>` : ''}
                     </span>
                     <button class="pc-token-remove" data-block-id="${block.id}" data-token-idx="${tidx}">×</button>
                 </span>
@@ -222,6 +225,8 @@
                     <span class="pc-block-drag-handle">⠿</span>
                     <button class="pc-block-toggle" data-block-id="${block.id}">${toggleIcon}</button>
                     <span class="pc-block-label">${block.label}</span>
+                    <button class="pc-block-clear" data-block-id="${block.id}" title="この欄のタグをすべて削除">🧹</button>
+                    <button class="pc-block-delete" data-block-id="${block.id}" title="この欄を削除">🗑️</button>
                     <span class="pc-block-count">${block.tokens.length}</span>
                 </div>
                 <div class="pc-block-body">
@@ -250,6 +255,7 @@
         blocks.forEach(block => {
             if (!block.enabled) return;
             block.tokens.forEach(token => {
+                if (token.hidden === true) return;
                 const text = token.text.toLowerCase().trim();
                 if (!allTokens[text]) {
                     allTokens[text] = [block.id];
@@ -417,59 +423,127 @@
         if (!root) return;
         if (root.querySelector('.pc-order-profile-manager')) return;
 
+        // Hide Gradio's original dropdown UI to avoid duplicated controls.
+        // We keep it in DOM only as a silent compatibility mirror.
+        const legacySelect = root.querySelector('select');
+        if (legacySelect) {
+            const legacyWrap = legacySelect.closest('.wrap') || legacySelect.parentElement;
+            if (legacyWrap && legacyWrap.style) legacyWrap.style.display = 'none';
+            legacySelect.style.display = 'none';
+        }
+        const legacyInput = root.querySelector('input');
+        if (legacyInput) {
+            const legacyWrap = legacyInput.closest('.wrap') || legacyInput.parentElement;
+            if (legacyWrap && legacyWrap.style) legacyWrap.style.display = 'none';
+            legacyInput.style.display = 'none';
+        }
+
         const wrap = document.createElement('div');
         wrap.className = 'pc-order-profile-manager';
         wrap.innerHTML = `
             <div class="pc-order-profile-row">
-                <input type="text" class="pc-order-profile-name" placeholder="順序プロファイル名...">
-                <button type="button" class="pc-order-profile-save" title="保存/上書き">💾</button>
-                <button type="button" class="pc-order-profile-delete" title="削除">🗑️</button>
+                <select class="pc-order-profile-select"></select>
+                <button type="button" class="pc-order-profile-load" title="選択した順序を読込">読込</button>
             </div>
-            <div class="pc-order-profile-hint">現在のブロック表示順だけを保存します</div>
+            <div class="pc-order-profile-row">
+                <input type="text" class="pc-order-profile-name" placeholder="順序プロファイル名...">
+                <button type="button" class="pc-order-profile-save" title="新規保存">保存</button>
+                <button type="button" class="pc-order-profile-overwrite" title="上書き保存">上書き</button>
+                <button type="button" class="pc-order-profile-delete" title="削除">削除</button>
+            </div>
+            <div class="pc-order-profile-hint">読込 / 保存 / 上書き / 削除（表示順のみ対象）</div>
         `;
         root.appendChild(wrap);
 
+        const profileSelect = wrap.querySelector('.pc-order-profile-select');
         const nameInput = wrap.querySelector('.pc-order-profile-name');
+        const loadBtn = wrap.querySelector('.pc-order-profile-load');
         const saveBtn = wrap.querySelector('.pc-order-profile-save');
+        const overwriteBtn = wrap.querySelector('.pc-order-profile-overwrite');
         const delBtn = wrap.querySelector('.pc-order-profile-delete');
 
-        const selectEl = root.querySelector('select') || root.querySelector('input');
+        const isBuiltinProfile = (id) => {
+            return id === 'illustrious_standard' || id === 'character_focus' || id === 'background_focus';
+        };
+
+        const setCurrentProfile = (id) => {
+            if (!id) return;
+            currentOrderProfile = id;
+            // keep gradio dropdown (if any) in sync
+            const gradioSelect = root.querySelector('select');
+            if (gradioSelect && Array.from(gradioSelect.options).some(o => o.value === id)) {
+                gradioSelect.value = id;
+                gradioSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        };
+
+        const getSelectedProfileId = () => {
+            const id = profileSelect ? profileSelect.value : '';
+            return id || currentOrderProfile;
+        };
+
+        const profileLabel = (profiles, id) => {
+            const p = profiles[id] || {};
+            return p.name || id;
+        };
+
         const refreshSelect = async () => {
             const profiles = await fetchOrderProfiles();
-            // Gradio dropdown renders a select in most cases
-            const sel = root.querySelector('select');
-            if (sel) {
-                const current = sel.value;
-                // rebuild
-                sel.innerHTML = '';
+
+            if (profileSelect) {
+                const current = getSelectedProfileId();
+                profileSelect.innerHTML = '';
                 const builtins = ['illustrious_standard', 'character_focus', 'background_focus'];
+
                 const addOpt = (id, label) => {
                     const opt = document.createElement('option');
                     opt.value = id;
                     opt.textContent = label || id;
-                    sel.appendChild(opt);
+                    profileSelect.appendChild(opt);
                 };
-                // built-in first
+
                 builtins.forEach(id => {
-                    const p = profiles[id];
-                    if (p) addOpt(id, p.name);
+                    if (profiles[id]) addOpt(id, profileLabel(profiles, id));
                 });
-                // user profiles
                 Object.keys(profiles).forEach(id => {
                     if (builtins.includes(id)) return;
-                    const p = profiles[id];
-                    addOpt(id, `★ ${p.name || id}`);
+                    addOpt(id, `★ ${profileLabel(profiles, id)}`);
                 });
-                // restore if possible
-                if (Array.from(sel.options).some(o => o.value === current)) {
-                    sel.value = current;
+
+                if (current && Array.from(profileSelect.options).some(o => o.value === current)) {
+                    profileSelect.value = current;
+                } else if (profileSelect.options.length > 0) {
+                    profileSelect.selectedIndex = 0;
                 }
-                sel.dispatchEvent(new Event('change', { bubbles: true }));
+                setCurrentProfile(profileSelect.value);
             }
         };
 
         // initial fill
         refreshSelect().catch(() => {});
+
+        if (profileSelect) {
+            profileSelect.addEventListener('change', () => {
+                const id = profileSelect.value;
+                setCurrentProfile(id);
+            });
+        }
+
+        if (loadBtn) {
+            loadBtn.addEventListener('click', async () => {
+                const id = getSelectedProfileId();
+                if (!id) {
+                    alert('読込対象の順序プロファイルを選択してください');
+                    return;
+                }
+                setCurrentProfile(id);
+                await sortBlocksByProfile(id);
+                try {
+                    const profiles = await fetchOrderProfiles();
+                    if (nameInput) nameInput.value = profileLabel(profiles, id);
+                } catch (_) { /* ignore */ }
+            });
+        }
 
         if (saveBtn) {
             saveBtn.addEventListener('click', async () => {
@@ -479,37 +553,98 @@
                     return;
                 }
                 const order = getCurrentBlockTypeOrder();
-                const payload = { name, order };
-                // overwrite detection by name
+                if (!Array.isArray(order) || order.length === 0) {
+                    alert('保存対象のブロック順が空です。Positive側のブロックを1つ以上残してください。');
+                    return;
+                }
+
                 try {
                     const profiles = await fetchOrderProfiles();
-                    const existingId = Object.keys(profiles).find(id => (profiles[id]?.name || '').trim() === name.trim());
-                    if (existingId && !existingId.startsWith('illustrious_') && !existingId.startsWith('character_') && !existingId.startsWith('background_')) {
-                        if (!confirm(`"${name}" を上書きしますか？`)) return;
-                        payload.id = existingId;
+                    const existingId = Object.keys(profiles).find(id => (profiles[id]?.name || '').trim() === name);
+                    if (existingId && !isBuiltinProfile(existingId)) {
+                        alert(`同名のプロファイルが存在します: ${name}\n上書きしたい場合は「上書き」を使ってください。`);
+                        return;
                     }
                 } catch (_) { /* ignore */ }
 
-                const resp = await fetch('/prompt-composer/api/order-profiles', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!resp.ok) {
-                    alert('保存に失敗しました');
+                try {
+                    const payload = { name, order };
+                    const resp = await fetch('/prompt-composer/api/order-profiles', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    let data = null;
+                    try { data = await resp.json(); } catch (_) { data = null; }
+                    if (!resp.ok) {
+                        const reason = (data && data.error) ? `\n理由: ${data.error}` : '';
+                        alert(`保存に失敗しました${reason}`);
+                        return;
+                    }
+                    await refreshSelect();
+                    const savedId = data && data.id;
+                    if (savedId && profileSelect && Array.from(profileSelect.options).some(o => o.value === savedId)) {
+                        profileSelect.value = savedId;
+                        setCurrentProfile(savedId);
+                    }
+                    if (nameInput) nameInput.value = '';
+                    alert('順序プロファイルを保存しました。');
+                } catch (e) {
+                    alert(`保存に失敗しました\n通信エラー: ${e && e.message ? e.message : e}`);
+                }
+            });
+        }
+
+        if (overwriteBtn) {
+            overwriteBtn.addEventListener('click', async () => {
+                const id = getSelectedProfileId();
+                if (!id) {
+                    alert('上書き対象の順序プロファイルを選択してください');
                     return;
                 }
-                await refreshSelect();
-                if (nameInput) nameInput.value = '';
+                if (isBuiltinProfile(id)) {
+                    alert('標準プロファイルは上書きできません。新規保存してください。');
+                    return;
+                }
+                const name = (nameInput && nameInput.value || '').trim();
+                const order = getCurrentBlockTypeOrder();
+                if (!Array.isArray(order) || order.length === 0) {
+                    alert('保存対象のブロック順が空です。Positive側のブロックを1つ以上残してください。');
+                    return;
+                }
+                try {
+                    const profiles = await fetchOrderProfiles();
+                    const fallbackName = profileLabel(profiles, id);
+                    const payload = { id, name: name || fallbackName, order };
+                    const resp = await fetch('/prompt-composer/api/order-profiles', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    let data = null;
+                    try { data = await resp.json(); } catch (_) { data = null; }
+                    if (!resp.ok) {
+                        const reason = (data && data.error) ? `\n理由: ${data.error}` : '';
+                        alert(`上書き保存に失敗しました${reason}`);
+                        return;
+                    }
+                    await refreshSelect();
+                    if (profileSelect && Array.from(profileSelect.options).some(o => o.value === id)) {
+                        profileSelect.value = id;
+                        setCurrentProfile(id);
+                    }
+                    alert('順序プロファイルを上書き保存しました。');
+                } catch (e) {
+                    alert(`上書き保存に失敗しました\n通信エラー: ${e && e.message ? e.message : e}`);
+                }
             });
         }
 
         if (delBtn) {
             delBtn.addEventListener('click', async () => {
-                const sel = root.querySelector('select');
-                const id = sel ? sel.value : (selectEl ? selectEl.value : '');
+                const id = getSelectedProfileId();
                 if (!id) return;
-                if (id === 'illustrious_standard' || id === 'character_focus' || id === 'background_focus') {
+                if (isBuiltinProfile(id)) {
                     alert('標準プロファイルは削除できません');
                     return;
                 }
@@ -520,6 +655,8 @@
                     return;
                 }
                 await refreshSelect();
+                const nextId = getSelectedProfileId();
+                if (nextId) setCurrentProfile(nextId);
             });
         }
     }
@@ -613,11 +750,30 @@
         const container = document.getElementById('pc_blocks_container');
         if (!container) return;
 
+        // Prevent block drag from stealing header button clicks
+        container.querySelectorAll('.pc-block-toggle, .pc-block-clear, .pc-block-delete').forEach(btn => {
+            btn.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+            });
+        });
+
         // Toggle buttons
         container.querySelectorAll('.pc-block-toggle').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const blockId = e.target.dataset.blockId;
+                const blockId = e.currentTarget.dataset.blockId;
                 toggleBlock(blockId);
+            });
+        });
+
+        // Block label rename (dblclick)
+        container.querySelectorAll('.pc-block-label').forEach(el => {
+            el.addEventListener('dblclick', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const blockEl = el.closest('.pc-block');
+                const blockId = blockEl ? blockEl.dataset.blockId : null;
+                if (!blockId) return;
+                renameBlockLabel(blockId);
             });
         });
 
@@ -628,6 +784,24 @@
                 const blockId = e.target.dataset.blockId;
                 const tokenIdx = parseInt(e.target.dataset.tokenIdx);
                 removeToken(blockId, tokenIdx);
+            });
+        });
+
+        // Block-level clear buttons (clear tokens only inside the block)
+        container.querySelectorAll('.pc-block-clear').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const blockId = e.currentTarget.dataset.blockId;
+                clearBlockTokens(blockId);
+            });
+        });
+
+        // Block delete buttons (remove the whole block)
+        container.querySelectorAll('.pc-block-delete').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const blockId = e.currentTarget.dataset.blockId;
+                deleteBlock(blockId);
             });
         });
 
@@ -655,6 +829,20 @@
                     }
                 }
                 applyTokenSelectionClasses();
+            });
+        });
+
+        // Token double click: temporary hide/unhide (excluded from final prompt)
+        container.querySelectorAll('.pc-token').forEach(el => {
+            el.addEventListener('dblclick', (e) => {
+                if (e.target && e.target.classList && e.target.classList.contains('pc-token-remove')) {
+                    return;
+                }
+                e.preventDefault();
+                e.stopPropagation();
+                const blockId = el.dataset.blockId;
+                const tokenIdx = parseInt(el.dataset.tokenIdx, 10);
+                toggleTokenHidden(blockId, tokenIdx);
             });
         });
 
@@ -887,7 +1075,8 @@
                     const li = items[tagSuggestSelectedIndex];
                     const tag = li.dataset.tag;
                     if (tag) {
-                        addToken(blockId, tag, tag, { sourceType: 'manual', isTrigger: false });
+                        const jp = (li.dataset.jp || '').trim();
+                        addToken(blockId, tag, tag, { sourceType: 'manual', isTrigger: false, jp: jp || null });
                         input.value = '';
                         hideTagSuggest();
                     }
@@ -950,7 +1139,7 @@
                 const tag = item.tag || '';
                 if (!tag) return;
                 const jp = item.jp || '';
-                html += `<li class="pc-tag-suggest-item" data-tag="${escapeHtml(tag)}">` +
+                html += `<li class="pc-tag-suggest-item" data-tag="${escapeHtml(tag)}" data-jp="${escapeHtml(jp)}">` +
                     `<span class="pc-tag-suggest-tag">${escapeHtml(tag)}</span>` +
                     (jp ? `<span class="pc-tag-suggest-jp">${escapeHtml(jp)}</span>` : '') +
                     `</li>`;
@@ -965,7 +1154,8 @@
                     e.preventDefault();
                     const tag = li.dataset.tag;
                     if (!tag) return;
-                    addToken(blockId, tag, tag, { sourceType: 'manual', isTrigger: false });
+                    const jp = (li.dataset.jp || '').trim();
+                    addToken(blockId, tag, tag, { sourceType: 'manual', isTrigger: false, jp: jp || null });
                     anchorInput.value = '';
                     hideTagSuggest();
                 });
@@ -1046,7 +1236,9 @@
             weight: options.weight || null,
             sourceType: options.sourceType || 'manual',
             isTrigger: options.isTrigger === true,
-            previewUrl: options.previewUrl || null
+            hidden: options.hidden === true,
+            previewUrl: options.previewUrl || null,
+            jp: options.jp || null
         };
 
         block.tokens.push(token);
@@ -1064,17 +1256,43 @@
             return;
         }
 
-        // Parse weight syntax: (tag:1.2) or tag
-        let text = rawText;
-        let weight = null;
+        // Async: normalize spaces -> underscores and fetch JP translation
+        (async () => {
+            const normSpaces = (s) => (s || '').trim().replace(/\s+/g, '_');
 
-        const weightMatch = rawText.match(/^\((.+):([0-9.]+)\)$/);
-        if (weightMatch) {
-            text = weightMatch[1];
-            weight = parseFloat(weightMatch[2]);
-        }
+            // Parse weight syntax: (tag:1.2) or tag
+            let innerText = rawText;
+            let weight = null;
+            let emittedText = rawText;
 
-        addToken(blockId, text, rawText, { weight: weight, sourceType: 'manual', isTrigger: false });
+            const weightMatch = rawText.match(/^\((.+):([0-9.]+)\)$/);
+            if (weightMatch) {
+                innerText = weightMatch[1];
+                weight = parseFloat(weightMatch[2]);
+                const norm = normSpaces(innerText);
+                emittedText = `(${norm}:${weightMatch[2]})`;
+                innerText = norm;
+            } else {
+                innerText = normSpaces(innerText);
+                emittedText = innerText;
+            }
+
+            let jp = '';
+            try {
+                const resp = await fetch(`/prompt-composer/api/tag-translate?tag=${encodeURIComponent(innerText)}`);
+                if (resp.ok) {
+                    const data = await resp.json();
+                    jp = (data && data.jp) ? String(data.jp) : '';
+                }
+            } catch (_) {}
+
+            addToken(blockId, innerText, emittedText, {
+                weight: weight,
+                sourceType: 'manual',
+                isTrigger: false,
+                jp: jp || null
+            });
+        })();
     }
 
     function removeToken(blockId, tokenIdx) {
@@ -1085,11 +1303,62 @@
         }
     }
 
+    function toggleTokenHidden(blockId, tokenIdx) {
+        const block = findBlock(blockId);
+        if (!block || tokenIdx < 0 || tokenIdx >= block.tokens.length) return;
+        const token = block.tokens[tokenIdx];
+        if (!token) return;
+        token.hidden = token.hidden !== true;
+        renderBlocks();
+    }
+
     function clearAllTokens() {
         if (!confirm('すべてのブロックのトークンをクリアしますか？')) return;
         blocks.forEach(b => b.tokens = []);
         negativeBlocks.forEach(b => b.tokens = []);
         renderBlocks();
+    }
+
+    function renameBlockLabel(blockId) {
+        const block = findBlock(blockId);
+        if (!block) return;
+        const current = (block.label || '').trim();
+        const next = prompt('ブロック名を編集:', current || '');
+        if (next == null) return; // cancelled
+        const trimmed = String(next).trim();
+        if (!trimmed) return;
+        block.label = trimmed;
+        renderBlocks();
+    }
+
+    function clearBlockTokens(blockId) {
+        const block = findBlock(blockId);
+        if (!block || !Array.isArray(block.tokens) || block.tokens.length === 0) return;
+        if (!confirm(`「${block.label}」のタグをすべて削除しますか？`)) return;
+        block.tokens = [];
+        renderBlocks();
+    }
+
+    function deleteBlock(blockId) {
+        if (!blockId) return;
+        const block = findBlock(blockId);
+        if (!block) return;
+        if (!confirm(`「${block.label}」欄を削除しますか？`)) return;
+
+        const posIdx = blocks.findIndex(b => b.id === blockId);
+        if (posIdx >= 0) {
+            blocks.splice(posIdx, 1);
+            blocks.forEach((b, i) => b.order = i);
+            renderBlocks();
+            return;
+        }
+
+        const negIdx = negativeBlocks.findIndex(b => b.id === blockId);
+        if (negIdx >= 0) {
+            negativeBlocks.splice(negIdx, 1);
+            negativeBlocks.forEach((b, i) => b.order = i);
+            renderBlocks();
+        }
     }
 
     function insertSpecialToken(kind) {
@@ -1253,10 +1522,17 @@
             previewUrl: asset.previewUrl || null
         });
 
-        // Also add trigger words to appropriate block
+        // Embeddings: insert only the token (filename). Do not auto-add trigger words.
+        if (asset.type === 'embedding') {
+            return;
+        }
+
+        // LoRA: also add trigger words to appropriate block (optional convenience)
         if (asset.triggerWords && asset.triggerWords.length > 0) {
             // Determine where trigger words go
-            let triggerBlock = blocks.find(b => b.type === 'subject') || targetBlock;
+            let triggerBlock = blocks.find(b => b.type === 'lora')
+                || blocks.find(b => b.type === 'embedding')
+                || targetBlock;
             
             asset.triggerWords.forEach(tw => {
                 if (!triggerBlock.tokens.some(t => t.text === tw)) {
@@ -1330,10 +1606,12 @@
     }
 
     // ===== Sorting =====
-    async function sortBlocksByProfile() {
-        // Get current profile from dropdown
-        const profileEl = document.querySelector('#pc_order_profile input, #pc_order_profile select');
-        const profileId = profileEl ? profileEl.value : currentOrderProfile;
+    async function sortBlocksByProfile(profileIdOverride = null) {
+        // Prefer explicit caller-provided id, then in-memory current profile.
+        // Avoid depending on Gradio dropdown DOM value because some environments
+        // render tuple-like option labels/values and can break reads.
+        const profileId = profileIdOverride || currentOrderProfile;
+        if (!profileId) return;
 
         try {
             const resp = await fetch(`/prompt-composer/api/order-profiles/${profileId}`);
@@ -1396,6 +1674,7 @@
             if (!block.enabled || block.tokens.length === 0) return;
             
             block.tokens.forEach(token => {
+                if (token.hidden === true) return;
                 promptParts.push(token.text);
             });
         });
@@ -1407,6 +1686,7 @@
         negativeBlocks.forEach(block => {
             if (!block.enabled || block.tokens.length === 0) return;
             block.tokens.forEach(token => {
+                if (token.hidden === true) return;
                 negParts.push(token.text);
             });
         });
@@ -1430,7 +1710,9 @@
                     text: t.text,
                     weight: t.weight,
                     sourceType: t.sourceType,
-                    isTrigger: t.isTrigger === true
+                    isTrigger: t.isTrigger === true,
+                    hidden: t.hidden === true,
+                    jp: t.jp || null
                 }))
             })),
             negativeBlocks: negativeBlocks.map(b => ({
@@ -1443,7 +1725,9 @@
                     text: t.text,
                     weight: t.weight,
                     sourceType: t.sourceType,
-                    isTrigger: t.isTrigger === true
+                    isTrigger: t.isTrigger === true,
+                    hidden: t.hidden === true,
+                    jp: t.jp || null
                 }))
             })),
             orderProfile: currentOrderProfile
@@ -1466,7 +1750,9 @@
                     text: t.text,
                     weight: t.weight,
                     sourceType: t.sourceType || 'manual',
-                    isTrigger: t.isTrigger === true
+                    isTrigger: t.isTrigger === true,
+                    hidden: t.hidden === true,
+                    jp: t.jp || null
                 }))
             }));
         }
@@ -1484,7 +1770,9 @@
                     text: t.text,
                     weight: t.weight,
                     sourceType: t.sourceType || 'manual',
-                    isTrigger: t.isTrigger === true
+                    isTrigger: t.isTrigger === true,
+                    hidden: t.hidden === true,
+                    jp: t.jp || null
                 }))
             }));
         }
@@ -1493,21 +1781,118 @@
             currentOrderProfile = state.orderProfile;
         }
 
+        // Best-effort: backfill missing JP translations for restored tokens
+        // (e.g., when upgrading from older autosave/preset formats).
+        setTimeout(() => {
+            try { backfillMissingJp(); } catch (_) {}
+        }, 50);
+
         renderBlocks();
     }
 
+    async function backfillMissingJp() {
+        const allBlocks = [...blocks, ...negativeBlocks];
+        const missing = [];
+        allBlocks.forEach(b => {
+            (b.tokens || []).forEach(t => {
+                if (t && !t.jp && t.text && typeof t.text === 'string') {
+                    // Skip obvious non-tags
+                    const s = t.text.trim();
+                    if (!s) return;
+                    if (s === 'BREAK' || s === 'AND') return;
+                    if (s.startsWith('__') && s.endsWith('__')) return;
+                    missing.push(t);
+                }
+            });
+        });
+
+        // Avoid spamming network: translate only a handful per restore
+        const limit = 40;
+        for (const t of missing.slice(0, limit)) {
+            const tag = String(t.text || '').trim();
+            try {
+                const resp = await fetch(`/prompt-composer/api/tag-translate?tag=${encodeURIComponent(tag)}`);
+                if (!resp.ok) continue;
+                const data = await resp.json();
+                const jp = (data && data.jp) ? String(data.jp).trim() : '';
+                if (jp) t.jp = jp;
+            } catch (_) {
+                // ignore
+            }
+        }
+        // re-render once if we updated something
+        if (missing.length) renderBlocks();
+    }
+
     // ===== Add Block Dialog =====
-    function showAddBlockDialog() {
+    function chooseAddBlockSide() {
+        return new Promise((resolve) => {
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.inset = '0';
+            overlay.style.background = 'rgba(0, 0, 0, 0.45)';
+            overlay.style.display = 'flex';
+            overlay.style.alignItems = 'center';
+            overlay.style.justifyContent = 'center';
+            overlay.style.zIndex = '10000';
+
+            const box = document.createElement('div');
+            box.style.minWidth = '300px';
+            box.style.maxWidth = '92vw';
+            box.style.padding = '14px';
+            box.style.borderRadius = '10px';
+            box.style.border = '1px solid rgba(255,255,255,0.16)';
+            box.style.background = 'var(--background-fill-secondary, #2a2a2a)';
+            box.style.color = 'var(--body-text-color, #eee)';
+            box.innerHTML = `
+                <div style="font-size:0.92em; font-weight:700; margin-bottom:10px;">追加先を選択してください</div>
+                <div style="display:flex; gap:8px; margin-bottom:10px;">
+                    <button type="button" class="pc-side-pick" data-side="positive" style="flex:1; padding:8px 10px; border-radius:8px; border:1px solid var(--border-color-primary,#555); background:rgba(118,185,237,0.18); color:var(--body-text-color,#eee); cursor:pointer;">Positive</button>
+                    <button type="button" class="pc-side-pick" data-side="negative" style="flex:1; padding:8px 10px; border-radius:8px; border:1px solid var(--border-color-primary,#555); background:rgba(229,115,115,0.18); color:var(--body-text-color,#eee); cursor:pointer;">Negative</button>
+                </div>
+                <div style="text-align:right;">
+                    <button type="button" class="pc-side-cancel" style="padding:6px 10px; border-radius:8px; border:1px solid var(--border-color-primary,#555); background:transparent; color:var(--body-text-color-subdued,#aaa); cursor:pointer;">キャンセル</button>
+                </div>
+            `;
+
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+
+            const close = (result) => {
+                if (overlay && overlay.parentNode) {
+                    overlay.parentNode.removeChild(overlay);
+                }
+                resolve(result);
+            };
+
+            box.querySelectorAll('.pc-side-pick').forEach(btn => {
+                btn.addEventListener('click', () => close(btn.dataset.side || null));
+            });
+            const cancelBtn = box.querySelector('.pc-side-cancel');
+            if (cancelBtn) cancelBtn.addEventListener('click', () => close(null));
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) close(null);
+            });
+        });
+    }
+
+    async function showAddBlockDialog() {
         const name = prompt('ブロック名を入力してください:');
         if (!name) return;
 
-        const typeId = name.toLowerCase().replace(/[^a-z0-9]/g, '_');
-        
-        blocks.push({
+        const side = await chooseAddBlockSide();
+        if (!side) return;
+        const isNegative = (side === 'negative');
+
+        const typeBase = name.toLowerCase().replace(/[^a-z0-9]/g, '_') || 'custom';
+        const typeId = (isNegative ? `neg_${typeBase}` : typeBase);
+        const target = isNegative ? negativeBlocks : blocks;
+
+        target.push({
             id: generateId(),
             type: typeId,
             label: name,
-            order: blocks.length,
+            order: target.length,
             enabled: true,
             tokens: []
         });

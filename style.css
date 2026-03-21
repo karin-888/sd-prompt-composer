@@ -200,12 +200,15 @@
    One shared cap so left / center / right bottoms align. Each column is a flex
    column; only the main panels scroll (not mixed 40vh / 65vh / 72vh). */
 #pc_main_area {
+    /* Shared cap: scroll inside panels instead of stretching the whole page */
     --pc-main-row-height: min(72vh, calc(100dvh - 16rem));
+    --pc-panel-max: min(68vh, calc(100dvh - 18rem));
     display: flex !important;
     flex-direction: row !important;
     align-items: stretch !important;
     max-height: var(--pc-main-row-height);
     min-height: 0 !important;
+    overflow-x: hidden !important;
 }
 
 #pc_asset_browser_col,
@@ -238,7 +241,7 @@
 #pc_main_area .pc-asset-cards {
     flex: 1 1 auto !important;
     min-height: 120px !important;
-    max-height: none !important;
+    max-height: var(--pc-panel-max, min(68vh, calc(100dvh - 18rem))) !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
 }
@@ -251,7 +254,7 @@
 #pc_composer_area {
     flex: 1 1 auto !important;
     min-height: 0 !important;
-    max-height: none !important;
+    max-height: var(--pc-panel-max, min(68vh, calc(100dvh - 18rem))) !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     scrollbar-width: thin;
@@ -315,15 +318,25 @@
 }
 
 #pc_main_area .pc-tags-container {
-    max-height: none !important;
+    /* Was max-height:none — that cancelled .pc-tags-container { 40vh } and grew the page */
+    max-height: var(--pc-panel-max, min(68vh, calc(100dvh - 18rem))) !important;
     flex: 1 1 auto !important;
     min-height: 0 !important;
     overflow-y: auto !important;
     scrollbar-width: thin;
 }
 
+#pc_main_area .pc-tags-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+#pc_main_area .pc-tags-container::-webkit-scrollbar-thumb {
+    background: var(--border-color-primary, #555);
+    border-radius: 3px;
+}
+
 #pc_main_area .pc-wc-container {
-    max-height: none !important;
+    max-height: var(--pc-panel-max, min(68vh, calc(100dvh - 18rem))) !important;
     flex: 1 1 auto !important;
     min-height: 0 !important;
     overflow-y: auto !important;

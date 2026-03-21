@@ -198,13 +198,18 @@
 
 /* ===== 3-column scroll behavior =====
    Scroll only the composer content area, without breaking Gradio layout.
-   Toolbar lives inside .pc-composer-body so it stays below all blocks. */
+   Toolbar lives inside .pc-composer-body so it stays below all blocks.
+   --pc-footer-clearance: reserve vertical space for the fixed WebUI #footer (2 lines + padding)
+   so Negative blocks / toolbar are not covered; padding-bottom adds scroll slack at the end. */
 #pc_composer_area {
-    max-height: 78vh;
+    --pc-footer-clearance: max(5.75rem, 96px);
+    max-height: calc(78vh - var(--pc-footer-clearance));
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
     padding-right: 6px; /* room for scrollbar */
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
 }
 
 .pc-composer-body {
@@ -1505,7 +1510,12 @@ div#footer.block,
     z-index: 50;
 }
 
-/* Keep bottom controls scrollable above the fixed footer */
+/* Keep bottom controls scrollable above the fixed footer (2 text rows + links + safe area) */
 div.gradio-container {
-    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px)) !important;
+    padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* Main 3-column row: extra lift so right/left columns clear the fixed footer when scrolled */
+#pc_main_area {
+    margin-bottom: calc(3rem + env(safe-area-inset-bottom, 0px));
 }

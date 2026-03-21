@@ -265,6 +265,10 @@
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
     padding-right: 2px;
     padding-bottom: 12px;
+    /* Stacking: avoid global #footer painting over blocks if DOM is briefly wrong */
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
 }
 
 /* Right: presets compact; Tag Dictionary tabs use remaining height */

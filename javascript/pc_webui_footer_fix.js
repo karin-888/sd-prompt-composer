@@ -67,11 +67,45 @@
             wrap.style.setProperty('display', 'block', 'important');
             wrap.style.setProperty('flex', 'none', 'important');
         }
+
+        /* Inner Gradio 4 wrapper (div.prose.gradio-html) — this is what overlaps blocks */
+        var prose = el.querySelectorAll('.prose');
+        for (var j = 0; j < prose.length; j++) {
+            var p = prose[j];
+            p.style.setProperty('position', 'static', 'important');
+            p.style.setProperty('top', 'auto', 'important');
+            p.style.setProperty('bottom', 'auto', 'important');
+            p.style.setProperty('left', 'auto', 'important');
+            p.style.setProperty('right', 'auto', 'important');
+            p.style.setProperty('height', 'auto', 'important');
+            p.style.setProperty('min-height', '0', 'important');
+            p.style.setProperty('max-height', 'none', 'important');
+            p.style.setProperty('width', '100%', 'important');
+            p.style.setProperty('transform', 'none', 'important');
+            p.style.setProperty('z-index', 'auto', 'important');
+            p.style.setProperty('flex', 'none', 'important');
+        }
+    }
+
+    function normalizeProseVersionBar() {
+        /* If #footer was not used, still fix any prose that wraps footer.html .versions */
+        var bars = document.querySelectorAll('div.prose.gradio-html');
+        for (var i = 0; i < bars.length; i++) {
+            var node = bars[i];
+            if (!node.querySelector || !node.querySelector('.versions')) continue;
+            if (!node.textContent || node.textContent.indexOf('checkpoint:') === -1) continue;
+            node.style.setProperty('position', 'static', 'important');
+            node.style.setProperty('transform', 'none', 'important');
+            node.style.setProperty('z-index', 'auto', 'important');
+            node.style.setProperty('height', 'auto', 'important');
+            node.style.setProperty('width', '100%', 'important');
+        }
     }
 
     function run() {
         relocateFooter();
         normalizeFooter();
+        normalizeProseVersionBar();
     }
 
     function schedule() {

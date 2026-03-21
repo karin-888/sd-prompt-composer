@@ -14,6 +14,42 @@
     letter-spacing: 0.03em;
 }
 
+/* Sub-section title (e.g. order profile above Preset Manager) */
+.pc-section-header-sub {
+    font-size: 1em;
+    padding-top: 0;
+    margin-bottom: 8px;
+}
+
+/* Right column: vertical stack with gap so injected UIs do not overlap */
+.pc-preset-col-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px;
+    min-height: 0;
+}
+
+.pc-order-profile-section {
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 1;
+    overflow: visible;
+    margin-bottom: 4px;
+}
+
+.pc-order-profile-slot {
+    width: 100%;
+    min-height: 8px;
+    overflow: visible;
+}
+
+.pc-order-profile-slot .pc-order-profile-manager {
+    position: relative;
+    z-index: 2;
+    overflow: visible;
+}
+
 /* ===== Output Area ===== */
 .pc-output-area {
     border-bottom: 2px solid var(--border-color-primary, #444);
@@ -161,13 +197,51 @@
 }
 
 /* ===== 3-column scroll behavior =====
-   Scroll only the composer content area, without breaking Gradio layout. */
+   Scroll only the composer content area, without breaking Gradio layout.
+   Toolbar lives inside .pc-composer-body so it stays below all blocks. */
 #pc_composer_area {
     max-height: 78vh;
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
     padding-right: 6px; /* room for scrollbar */
+}
+
+.pc-composer-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.pc-composer-toolbar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 8px;
+    margin-top: 8px;
+    border-top: 1px solid var(--border-color-primary, #444);
+    background: var(--background-fill-secondary, #2a2a2a);
+    border-radius: 0 0 8px 8px;
+    flex-shrink: 0;
+}
+
+.pc-composer-toolbar-actions .pc-toolbar-btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color-primary, #555);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--body-text-color, #ddd);
+    font-size: 0.88em;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1.25;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.pc-composer-toolbar-actions .pc-toolbar-btn:hover {
+    border-color: var(--color-accent, #76b9ed);
+    background: rgba(118, 185, 237, 0.14);
 }
 
 .pc-asset-cards::-webkit-scrollbar {
@@ -336,9 +410,42 @@
     text-shadow: 0 0 0 #ccc;
 }
 
+.pc-asset-remove-btn {
+    position: absolute;
+    /* Type badge (top:4px; right:4px) と被らないように少し下へ */
+    top: 28px;
+    right: 8px;
+    z-index: 15;
+    background: rgba(229, 115, 115, 0.22);
+    border: 1px solid rgba(229, 115, 115, 0.95);
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.05em !important;
+    opacity: 0.95;
+    transition: all 0.2s ease;
+    color: #ffe0e0 !important;
+    font-weight: 900;
+    line-height: 1;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.75) !important;
+}
+
 .pc-asset-card:hover .pc-asset-fav-btn,
 .pc-asset-fav-btn.pc-fav-active {
     opacity: 1;
+}
+
+.pc-asset-card:hover .pc-asset-remove-btn { opacity: 1; }
+
+.pc-asset-remove-btn:hover {
+    background: rgba(229, 115, 115, 0.32);
+    border-color: rgba(229, 115, 115, 1);
+    color: #ffe0e0 !important;
+    transform: scale(1.12);
 }
 
 .pc-asset-fav-btn:hover {

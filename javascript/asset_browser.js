@@ -187,6 +187,7 @@
 
             wrapper.innerHTML = `
                     <button class="pc-asset-fav-btn ${favClass}" data-asset-id="${asset.id}" title="お気に入り">⭐</button>
+                    <button class="pc-asset-remove-btn" data-asset-id="${asset.id}" title="削除（フォルダから）">×</button>
                     <div class="pc-asset-preview">
                         ${previewSrc 
                             ? `<img loading="lazy" data-src="${previewSrc}" alt="${escapeHtml(asset.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -215,6 +216,8 @@
                 card.addEventListener('click', onAssetCardClick);
                 const favBtn = card.querySelector('.pc-asset-fav-btn');
                 if (favBtn) favBtn.addEventListener('click', onFavoriteToggle);
+                const rmBtn = card.querySelector('.pc-asset-remove-btn');
+                if (rmBtn) rmBtn.addEventListener('click', onAssetRemoveClick);
                 const civIcon = card.querySelector('.pc-asset-civitai-icon');
                 if (civIcon) civIcon.addEventListener('click', onCivitaiOpen);
                 card.dataset._pcHandlersAttached = '1';
@@ -403,6 +406,7 @@
     async function onAssetCardClick(e) {
         // Ignore if clicking the favorite button
         if (e.target.closest('.pc-asset-fav-btn')) return;
+        if (e.target.closest('.pc-asset-remove-btn')) return;
 
         const card = e.target.closest('.pc-asset-card');
         if (!card) return;
@@ -422,6 +426,36 @@
             // Visual feedback
             card.classList.add('pc-asset-inserted');
             setTimeout(() => card.classList.remove('pc-asset-inserted'), 600);
+        }
+    }
+
+    async function onAssetRemoveClick(e) {
+        e.stopPropagation(); // Prevent card insert
+        const btn = e.currentTarget;
+        const assetId = btn && btn.dataset ? btn.dataset.assetId : null;
+        if (!assetId) return;
+
+        const asset = displayedAssets.find(a => a.id === assetId);
+        const name = (asset && (asset.displayName || asset.name)) ? String(asset.displayName || asset.name) : assetId;
+
+        if (!confirm(`「${name}」を削除しますか？（フォルダから削除、元に戻せません）`)) return;
+
+        try {
+            btn.disabled = true;
+            const delResp = await fetch(`/prompt-composer/api/assets/${assetId}`, { method: 'DELETE' });
+            if (!delResp.ok) {
+                const body = await delResp.json().catch(() => ({}));
+                throw new Error(body.error || `HTTP ${delResp.status}`);
+            }
+
+            // Refresh index + UI
+            await fetch('/prompt-composer/api/assets/rescan', { method: 'GET' });
+            await loadAssets(false);
+        } catch (err) {
+            console.error('[Prompt Composer] Failed to delete asset:', err);
+            alert(`削除に失敗しました: ${err && err.message ? err.message : err}`);
+        } finally {
+            try { btn.disabled = false; } catch (_) {}
         }
     }
 

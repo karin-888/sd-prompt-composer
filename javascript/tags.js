@@ -8,6 +8,8 @@
 
     let currentItems = [];
     let debounceTimer = null;
+    let wildcardDebounceTimer = null;
+    let wildcardRenderRetryCount = 0;
     let currentSection = null;
     let currentCategory = null;
     let currentGroup = null;
@@ -164,13 +166,17 @@
         if (!container) return;
         let wcHost = document.getElementById('pc_wildcards_container');
         if (!wcHost) {
-            wcHost = document.createElement('div');
-            wcHost.id = 'pc_wildcards_container';
-            wcHost.className = 'pc-wc-container';
-            // insert below the tag list area
-            if (container.parentElement) {
-                container.parentElement.insertBefore(wcHost, container.nextSibling);
+            // Tabs内のDOMがまだマウントされていない可能性があるため、一定回数だけリトライ。
+            if (wildcardRenderRetryCount < 20) {
+                wildcardRenderRetryCount++;
+                setTimeout(() => renderWildcards(query), 300);
             }
+            return;
+        }
+
+        wildcardRenderRetryCount = 0;
+        if (!wcHost.classList.contains('pc-wc-container')) {
+            wcHost.classList.add('pc-wc-container');
         }
 
         if (!wildcardItems || wildcardItems.length === 0) {
@@ -211,7 +217,7 @@
             btn.addEventListener('click', () => {
                 const token = btn.dataset.token;
                 if (!token || !window.PromptComposer) return;
-                const blocks = window.PromptComposer.blocks || [];
+                const blocks = (window.PromptComposer.blocks || []).concat(window.PromptComposer.negativeBlocks || []);
 
                 let target = null;
                 const activeId = window.PromptComposerActiveBlockId;
@@ -280,7 +286,7 @@
                         const tag = escapeHtml(item.tag);
                         const jp = escapeHtml(item.jp || '');
                         html += `
-                            <button class="pc-tag-row" data-tag="${tag}">
+                            <button class="pc-tag-row" data-tag="${tag}" data-jp="${jp}">
                                 <div class="pc-tag-main">
                                     <span class="pc-tag-en">${tag}</span>
                                     ${jp ? `<span class="pc-tag-jp">${jp}</span>` : ''}
@@ -306,8 +312,9 @@
             btn.addEventListener('click', () => {
                 const tag = btn.dataset.tag;
                 if (!tag || !window.PromptComposer) return;
+                const jp = (btn.dataset.jp || '').trim();
 
-                const blocks = window.PromptComposer.blocks || [];
+                const blocks = (window.PromptComposer.blocks || []).concat(window.PromptComposer.negativeBlocks || []);
 
                 // 1) Prefer last focused token input's block
                 let target = null;
@@ -325,28 +332,46 @@
 
                 window.PromptComposer.addToken(target.id, tag, tag, {
                     sourceType: 'dict',
-                    isTrigger: false
+                    isTrigger: false,
+                    jp: jp || null
                 });
             });
         });
     }
 
     function setupSearch() {
-        const root = document.getElementById('pc_tag_search');
-        if (!root) return;
-        const input = root.querySelector('input') || root.querySelector('textarea');
-        if (!input) return;
+        const tagRoot = document.getElementById('pc_tag_search');
+        const wcRoot = document.getElementById('pc_wc_search');
 
-        ensureQuickInsertBar(root);
+        // Tag search: filters tags + also updates wildcards to keep behavior consistent.
+        if (tagRoot) {
+            const tagInput = tagRoot.querySelector('input') || tagRoot.querySelector('textarea');
+            if (tagInput) {
+                ensureQuickInsertBar(tagRoot);
+                tagInput.addEventListener('input', (e) => {
+                    clearTimeout(debounceTimer);
+                    const value = e.target.value;
+                    debounceTimer = setTimeout(() => {
+                        loadTags(value.trim());
+                        loadWildcards(value.trim());
+                    }, 250);
+                });
+            }
+        }
 
-        input.addEventListener('input', (e) => {
-            clearTimeout(debounceTimer);
-            const value = e.target.value;
-            debounceTimer = setTimeout(() => {
-                loadTags(value.trim());
-                loadWildcards(value.trim());
-            }, 250);
-        });
+        // Wildcard search: only filters wildcards.
+        if (wcRoot) {
+            const wcInput = wcRoot.querySelector('input') || wcRoot.querySelector('textarea');
+            if (wcInput) {
+                wcInput.addEventListener('input', (e) => {
+                    clearTimeout(wildcardDebounceTimer);
+                    const value = e.target.value;
+                    wildcardDebounceTimer = setTimeout(() => {
+                        loadWildcards(value.trim());
+                    }, 250);
+                });
+            }
+        }
     }
 
     function ensureQuickInsertBar(root) {
@@ -379,7 +404,7 @@
 
     function insertSpecial(kind) {
         if (!window.PromptComposer) return;
-        const blocks = window.PromptComposer.blocks || [];
+        const blocks = (window.PromptComposer.blocks || []).concat(window.PromptComposer.negativeBlocks || []);
         if (!blocks.length) return;
 
         // 1) Prefer last focused token input's block

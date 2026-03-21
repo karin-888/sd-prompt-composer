@@ -14,6 +14,7 @@ from typing import List, Dict, Optional, Tuple
 
 _loaded = False
 _tags: List[Dict[str, str]] = []
+_jp_by_tag: Dict[str, str] = {}
 
 
 def _load_translations(path: str, translations: Dict[str, str]) -> None:
@@ -117,7 +118,7 @@ def _partition_translation_and_tag_csvs(csv_paths: List[str]) -> Tuple[List[str]
 
 def init(extension_dir: str) -> None:
     """Initialize by loading CSV files from this extension's tags directory."""
-    global _loaded, _tags
+    global _loaded, _tags, _jp_by_tag
     if _loaded:
         return
 
@@ -189,6 +190,12 @@ def init(extension_dir: str) -> None:
     tags_list.sort(key=lambda t: int(t.get("freq", 0) or 0), reverse=True)
 
     _tags = tags_list
+    _jp_by_tag = {}
+    for it in _tags:
+        tag = (it.get("tag") or "").strip()
+        jp = (it.get("jp") or "").strip()
+        if tag and jp:
+            _jp_by_tag[tag] = jp
     _loaded = True
 
     # Minimal startup logging (helps diagnose source issues)
@@ -219,4 +226,14 @@ def suggest(query: str, limit: int = 30) -> List[Dict[str, str]]:
         if len(results) >= limit:
             break
     return results
+
+
+def translate_exact(tag: str) -> str:
+    """Return JP translation for an exact tag match (best-effort)."""
+    if not _loaded:
+        return ""
+    t = (tag or "").strip()
+    if not t:
+        return ""
+    return (_jp_by_tag.get(t) or "").strip()
 

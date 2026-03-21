@@ -346,17 +346,7 @@
             addBtn.addEventListener('click', showAddBlockDialog);
         }
 
-        // Order profile change
-        const profileSelect = document.getElementById('pc_order_profile');
-        if (profileSelect) {
-            const selectEl = profileSelect.querySelector('select') || profileSelect.querySelector('input');
-            if (selectEl) {
-                selectEl.addEventListener('change', (e) => {
-                    currentOrderProfile = e.target.value;
-                    checkWarnings();
-                });
-            }
-        }
+        // Order profile: custom UI is built in ensureOrderProfileManagerUI (mount #pc_order_profile).
 
         // Enhance order profile UI: dynamic options + save/delete
         setTimeout(() => {
@@ -526,6 +516,7 @@
             profileSelect.addEventListener('change', () => {
                 const id = profileSelect.value;
                 setCurrentProfile(id);
+                checkWarnings();
             });
         }
 
@@ -1469,10 +1460,13 @@
             }
         });
 
-        // Set profile dropdown value
-        const profileSelect = document.getElementById('pc_order_profile');
-        if (profileSelect) {
-            const selectEl = profileSelect.querySelector('select') || profileSelect.querySelector('input');
+        // Set profile dropdown value (custom order-profile select inside #pc_order_profile)
+        const profileRoot = document.getElementById('pc_order_profile');
+        if (profileRoot) {
+            const selectEl =
+                profileRoot.querySelector('.pc-order-profile-select') ||
+                profileRoot.querySelector('select') ||
+                profileRoot.querySelector('input');
             if (selectEl) {
                 selectEl.value = currentOrderProfile;
                 selectEl.dispatchEvent(new Event('change', { bubbles: true }));

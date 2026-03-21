@@ -12,11 +12,12 @@ import yaml
 
 _tags: List[Dict] = []
 _loaded: bool = False
+_jp_map: Dict[str, str] = {}
 
 
 def init(extension_dir: str):
     """Load tag dictionary once at startup."""
-    global _tags, _loaded
+    global _tags, _loaded, _jp_map
     if _loaded:
         return
 
@@ -76,9 +77,25 @@ def init(extension_dir: str):
                     )
 
     _tags = items
+    _jp_map = {}
+    for it in _tags:
+        tag = (it.get("tag") or "").strip()
+        jp = (it.get("jp") or "").strip()
+        if tag and jp and tag not in _jp_map:
+            _jp_map[tag] = jp
     _loaded = True
     src = "local" if yaml_path == local_yaml_path else "prompt-aio"
     print(f"[Prompt Composer] Loaded {len(_tags)} prompt dictionary tags from default.yaml (source={src})")
+
+
+def translate_exact(tag: str) -> str:
+    """Return JP translation for exact tag if present in dictionary YAML."""
+    if not _loaded:
+        return ""
+    t = (tag or "").strip()
+    if not t:
+        return ""
+    return (_jp_map.get(t) or "").strip()
 
 
 def search_tags(

@@ -5,11 +5,12 @@
 (function() {
     'use strict';
 
-    const CACHE = new Map(); // text -> { token_count, max_length, tokens }
-    let inflight = null;
+    const CACHE = new Map(); // scopedKey -> { token_count, max_length, tokens }
+    let inflight = null; // scopedKey
 
     function init() {
         const promptBox = document.getElementById('pc_final_prompt');
+        const negBox = document.getElementById('pc_final_negative');
         const view = document.getElementById('pc_tokenizer_view');
         const button = document.getElementById('pc_tokenizer_button');
         if (!promptBox || !view) {
@@ -17,8 +18,9 @@
             return;
         }
 
-        const textarea = promptBox.querySelector('textarea');
-        if (!textarea) {
+        const posTa = promptBox.querySelector('textarea');
+        const negTa = negBox ? negBox.querySelector('textarea') : null;
+        if (!posTa) {
             setTimeout(init, 800);
             return;
         }
@@ -28,21 +30,23 @@
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
                 // Approx のみ更新（正確トークン数は保持済みデータがあれば表示）
-                updateTokenizer(textarea.value || '');
+                updateTokenizerPair(posTa.value || '', negTa ? (negTa.value || '') : '');
             }, 250);
         };
 
-        textarea.addEventListener('input', handler);
+        posTa.addEventListener('input', handler);
+        if (negTa) negTa.addEventListener('input', handler);
         // 手動計算ボタン
         if (button && !button.dataset._pcBound) {
             button.dataset._pcBound = '1';
             button.addEventListener('click', () => {
-                requestExactTokenize(textarea.value || '');
+                requestExactTokenize('pos', posTa.value || '');
+                if (negTa) requestExactTokenize('neg', negTa.value || '');
             });
         }
 
         // 初期表示（Approx のみ）
-        updateTokenizer(textarea.value || '');
+        updateTokenizerPair(posTa.value || '', negTa ? (negTa.value || '') : '');
 
         console.log('[Prompt Composer] Lightweight tokenizer initialized (manual exact count)');
     }
@@ -63,24 +67,36 @@
         return tokens;
     }
 
-    function updateTokenizer(text) {
+    function updateTokenizerPair(posText, negText) {
         const view = document.getElementById('pc_tokenizer_view');
         if (!view) return;
 
+        const posHtml = renderOne('Positive', 'pos', posText);
+        const negHtml = renderOne('Negative', 'neg', negText);
+        view.innerHTML = `<div class="pc-tokenizer-dual">${posHtml}${negHtml}</div>`;
+    }
+
+    function renderOne(title, scope, text) {
         const tokens = tokenizeApprox(text);
+        const scopedKey = normalizeKey(scope, text);
+        const exact = CACHE.get(scopedKey);
+
+        // Empty
         if (!tokens.length) {
-            const exact = CACHE.get(normalizeKey(text));
             const exactPart = exact ? ` / exact: ${exact.token_count}` : '';
-            view.innerHTML = `<span class="pc-tokenizer-empty">トークンなし${exactPart}</span>`;
-            return;
+            return `
+                <div class="pc-tokenizer-pane">
+                    <div class="pc-tokenizer-summary"><strong>${escapeHtml(title)}</strong> — トークンなし${escapeHtml(exactPart)}</div>
+                </div>
+            `;
         }
 
         const total = tokens.length;
         const chunks = Math.ceil(total / 75);
-        const exact = CACHE.get(normalizeKey(text));
         const exactText = exact ? ` / exact: ${exact.token_count} (max ${exact.max_length})` : ' / exact: …';
 
-        let html = `<div class="pc-tokenizer-summary">` +
+        let html = `<div class="pc-tokenizer-pane">`;
+        html += `<div class="pc-tokenizer-summary"><strong>${escapeHtml(title)}</strong> — ` +
             `Approx: ${total} / chunks: ${chunks} (75/chunk)${exactText}` +
             `</div>`;
 
@@ -111,31 +127,33 @@
             html += `<span class="${cls}" title="${escapeHtml(title)}">${escapeHtml(tok)}</span>`;
         });
 
-        html += '</div>';
-        view.innerHTML = html;
+        html += '</div></div>';
+        return html;
     }
 
-    function normalizeKey(text) {
+    function normalizeKey(scope, text) {
         const maxLen = 2048;
-        return (text || '').slice(0, maxLen);
+        const body = (text || '').slice(0, maxLen);
+        return `${scope}:${body}`;
     }
 
-    async function requestExactTokenize(text) {
-        const key = normalizeKey(text);
-        if (!key.trim()) return;
-        if (CACHE.has(key)) return;
+    async function requestExactTokenize(scope, text) {
+        const scopedKey = normalizeKey(scope, text);
+        const body = (text || '').trim();
+        if (!body) return;
+        if (CACHE.has(scopedKey)) return;
 
         // avoid spamming: keep only one inflight request; last-write wins
-        inflight = key;
+        inflight = scopedKey;
         try {
-            const params = new URLSearchParams({ text: key });
+            const params = new URLSearchParams({ text: (text || '').slice(0, 2048) });
             const resp = await fetch('/prompt-composer/api/tokenize?' + params.toString());
             if (!resp.ok) return;
             const data = await resp.json();
-            if (inflight !== key) return;
+            if (inflight !== scopedKey) return;
             if (typeof data.token_count !== 'number') return;
 
-            CACHE.set(key, {
+            CACHE.set(scopedKey, {
                 token_count: data.token_count,
                 max_length: data.max_length || 0,
                 tokens: Array.isArray(data.tokens) ? data.tokens : []
@@ -143,9 +161,11 @@
 
             // refresh view if still showing same text
             const promptBox = document.getElementById('pc_final_prompt');
-            const ta = promptBox ? promptBox.querySelector('textarea') : null;
-            if (ta && normalizeKey(ta.value) === key) {
-                updateTokenizer(ta.value || '');
+            const negBox = document.getElementById('pc_final_negative');
+            const posTa = promptBox ? promptBox.querySelector('textarea') : null;
+            const negTa = negBox ? negBox.querySelector('textarea') : null;
+            if (posTa) {
+                updateTokenizerPair(posTa.value || '', negTa ? (negTa.value || '') : '');
             }
         } catch (e) {
             // ignore

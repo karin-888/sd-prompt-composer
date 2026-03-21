@@ -32,6 +32,7 @@ import order_profiles
 import tag_dictionary
 import tag_suggest
 import api as composer_api
+from modules import shared
 
 
 def on_app_started(demo, app):
@@ -50,6 +51,33 @@ def on_app_started(demo, app):
     
     # Trigger initial asset scan in background
     print("[Prompt Composer] Extension loaded. Assets will be scanned on first request.")
+
+def on_ui_settings():
+    # Optional machine translation fallback for unknown manual tags
+    shared.opts.add_option(
+        "pc_deepl_enable",
+        shared.OptionInfo(
+            False,
+            "Prompt Composer: Use DeepL for unknown manual tags",
+            section=("prompt_composer", "Prompt Composer"),
+        ),
+    )
+    shared.opts.add_option(
+        "pc_deepl_api_key",
+        shared.OptionInfo(
+            "",
+            "Prompt Composer: DeepL API key (optional)",
+            section=("prompt_composer", "Prompt Composer"),
+        ),
+    )
+    shared.opts.add_option(
+        "pc_deepl_api_url",
+        shared.OptionInfo(
+            "https://api-free.deepl.com/v2/translate",
+            "Prompt Composer: DeepL API URL",
+            section=("prompt_composer", "Prompt Composer"),
+        ),
+    )
 
 
 def on_ui_tabs():
@@ -119,19 +147,6 @@ def on_ui_tabs():
                     elem_id="pc_auto_format",
                     variant="secondary"
                 )
-                
-                with gr.Row():
-                    order_profile_dropdown = gr.Dropdown(
-                        elem_id="pc_order_profile",
-                        label="順序プロファイル",
-                        choices=[
-                            ("Illustrious標準", "illustrious_standard"),
-                            ("キャラ重視", "character_focus"),
-                            ("背景重視", "background_focus"),
-                        ],
-                        value="illustrious_standard",
-                        interactive=True
-                    )
         
         # ===== MAIN: 3-column layout =====
         with gr.Row(elem_id="pc_main_area"):
@@ -191,33 +206,33 @@ def on_ui_tabs():
             with gr.Column(scale=2, min_width=400, elem_id="pc_composer_col"):
                 gr.HTML('<div class="pc-section-header">🧩 Prompt Composer</div>')
                 
-                # Composer blocks - rendered by JavaScript
+                # Composer blocks (JS) + action toolbar inside same scroll area (#pc_composer_area)
+                # so the bar stays at the bottom of the list and does not overlap blocks in some Gradio layouts.
                 composer_area = gr.HTML(
                     elem_id="pc_composer_area",
-                    value='<div id="pc_blocks_container" class="pc-blocks-container"></div>'
+                    value=(
+                        '<div class="pc-composer-body">'
+                        '<div id="pc_blocks_container" class="pc-blocks-container"></div>'
+                        '<div class="pc-composer-toolbar-actions" role="toolbar" aria-label="Prompt Composer actions">'
+                        '<button type="button" id="pc_add_block" class="pc-toolbar-btn">➕ ブロック追加</button>'
+                        '<button type="button" id="pc_sort_blocks" class="pc-toolbar-btn">📐 順序整形</button>'
+                        '<button type="button" id="pc_clear_blocks" class="pc-toolbar-btn">🗑️ 全クリア</button>'
+                        "</div></div>"
+                    ),
                 )
-                
-                with gr.Row():
-                    add_block_btn = gr.Button(
-                        "➕ ブロック追加",
-                        elem_id="pc_add_block",
-                        size="sm"
-                    )
-                    sort_blocks_btn = gr.Button(
-                        "📐 順序整形",
-                        elem_id="pc_sort_blocks",
-                        size="sm"
-                    )
-                    clear_blocks_btn = gr.Button(
-                        "🗑️ 全クリア",
-                        elem_id="pc_clear_blocks",
-                        size="sm"
-                    )
                 
                 # Special tokens were moved to Tag Dictionary quickbar
             
-            # --- RIGHT: Preset + Tag Dictionary ---
-            with gr.Column(scale=1, min_width=260, elem_id="pc_preset_col"):
+            # --- RIGHT: Order profile + Preset + Tag Dictionary ---
+            # Order profile UI is mounted here (not in the top sync column) so it stacks with
+            # Preset Manager and does not overlap it in tight / equal-height Gradio layouts.
+            with gr.Column(scale=1, min_width=260, elem_id="pc_preset_col", elem_classes=["pc-preset-col-stack"]):
+                gr.HTML(
+                    '<div class="pc-order-profile-section">'
+                    '<div class="pc-section-header pc-section-header-sub">📐 順序プロファイル</div>'
+                    '<div id="pc_order_profile" class="pc-order-profile-slot"></div>'
+                    "</div>"
+                )
                 gr.HTML('<div class="pc-section-header">💾 Preset Manager</div>')
                 
                 with gr.Row():
@@ -242,18 +257,31 @@ def on_ui_tabs():
                     value='<div id="pc_presets_container" class="pc-preset-list"></div>'
                 )
 
-                gr.HTML('<div class="pc-section-header" style="margin-top:16px;">🏷️ Tag Dictionary</div>')
-                gr.HTML('<div id="pc_tag_path_label" class="pc-tag-path-label"></div>')
-                tag_search = gr.Textbox(
-                    elem_id="pc_tag_search",
-                    placeholder="タグ / 日本語で検索...",
-                    label="",
-                    show_label=False
-                )
-                tag_list = gr.HTML(
-                    elem_id="pc_tag_list",
-                    value='<div id="pc_tags_container" class="pc-tags-container"></div>'
-                )
+                # Tag Dictionary / Wildcards tabs (rendered client-side by javascript)
+                with gr.Tabs(elem_id="pc_dict_tabs"):
+                    with gr.TabItem("🏷️ Tag Dictionary"):
+                        gr.HTML('<div id="pc_tag_path_label" class="pc-tag-path-label"></div>')
+                        tag_search = gr.Textbox(
+                            elem_id="pc_tag_search",
+                            placeholder="タグ / 日本語で検索...",
+                            label="",
+                            show_label=False
+                        )
+                        tag_list = gr.HTML(
+                            elem_id="pc_tag_list",
+                            value='<div id="pc_tags_container" class="pc-tags-container"></div>'
+                        )
+                    with gr.TabItem("🪄 Wildcards"):
+                        wc_search = gr.Textbox(
+                            elem_id="pc_wc_search",
+                            placeholder="Wildcards（.txt）を検索...",
+                            label="",
+                            show_label=False
+                        )
+                        wc_list = gr.HTML(
+                            elem_id="pc_wc_list",
+                            value='<div id="pc_wildcards_container" class="pc-wc-container"></div>'
+                        )
 
         # --- Backend Events for UI Interactivity ---
         def update_subfolders(asset_type):
@@ -281,3 +309,4 @@ def on_ui_tabs():
 # Register callbacks
 script_callbacks.on_app_started(on_app_started)
 script_callbacks.on_ui_tabs(on_ui_tabs)
+script_callbacks.on_ui_settings(on_ui_settings)

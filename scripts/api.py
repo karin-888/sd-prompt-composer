@@ -27,6 +27,12 @@ import tag_suggest
 import wildcards
 from modules import shared, sd_hijack
 import open_clip.tokenizer
+import urllib.parse
+import urllib.request
+import urllib.error
+
+_deepl_cache: dict[str, str] = {}
+_deepl_last_error: str = ""
 
 
 def register_api(app: FastAPI, extension_dir: str):
@@ -142,6 +148,53 @@ def register_api(app: FastAPI, extension_dir: str):
         asset_indexer.invalidate_cache()
         assets = asset_indexer.scan_all_assets(force=True)
         return {"message": f"Rescan complete. Found {len(assets)} assets."}
+
+    @app.delete("/prompt-composer/api/assets/{asset_id}")
+    async def api_delete_asset(asset_id: str):
+        """
+        Delete an asset file (LoRA/Embedding) from disk.
+        This is irreversible and intended for manual cleanup of duplicated/bad files.
+        """
+        asset = asset_indexer.get_asset_by_id(asset_id)
+        if not asset:
+            return JSONResponse(status_code=404, content={"error": "Asset not found"})
+
+        file_path = asset.get("filePath")
+        if not file_path:
+            return JSONResponse(status_code=404, content={"error": "Asset filePath missing"})
+
+        # Safety: only allow known model extensions.
+        _, ext = os.path.splitext(file_path)
+        ext = (ext or "").lower()
+        if ext not in getattr(asset_indexer, "MODEL_EXTS", set()):
+            return JSONResponse(status_code=403, content={"error": "Refusing to delete unsupported file type"})
+
+        # Safety: ensure file lives under the configured LoRA/Embedding roots.
+        try:
+            folders = asset_indexer._get_model_folders()  # type: ignore[attr-defined]
+            roots = [os.path.realpath(p) for p in (folders or {}).values() if p]
+        except Exception:
+            roots = []
+
+        real_fp = os.path.realpath(file_path)
+        if roots:
+            allowed = any(
+                real_fp == r or real_fp.startswith(r + os.sep)
+                for r in roots
+            )
+            if not allowed:
+                return JSONResponse(status_code=403, content={"error": "Refusing to delete outside allowed roots"})
+
+        try:
+            os.remove(file_path)
+        except FileNotFoundError:
+            # Already gone; treat as success.
+            pass
+        except OSError as e:
+            return JSONResponse(status_code=500, content={"error": f"Failed to delete: {e}"})
+
+        asset_indexer.invalidate_cache()
+        return {"message": "Deleted"}
     
     # --- Preset endpoints ---
     
@@ -316,6 +369,106 @@ def register_api(app: FastAPI, extension_dir: str):
         except Exception as e:
             return JSONResponse(status_code=500, content={"error": str(e)})
         return {"items": suggestions}
+
+    @app.get("/prompt-composer/api/tag-translate")
+    async def api_tag_translate(tag: str, debug: bool = False):
+        """
+        Translate an exact tag to JP (best-effort).
+        Checks:
+          1) tag_suggest CSV translations (tagcomplete/local)
+          2) tag_dictionary YAML translations (group_tags/default.yaml)
+        """
+        t = (tag or "").strip()
+        if not t:
+            return {"tag": "", "jp": ""}
+        jp = ""
+        try:
+            jp = (tag_suggest.translate_exact(t) or "").strip()
+        except Exception:
+            jp = ""
+        if not jp:
+            try:
+                jp = (tag_dictionary.translate_exact(t) or "").strip()
+            except Exception:
+                jp = ""
+
+        # DeepL fallback (optional)
+        if not jp:
+            try:
+                enable = bool(getattr(shared.opts, "pc_deepl_enable", False))
+                api_key = (getattr(shared.opts, "pc_deepl_api_key", "") or "").strip()
+                api_url = (getattr(shared.opts, "pc_deepl_api_url", "") or "").strip()
+                if enable and api_key and api_url:
+                    cached = _deepl_cache.get(t)
+                    if cached:
+                        jp = cached
+                    else:
+                        # Better translation when underscores are treated as spaces
+                        text = t.replace("_", " ")
+                        payload = urllib.parse.urlencode(
+                            {
+                                "text": text,
+                                "source_lang": "EN",
+                                "target_lang": "JA",
+                            }
+                        ).encode("utf-8")
+                        req = urllib.request.Request(
+                            api_url,
+                            data=payload,
+                            headers={
+                                "Content-Type": "application/x-www-form-urlencoded",
+                                "Authorization": f"DeepL-Auth-Key {api_key}",
+                            },
+                            method="POST",
+                        )
+                        raw = ""
+                        global _deepl_last_error
+                        _deepl_last_error = ""
+                        try:
+                            with urllib.request.urlopen(req, timeout=6) as r:
+                                raw = r.read().decode("utf-8", errors="replace")
+                        except urllib.error.HTTPError as e:
+                            body = ""
+                            try:
+                                body = e.read().decode("utf-8", errors="replace")
+                            except Exception:
+                                body = ""
+                            _deepl_last_error = f"HTTPError {getattr(e, 'code', '')}: {body[:300]}"
+                            raw = body
+                        except Exception as e:
+                            _deepl_last_error = f"Error: {e}"
+                            raw = ""
+
+                        ok = False
+                        try:
+                            data = json.loads(raw) if raw else {}
+                            tr = (data.get("translations") or [{}])[0]
+                            jp = str(tr.get("text") or "").strip()
+                            ok = bool(jp)
+                        except Exception:
+                            jp = ""
+                        # Cache only successful translations; do not cache failures.
+                        if ok:
+                            _deepl_cache[t] = jp
+            except Exception:
+                # Never fail tag insertion due to translation issues
+                jp = jp or ""
+        if debug:
+            enable = bool(getattr(shared.opts, "pc_deepl_enable", False))
+            api_key = (getattr(shared.opts, "pc_deepl_api_key", "") or "").strip()
+            api_url = (getattr(shared.opts, "pc_deepl_api_url", "") or "").strip()
+            return {
+                "tag": t,
+                "jp": jp,
+                "deepl": {
+                    "enable": enable,
+                    "has_key": bool(api_key),
+                    "api_url": api_url,
+                    "cached": (t in _deepl_cache),
+                    "last_error": _deepl_last_error,
+                },
+            }
+        return {"tag": t, "jp": jp}
 
     # --- Tokenizer endpoints ---
 

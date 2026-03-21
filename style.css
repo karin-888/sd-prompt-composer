@@ -1529,3 +1529,16 @@ div#footer.block,
     justify-content: unset !important;
     align-items: unset !important;
 }
+
+/* Main UI uses #tabs; top-align flex so content + footer are not vertically centered as one group */
+div.gradio-container:has(#tabs) {
+    justify-content: flex-start !important;
+    align-content: flex-start !important;
+}
+
+/* After move, footer is a direct child of body below the app */
+body > #footer {
+    flex: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}

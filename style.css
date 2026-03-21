@@ -1514,7 +1514,18 @@ div#footer.block,
     text-align: center;
     clear: both;
     z-index: auto !important;
+    display: block !important;
+    justify-content: unset !important;
+    align-items: unset !important;
     background: var(--body-background-fill, var(--background-fill-primary, #0b0f14));
     border-top: 1px solid var(--border-color-primary, rgba(255, 255, 255, 0.12));
     box-shadow: none;
+}
+
+/* Gradio themes sometimes flex the HTML wrap; that can vertically center footer text in a tall box */
+#footer .wrap,
+.gradio-html[id="footer"] > .wrap {
+    display: block !important;
+    justify-content: unset !important;
+    align-items: unset !important;
 }

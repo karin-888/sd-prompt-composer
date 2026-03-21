@@ -196,19 +196,62 @@
     scrollbar-width: thin;
 }
 
-/* ===== 3-column scroll behavior =====
-   Global `.gradio-html div.wrap { height: 100% }` (except #footer / #pc_composer_area)
-   can stretch the inner wrap to the full column height so max-height on the block
-   never creates a scroll region. Fix: exclude that wrap (parent style.css) and
-   scroll on #pc_composer_area itself — do NOT use flex + max-height:100% on .wrap
-   (indefinite percentage / flex sizing collapses the scroll box and clips content). */
+/* ===== 3-column layout: equal row height + per-column scroll =====
+   One shared cap so left / center / right bottoms align. Each column is a flex
+   column; only the main panels scroll (not mixed 40vh / 65vh / 72vh). */
+#pc_main_area {
+    --pc-main-row-height: min(72vh, calc(100dvh - 16rem));
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    max-height: var(--pc-main-row-height);
+    min-height: 0 !important;
+}
+
+#pc_asset_browser_col,
+#pc_composer_col,
+#pc_preset_col {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    align-self: stretch !important;
+}
+
+/* Left: gallery fills space below filters; cards scroll inside */
+#pc_asset_gallery {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+#pc_asset_gallery > .wrap {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+}
+
+#pc_main_area .pc-asset-cards {
+    flex: 1 1 auto !important;
+    min-height: 120px !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* Center: composer panel grows with row; scroll inside frame */
 #pc_composer_col {
-    min-height: 0;
+    min-height: 0 !important;
 }
 
 #pc_composer_area {
-    max-height: min(72vh, calc(100dvh - 16rem));
-    min-height: 0;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     scrollbar-width: thin;
@@ -219,6 +262,72 @@
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
     padding-right: 2px;
     padding-bottom: 12px;
+}
+
+/* Right: presets compact; Tag Dictionary tabs use remaining height */
+#pc_preset_col .pc-preset-list {
+    flex: 0 1 auto !important;
+    min-height: 0 !important;
+    max-height: 12rem !important;
+    overflow-y: auto !important;
+}
+
+#pc_dict_tabs {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+}
+
+#pc_dict_tabs > .tab-nav {
+    flex-shrink: 0 !important;
+}
+
+/* Tab panels (Gradio: .tabitem and/or siblings of .tab-nav) */
+#pc_dict_tabs > div:not(.tab-nav),
+#pc_dict_tabs .tabitem {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Tag / Wildcards HTML blocks: flex chain into .pc-tags-container / .wc */
+#pc_main_area #pc_tag_list,
+#pc_main_area #pc_wc_list {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+#pc_main_area #pc_tag_list > .wrap,
+#pc_main_area #pc_wc_list > .wrap {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+}
+
+#pc_main_area .pc-tags-container {
+    max-height: none !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    scrollbar-width: thin;
+}
+
+#pc_main_area .pc-wc-container {
+    max-height: none !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    scrollbar-width: thin;
 }
 
 #pc_composer_area > .wrap {
@@ -1496,107 +1605,4 @@
         grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
         gap: 6px;
     }
-}
-
-/* =============================================================================
- * Forge / A1111 / reForge — global page footer (#footer) from this extension
- *
- * Core WebUI uses `.gradio-html div.wrap { height: 100%; }`, which stretches the
- * footer flex item so links/versions can appear mid-page on long tabs.
- *
- * We must NOT use position:fixed here: it covers the bottom of Prompt Composer
- * (Negative block / toolbar) and padding hacks are unreliable across themes.
- * Keep the footer in normal document flow at the end of the layout, only
- * preventing spurious vertical growth.
- * ============================================================================= */
-
-#footer div.wrap,
-.gradio-html[id="footer"] div.wrap,
-div#footer.block > .wrap,
-#footer.gradio-html > .wrap {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-}
-
-/* Gradio 4 wraps gr.HTML in .prose.gradio-html (Svelte); themes may sticky/fixed this
-   node — it then paints over Prompt Composer (inspector: div.prose.gradio-html). */
-#footer .prose.gradio-html,
-#footer .prose,
-.gradio-html[id="footer"] .prose,
-div.prose.gradio-html:has(.versions) {
-    display: block !important;
-    position: static !important;
-    top: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    width: 100% !important;
-    transform: none !important;
-    z-index: auto !important;
-    margin: 0 !important;
-    flex: none !important;
-}
-
-/* Link row stays horizontal; version line is a full-width block (not inline flow) */
-#footer .versions {
-    position: static !important;
-    display: block !important;
-    width: 100% !important;
-}
-
-div#footer.block,
-#footer.gradio-html,
-#footer.block.gradio-html,
-.gradio-html[id="footer"] {
-    flex: 0 0 auto !important;
-    flex-grow: 0 !important;
-    flex-shrink: 0 !important;
-    align-self: stretch !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    margin-top: 1.25em !important;
-    margin-bottom: 0 !important;
-    padding: 0.75em 0.5em calc(0.75em + env(safe-area-inset-bottom, 0px)) !important;
-    position: static !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    top: auto !important;
-    box-sizing: border-box;
-    text-align: center;
-    clear: both;
-    z-index: auto !important;
-    display: block !important;
-    justify-content: unset !important;
-    align-items: unset !important;
-    background: var(--body-background-fill, var(--background-fill-primary, #0b0f14));
-    border-top: 1px solid var(--border-color-primary, rgba(255, 255, 255, 0.12));
-    box-shadow: none;
-}
-
-/* Gradio themes sometimes flex the HTML wrap; that can vertically center footer text in a tall box */
-#footer .wrap,
-.gradio-html[id="footer"] > .wrap {
-    display: block !important;
-    justify-content: unset !important;
-    align-items: unset !important;
-}
-
-/* Main UI uses #tabs; top-align flex so content + footer are not vertically centered as one group */
-div.gradio-container:has(#tabs) {
-    justify-content: flex-start !important;
-    align-content: flex-start !important;
-}
-
-/* After move, footer is a direct child of body below the app */
-body > #footer {
-    flex: none !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
 }

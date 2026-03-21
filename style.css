@@ -1496,6 +1496,7 @@ div#footer.block > .wrap,
 #footer .prose,
 .gradio-html[id="footer"] .prose,
 div.prose.gradio-html:has(.versions) {
+    display: block !important;
     position: static !important;
     top: auto !important;
     right: auto !important;
@@ -1511,8 +1512,11 @@ div.prose.gradio-html:has(.versions) {
     flex: none !important;
 }
 
+/* Link row stays horizontal; version line is a full-width block (not inline flow) */
 #footer .versions {
     position: static !important;
+    display: block !important;
+    width: 100% !important;
 }
 
 div#footer.block,

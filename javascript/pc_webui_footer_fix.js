@@ -44,6 +44,7 @@
         var el = document.getElementById('footer');
         if (!el) return;
 
+        el.style.setProperty('display', 'block', 'important');
         el.style.setProperty('position', 'static', 'important');
         el.style.setProperty('height', 'auto', 'important');
         el.style.setProperty('min-height', '0', 'important');
@@ -84,6 +85,13 @@
             p.style.setProperty('transform', 'none', 'important');
             p.style.setProperty('z-index', 'auto', 'important');
             p.style.setProperty('flex', 'none', 'important');
+            p.style.setProperty('display', 'block', 'important');
+        }
+
+        var vers = el.querySelector('.versions');
+        if (vers) {
+            vers.style.setProperty('display', 'block', 'important');
+            vers.style.setProperty('width', '100%', 'important');
         }
     }
 
@@ -99,6 +107,7 @@
             node.style.setProperty('z-index', 'auto', 'important');
             node.style.setProperty('height', 'auto', 'important');
             node.style.setProperty('width', '100%', 'important');
+            node.style.setProperty('display', 'block', 'important');
         }
     }
 

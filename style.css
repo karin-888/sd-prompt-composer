@@ -197,16 +197,51 @@
 }
 
 /* ===== 3-column scroll behavior =====
-   Scroll only the composer content area, without breaking Gradio layout.
-   Toolbar is above the block list; sticky so it stays visible while scrolling blocks. */
+   Global `.gradio-html:not([id="footer"]) div.wrap { height: 100% }` stretches the
+   inner wrap to fill the column; content then grows past any max-height on the
+   outer block and overlaps the footer. Constrain the HTML block, hide overflow on
+   the outer shell, and scroll inside the direct .wrap child (height: auto). */
+#pc_main_area {
+    min-height: 0;
+}
+
+#pc_composer_col {
+    min-height: 0;
+}
+
 #pc_composer_area {
-    max-height: 78vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-    padding-right: 6px; /* room for scrollbar */
-    padding-bottom: 12px;
+    display: flex !important;
+    flex-direction: column !important;
+    max-height: min(72vh, calc(100dvh - 16rem));
+    min-height: 0;
+    overflow: hidden !important;
     box-sizing: border-box;
+    border: 1px solid var(--border-color-primary, #555);
+    border-radius: 10px;
+    background: var(--background-fill-primary, #1a1a1a);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+#pc_composer_area > .wrap {
+    flex: 1 1 auto;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-width: thin;
+    box-sizing: border-box;
+    padding-right: 6px;
+    padding-bottom: 12px;
+}
+
+#pc_composer_area > .wrap::-webkit-scrollbar {
+    width: 6px;
+}
+
+#pc_composer_area > .wrap::-webkit-scrollbar-thumb {
+    background: var(--border-color-primary, #555);
+    border-radius: 3px;
 }
 
 .pc-composer-body {

@@ -52,5 +52,35 @@
       "lora",
       "embedding"
     ]
+  },
+  "user_illustrious": {
+    "name": "Illustrious基本",
+    "description": "ユーザー保存プロファイル",
+    "order": [
+      "subject",
+      "character",
+      "__",
+      "__",
+      "_________",
+      "______",
+      "______",
+      "expression",
+      "___",
+      "___",
+      "composition",
+      "____",
+      "____",
+      "____",
+      "outfit",
+      "appearance",
+      "_",
+      "_",
+      "background",
+      "lighting",
+      "style",
+      "lora",
+      "quality"
+    ],
+    "updatedAt": "2026-03-21T17:21:00+0900"
   }
 }

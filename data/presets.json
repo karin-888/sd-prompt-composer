@@ -1,1 +1,548 @@
-{}
+{
+  "ff8fda75b1ed": {
+    "name": "基本/女性",
+    "blocks": [
+      {
+        "type": "subject",
+        "label": "🎯 主体（人数など）",
+        "order": 0,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "solo",
+            "text": "solo",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ソロ"
+          }
+        ]
+      },
+      {
+        "type": "character",
+        "label": "性別、年齢",
+        "order": 1,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "woman",
+            "text": "woman",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "女性"
+          },
+          {
+            "label": "17yo",
+            "text": "17yo",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "17歳"
+          },
+          {
+            "label": "StS_Age_Slider_Illustrious_v1",
+            "text": "<lora:StS_Age_Slider_Illustrious_v1:0.3>",
+            "weight": 0.3,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "<ローラ:StSエイジスライダー・イラストリアス v1:0.3"
+          }
+        ]
+      },
+      {
+        "type": "__",
+        "label": "体型",
+        "order": 2,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "slender",
+            "text": "slender",
+            "weight": null,
+            "sourceType": "dict",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "すらりとした"
+          },
+          {
+            "label": "big_breasts",
+            "text": "big_breasts",
+            "weight": null,
+            "sourceType": "dict",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "大きい大大胸筋筋(D)"
+          }
+        ]
+      },
+      {
+        "type": "__",
+        "label": "視点",
+        "order": 3,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "looking_at_viewer",
+            "text": "looking_at_viewer",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "カメラ目線"
+          }
+        ]
+      },
+      {
+        "type": "_________",
+        "label": "準主体（職業など）",
+        "order": 4,
+        "enabled": true,
+        "tokens": []
+      },
+      {
+        "type": "______",
+        "label": "レーティング",
+        "order": 5,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "general",
+            "text": "general",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "全年齢タグ"
+          }
+        ]
+      },
+      {
+        "type": "______",
+        "label": "アクセサリー",
+        "order": 6,
+        "enabled": true,
+        "tokens": []
+      },
+      {
+        "type": "expression",
+        "label": "😊 表情",
+        "order": 7,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "smile",
+            "text": "smile",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "笑い,スマイル,笑顔,守りたい、この笑顔,笑,微笑み,微笑,微笑む"
+          }
+        ]
+      },
+      {
+        "type": "___",
+        "label": "雰囲気",
+        "order": 8,
+        "enabled": true,
+        "tokens": []
+      },
+      {
+        "type": "___",
+        "label": "ポーズ",
+        "order": 9,
+        "enabled": true,
+        "tokens": []
+      },
+      {
+        "type": "composition",
+        "label": "📐 構図",
+        "order": 10,
+        "enabled": true,
+        "tokens": []
+      },
+      {
+        "type": "____",
+        "label": "アングル",
+        "order": 11,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "upper_body",
+            "text": "upper_body",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "上半身"
+          }
+        ]
+      },
+      {
+        "type": "____",
+        "label": "効果",
+        "order": 12,
+        "enabled": true,
+        "tokens": []
+      },
+      {
+        "type": "____",
+        "label": "年代タグ",
+        "order": 13,
+        "enabled": true,
+        "tokens": []
+      },
+      {
+        "type": "outfit",
+        "label": "👗 衣装",
+        "order": 14,
+        "enabled": true,
+        "tokens": []
+      },
+      {
+        "type": "appearance",
+        "label": "目（目の色 → 目の特徴）",
+        "order": 15,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "red_eyes",
+            "text": "red_eyes",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "赤目,赤眼,赤い目,銀髪赤眼,黒髪赤眼"
+          }
+        ]
+      },
+      {
+        "type": "_",
+        "label": "髪（髪型 → 長さ → 髪色 → 前髪 → その他）",
+        "order": 16,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "bob_cut",
+            "text": "bob_cut",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "おかっぱ,ボブカット,ボブ,黒髪ボブ,黒髪ボブカット,茶髪ボブ,赤髪ボブ,ショートボブ,エアリーボブ,前下がりボブ,マッシュルームカット,ワンレンボブ,前上がりボブ,おかっぱ男子"
+          },
+          {
+            "label": "blonde_hair",
+            "text": "blonde_hair",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "金髪,金髪碧眼,金髪ロング,金髪ツインテール,ブロンド"
+          },
+          {
+            "label": "blunt_bangs",
+            "text": "blunt_bangs",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ぱっつん,パッツン"
+          }
+        ]
+      },
+      {
+        "type": "_",
+        "label": "肌",
+        "order": 17,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "shiny_skin",
+            "text": "shiny_skin",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "輝く肌"
+          }
+        ]
+      },
+      {
+        "type": "background",
+        "label": "場所",
+        "order": 18,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "simple_background",
+            "text": "(simple_background:1.2)",
+            "weight": 1.2,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "(シンプルな背景:1.2)"
+          },
+          {
+            "label": "white_background",
+            "text": "white_background",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "白背景"
+          }
+        ]
+      },
+      {
+        "type": "lighting",
+        "label": "💡 光源",
+        "order": 19,
+        "enabled": true,
+        "tokens": []
+      },
+      {
+        "type": "style",
+        "label": "🎨 画風・スコアタグ",
+        "order": 20,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "BREAK",
+            "text": "BREAK",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "score_9",
+            "text": "score_9",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "スコア 9"
+          },
+          {
+            "label": "score_8_up",
+            "text": "score_8_up",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "スコア 8アップ"
+          },
+          {
+            "label": "yoneyama_mai",
+            "text": "(yoneyama_mai:0.5)",
+            "weight": 0.5,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "米山舞"
+          },
+          {
+            "label": "WANKE",
+            "text": "(WANKE:0.4)",
+            "weight": 0.4,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ワンケ"
+          },
+          {
+            "label": "noyu_(noyu23386566)",
+            "text": "(noyu_(noyu23386566):0.5)",
+            "weight": 0.5,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "のゆ (noyu23386566)"
+          },
+          {
+            "label": "transparent-watercolor_IL_MIX",
+            "text": "<lora:transparent-watercolor_IL_MIX:0.8>",
+            "weight": 0.8,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "style-96",
+            "text": "<lora:style-96:0.8>",
+            "weight": 0.8,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": true,
+            "jp": null
+          },
+          {
+            "label": "ku_cha_Tsuru_Style",
+            "text": "<lora:ku_cha_Tsuru_Style:0.8>",
+            "weight": 0.8,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          }
+        ]
+      },
+      {
+        "type": "lora",
+        "label": "🔧 スタイルLoRA",
+        "order": 21,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "traditional media, transparent-watercolor, watercolor \\(medium\\),",
+            "text": "traditional media, transparent-watercolor, watercolor \\(medium\\),",
+            "weight": null,
+            "sourceType": "lora",
+            "isTrigger": true,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "ku_cha",
+            "text": "ku_cha",
+            "weight": null,
+            "sourceType": "lora",
+            "isTrigger": true,
+            "hidden": false,
+            "jp": null
+          }
+        ]
+      },
+      {
+        "type": "quality",
+        "label": "🏆 品質",
+        "order": 22,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "lazypos",
+            "text": "lazypos",
+            "weight": null,
+            "sourceType": "embedding",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "IllusP0s",
+            "text": "IllusP0s",
+            "weight": null,
+            "sourceType": "embedding",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          }
+        ]
+      }
+    ],
+    "negativeBlocks": [
+      {
+        "type": "negative",
+        "label": "🚫 Negative",
+        "order": 0,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "lazyneg",
+            "text": "lazyneg",
+            "weight": null,
+            "sourceType": "embedding",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "lazyhand",
+            "text": "lazyhand",
+            "weight": null,
+            "sourceType": "embedding",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "IllusN3g",
+            "text": "IllusN3g",
+            "weight": null,
+            "sourceType": "embedding",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "score_4",
+            "text": "score_4",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "スコア 4"
+          },
+          {
+            "label": "score_5",
+            "text": "score_5",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "score_6",
+            "text": "score_6",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "スコア 6"
+          },
+          {
+            "label": "lowres",
+            "text": "lowres",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ローレス"
+          },
+          {
+            "label": "worst_quality",
+            "text": "worst_quality",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "最悪の品質"
+          },
+          {
+            "label": "jpeg_artifacts",
+            "text": "jpeg_artifacts",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "JPEGアーティファクト"
+          }
+        ]
+      }
+    ],
+    "orderProfile": "user_illustrious",
+    "tags": [],
+    "memo": "",
+    "createdAt": "2026-03-20T19:57:04+0900",
+    "updatedAt": "2026-03-21T17:21:16+0900"
+  }
+}

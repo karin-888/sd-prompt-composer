@@ -198,7 +198,7 @@
 
 /* ===== 3-column scroll behavior =====
    Scroll only the composer content area, without breaking Gradio layout.
-   Toolbar lives inside .pc-composer-body so it stays below all blocks. */
+   Toolbar is above the block list; sticky so it stays visible while scrolling blocks. */
 #pc_composer_area {
     max-height: 78vh;
     overflow-y: auto;
@@ -221,11 +221,17 @@
     align-items: center;
     gap: 8px;
     padding: 10px 8px;
-    margin-top: 8px;
-    border-top: 1px solid var(--border-color-primary, #444);
+    margin-top: 0;
+    margin-bottom: 10px;
+    border-top: none;
+    border-bottom: 1px solid var(--border-color-primary, #444);
     background: var(--background-fill-secondary, #2a2a2a);
-    border-radius: 0 0 8px 8px;
+    border-radius: 8px 8px 0 0;
     flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .pc-composer-toolbar-actions .pc-toolbar-btn {

@@ -206,18 +206,19 @@ def on_ui_tabs():
             with gr.Column(scale=2, min_width=400, elem_id="pc_composer_col"):
                 gr.HTML('<div class="pc-section-header">🧩 Prompt Composer</div>')
                 
-                # Composer blocks (JS) + action toolbar inside same scroll area (#pc_composer_area)
-                # so the bar stays at the bottom of the list and does not overlap blocks in some Gradio layouts.
+                # Toolbar above blocks (same #pc_composer_area scroll) so actions stay clear of the
+                # WebUI footer / version line that can overlap the lower part of long block lists.
                 composer_area = gr.HTML(
                     elem_id="pc_composer_area",
                     value=(
                         '<div class="pc-composer-body">'
-                        '<div id="pc_blocks_container" class="pc-blocks-container"></div>'
                         '<div class="pc-composer-toolbar-actions" role="toolbar" aria-label="Prompt Composer actions">'
                         '<button type="button" id="pc_add_block" class="pc-toolbar-btn">➕ ブロック追加</button>'
                         '<button type="button" id="pc_sort_blocks" class="pc-toolbar-btn">📐 順序整形</button>'
                         '<button type="button" id="pc_clear_blocks" class="pc-toolbar-btn">🗑️ 全クリア</button>'
-                        "</div></div>"
+                        '</div>'
+                        '<div id="pc_blocks_container" class="pc-blocks-container"></div>'
+                        "</div>"
                     ),
                 )
                 

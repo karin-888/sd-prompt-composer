@@ -959,6 +959,11 @@
     margin-bottom: 6px;
 }
 
+/* Larger hit target when a column has no tags — drag/drop attaches to the list */
+.pc-token-list:empty {
+    min-height: 32px;
+}
+
 .pc-token {
     display: inline-flex;
     align-items: center;

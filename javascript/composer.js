@@ -38,6 +38,7 @@
     let draggedBlock = null;
     let draggedToken = null; // { tokenIds: string[], fromBlockId: string }
     let selectedTokenIds = new Set(); // multi-select support
+    let blockDragScrollListenerBound = false;
     // NOTE: token selection is used for keyboard weight adjust (↑↓).
 
     // ===== Initialization =====
@@ -328,6 +329,13 @@
 
     // ===== Event Listeners =====
     function setupEventListeners() {
+        // 欄ドラッグ中、ブラウザ既定の自動スクロールは上方向が弱いことがあるため
+        // #pc_composer_area を明示的にスクロールする（下方向だけ効く問題の対策）。
+        if (!blockDragScrollListenerBound) {
+            blockDragScrollListenerBound = true;
+            document.addEventListener('dragover', onDocumentDragOverBlockDragAutoScroll, { passive: true });
+        }
+
         // Sort blocks button
         const sortBtn = document.getElementById('pc_sort_blocks');
         if (sortBtn) {
@@ -837,12 +845,19 @@
             });
         });
 
-        // Token drag-and-drop reorder (within the same block)
+        // Token drag-and-drop: reorder + move between blocks (same polarity).
+        // Listeners must be on .pc-token-list as well — empty lists have no .pc-token
+        // children, so drops on an empty column (or on flex gap / list padding) would
+        // otherwise never hit a token and the move would silently fail.
         container.querySelectorAll('.pc-token[draggable="true"]').forEach(el => {
             el.addEventListener('dragstart', onTokenDragStart);
             el.addEventListener('dragover', onTokenDragOver);
             el.addEventListener('drop', onTokenDrop);
             el.addEventListener('dragend', onTokenDragEnd);
+        });
+        container.querySelectorAll('.pc-token-list').forEach(el => {
+            el.addEventListener('dragover', onTokenDragOver);
+            el.addEventListener('drop', onTokenDrop);
         });
 
         // Token input fields
@@ -1576,6 +1591,45 @@
     }
 
     // ===== Drag and Drop =====
+    function getComposerScrollContainer() {
+        const byId = document.getElementById('pc_composer_area');
+        if (byId) {
+            const oy = window.getComputedStyle(byId).overflowY;
+            if (oy === 'auto' || oy === 'scroll' || oy === 'overlay') return byId;
+        }
+        const host = document.getElementById('pc_blocks_container');
+        let el = host && host.parentElement;
+        while (el && el !== document.documentElement) {
+            const oy = window.getComputedStyle(el).overflowY;
+            if ((oy === 'auto' || oy === 'scroll' || oy === 'overlay') && el.scrollHeight > el.clientHeight + 1) {
+                return el;
+            }
+            el = el.parentElement;
+        }
+        return byId || null;
+    }
+
+    function onDocumentDragOverBlockDragAutoScroll(e) {
+        if (!draggedBlock || draggedToken) return;
+        const scroller = getComposerScrollContainer();
+        if (!scroller) return;
+        const maxScroll = scroller.scrollHeight - scroller.clientHeight;
+        if (maxScroll <= 0) return;
+        const rect = scroller.getBoundingClientRect();
+        const zone = 64;
+        const stepBase = Math.round(scroller.clientHeight * 0.07);
+        const step = Math.max(10, Math.min(32, stepBase));
+        if (e.clientY < rect.top + zone) {
+            const dist = rect.top + zone - e.clientY;
+            const factor = Math.min(2.2, 1 + dist / zone);
+            scroller.scrollTop = Math.max(0, scroller.scrollTop - Math.round(step * factor));
+        } else if (e.clientY > rect.bottom - zone) {
+            const dist = e.clientY - (rect.bottom - zone);
+            const factor = Math.min(2.2, 1 + dist / zone);
+            scroller.scrollTop = Math.min(maxScroll, scroller.scrollTop + Math.round(step * factor));
+        }
+    }
+
     function onDragStart(e) {
         const header = e.target.closest('.pc-block-header-draggable');
         if (!header) return;

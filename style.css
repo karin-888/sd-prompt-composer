@@ -845,9 +845,16 @@
     align-items: center;
     gap: 6px;
     padding: 6px 10px;
-    cursor: move;
     user-select: none;
     background: var(--background-fill-primary, #1f1f1f);
+}
+
+.pc-block-header-draggable {
+    cursor: grab;
+}
+
+.pc-block-header-draggable:active {
+    cursor: grabbing;
 }
 
 .pc-block-drag-handle {

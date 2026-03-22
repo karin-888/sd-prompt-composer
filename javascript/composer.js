@@ -220,8 +220,8 @@
                  data-block-id="${block.id}" 
                  data-block-type="${block.type}"
                  data-is-negative="${isNegative}"
-                 draggable="true">
-                <div class="pc-block-header">
+                 draggable="false">
+                <div class="pc-block-header pc-block-header-draggable" draggable="true" title="このヘッダーをドラッグして欄の順番を入れ替え">
                     <span class="pc-block-drag-handle">⠿</span>
                     <button class="pc-block-toggle" data-block-id="${block.id}">${toggleIcon}</button>
                     <span class="pc-block-label">${block.label}</span>
@@ -884,11 +884,13 @@
 
         // Special token buttons (BREAK / AND) were moved to Tag Dictionary quickbar.
 
-        // Drag and drop
-        container.querySelectorAll('.pc-block[draggable="true"]').forEach(el => {
+        // Block reorder: drag from header only (body stays free for token drag)
+        container.querySelectorAll('.pc-block-header-draggable').forEach(el => {
             el.addEventListener('dragstart', onDragStart);
-            el.addEventListener('dragover', onDragOver);
             el.addEventListener('dragend', onDragEnd);
+        });
+        container.querySelectorAll('.pc-block').forEach(el => {
+            el.addEventListener('dragover', onDragOver);
             el.addEventListener('drop', onDrop);
         });
     }
@@ -947,12 +949,17 @@
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
         const fromId = draggedToken.fromBlockId;
+        const fromNeg = isNegativeBlockId(fromId);
+
         if (tokenEl) {
-            if (tokenEl.dataset.blockId !== fromId) return; // 同一ブロック内のみ並べ替え
+            const toId = tokenEl.dataset.blockId;
+            if (!toId || isNegativeBlockId(toId) !== fromNeg) return;
             tokenEl.classList.add('pc-token-drop-target');
         } else if (listEl) {
             const blockEl = listEl.closest('.pc-block');
-            if (!blockEl || blockEl.dataset.blockId !== fromId) return;
+            if (!blockEl) return;
+            const toId = blockEl.dataset.blockId;
+            if (!toId || isNegativeBlockId(toId) !== fromNeg) return;
             listEl.classList.add('pc-token-drop-target');
         }
     }
@@ -964,30 +971,39 @@
         e.stopPropagation();
         e.preventDefault();
 
-        // 決定するブロックIDと挿入位置
         let blockId = null;
-        let toIdx = 0;
+        let rawInsert = 0;
 
         if (tokenEl) {
             blockId = tokenEl.dataset.blockId;
-            toIdx = parseInt(tokenEl.dataset.tokenIdx);
-            if (Number.isNaN(toIdx)) toIdx = 0;
+            rawInsert = parseInt(tokenEl.dataset.tokenIdx, 10);
+            if (Number.isNaN(rawInsert)) rawInsert = 0;
         } else if (listEl) {
             const blockEl = listEl.closest('.pc-block');
             if (!blockEl) return;
             blockId = blockEl.dataset.blockId;
-            toIdx = listEl.children.length; // 末尾
+            rawInsert = listEl.children.length;
         }
 
-        if (!blockId || blockId !== draggedToken.fromBlockId) return; // ブロックをまたいだドラッグは無効
+        if (!blockId) return;
+
+        const fromNeg = isNegativeBlockId(draggedToken.fromBlockId);
+        const toNeg = isNegativeBlockId(blockId);
+        if (fromNeg !== toNeg) return;
 
         const tokenIds = draggedToken.tokenIds || [];
         if (!tokenIds.length) return;
         const allBlocks = [...blocks, ...negativeBlocks];
 
-        // Collect and remove tokens only from the source block
         const sourceBlock = allBlocks.find(b => b.id === draggedToken.fromBlockId);
-        if (!sourceBlock) return;
+        const targetBlock = allBlocks.find(b => b.id === blockId);
+        if (!sourceBlock || !targetBlock) return;
+
+        const movingIndices = [];
+        sourceBlock.tokens.forEach((t, i) => {
+            if (tokenIds.includes(t.id)) movingIndices.push(i);
+        });
+
         const movedTokens = [];
         const remaining = [];
         sourceBlock.tokens.forEach(t => {
@@ -999,11 +1015,12 @@
         });
         sourceBlock.tokens = remaining;
 
-        const targetBlock = allBlocks.find(b => b.id === blockId);
-        if (!targetBlock) return;
-
-        // Compute insertion index after removals
-        let insertIdx = toIdx;
+        let insertIdx = rawInsert;
+        if (sourceBlock === targetBlock) {
+            movingIndices.forEach(i => {
+                if (i < insertIdx) insertIdx--;
+            });
+        }
         insertIdx = Math.max(0, Math.min(insertIdx, targetBlock.tokens.length));
         targetBlock.tokens.splice(insertIdx, 0, ...movedTokens);
 
@@ -1509,39 +1526,60 @@
             return;
         }
 
-        addToken(targetBlock.id, label, text, {
-            weight: asset.defaultWeight,
-            sourceType: asset.type,
-            isTrigger: false,
-            previewUrl: asset.previewUrl || null
-        });
-
-        // Embeddings: insert only the token (filename). Do not auto-add trigger words.
+        // Embeddings: single token only (no trigger words)
         if (asset.type === 'embedding') {
+            addToken(targetBlock.id, label, text, {
+                weight: asset.defaultWeight,
+                sourceType: asset.type,
+                isTrigger: false,
+                previewUrl: asset.previewUrl || null
+            });
             return;
         }
 
-        // LoRA: also add trigger words to appropriate block (optional convenience)
+        // LoRA: insert LoRA then trigger words immediately after it in the SAME block
+        const loraTok = {
+            id: generateId(),
+            label: label,
+            text: text || label,
+            weight: (typeof asset.defaultWeight === 'number' && !Number.isNaN(asset.defaultWeight)) ? asset.defaultWeight : null,
+            sourceType: 'lora',
+            isTrigger: false,
+            hidden: false,
+            previewUrl: asset.previewUrl || null,
+            jp: null
+        };
+        const insertAt = targetBlock.tokens.length;
+        targetBlock.tokens.splice(insertAt, 0, loraTok);
+
+        let at = insertAt + 1;
         if (asset.triggerWords && asset.triggerWords.length > 0) {
-            // Determine where trigger words go
-            let triggerBlock = blocks.find(b => b.type === 'lora')
-                || blocks.find(b => b.type === 'embedding')
-                || targetBlock;
-            
             asset.triggerWords.forEach(tw => {
-                if (!triggerBlock.tokens.some(t => t.text === tw)) {
-                    addToken(triggerBlock.id, tw, tw, {
-                        sourceType: asset.type,
-                        isTrigger: true
-                    });
-                }
+                if (!tw || targetBlock.tokens.some(t => t.text === tw)) return;
+                const t = {
+                    id: generateId(),
+                    label: tw,
+                    text: tw,
+                    weight: null,
+                    sourceType: asset.type,
+                    isTrigger: true,
+                    hidden: false,
+                    previewUrl: null,
+                    jp: null
+                };
+                targetBlock.tokens.splice(at, 0, t);
+                at++;
             });
         }
+
+        renderBlocks();
     }
 
     // ===== Drag and Drop =====
     function onDragStart(e) {
-        draggedBlock = e.target.closest('.pc-block');
+        const header = e.target.closest('.pc-block-header-draggable');
+        if (!header) return;
+        draggedBlock = header.closest('.pc-block');
         if (draggedBlock) {
             draggedBlock.classList.add('pc-block-dragging');
             e.dataTransfer.effectAllowed = 'move';
@@ -1898,6 +1936,10 @@
     function findBlock(blockId) {
         return blocks.find(b => b.id === blockId) 
             || negativeBlocks.find(b => b.id === blockId);
+    }
+
+    function isNegativeBlockId(blockId) {
+        return negativeBlocks.some(b => b.id === blockId);
     }
 
     function generateId() {

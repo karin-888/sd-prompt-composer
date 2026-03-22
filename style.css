@@ -140,6 +140,20 @@
     padding-left: 2px;
 }
 
+.pc-tokenizer-break-bar {
+    flex-basis: 100%;
+    margin: 8px 0 4px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.76em;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-align: center;
+    color: #ffe0b2;
+    background: rgba(255, 152, 0, 0.2);
+    border: 1px dashed rgba(255, 183, 77, 0.65);
+}
+
 .pc-token-chip {
     border-radius: 10px;
     padding: 2px 6px;
@@ -291,24 +305,21 @@
     flex-shrink: 0 !important;
 }
 
-/* Tab panels (Gradio: .tabitem and/or siblings of .tab-nav) */
+/* Tab panels: do not set display — Gradio uses display:none / .hidden / inline style;
+   display:flex !important here was overriding that so both tabs' content showed. */
 #pc_dict_tabs > div:not(.tab-nav),
 #pc_dict_tabs .tabitem {
     flex: 1 1 auto !important;
     min-height: 0 !important;
     overflow: hidden !important;
-    display: flex !important;
-    flex-direction: column !important;
 }
 
-/* Tag / Wildcards HTML blocks: flex chain into .pc-tags-container / .wc */
+/* Flex sizing hints only; visibility is entirely Gradio's */
 #pc_main_area #pc_tag_list,
 #pc_main_area #pc_wc_list {
     flex: 1 1 auto !important;
     min-height: 0 !important;
     overflow: hidden !important;
-    display: flex !important;
-    flex-direction: column !important;
 }
 
 #pc_main_area #pc_tag_list > .wrap,
@@ -316,8 +327,6 @@
     flex: 1 1 auto !important;
     min-height: 0 !important;
     height: auto !important;
-    display: flex !important;
-    flex-direction: column !important;
     overflow: hidden !important;
 }
 

@@ -76,6 +76,35 @@
         view.innerHTML = `<div class="pc-tokenizer-dual">${posHtml}${negHtml}</div>`;
     }
 
+    function isBreakToken(raw) {
+        let s = String(normalizeDisplayToken(raw)).toLowerCase().replace(/<\/w>/g, '').replace(/<w>/g, '').trim();
+        s = s.replace(/^[,._]+|[,._]+$/g, '');
+        return s === 'break';
+    }
+
+    /** Split tokenizer output into segments separated by BREAK; each segment keeps token strings for display. */
+    function splitByBreak(rawTokens) {
+        const segments = [];
+        let buf = [];
+        const arr = Array.isArray(rawTokens) ? rawTokens : [];
+        for (let i = 0; i < arr.length; i++) {
+            const raw = arr[i];
+            if (isBreakToken(raw)) {
+                segments.push(buf);
+                buf = [];
+            } else {
+                buf.push(raw);
+            }
+        }
+        segments.push(buf);
+        return segments;
+    }
+
+    /** Per-segment 75-boundary chunk count (for summary). */
+    function chunkStepsForSegment(len) {
+        return len <= 0 ? 0 : Math.ceil(len / 75);
+    }
+
     function renderOne(title, scope, text) {
         const tokens = tokenizeApprox(text);
         const scopedKey = normalizeKey(scope, text);
@@ -91,40 +120,61 @@
             `;
         }
 
-        const total = tokens.length;
-        const chunks = Math.ceil(total / 75);
+        const displayTokensRaw = (exact && Array.isArray(exact.tokens) && exact.tokens.length) ? exact.tokens : tokens;
+        const segments = splitByBreak(displayTokensRaw);
+        const breakCount = Math.max(0, segments.length - 1);
+        const total = displayTokensRaw.filter(t => !isBreakToken(t)).length;
+        const chunkTotal = segments.reduce((sum, seg) => sum + chunkStepsForSegment(seg.length), 0);
         const exactText = exact ? ` / exact: ${exact.token_count} (max ${exact.max_length})` : ' / exact: …';
 
         let html = `<div class="pc-tokenizer-pane">`;
         html += `<div class="pc-tokenizer-summary"><strong>${escapeHtml(title)}</strong> — ` +
-            `Approx: ${total} / chunks: ${chunks} (75/chunk)${exactText}` +
+            `Approx: ${total} / BREAK区切り: ${segments.length}セグメント${breakCount ? ` (${breakCount} BREAK)` : ''} / 75換算chunks: ${chunkTotal}${exactText}` +
             `</div>`;
 
-        // warning based on exact token count if available
-        if (exact && exact.token_count > 75) {
+        // Warnings: whole-prompt (legacy) + per-segment when exact available
+        if (exact && exact.token_count > 75 && breakCount === 0) {
             const over = exact.token_count - 75;
             const exactChunks = Math.ceil(exact.token_count / 75);
             html += `<div class="pc-tokenizer-warning"><strong>⚠️ 75トークン超過</strong>: exact ${exact.token_count} tokens（+${over}） / chunks: ${exactChunks}</div>`;
-        } else if (exact && exact.token_count === 75) {
+        } else if (exact && exact.token_count === 75 && breakCount === 0) {
             html += `<div class="pc-tokenizer-warning"><strong>⚠️ 上限</strong>: exact 75 tokens に到達しています</div>`;
+        }
+        if (exact && Array.isArray(exact.tokens) && exact.tokens.length) {
+            const lens = splitByBreak(exact.tokens).map(s => s.length);
+            lens.forEach((L, si) => {
+                if (L > 75) {
+                    html += `<div class="pc-tokenizer-warning"><strong>⚠️ セグメント${si + 1}が75超</strong>: exact ${L} tokens（BREAKで区切るか短くしてください）</div>`;
+                }
+            });
         }
 
         html += '<div class="pc-tokenizer-chips">';
 
-        const displayTokensRaw = (exact && Array.isArray(exact.tokens) && exact.tokens.length) ? exact.tokens : tokens;
-        const displayTokens = displayTokensRaw.map(t => normalizeDisplayToken(t));
-        displayTokens.forEach((tok, idx) => {
-            const chunkIdx = Math.floor(idx / 75);
-            if (idx % 75 === 0) {
-                html += `<div class="pc-tokenizer-chunk-label">Chunk ${chunkIdx + 1}</div>`;
+        let segmentIdx = 0;
+        segments.forEach((seg, si) => {
+            if (!seg.length) return;
+            segmentIdx++;
+            const chunkLbl = segmentIdx === 1
+                ? `Chunk ${segmentIdx}`
+                : `Chunk ${segmentIdx}（直前の BREAK 以降・トークン再カウント）`;
+            html += `<div class="pc-tokenizer-chunk-label">${escapeHtml(chunkLbl)}</div>`;
+            seg.forEach((rawTok, idx) => {
+                const tok = normalizeDisplayToken(rawTok);
+                const posInSeg = idx % 75;
+                const isLimit = posInSeg === 74;
+                if (isLimit) {
+                    html += `<div class="pc-tokenizer-limit-marker">75トークン（BREAK目安） ― セグメント内 ${idx + 1}番目</div>`;
+                }
+                const cls = `pc-token-chip pc-token-chip-${si % 4}` + (isLimit ? ' pc-token-chip-limit' : '');
+                const chipTitle = isLimit
+                    ? `セグメント${segmentIdx} 内 #${idx + 1}（75の境界）`
+                    : `セグメント${segmentIdx} 内 #${idx + 1}`;
+                html += `<span class="${cls}" title="${escapeHtml(chipTitle)}">${escapeHtml(tok)}</span>`;
+            });
+            if (si < segments.length - 1) {
+                html += `<div class="pc-tokenizer-break-bar" title="BREAK（次のChunkはここから）">BREAK</div>`;
             }
-            const isLimit = idx === 74; // 75th (1-indexed)
-            if (isLimit) {
-                html += `<div class="pc-tokenizer-limit-marker">75トークン（BREAK目安）</div>`;
-            }
-            const cls = `pc-token-chip pc-token-chip-${chunkIdx % 4}` + (isLimit ? ' pc-token-chip-limit' : '');
-            const title = isLimit ? `#${idx + 1} (75 token / BREAK目安)` : `#${idx + 1}`;
-            html += `<span class="${cls}" title="${escapeHtml(title)}">${escapeHtml(tok)}</span>`;
         });
 
         html += '</div></div>';

@@ -210,16 +210,16 @@
     scrollbar-width: thin;
 }
 
-/* ===== 3-column layout: equal row height + per-column scroll =====
-   One shared cap so left / center / right bottoms align. Each column is a flex
-   column; only the main panels scroll (not mixed 40vh / 65vh / 72vh). */
+/* ===== 3-column layout: per-column scroll, no forced equal height =====
+   stretch was making short columns grow with empty white below content; use
+   flex-start so left/center don't mirror the right column's height. */
 #pc_main_area {
     /* Shared cap: scroll inside panels instead of stretching the whole page */
     --pc-main-row-height: min(72vh, calc(100dvh - 16rem));
     --pc-panel-max: min(68vh, calc(100dvh - 18rem));
     display: flex !important;
     flex-direction: row !important;
-    align-items: stretch !important;
+    align-items: flex-start !important;
     max-height: var(--pc-main-row-height);
     min-height: 0 !important;
     overflow-x: hidden !important;
@@ -231,12 +231,15 @@
     display: flex !important;
     flex-direction: column !important;
     min-height: 0 !important;
-    align-self: stretch !important;
+    align-self: flex-start !important;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
-/* Left: gallery fills space below filters; cards scroll inside */
+/* Left: gallery height from content + max-height scroll (do not flex-grow to fill stretch gap) */
 #pc_asset_gallery {
-    flex: 1 1 auto !important;
+    flex: 0 1 auto !important;
     min-height: 0 !important;
     overflow: hidden !important;
     display: flex !important;
@@ -266,7 +269,7 @@
 }
 
 #pc_composer_area {
-    flex: 1 1 auto !important;
+    flex: 0 1 auto !important;
     min-height: 0 !important;
     max-height: var(--pc-panel-max, min(68vh, calc(100dvh - 18rem))) !important;
     overflow-y: auto !important;
@@ -294,11 +297,26 @@
 }
 
 #pc_dict_tabs {
-    flex: 1 1 auto !important;
+    flex: 0 1 auto !important;
     min-height: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     overflow: hidden !important;
+}
+
+/* 「もっと読み込む」行を左カラム内で右寄せ */
+#pc_asset_browser_col .gradio-row:has(#pc_asset_load_more),
+#pc_asset_browser_col .block:has(#pc_asset_load_more) {
+    display: flex !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
+    flex-wrap: wrap !important;
+}
+
+#pc_asset_browser_col #pc_asset_load_more {
+    margin-left: auto !important;
+    width: auto !important;
+    max-width: 100%;
 }
 
 #pc_dict_tabs > .tab-nav {

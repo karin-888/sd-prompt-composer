@@ -210,12 +210,13 @@
     scrollbar-width: thin;
 }
 
-/* ===== 3-column layout: per-column scroll, no forced equal height =====
-   stretch was making short columns grow with empty white below content; use
-   flex-start so left/center don't mirror the right column's height. */
+/* ===== 3-column layout =====
+   Gradio は Row の直下に列が来ないことがあり、列に height:100% が効かないと
+   flex:1 の子（ギャラリー／Composer）が高さ0に潰れる。行は max-height のみ、
+   各パネルは max-height + 内部スクロールで制御する。 */
 #pc_main_area {
-    /* Shared cap: scroll inside panels instead of stretching the whole page */
-    --pc-main-row-height: min(72vh, calc(100dvh - 16rem));
+    /* 手動リサイズで Composer を伸ばすとき、行側で先にクリップされないよう余裕を持たせる */
+    --pc-main-row-height: min(96vh, calc(100dvh - 6rem));
     --pc-panel-max: min(68vh, calc(100dvh - 18rem));
     display: flex !important;
     flex-direction: row !important;
@@ -237,7 +238,7 @@
     box-sizing: border-box;
 }
 
-/* Left: gallery height from content + max-height scroll (do not flex-grow to fill stretch gap) */
+/* Left: gallery scrolls inside max-height (do not flex-grow into broken % height chain) */
 #pc_asset_gallery {
     flex: 0 1 auto !important;
     min-height: 0 !important;
@@ -263,7 +264,7 @@
     overflow-x: hidden !important;
 }
 
-/* Center: composer panel grows with row; scroll inside frame */
+/* Center: composer scrolls inside max-height */
 #pc_composer_col {
     min-height: 0 !important;
 }
@@ -271,7 +272,9 @@
 #pc_composer_area {
     flex: 0 1 auto !important;
     min-height: 0 !important;
-    max-height: var(--pc-panel-max, min(68vh, calc(100dvh - 18rem))) !important;
+    /* 下方向ドラッグで高さ変更（右下の斜線ハンドル）。見た目の枠はそのまま。 */
+    resize: vertical;
+    max-height: min(92vh, calc(100dvh - 4rem)) !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     scrollbar-width: thin;
@@ -349,7 +352,6 @@
 }
 
 #pc_main_area .pc-tags-container {
-    /* Was max-height:none — that cancelled .pc-tags-container { 40vh } and grew the page */
     max-height: var(--pc-panel-max, min(68vh, calc(100dvh - 18rem))) !important;
     flex: 1 1 auto !important;
     min-height: 0 !important;

@@ -57,6 +57,7 @@
     "name": "Illustrious基本",
     "description": "ユーザー保存プロファイル",
     "order": [
+      "lora",
       "subject",
       "character",
       "__",
@@ -78,9 +79,8 @@
       "background",
       "lighting",
       "style",
-      "lora",
       "quality"
     ],
-    "updatedAt": "2026-03-21T17:21:00+0900"
+    "updatedAt": "2026-03-22T14:20:26+0900"
   }
 }

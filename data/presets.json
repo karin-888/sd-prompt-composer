@@ -3,9 +3,152 @@
     "name": "基本/女性",
     "blocks": [
       {
+        "type": "lora",
+        "label": "🔧 スタイルLoRA",
+        "order": 0,
+        "enabled": true,
+        "tokens": [
+          {
+            "label": "p1n04rtstyl3,pinoartstyle,pino art style,",
+            "text": "p1n04rtstyl3,pinoartstyle,pino art style,",
+            "weight": null,
+            "sourceType": "lora",
+            "isTrigger": true,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "Pino_Art_Style_Pony_Illustious_by_UOC",
+            "text": "<lora:Pino_Art_Style_Pony_Illustious_by_UOC:0.2>",
+            "weight": 0.2,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "748cmSDXL",
+            "text": "<lora:748cmSDXL:0.2>",
+            "weight": 0.2,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "748cmstyle",
+            "text": "748cmstyle",
+            "weight": null,
+            "sourceType": "lora",
+            "isTrigger": true,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "Hito_komoru_illustriousXL",
+            "text": "<lora:Hito_komoru_illustriousXL:0.4>",
+            "weight": 0.4,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "Sinoalice_style",
+            "text": "<lora:Sinoalice_style:0.4>",
+            "weight": 0.4,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "OblivionOeuvre",
+            "text": "<lora:OblivionOeuvre:0.3>",
+            "weight": 0.3,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "detailed_hand_focus_style_illustriousXL_v1.1",
+            "text": "<lora:detailed_hand_focus_style_illustriousXL_v1.1:0.4>",
+            "weight": 0.4,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "auR_1nTh9,",
+            "text": "auR_1nTh9,",
+            "weight": null,
+            "sourceType": "lora",
+            "isTrigger": true,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "AURENTH_–_✶19",
+            "text": "<lora:AURENTH_–_✶19:0.3>",
+            "weight": 0.3,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "Cut3_style",
+            "text": "Cut3_style",
+            "weight": null,
+            "sourceType": "lora",
+            "isTrigger": true,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "Cut3_style-000010",
+            "text": "<lora:Cut3_style-000010:0.3>",
+            "weight": 0.3,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "SolchaStyle-000009",
+            "text": "<lora:SolchaStyle-000009:0.1>",
+            "weight": 0.1,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "nori-IL-Mix",
+            "text": "<lora:nori-IL-Mix:0.2>",
+            "weight": 0.2,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "nori",
+            "text": "nori",
+            "weight": null,
+            "sourceType": "lora",
+            "isTrigger": true,
+            "hidden": false,
+            "jp": null
+          }
+        ]
+      },
+      {
         "type": "subject",
         "label": "🎯 主体（人数など）",
-        "order": 0,
+        "order": 1,
         "enabled": true,
         "tokens": [
           {
@@ -22,7 +165,7 @@
       {
         "type": "character",
         "label": "性別、年齢",
-        "order": 1,
+        "order": 2,
         "enabled": true,
         "tokens": [
           {
@@ -57,7 +200,7 @@
       {
         "type": "__",
         "label": "体型",
-        "order": 2,
+        "order": 3,
         "enabled": true,
         "tokens": [
           {
@@ -83,7 +226,7 @@
       {
         "type": "__",
         "label": "視点",
-        "order": 3,
+        "order": 4,
         "enabled": true,
         "tokens": [
           {
@@ -100,14 +243,14 @@
       {
         "type": "_________",
         "label": "準主体（職業など）",
-        "order": 4,
+        "order": 5,
         "enabled": true,
         "tokens": []
       },
       {
         "type": "______",
         "label": "レーティング",
-        "order": 5,
+        "order": 6,
         "enabled": true,
         "tokens": [
           {
@@ -124,14 +267,14 @@
       {
         "type": "______",
         "label": "アクセサリー",
-        "order": 6,
+        "order": 7,
         "enabled": true,
         "tokens": []
       },
       {
         "type": "expression",
         "label": "😊 表情",
-        "order": 7,
+        "order": 8,
         "enabled": true,
         "tokens": [
           {
@@ -148,28 +291,28 @@
       {
         "type": "___",
         "label": "雰囲気",
-        "order": 8,
+        "order": 9,
         "enabled": true,
         "tokens": []
       },
       {
         "type": "___",
         "label": "ポーズ",
-        "order": 9,
+        "order": 10,
         "enabled": true,
         "tokens": []
       },
       {
         "type": "composition",
         "label": "📐 構図",
-        "order": 10,
+        "order": 11,
         "enabled": true,
         "tokens": []
       },
       {
         "type": "____",
         "label": "アングル",
-        "order": 11,
+        "order": 12,
         "enabled": true,
         "tokens": [
           {
@@ -186,28 +329,28 @@
       {
         "type": "____",
         "label": "効果",
-        "order": 12,
+        "order": 13,
         "enabled": true,
         "tokens": []
       },
       {
         "type": "____",
         "label": "年代タグ",
-        "order": 13,
+        "order": 14,
         "enabled": true,
         "tokens": []
       },
       {
         "type": "outfit",
         "label": "👗 衣装",
-        "order": 14,
+        "order": 15,
         "enabled": true,
         "tokens": []
       },
       {
         "type": "appearance",
         "label": "目（目の色 → 目の特徴）",
-        "order": 15,
+        "order": 16,
         "enabled": true,
         "tokens": [
           {
@@ -224,7 +367,7 @@
       {
         "type": "_",
         "label": "髪（髪型 → 長さ → 髪色 → 前髪 → その他）",
-        "order": 16,
+        "order": 17,
         "enabled": true,
         "tokens": [
           {
@@ -259,7 +402,7 @@
       {
         "type": "_",
         "label": "肌",
-        "order": 17,
+        "order": 18,
         "enabled": true,
         "tokens": [
           {
@@ -276,7 +419,7 @@
       {
         "type": "background",
         "label": "場所",
-        "order": 18,
+        "order": 19,
         "enabled": true,
         "tokens": [
           {
@@ -302,14 +445,14 @@
       {
         "type": "lighting",
         "label": "💡 光源",
-        "order": 19,
+        "order": 20,
         "enabled": true,
         "tokens": []
       },
       {
         "type": "style",
         "label": "🎨 画風・スコアタグ",
-        "order": 20,
+        "order": 21,
         "enabled": true,
         "tokens": [
           {
@@ -356,68 +499,6 @@
             "isTrigger": false,
             "hidden": false,
             "jp": "ワンケ"
-          },
-          {
-            "label": "noyu_(noyu23386566)",
-            "text": "(noyu_(noyu23386566):0.5)",
-            "weight": 0.5,
-            "sourceType": "manual",
-            "isTrigger": false,
-            "hidden": false,
-            "jp": "のゆ (noyu23386566)"
-          },
-          {
-            "label": "transparent-watercolor_IL_MIX",
-            "text": "<lora:transparent-watercolor_IL_MIX:0.8>",
-            "weight": 0.8,
-            "sourceType": "lora",
-            "isTrigger": false,
-            "hidden": false,
-            "jp": null
-          },
-          {
-            "label": "style-96",
-            "text": "<lora:style-96:0.8>",
-            "weight": 0.8,
-            "sourceType": "lora",
-            "isTrigger": false,
-            "hidden": true,
-            "jp": null
-          },
-          {
-            "label": "ku_cha_Tsuru_Style",
-            "text": "<lora:ku_cha_Tsuru_Style:0.8>",
-            "weight": 0.8,
-            "sourceType": "lora",
-            "isTrigger": false,
-            "hidden": false,
-            "jp": null
-          }
-        ]
-      },
-      {
-        "type": "lora",
-        "label": "🔧 スタイルLoRA",
-        "order": 21,
-        "enabled": true,
-        "tokens": [
-          {
-            "label": "traditional media, transparent-watercolor, watercolor \\(medium\\),",
-            "text": "traditional media, transparent-watercolor, watercolor \\(medium\\),",
-            "weight": null,
-            "sourceType": "lora",
-            "isTrigger": true,
-            "hidden": false,
-            "jp": null
-          },
-          {
-            "label": "ku_cha",
-            "text": "ku_cha",
-            "weight": null,
-            "sourceType": "lora",
-            "isTrigger": true,
-            "hidden": false,
-            "jp": null
           }
         ]
       },
@@ -434,7 +515,7 @@
             "sourceType": "embedding",
             "isTrigger": false,
             "hidden": false,
-            "jp": null
+            "jp": "ラズィポス"
           },
           {
             "label": "IllusP0s",
@@ -442,6 +523,357 @@
             "weight": null,
             "sourceType": "embedding",
             "isTrigger": false,
+            "hidden": false,
+            "jp": "イルP0s"
+          },
+          {
+            "label": "masterpiece",
+            "text": "masterpiece",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "傑作（＝最高品質）"
+          },
+          {
+            "label": "ultra_high_quality",
+            "text": "ultra_high_quality",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "超高品質"
+          },
+          {
+            "label": "glossy_eyes",
+            "text": "glossy_eyes",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "艶やかな瞳"
+          },
+          {
+            "label": "8k",
+            "text": "8k",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "8K"
+          },
+          {
+            "label": "fantasy_illustration",
+            "text": "fantasy_illustration",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ファンタジーイラスト"
+          },
+          {
+            "label": "beautiful_face",
+            "text": "beautiful_face",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "美しい"
+          },
+          {
+            "label": "expressive_eyes",
+            "text": "expressive_eyes",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "目つき"
+          },
+          {
+            "label": "catchlight",
+            "text": "catchlight",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "キャッチライト"
+          },
+          {
+            "label": "delicate_linework",
+            "text": "delicate_linework",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "繊細な線細工"
+          },
+          {
+            "label": "fine_thin_lines",
+            "text": "fine_thin_lines",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "細い線"
+          },
+          {
+            "label": "clear_lineart",
+            "text": "clear_lineart",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "鮮明な線画"
+          },
+          {
+            "label": "confident_linework",
+            "text": "confident_linework",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "自信に満ちたラインワーク"
+          },
+          {
+            "label": "controlled_thin_lines",
+            "text": "controlled_thin_lines",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "コントロールされた細いライン"
+          },
+          {
+            "label": "soft_shading",
+            "text": "soft_shading",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ソフトシェーディング"
+          },
+          {
+            "label": "low_contrast_coloring",
+            "text": "low_contrast_coloring",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ローコントラストカラーリング"
+          },
+          {
+            "label": "anatomically_correct_hands",
+            "text": "anatomically_correct_hands",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "解剖学的に正しい手"
+          },
+          {
+            "label": "detailed_clothes_and_accessories",
+            "text": "detailed_clothes_and_accessories",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "細かい服やアクセサリー"
+          },
+          {
+            "label": "traditional_media_style",
+            "text": "traditional_media_style",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "伝統的なメディア・スタイル"
+          },
+          {
+            "label": "BREAK",
+            "text": "BREAK",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "pastel_background",
+            "text": "pastel_background",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "パステル背景"
+          },
+          {
+            "label": "soft_gradient_background",
+            "text": "soft_gradient_background",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ソフトグラデーション背景"
+          },
+          {
+            "label": "minimal_background",
+            "text": "minimal_background",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "最小限の背景"
+          },
+          {
+            "label": "limited_color_palette",
+            "text": "limited_color_palette",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "限定カラーパレット"
+          },
+          {
+            "label": "calm_and_serene_atmosphere",
+            "text": "calm_and_serene_atmosphere",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "落ち着いた雰囲気"
+          },
+          {
+            "label": "illustration-focused",
+            "text": "illustration-focused",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "イラスト中心"
+          },
+          {
+            "label": "BREAK",
+            "text": "BREAK",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "dmd2-lighting8step_cfg1.5",
+            "text": "<lora:dmd2-lighting8step_cfg1.5:0.5>",
+            "weight": 0.5,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "<lora:dmd2-lighting8stepのcfg1.5:0.5>。"
+          },
+          {
+            "label": "BSS_ArtisticSlider_v10(Alt)_last",
+            "text": "<lora:BSS_ArtisticSlider_v10(Alt)_last:0.3>",
+            "weight": 0.3,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "Nishiii26miii_Style_V1",
+            "text": "<lora:Nishiii26miii_Style_V1:0.3>",
+            "weight": 0.3,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "anime_style",
+            "text": "anime_style",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "アニメスタイル"
+          },
+          {
+            "label": "detailed_line_art",
+            "text": "detailed_line_art",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "緻密な線画"
+          },
+          {
+            "label": "detailed_skin_tone",
+            "text": "detailed_skin_tone",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "詳細な肌色"
+          },
+          {
+            "label": "stylized_shading",
+            "text": "stylized_shading",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "様式化シェーディング"
+          },
+          {
+            "label": "digital_painting",
+            "text": "digital_painting",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "デジタルペインティング"
+          },
+          {
+            "label": "highly_stylized",
+            "text": "highly_stylized",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "様式化された"
+          },
+          {
+            "label": "vfantasystyle-v3rsefx-sdxl-v1",
+            "text": "<lora:vfantasystyle-v3rsefx-sdxl-v1:0.5>",
+            "weight": 0.5,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "vibrantfantasystyle, colorful fantasy, whimsical scenery, cloud, outdoors, vibrant colors.",
+            "text": "vibrantfantasystyle, colorful fantasy, whimsical scenery, cloud, outdoors, vibrant colors.",
+            "weight": null,
+            "sourceType": "lora",
+            "isTrigger": true,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "futureistic_fantasy_anime_sdxl_v1",
+            "text": "<lora:futureistic_fantasy_anime_sdxl_v1:0.4>",
+            "weight": 0.4,
+            "sourceType": "lora",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "futuristic-fantasy-anime",
+            "text": "futuristic-fantasy-anime",
+            "weight": null,
+            "sourceType": "lora",
+            "isTrigger": true,
             "hidden": false,
             "jp": null
           }
@@ -462,7 +894,7 @@
             "sourceType": "embedding",
             "isTrigger": false,
             "hidden": false,
-            "jp": null
+            "jp": "怠け者"
           },
           {
             "label": "lazyhand",
@@ -471,7 +903,7 @@
             "sourceType": "embedding",
             "isTrigger": false,
             "hidden": false,
-            "jp": null
+            "jp": "へなちょこ"
           },
           {
             "label": "IllusN3g",
@@ -480,7 +912,7 @@
             "sourceType": "embedding",
             "isTrigger": false,
             "hidden": false,
-            "jp": null
+            "jp": "イラスN3g"
           },
           {
             "label": "score_4",
@@ -498,7 +930,7 @@
             "sourceType": "manual",
             "isTrigger": false,
             "hidden": false,
-            "jp": null
+            "jp": "スコア5"
           },
           {
             "label": "score_6",
@@ -535,6 +967,546 @@
             "isTrigger": false,
             "hidden": false,
             "jp": "JPEGアーティファクト"
+          },
+          {
+            "label": "bad_anatomy",
+            "text": "bad_anatomy",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "悪い解剖学"
+          },
+          {
+            "label": "bad_proportions",
+            "text": "bad_proportions",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "悪い割合"
+          },
+          {
+            "label": "username",
+            "text": "username",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "サイン入り"
+          },
+          {
+            "label": "bad_perspective",
+            "text": "bad_perspective",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "邪見"
+          },
+          {
+            "label": "displeasing",
+            "text": "displeasing",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "不快な画像"
+          },
+          {
+            "label": "artifacts",
+            "text": "(artifacts:1.2)",
+            "weight": 1.2,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "出土品"
+          },
+          {
+            "label": "signature",
+            "text": "(signature:1.2)",
+            "weight": 1.2,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "サイン,サイン入り"
+          },
+          {
+            "label": "text",
+            "text": "text",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "AI文字"
+          },
+          {
+            "label": "logo",
+            "text": "logo",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ロゴ"
+          },
+          {
+            "label": "crop",
+            "text": "crop",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "収穫"
+          },
+          {
+            "label": "out_of_frame",
+            "text": "out_of_frame",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "枠外"
+          },
+          {
+            "label": "amateur",
+            "text": "amateur",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "アマチュア"
+          },
+          {
+            "label": "BREAK",
+            "text": "BREAK",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "bad_hands",
+            "text": "(bad_hands:1.2)",
+            "weight": 1.2,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "悪い手"
+          },
+          {
+            "label": "extra_digit",
+            "text": "extra_digit",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "エクストラデジット"
+          },
+          {
+            "label": "extra_fingers",
+            "text": "extra_fingers",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "余分な指"
+          },
+          {
+            "label": "missing_fingers",
+            "text": "missing_fingers",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "指が欠損した"
+          },
+          {
+            "label": "fused_fingers",
+            "text": "fused_fingers",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "指が融合した"
+          },
+          {
+            "label": "deformed_hands",
+            "text": "deformed_hands",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "変形した手"
+          },
+          {
+            "label": "blurry_hands",
+            "text": "blurry_hands",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ボケた手"
+          },
+          {
+            "label": "fewer_digits",
+            "text": "fewer_digits",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "数字が少ない"
+          },
+          {
+            "label": "malformed_hands",
+            "text": "(malformed_hands:1.2)",
+            "weight": 1.2,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "異常な形状の手"
+          },
+          {
+            "label": "extra_limbs",
+            "text": "extra_limbs",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "余手"
+          },
+          {
+            "label": "extra_fingers",
+            "text": "extra_fingers",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "余分な指"
+          },
+          {
+            "label": "fused_fingers",
+            "text": "fused_fingers",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "指が融合した"
+          },
+          {
+            "label": "BREAK",
+            "text": "BREAK",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "blurry",
+            "text": "blurry",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ぼかし,ぼやけた"
+          },
+          {
+            "label": "out_of_focus",
+            "text": "out_of_focus",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ピント外れ"
+          },
+          {
+            "label": "flat_color",
+            "text": "flat_color",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "フラットカラー"
+          },
+          {
+            "label": "bad_foreshortening",
+            "text": "bad_foreshortening",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "バッドフォアショートニング"
+          },
+          {
+            "label": "BREAK",
+            "text": "BREAK",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": null
+          },
+          {
+            "label": "bold_outlines",
+            "text": "bold_outlines",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "太い輪郭"
+          },
+          {
+            "label": "nude",
+            "text": "nude",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "裸,ヌード,裸ニーソ,裸手袋,裸体,裸靴下,袖だけ霊夢,袖だけ,全裸群像,裸ランドセル,生まれたままの姿(産まれたままの姿)全裸(ヌード),すっぽんぽん,裸帽子"
+          },
+          {
+            "label": "thick_lines",
+            "text": "thick_lines",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "太い線"
+          },
+          {
+            "label": "heavy_lineart",
+            "text": "heavy_lineart",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ヘビー・リニアート"
+          },
+          {
+            "label": "harsh_shadows",
+            "text": "harsh_shadows",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "険しい影"
+          },
+          {
+            "label": "high_contrast_shading",
+            "text": "high_contrast_shading",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ハイコントラスト・シェーディング"
+          },
+          {
+            "label": "nsfw",
+            "text": "nsfw",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "仕事に適していない"
+          },
+          {
+            "label": "ugly",
+            "text": "ugly",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "醜い"
+          },
+          {
+            "label": "fat",
+            "text": "fat",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ぽっちゃり,ぽちゃり,ぽちゃりー,デブ,デブショタ,腹肉"
+          },
+          {
+            "label": "bad_anatomy",
+            "text": "bad_anatomy",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "悪い解剖学"
+          },
+          {
+            "label": "asymmetrical_face",
+            "text": "asymmetrical_face",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "非対称顔"
+          },
+          {
+            "label": "extra_limbs",
+            "text": "extra_limbs",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "余手"
+          },
+          {
+            "label": "blurry",
+            "text": "blurry",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "ぼかし,ぼやけた"
+          },
+          {
+            "label": "overexposed",
+            "text": "overexposed",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "露出オーバー"
+          },
+          {
+            "label": "immature",
+            "text": "immature",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "大人げない"
+          },
+          {
+            "label": "Mirror",
+            "text": "(Mirror:0.4)",
+            "weight": 0.4,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "鏡"
+          },
+          {
+            "label": "picture_frames",
+            "text": "(picture_frames:0.5)",
+            "weight": 0.5,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "額縁"
+          },
+          {
+            "label": "text",
+            "text": "text",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "AI文字"
+          },
+          {
+            "label": "letters",
+            "text": "letters",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "文字"
+          },
+          {
+            "label": "symbol",
+            "text": "symbol",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "シンボル"
+          },
+          {
+            "label": "icon",
+            "text": "icon",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "アイコン"
+          },
+          {
+            "label": "emoji",
+            "text": "emoji",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "絵文字"
+          },
+          {
+            "label": "onomatopoeia",
+            "text": "onomatopoeia",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "オノマトペ"
+          },
+          {
+            "label": "sound_effect",
+            "text": "sound_effect",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "効果音"
+          },
+          {
+            "label": "comic_effect",
+            "text": "comic_effect",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "コミック効果"
+          },
+          {
+            "label": "manga_effect",
+            "text": "manga_effect",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "漫画効果"
+          },
+          {
+            "label": "exclamation_mark",
+            "text": "exclamation_mark",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "感嘆符"
+          },
+          {
+            "label": "sweat_drop",
+            "text": "sweat_drop",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "スウェットドロップ"
+          },
+          {
+            "label": "sparkle",
+            "text": "sparkle",
+            "weight": null,
+            "sourceType": "manual",
+            "isTrigger": false,
+            "hidden": false,
+            "jp": "きらめき"
           }
         ]
       }
@@ -543,6 +1515,6 @@
     "tags": [],
     "memo": "",
     "createdAt": "2026-03-20T19:57:04+0900",
-    "updatedAt": "2026-03-21T17:21:16+0900"
+    "updatedAt": "2026-03-22T14:20:20+0900"
   }
 }

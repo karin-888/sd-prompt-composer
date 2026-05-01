@@ -23,7 +23,6 @@
 
     function init() {
         setupButtons();
-        setupDelegatedHandlers();
         if (!_syncLogged) {
             _syncLogged = true;
             console.log('[Prompt Composer] Prompt Sync initialized');
@@ -36,8 +35,14 @@
             const btn = getButtonEl(elemId);
             if (!btn || btn.dataset.pcPromptSyncBound === '1') return;
             btn.dataset.pcPromptSyncBound = '1';
+            if (!btn.dataset.pcPromptSyncOrigLabel) {
+                btn.dataset.pcPromptSyncOrigLabel = (btn.textContent || '').trim();
+            }
             btn.addEventListener('click', handler);
         };
+
+        // NOTE: Do not also handle these via document delegation — that fired applyToTarget twice
+        // per click; the second run saved "✅ 適用しました" as the "original" label and stuck the UI.
 
         bindOnce('pc_apply_txt2img', (e) => {
             e.preventDefault();
@@ -100,25 +105,35 @@
         const promptArea = root.querySelector(promptSelector);
         const negArea = root.querySelector(negSelector);
 
+        const dispatchPromptEvents = (ta) => {
+            try {
+                ta.dispatchEvent(new Event('input', { bubbles: true }));
+                ta.dispatchEvent(new Event('change', { bubbles: true }));
+            } catch (err) {
+                console.warn('[Prompt Composer] prompt field event (WebUI may still have updated):', err);
+            }
+        };
+
         if (promptArea && prompt) {
             promptArea.value = prompt;
-            promptArea.dispatchEvent(new Event('input', { bubbles: true }));
-            // Also dispatch change for Gradio
-            promptArea.dispatchEvent(new Event('change', { bubbles: true }));
+            dispatchPromptEvents(promptArea);
         }
 
         if (negArea && negative) {
             negArea.value = negative;
-            negArea.dispatchEvent(new Event('input', { bubbles: true }));
-            negArea.dispatchEvent(new Event('change', { bubbles: true }));
+            dispatchPromptEvents(negArea);
         }
 
-        // Visual feedback
+        // Visual feedback (restore from data attribute — safe if label was already overwritten)
         const btn = getButtonEl(target === 'txt2img' ? 'pc_apply_txt2img' : 'pc_apply_img2img');
         if (btn) {
-            const originalText = btn.textContent;
+            const restore =
+                (btn.dataset.pcPromptSyncOrigLabel && btn.dataset.pcPromptSyncOrigLabel.trim()) ||
+                (btn.textContent || '').trim();
             btn.textContent = '✅ 適用しました';
-            setTimeout(() => { btn.textContent = originalText; }, 1500);
+            setTimeout(() => {
+                btn.textContent = restore;
+            }, 1500);
         }
 
         // Switch to the target tab
@@ -141,9 +156,13 @@
             await navigator.clipboard.writeText(text);
             const btn = getButtonEl('pc_copy_clipboard');
             if (btn) {
-                const original = btn.textContent;
+                const restore =
+                    (btn.dataset.pcPromptSyncOrigLabel && btn.dataset.pcPromptSyncOrigLabel.trim()) ||
+                    (btn.textContent || '').trim();
                 btn.textContent = '✅ コピーしました';
-                setTimeout(() => { btn.textContent = original; }, 1500);
+                setTimeout(() => {
+                    btn.textContent = restore;
+                }, 1500);
             }
         } catch (err) {
             // Fallback for non-HTTPS
@@ -159,39 +178,6 @@
     }
 
     window.PromptSync = { init, applyToTarget, copyToClipboard };
-
-    let _delegatedInstalled = false;
-    function setupDelegatedHandlers() {
-        if (_delegatedInstalled) return;
-        _delegatedInstalled = true;
-
-        const root = appRoot();
-        // Use event delegation so handlers survive Gradio re-renders.
-        root.addEventListener('click', (e) => {
-            const t = e.target;
-            if (!t) return;
-
-            const txtBtn = t.closest ? t.closest('#pc_apply_txt2img, #pc_apply_txt2img button') : null;
-            if (txtBtn) {
-                e.preventDefault();
-                applyToTarget('txt2img');
-                return;
-            }
-
-            const imgBtn = t.closest ? t.closest('#pc_apply_img2img, #pc_apply_img2img button') : null;
-            if (imgBtn) {
-                e.preventDefault();
-                applyToTarget('img2img');
-                return;
-            }
-
-            const copyBtn = t.closest ? t.closest('#pc_copy_clipboard, #pc_copy_clipboard button') : null;
-            if (copyBtn) {
-                e.preventDefault();
-                copyToClipboard();
-            }
-        }, true);
-    }
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => setTimeout(init, 2000));

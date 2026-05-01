@@ -7,6 +7,7 @@ import os
 import json
 import time
 
+import user_storage
 
 _data_path = None
 _data_cache = None
@@ -15,10 +16,9 @@ _data_cache = None
 def init(extension_dir):
     """Initialize with extension directory path."""
     global _data_path
-    _data_path = os.path.join(extension_dir, "data", "user-data.json")
-    if not os.path.isfile(_data_path):
-        os.makedirs(os.path.dirname(_data_path), exist_ok=True)
-        _save_data(_get_default_data())
+    _data_path = user_storage.bootstrap_json(
+        extension_dir, "user-data.json", default_factory=_get_default_data
+    )
 
 
 def _get_default_data():

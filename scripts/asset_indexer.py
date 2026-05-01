@@ -20,6 +20,7 @@ if _THIS_DIR not in sys.path:
     sys.path.insert(0, _THIS_DIR)
 
 import civitai_reader
+import user_storage
 
 # Supported model file extensions
 MODEL_EXTS = {".safetensors", ".ckpt", ".pt", ".bin"}
@@ -34,7 +35,7 @@ def init(extension_dir):
     """Initialize with extension directory path."""
     global _cache_path, _extension_dir
     _extension_dir = extension_dir
-    _cache_path = os.path.join(extension_dir, "data", "assets-cache.json")
+    _cache_path = user_storage.bootstrap_json(extension_dir, "assets-cache.json")
 
 
 def _get_model_folders():

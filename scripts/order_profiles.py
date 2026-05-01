@@ -8,6 +8,7 @@ import json
 import time
 import re
 
+import user_storage
 
 _profiles_path = None
 _profiles_cache = None
@@ -16,7 +17,7 @@ _profiles_cache = None
 def init(extension_dir):
     """Initialize with extension directory path."""
     global _profiles_path, _profiles_cache
-    _profiles_path = os.path.join(extension_dir, "data", "order-profiles.json")
+    _profiles_path = user_storage.bootstrap_json(extension_dir, "order-profiles.json")
     _profiles_cache = None
 
 

@@ -8,6 +8,7 @@ import json
 import uuid
 import time
 
+import user_storage
 
 _presets_path = None
 
@@ -15,12 +16,9 @@ _presets_path = None
 def init(extension_dir):
     """Initialize with extension directory path."""
     global _presets_path
-    _presets_path = os.path.join(extension_dir, "data", "presets.json")
-    # Ensure file exists
-    if not os.path.isfile(_presets_path):
-        os.makedirs(os.path.dirname(_presets_path), exist_ok=True)
-        with open(_presets_path, 'w', encoding='utf-8') as f:
-            json.dump({}, f)
+    _presets_path = user_storage.bootstrap_json(
+        extension_dir, "presets.json", default_factory=dict
+    )
 
 
 def _load_presets():

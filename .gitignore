@@ -7,8 +7,11 @@ __pycache__/
 *.py[cod]
 
 ## Prompt Composer runtime data (per-user)
+## Stored under WebUI data_path/sd-prompt-composer/ after migration; legacy copies may remain here.
 data/user-data.json
 data/assets-cache.json
+data/presets.json
+data/order-profiles.json
 
 ## Optional: If you don't want to version tag CSVs, uncomment these:
 # tags/*.csv

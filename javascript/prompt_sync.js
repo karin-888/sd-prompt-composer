@@ -19,39 +19,49 @@
         return root.tagName === 'BUTTON' ? root : (root.querySelector('button') || root);
     }
 
+    let _syncLogged = false;
+
     function init() {
         setupButtons();
         setupDelegatedHandlers();
-        console.log('[Prompt Composer] Prompt Sync initialized');
+        if (!_syncLogged) {
+            _syncLogged = true;
+            console.log('[Prompt Composer] Prompt Sync initialized');
+        }
     }
 
+    /** Bind each button at most once per DOM node (Gradio re-creates nodes without our flag). */
     function setupButtons() {
-        // Apply to txt2img
-        const txt2imgBtn = getButtonEl('pc_apply_txt2img');
-        if (txt2imgBtn) {
-            txt2imgBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                applyToTarget('txt2img');
-            });
-        }
+        const bindOnce = (elemId, handler) => {
+            const btn = getButtonEl(elemId);
+            if (!btn || btn.dataset.pcPromptSyncBound === '1') return;
+            btn.dataset.pcPromptSyncBound = '1';
+            btn.addEventListener('click', handler);
+        };
 
-        // Apply to img2img
-        const img2imgBtn = getButtonEl('pc_apply_img2img');
-        if (img2imgBtn) {
-            img2imgBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                applyToTarget('img2img');
-            });
-        }
+        bindOnce('pc_apply_txt2img', (e) => {
+            e.preventDefault();
+            applyToTarget('txt2img');
+        });
 
-        // Copy to clipboard
-        const copyBtn = getButtonEl('pc_copy_clipboard');
-        if (copyBtn) {
-            copyBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                copyToClipboard();
-            });
-        }
+        bindOnce('pc_apply_img2img', (e) => {
+            e.preventDefault();
+            applyToTarget('img2img');
+        });
+
+        bindOnce('pc_copy_clipboard', (e) => {
+            e.preventDefault();
+            copyToClipboard();
+        });
+    }
+
+    let _setupButtonsDebounce = null;
+    function scheduleSetupButtons() {
+        if (_setupButtonsDebounce) clearTimeout(_setupButtonsDebounce);
+        _setupButtonsDebounce = setTimeout(() => {
+            _setupButtonsDebounce = null;
+            setupButtons();
+        }, 400);
     }
 
     function getFinalPrompt() {
@@ -189,9 +199,10 @@
         setTimeout(init, 2000);
     }
 
-    const observer = new MutationObserver((mutations, obs) => {
-        // Re-init when Prompt Composer elements are re-rendered
-        if (appRoot().getElementById('pc_apply_txt2img')) setTimeout(init, 100);
+    // Tab switches and Gradio updates mutate the whole tree; debounce and only
+    // re-bind buttons (idempotent) — never stack duplicate click listeners.
+    const observer = new MutationObserver(() => {
+        scheduleSetupButtons();
     });
     function startPromptSyncObserver() {
         let rootDoc;

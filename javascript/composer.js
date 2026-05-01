@@ -51,6 +51,10 @@
             setTimeout(init, 500);
             return;
         }
+        // DOMContentLoaded + onUiLoaded both schedule init; avoid duplicate listeners / reset.
+        if (container.dataset.pcComposerInit === '1') {
+            return;
+        }
 
         // Initialize default blocks
         blocks = DEFAULT_BLOCKS.map(def => ({
@@ -76,7 +80,8 @@
             renderBlocks();
         }
         setupEventListeners();
-        
+
+        container.dataset.pcComposerInit = '1';
         console.log('[Prompt Composer] Composer initialized');
     }
 

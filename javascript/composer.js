@@ -39,6 +39,8 @@
     let draggedToken = null; // { tokenIds: string[], fromBlockId: string }
     let selectedTokenIds = new Set(); // multi-select support
     let blockDragScrollListenerBound = false;
+    const jpLookupTried = new Map(); // token.id -> normalized key
+    let jpBackfillTimer = null;
     // NOTE: token selection is used for keyboard weight adjust (↑↓).
 
     // ===== Initialization =====
@@ -211,7 +213,8 @@
                         ${hasWeight ? `<span class="pc-token-weight ${weightClass}">${escapeHtml(weightStr)}</span>` : ''}
                         ${token.jp ? `<span class="pc-token-jp">${escapeHtml(token.jp)}</span>` : ''}
                     </span>
-                    <button class="pc-token-remove" data-block-id="${block.id}" data-token-idx="${tidx}">×</button>
+                    <button type="button" class="pc-token-edit" data-block-id="${block.id}" data-token-idx="${tidx}" title="編集（Enter で確定 / Esc で取消）">✎</button>
+                    <button type="button" class="pc-token-remove" data-block-id="${block.id}" data-token-idx="${tidx}">×</button>
                 </span>
             `;
         });
@@ -422,8 +425,12 @@
         if (root.querySelector('.pc-order-profile-manager')) return;
 
         // Hide Gradio's original dropdown UI to avoid duplicated controls.
-        // We keep it in DOM only as a silent compatibility mirror.
-        const legacySelect = root.querySelector('select');
+        // Capture any pre-existing Gradio <select> NOW — after we inject our UI,
+        // root.querySelector('select') could resolve to OUR select and syncing it
+        // would dispatch change on ourselves → infinite recursion (stack overflow).
+        const mirrorGradioSelect = root.querySelector('select');
+
+        const legacySelect = mirrorGradioSelect;
         if (legacySelect) {
             const legacyWrap = legacySelect.closest('.wrap') || legacySelect.parentElement;
             if (legacyWrap && legacyWrap.style) legacyWrap.style.display = 'none';
@@ -467,11 +474,13 @@
         const setCurrentProfile = (id) => {
             if (!id) return;
             currentOrderProfile = id;
-            // keep gradio dropdown (if any) in sync
-            const gradioSelect = root.querySelector('select');
-            if (gradioSelect && Array.from(gradioSelect.options).some(o => o.value === id)) {
-                gradioSelect.value = id;
-                gradioSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            // Mirror only Gradio's original <select>; never dispatch on profileSelect itself.
+            const gradioSel = mirrorGradioSelect && mirrorGradioSelect !== profileSelect
+                ? mirrorGradioSelect
+                : null;
+            if (gradioSel && Array.from(gradioSel.options).some(o => o.value === id)) {
+                if (gradioSel.value !== id) gradioSel.value = id;
+                gradioSel.dispatchEvent(new Event('change', { bubbles: true }));
             }
         };
 
@@ -755,6 +764,11 @@
                 e.stopPropagation();
             });
         });
+        container.querySelectorAll('.pc-token-edit, .pc-token-remove').forEach(btn => {
+            btn.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+            });
+        });
 
         // Toggle buttons
         container.querySelectorAll('.pc-block-toggle').forEach(btn => {
@@ -776,12 +790,22 @@
             });
         });
 
-        // Token remove buttons
+        // Token edit / remove buttons
+        container.querySelectorAll('.pc-token-edit').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                const blockId = e.currentTarget.dataset.blockId;
+                const tokenIdx = parseInt(e.currentTarget.dataset.tokenIdx, 10);
+                if (!blockId || Number.isNaN(tokenIdx)) return;
+                startTokenInlineEdit(blockId, tokenIdx);
+            });
+        });
         container.querySelectorAll('.pc-token-remove').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const blockId = e.target.dataset.blockId;
-                const tokenIdx = parseInt(e.target.dataset.tokenIdx);
+                const blockId = e.currentTarget.dataset.blockId;
+                const tokenIdx = parseInt(e.currentTarget.dataset.tokenIdx, 10);
                 removeToken(blockId, tokenIdx);
             });
         });
@@ -807,8 +831,13 @@
         // Token click (selection for multi-move)
         container.querySelectorAll('.pc-token').forEach(el => {
             el.addEventListener('click', (e) => {
-                // ignore clicks on remove button
+                if (el.classList.contains('pc-token-editing')) return;
+                if (e.target && e.target.closest && e.target.closest('.pc-token-edit-input')) return;
+                // ignore clicks on remove / edit button
                 if (e.target && e.target.classList && e.target.classList.contains('pc-token-remove')) {
+                    return;
+                }
+                if (e.target && e.target.classList && e.target.classList.contains('pc-token-edit')) {
                     return;
                 }
                 const id = el.dataset.tokenId;
@@ -834,7 +863,12 @@
         // Token double click: temporary hide/unhide (excluded from final prompt)
         container.querySelectorAll('.pc-token').forEach(el => {
             el.addEventListener('dblclick', (e) => {
+                if (el.classList.contains('pc-token-editing')) return;
+                if (e.target && e.target.closest && e.target.closest('.pc-token-edit-input')) return;
                 if (e.target && e.target.classList && e.target.classList.contains('pc-token-remove')) {
+                    return;
+                }
+                if (e.target && e.target.classList && e.target.classList.contains('pc-token-edit')) {
                     return;
                 }
                 e.preventDefault();
@@ -913,10 +947,12 @@
     function onTokenDragStart(e) {
         const tokenEl = e.target.closest('.pc-token');
         if (!tokenEl) return;
+        if (tokenEl.classList.contains('pc-token-editing')) return;
         // ブロック全体のドラッグ開始に伝播させない
         e.stopPropagation();
-        // ignore drags started from the remove button
+        // ignore drags started from edit / remove button
         if (e.target && e.target.classList && e.target.classList.contains('pc-token-remove')) return;
+        if (e.target && e.target.classList && e.target.classList.contains('pc-token-edit')) return;
 
         const tokenId = tokenEl.dataset.tokenId;
         const blockId = tokenEl.dataset.blockId;
@@ -1266,6 +1302,230 @@
 
         block.tokens.push(token);
         renderBlocks();
+        if (!token.jp) {
+            const key = getTokenJpLookupKey(token);
+            if (key) scheduleJpBackfill(120);
+        }
+    }
+
+    function normComposerSpaces(s) {
+        return (s || '').trim().replace(/\s+/g, '_');
+    }
+
+    /**
+     * Single prompt fragment typed by the user: plain tag, (tag:w), or <lora:...>.
+     */
+    function parseComposerTokenSlice(rawText) {
+        const rawTrim = (rawText || '').trim();
+        if (!rawTrim) return null;
+
+        const loraParsed = _parseLoraTag(rawTrim);
+        if (loraParsed) {
+            const emittedText = `<lora:${loraParsed.name}:${loraParsed.weight}>`;
+            const w = loraParsed.weight;
+            const weight = (typeof w === 'number' && Number.isFinite(w) && w !== 1 && !Number.isNaN(w)) ? w : null;
+            return { emittedText, label: loraParsed.name.trim(), weight, loraParsed };
+        }
+
+        let innerText = rawTrim;
+        let weight = null;
+        let emittedText = rawTrim;
+
+        const weightMatch = rawTrim.match(/^\((.+):(-?[0-9.]+)\)$/);
+        if (weightMatch) {
+            innerText = normComposerSpaces(weightMatch[1]);
+            weight = parseFloat(weightMatch[2]);
+            emittedText = `(${innerText}:${weightMatch[2]})`;
+        } else {
+            innerText = normComposerSpaces(innerText);
+            emittedText = innerText;
+        }
+
+        return { emittedText, label: innerText, weight, loraParsed: null };
+    }
+
+    function extractTranslatableBase(text) {
+        const raw = String(text || '').trim();
+        if (!raw) return '';
+        if (raw === 'BREAK' || raw === 'AND') return '';
+        if (raw.startsWith('__') && raw.endsWith('__')) return '';
+        if (_parseLoraTag(raw)) return '';
+
+        // (tag:1.2), (tag:-1.0) -> tag
+        const weighted = raw.match(/^\((.+):(-?[0-9.]+)\)$/);
+        const base = weighted ? String(weighted[1] || '').trim() : raw;
+        if (!base) return '';
+        return normComposerSpaces(base);
+    }
+
+    function getTokenJpLookupKey(token) {
+        if (!token) return '';
+        return extractTranslatableBase(token.text || token.label || '');
+    }
+
+    function buildTranslationCandidates(base) {
+        const norm = String(base || '').trim();
+        if (!norm) return [];
+        const out = [];
+        const push = (v) => {
+            const t = String(v || '').trim();
+            if (!t) return;
+            if (!out.includes(t)) out.push(t);
+        };
+        push(norm);
+        push(norm.toLowerCase());
+        if (norm.includes(' ')) push(norm.replace(/\s+/g, '_'));
+        if (norm.includes('_')) push(norm.replace(/_+/g, ' '));
+        return out;
+    }
+
+    async function fetchComposerTagJp(innerLabel, parsed, rawText = null) {
+        const base = extractTranslatableBase(innerLabel || rawText || '');
+        if (!base) return null;
+        // Parsed non-LoRA tags should always use normalized label first.
+        const preferred = (parsed && !parsed.loraParsed && innerLabel)
+            ? extractTranslatableBase(innerLabel)
+            : '';
+        const candidates = [
+            ...buildTranslationCandidates(preferred),
+            ...buildTranslationCandidates(base)
+        ].filter((v, i, arr) => v && arr.indexOf(v) === i);
+        if (!candidates.length) return null;
+
+        for (const cand of candidates) {
+            try {
+                const resp = await fetch(`/prompt-composer/api/tag-translate?tag=${encodeURIComponent(cand)}`);
+                if (!resp.ok) continue;
+                const data = await resp.json();
+                const jp = (data && data.jp) ? String(data.jp).trim() : '';
+                if (jp) return jp;
+            } catch (_) {
+                // ignore and try next candidate
+            }
+        }
+        return null;
+    }
+
+    function inferSourceTypeAfterEdit(parsed, prevMeta) {
+        if (parsed && parsed.loraParsed) return 'lora';
+        const prev = (prevMeta && prevMeta.sourceType) ? prevMeta.sourceType : 'manual';
+        if (prev === 'embedding') return 'embedding';
+        if (prev === 'lora') return 'manual';
+        return prev;
+    }
+
+    async function updateTokenFromRaw(blockId, tokenIdx, rawText) {
+        const block = findBlock(blockId);
+        if (!block || tokenIdx < 0 || tokenIdx >= block.tokens.length) {
+            renderBlocks();
+            return;
+        }
+
+        const token = block.tokens[tokenIdx];
+        const prevMeta = { sourceType: token.sourceType || 'manual', isTrigger: token.isTrigger === true };
+
+        const parsed = parseComposerTokenSlice(rawText);
+        if (!parsed) {
+            renderBlocks();
+            return;
+        }
+
+        token.text = parsed.emittedText;
+        token.label = parsed.label;
+        token.weight = parsed.weight;
+        jpLookupTried.delete(token.id);
+
+        const nextSource = inferSourceTypeAfterEdit(parsed, prevMeta);
+        token.sourceType = nextSource;
+        token.isTrigger = prevMeta.isTrigger === true && nextSource === 'lora';
+        if (nextSource !== 'lora') {
+            token.previewUrl = null;
+        }
+
+        token.jp = await fetchComposerTagJp(parsed.label, parsed, parsed.emittedText);
+        if (!token.jp) {
+            const key = getTokenJpLookupKey(token);
+            if (key) jpLookupTried.set(token.id, key);
+        }
+        renderBlocks();
+    }
+
+    function startTokenInlineEdit(blockId, tokenIdx) {
+        const container = document.getElementById('pc_blocks_container');
+        if (!container) return;
+
+        hideTagSuggest();
+
+        const tokenEl = container.querySelector(
+            `.pc-token[data-block-id="${blockId}"][data-token-idx="${tokenIdx}"]`
+        );
+        const block = findBlock(blockId);
+        const tok = block && block.tokens[tokenIdx];
+        if (!tokenEl || !tok) return;
+        if (tokenEl.classList.contains('pc-token-editing')) return;
+
+        tokenEl.classList.add('pc-token-editing');
+        tokenEl.draggable = false;
+
+        tokenEl.querySelectorAll('.pc-token-source-badge, .pc-token-label, .pc-token-edit, .pc-token-remove').forEach(el => {
+            el.style.display = 'none';
+        });
+
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.className = 'pc-token-edit-input';
+        inp.value = tok.text || '';
+        inp.autocomplete = 'off';
+        inp.title = '編集 — Enter で確定 / Esc で取消';
+        inp.setAttribute('aria-label', 'タグ編集');
+
+        tokenEl.appendChild(inp);
+        inp.focus();
+        inp.select();
+
+        inp.addEventListener('click', (e) => e.stopPropagation());
+        inp.addEventListener('mousedown', (e) => e.stopPropagation());
+
+        let editFinishMode = null;
+
+        inp.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                e.stopPropagation();
+                editFinishMode = 'commit';
+                updateTokenFromRaw(blockId, tokenIdx, inp.value).finally(() => {
+                    editFinishMode = null;
+                });
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                e.stopPropagation();
+                editFinishMode = 'escape';
+                renderBlocks();
+                setTimeout(() => { editFinishMode = null; }, 0);
+            }
+        });
+
+        const originalText = (tok.text || '');
+
+        inp.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (editFinishMode === 'commit' || editFinishMode === 'escape') return;
+                if (!inp.isConnected) return;
+                if (!tokenEl.classList.contains('pc-token-editing')) return;
+
+                const nextTrim = (inp.value || '').trim();
+                const origTrim = (originalText || '').trim();
+                if (nextTrim === origTrim) {
+                    renderBlocks();
+                    return;
+                }
+                if (!nextTrim) {
+                    renderBlocks();
+                    return;
+                }
+                updateTokenFromRaw(blockId, tokenIdx, inp.value);
+            }, 0);
+        });
     }
 
     function addTokenFromInput(blockId, rawText) {
@@ -1279,42 +1539,19 @@
             return;
         }
 
-        // Async: normalize spaces -> underscores and fetch JP translation
         (async () => {
-            const normSpaces = (s) => (s || '').trim().replace(/\s+/g, '_');
+            const parsed = parseComposerTokenSlice(rawText);
+            if (!parsed) return;
 
-            // Parse weight syntax: (tag:1.2) or tag
-            let innerText = rawText;
-            let weight = null;
-            let emittedText = rawText;
+            const jp = await fetchComposerTagJp(parsed.label, parsed, parsed.emittedText);
 
-            const weightMatch = rawText.match(/^\((.+):([0-9.]+)\)$/);
-            if (weightMatch) {
-                innerText = weightMatch[1];
-                weight = parseFloat(weightMatch[2]);
-                const norm = normSpaces(innerText);
-                emittedText = `(${norm}:${weightMatch[2]})`;
-                innerText = norm;
-            } else {
-                innerText = normSpaces(innerText);
-                emittedText = innerText;
-            }
-
-            let jp = '';
-            try {
-                const resp = await fetch(`/prompt-composer/api/tag-translate?tag=${encodeURIComponent(innerText)}`);
-                if (resp.ok) {
-                    const data = await resp.json();
-                    jp = (data && data.jp) ? String(data.jp) : '';
-                }
-            } catch (_) {}
-
-            addToken(blockId, innerText, emittedText, {
-                weight: weight,
+            addToken(blockId, parsed.label, parsed.emittedText, {
+                weight: parsed.weight,
                 sourceType: 'manual',
                 isTrigger: false,
                 jp: jp || null
             });
+            scheduleJpBackfill(120);
         })();
     }
 
@@ -1588,6 +1825,7 @@
         }
 
         renderBlocks();
+        scheduleJpBackfill(140);
     }
 
     // ===== Drag and Drop =====
@@ -1870,44 +2108,54 @@
         // Best-effort: backfill missing JP translations for restored tokens
         // (e.g., when upgrading from older autosave/preset formats).
         setTimeout(() => {
-            try { backfillMissingJp(); } catch (_) {}
+            try { scheduleJpBackfill(60); } catch (_) {}
         }, 50);
 
         renderBlocks();
     }
 
-    async function backfillMissingJp() {
+    function scheduleJpBackfill(delayMs = 80) {
+        clearTimeout(jpBackfillTimer);
+        jpBackfillTimer = setTimeout(() => {
+            backfillMissingJp({ batchSize: 120, continueUntilDone: true }).catch(() => {});
+        }, delayMs);
+    }
+
+    async function backfillMissingJp(options = {}) {
+        const batchSize = Math.max(1, Number(options.batchSize || 120));
+        const continueUntilDone = options.continueUntilDone !== false;
         const allBlocks = [...blocks, ...negativeBlocks];
         const missing = [];
         allBlocks.forEach(b => {
             (b.tokens || []).forEach(t => {
                 if (t && !t.jp && t.text && typeof t.text === 'string') {
-                    // Skip obvious non-tags
-                    const s = t.text.trim();
-                    if (!s) return;
-                    if (s === 'BREAK' || s === 'AND') return;
-                    if (s.startsWith('__') && s.endsWith('__')) return;
+                    const key = getTokenJpLookupKey(t);
+                    if (!key) return;
+                    // Do not retry the same key forever when dictionary has no translation.
+                    if (jpLookupTried.get(t.id) === key) return;
                     missing.push(t);
                 }
             });
         });
 
-        // Avoid spamming network: translate only a handful per restore
-        const limit = 40;
-        for (const t of missing.slice(0, limit)) {
-            const tag = String(t.text || '').trim();
-            try {
-                const resp = await fetch(`/prompt-composer/api/tag-translate?tag=${encodeURIComponent(tag)}`);
-                if (!resp.ok) continue;
-                const data = await resp.json();
-                const jp = (data && data.jp) ? String(data.jp).trim() : '';
-                if (jp) t.jp = jp;
-            } catch (_) {
-                // ignore
+        let updated = false;
+        for (const t of missing.slice(0, batchSize)) {
+            const jp = await fetchComposerTagJp(t.label || t.text, null, t.text);
+            if (jp) {
+                t.jp = jp;
+                jpLookupTried.delete(t.id);
+                updated = true;
+            } else {
+                const key = getTokenJpLookupKey(t);
+                if (key) jpLookupTried.set(t.id, key);
             }
         }
-        // re-render once if we updated something
-        if (missing.length) renderBlocks();
+        if (updated) renderBlocks();
+
+        const remaining = missing.length - Math.min(batchSize, missing.length);
+        if (continueUntilDone && remaining > 0) {
+            scheduleJpBackfill(120);
+        }
     }
 
     // ===== Add Block Dialog =====
@@ -2063,7 +2311,21 @@
                     callback();
                 }
             });
-            observer.observe(document.body, { childList: true, subtree: true });
+            function startBlocksObserver() {
+                const target = (typeof document.body !== 'undefined' && document.body)
+                    ? document.body
+                    : document.documentElement;
+                if (!(target instanceof Node)) {
+                    requestAnimationFrame(startBlocksObserver);
+                    return;
+                }
+                try {
+                    observer.observe(target, { childList: true, subtree: true });
+                } catch (_) {
+                    requestAnimationFrame(startBlocksObserver);
+                }
+            }
+            startBlocksObserver();
         }
     }
 

@@ -9,6 +9,7 @@ import sys
 import mimetypes
 import json
 import hashlib
+import re
 from typing import Optional, List
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
@@ -30,9 +31,275 @@ import open_clip.tokenizer
 import urllib.parse
 import urllib.request
 import urllib.error
+import subprocess
 
-_deepl_cache: dict[str, str] = {}
+# Machine-translation fallback cache (free + paid providers)
+_tag_mt_cache: dict[str, str] = {}
 _deepl_last_error: str = ""
+_google_translate_last_error: str = ""
+_argos_last_error: str = ""
+_libre_last_error: str = ""
+
+
+def _argos_translate_tag(mt_key: str, qtext: str) -> str:
+    """Returns JP text via local Argos Translate if enabled; empty string on skip/failure."""
+    global _argos_last_error
+    _argos_last_error = ""
+    enable = bool(getattr(shared.opts, "pc_argos_enable", False))
+    if not enable:
+        return ""
+    txt = (qtext or "").replace("_", " ").strip()
+    if not txt:
+        return ""
+
+    # Try Python package first (fast + local), then optional CLI fallback.
+    try:
+        import argostranslate.translate  # type: ignore
+
+        langs = argostranslate.translate.get_installed_languages()
+        from_lang = next((l for l in langs if getattr(l, "code", "") == "en"), None)
+        to_lang = next((l for l in langs if getattr(l, "code", "") == "ja"), None)
+        if from_lang and to_lang:
+            tr = from_lang.get_translation(to_lang)
+            jp = (tr.translate(txt) or "").strip()
+            if jp:
+                mk = (mt_key or "").strip()
+                if mk:
+                    _tag_mt_cache[mk] = jp
+                return jp
+        _argos_last_error = "Argos language package en->ja is not installed."
+    except Exception as e:
+        _argos_last_error = f"Python package error: {e}"
+
+    try:
+        # Optional CLI fallback: argos-translate --from-lang en --to-lang ja --text "..."
+        out = subprocess.check_output(
+            ["argos-translate", "--from-lang", "en", "--to-lang", "ja", "--text", txt],
+            stderr=subprocess.STDOUT,
+            timeout=8,
+            text=True,
+        )
+        jp = (out or "").strip()
+        if jp:
+            mk = (mt_key or "").strip()
+            if mk:
+                _tag_mt_cache[mk] = jp
+            return jp
+        if not _argos_last_error:
+            _argos_last_error = "Argos CLI returned empty translation."
+    except Exception as e:
+        if not _argos_last_error:
+            _argos_last_error = f"CLI error: {e}"
+    return ""
+
+
+def _libre_translate_tag(mt_key: str, qtext: str) -> str:
+    """Returns JP text via LibreTranslate API if enabled; empty string on skip/failure."""
+    global _libre_last_error
+    _libre_last_error = ""
+    enable = bool(getattr(shared.opts, "pc_libre_enable", False))
+    api_url = (getattr(shared.opts, "pc_libre_api_url", "") or "").strip()
+    api_key = (getattr(shared.opts, "pc_libre_api_key", "") or "").strip()
+    if not enable or not api_url:
+        return ""
+    txt = (qtext or "").replace("_", " ").strip()
+    if not txt:
+        return ""
+    # Build candidate URLs: configured URL first, then common local fallbacks.
+    candidates = []
+    def _push_url(u: str):
+        v = (u or "").strip()
+        if v and v not in candidates:
+            candidates.append(v)
+    _push_url(api_url)
+    # Helpful fallback when old config still points to :5000 but container is on :5001.
+    if "127.0.0.1:5000/translate" in api_url or "localhost:5000/translate" in api_url:
+        _push_url(api_url.replace(":5000/translate", ":5001/translate"))
+    _push_url("http://127.0.0.1:5001/translate")
+    _push_url("http://localhost:5001/translate")
+
+    try:
+        payload = {
+            "q": txt,
+            "source": "en",
+            "target": "ja",
+            "format": "text",
+        }
+        if api_key:
+            payload["api_key"] = api_key
+        body = json.dumps(payload).encode("utf-8")
+
+        for url in candidates:
+            raw = ""
+            try:
+                req = urllib.request.Request(
+                    url,
+                    data=body,
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with urllib.request.urlopen(req, timeout=8) as r:
+                    raw = r.read().decode("utf-8", errors="replace")
+            except urllib.error.HTTPError as e:
+                err_body = ""
+                try:
+                    err_body = e.read().decode("utf-8", errors="replace")
+                except Exception:
+                    err_body = ""
+                _libre_last_error = f"{url} -> HTTPError {getattr(e, 'code', '')}: {err_body[:300]}"
+                # Try next candidate URL.
+                continue
+            except Exception as e:
+                _libre_last_error = f"{url} -> Error: {e}"
+                continue
+
+            jp = ""
+            try:
+                data = json.loads(raw) if raw else {}
+                jp = str(data.get("translatedText") or "").strip()
+            except Exception:
+                jp = ""
+
+            if jp:
+                mk = (mt_key or "").strip()
+                if mk:
+                    _tag_mt_cache[mk] = jp
+                return jp
+
+        if not _libre_last_error:
+            _libre_last_error = "Empty translation (check LibreTranslate endpoint / rate-limit)."
+    except Exception as e:
+        _libre_last_error = f"Error: {e}"
+    return ""
+
+
+def _deepl_translate_tag(mt_key: str, qtext: str) -> str:
+    """Returns JP text via DeepL if enabled; empty string on skip/failure."""
+    global _deepl_last_error
+    _deepl_last_error = ""
+    enable = bool(getattr(shared.opts, "pc_deepl_enable", False))
+    api_key = (getattr(shared.opts, "pc_deepl_api_key", "") or "").strip()
+    api_url = (getattr(shared.opts, "pc_deepl_api_url", "") or "").strip()
+    if not enable or not api_key or not api_url:
+        return ""
+    txt = (qtext or "").replace("_", " ").strip()
+    if not txt:
+        return ""
+    try:
+        payload = urllib.parse.urlencode(
+            {
+                "text": txt,
+                "source_lang": "EN",
+                "target_lang": "JA",
+            }
+        ).encode("utf-8")
+        req = urllib.request.Request(
+            api_url,
+            data=payload,
+            headers={
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": f"DeepL-Auth-Key {api_key}",
+            },
+            method="POST",
+        )
+        raw = ""
+        try:
+            with urllib.request.urlopen(req, timeout=8) as r:
+                raw = r.read().decode("utf-8", errors="replace")
+        except urllib.error.HTTPError as e:
+            body = ""
+            try:
+                body = e.read().decode("utf-8", errors="replace")
+            except Exception:
+                body = ""
+            _deepl_last_error = f"HTTPError {getattr(e, 'code', '')}: {body[:300]}"
+            raw = body
+        except Exception as e:
+            _deepl_last_error = f"Error: {e}"
+            raw = ""
+
+        jp = ""
+        try:
+            data = json.loads(raw) if raw else {}
+            tr = (data.get("translations") or [{}])[0]
+            jp = str(tr.get("text") or "").strip()
+        except Exception:
+            jp = ""
+        if jp:
+            mk = (mt_key or "").strip()
+            if mk:
+                _tag_mt_cache[mk] = jp
+        return jp or ""
+    except Exception:
+        return ""
+
+
+def _google_translate_tag(mt_key: str, qtext: str) -> str:
+    """
+    Returns JP text via Google Cloud Translation API (v2 REST) if enabled.
+    Users must enable the API for their GCP project and create an API key.
+    """
+    global _google_translate_last_error
+    _google_translate_last_error = ""
+    enable = bool(getattr(shared.opts, "pc_google_translate_enable", False))
+    api_key = (getattr(shared.opts, "pc_google_translate_api_key", "") or "").strip()
+    api_url_base = (
+        getattr(shared.opts, "pc_google_translate_api_url", None)
+        or "https://translation.googleapis.com/language/translate/v2"
+    )
+    if not isinstance(api_url_base, str):
+        api_url_base = str(api_url_base)
+    api_url_base = api_url_base.strip().rstrip("/")
+    if not enable or not api_key:
+        return ""
+    txt = (qtext or "").replace("_", " ").strip()
+    if not txt:
+        return ""
+    sep = "&" if "?" in api_url_base else "?"
+    url = f"{api_url_base}{sep}key={urllib.parse.quote(api_key, safe='')}"
+    payload_obj = {"q": [txt], "target": "ja", "format": "text"}
+    try:
+        body = json.dumps(payload_obj).encode("utf-8")
+        req = urllib.request.Request(
+            url,
+            data=body,
+            headers={"Content-Type": "application/json; charset=utf-8"},
+            method="POST",
+        )
+        raw = ""
+        try:
+            with urllib.request.urlopen(req, timeout=8) as r:
+                raw = r.read().decode("utf-8", errors="replace")
+        except urllib.error.HTTPError as e:
+            err_body = ""
+            try:
+                err_body = e.read().decode("utf-8", errors="replace")
+            except Exception:
+                err_body = ""
+            _google_translate_last_error = f"HTTPError {getattr(e, 'code', '')}: {err_body[:300]}"
+            raw = err_body
+        except Exception as e:
+            _google_translate_last_error = f"Error: {e}"
+            raw = ""
+
+        jp = ""
+        try:
+            data = json.loads(raw) if raw else {}
+            translations = (((data.get("data") or {}).get("translations")) or []) if isinstance(data.get("data"), dict) else []
+            if translations:
+                jp = str((translations[0] or {}).get("translatedText") or "").strip()
+        except Exception:
+            jp = ""
+        if jp:
+            mk = (mt_key or "").strip()
+            if mk:
+                _tag_mt_cache[mk] = jp
+        elif not _google_translate_last_error:
+            _google_translate_last_error = "Empty translation (check API quota / billing / key)."
+        return jp or ""
+    except Exception as e:
+        _google_translate_last_error = f"Error: {e}"
+        return ""
 
 
 def register_api(app: FastAPI, extension_dir: str):
@@ -377,95 +644,109 @@ def register_api(app: FastAPI, extension_dir: str):
         Checks:
           1) tag_suggest CSV translations (tagcomplete/local)
           2) tag_dictionary YAML translations (group_tags/default.yaml)
+          3) Free MT fallback: Argos(local) -> LibreTranslate
+          4) Optional paid fallback: DeepL -> Google Cloud Translation API
         """
         t = (tag or "").strip()
         if not t:
             return {"tag": "", "jp": ""}
+
+        def _normalize_for_lookup(raw: str) -> str:
+            s = (raw or "").strip()
+            if not s:
+                return ""
+            # (tag:1.2) / (tag:-1.0) -> tag
+            m = re.match(r"^\((.+):(-?[0-9.]+)\)$", s)
+            if m:
+                s = (m.group(1) or "").strip()
+            return s.strip()
+
+        def _candidate_tags(raw: str):
+            base = _normalize_for_lookup(raw)
+            if not base:
+                return []
+            cands = []
+            for cand in [base, base.lower(), base.replace(" ", "_"), base.replace("_", " ")]:
+                c = (cand or "").strip()
+                if c and c not in cands:
+                    cands.append(c)
+            return cands
+
         jp = ""
-        try:
-            jp = (tag_suggest.translate_exact(t) or "").strip()
-        except Exception:
-            jp = ""
-        if not jp:
+        lookup_tag = t
+        for cand in _candidate_tags(t):
+            lookup_tag = cand
             try:
-                jp = (tag_dictionary.translate_exact(t) or "").strip()
+                jp = (tag_suggest.translate_exact(cand) or "").strip()
             except Exception:
                 jp = ""
+            if jp:
+                break
+            try:
+                jp = (tag_dictionary.translate_exact(cand) or "").strip()
+            except Exception:
+                jp = ""
+            if jp:
+                break
 
-        # DeepL fallback (optional)
+        # Machine translation fallbacks:
+        # free providers first, then optional paid providers.
         if not jp:
             try:
-                enable = bool(getattr(shared.opts, "pc_deepl_enable", False))
-                api_key = (getattr(shared.opts, "pc_deepl_api_key", "") or "").strip()
-                api_url = (getattr(shared.opts, "pc_deepl_api_url", "") or "").strip()
-                if enable and api_key and api_url:
-                    cached = _deepl_cache.get(t)
+                cands_mt = _candidate_tags(t)
+                mt_key = (cands_mt[0] if cands_mt else _normalize_for_lookup(t) or "").strip()
+                if mt_key:
+                    cached = _tag_mt_cache.get(mt_key)
                     if cached:
-                        jp = cached
+                        jp = cached.strip()
                     else:
-                        # Better translation when underscores are treated as spaces
-                        text = t.replace("_", " ")
-                        payload = urllib.parse.urlencode(
-                            {
-                                "text": text,
-                                "source_lang": "EN",
-                                "target_lang": "JA",
-                            }
-                        ).encode("utf-8")
-                        req = urllib.request.Request(
-                            api_url,
-                            data=payload,
-                            headers={
-                                "Content-Type": "application/x-www-form-urlencoded",
-                                "Authorization": f"DeepL-Auth-Key {api_key}",
-                            },
-                            method="POST",
-                        )
-                        raw = ""
-                        global _deepl_last_error
-                        _deepl_last_error = ""
-                        try:
-                            with urllib.request.urlopen(req, timeout=6) as r:
-                                raw = r.read().decode("utf-8", errors="replace")
-                        except urllib.error.HTTPError as e:
-                            body = ""
-                            try:
-                                body = e.read().decode("utf-8", errors="replace")
-                            except Exception:
-                                body = ""
-                            _deepl_last_error = f"HTTPError {getattr(e, 'code', '')}: {body[:300]}"
-                            raw = body
-                        except Exception as e:
-                            _deepl_last_error = f"Error: {e}"
-                            raw = ""
-
-                        ok = False
-                        try:
-                            data = json.loads(raw) if raw else {}
-                            tr = (data.get("translations") or [{}])[0]
-                            jp = str(tr.get("text") or "").strip()
-                            ok = bool(jp)
-                        except Exception:
-                            jp = ""
-                        # Cache only successful translations; do not cache failures.
-                        if ok:
-                            _deepl_cache[t] = jp
+                        qtext = mt_key
+                        jp = _argos_translate_tag(mt_key, qtext).strip()
+                        if not jp:
+                            jp = _libre_translate_tag(mt_key, qtext).strip()
+                        if not jp:
+                            jp = _deepl_translate_tag(mt_key, qtext).strip()
+                        if not jp:
+                            jp = _google_translate_tag(mt_key, qtext).strip()
             except Exception:
-                # Never fail tag insertion due to translation issues
                 jp = jp or ""
         if debug:
-            enable = bool(getattr(shared.opts, "pc_deepl_enable", False))
-            api_key = (getattr(shared.opts, "pc_deepl_api_key", "") or "").strip()
-            api_url = (getattr(shared.opts, "pc_deepl_api_url", "") or "").strip()
+            deepl_enable = bool(getattr(shared.opts, "pc_deepl_enable", False))
+            deepl_api_key = (getattr(shared.opts, "pc_deepl_api_key", "") or "").strip()
+            deepl_api_url = (getattr(shared.opts, "pc_deepl_api_url", "") or "").strip()
+            g_enable = bool(getattr(shared.opts, "pc_google_translate_enable", False))
+            g_api_key = (getattr(shared.opts, "pc_google_translate_api_key", "") or "").strip()
+            a_enable = bool(getattr(shared.opts, "pc_argos_enable", False))
+            l_enable = bool(getattr(shared.opts, "pc_libre_enable", False))
+            l_api_url = (getattr(shared.opts, "pc_libre_api_url", "") or "").strip()
+            _c_mt = _candidate_tags(t)
+            _mt_dbg_key = ((_c_mt[0] if _c_mt else _normalize_for_lookup(t)) or "").strip()
             return {
                 "tag": t,
                 "jp": jp,
                 "deepl": {
-                    "enable": enable,
-                    "has_key": bool(api_key),
-                    "api_url": api_url,
-                    "cached": (t in _deepl_cache),
+                    "enable": deepl_enable,
+                    "has_key": bool(deepl_api_key),
+                    "api_url": deepl_api_url,
+                    "cached": (_mt_dbg_key in _tag_mt_cache) if _mt_dbg_key else False,
                     "last_error": _deepl_last_error,
+                },
+                "google": {
+                    "enable": g_enable,
+                    "has_key": bool(g_api_key),
+                    "cached": (_mt_dbg_key in _tag_mt_cache) if _mt_dbg_key else False,
+                    "last_error": _google_translate_last_error,
+                },
+                "argos": {
+                    "enable": a_enable,
+                    "cached": (_mt_dbg_key in _tag_mt_cache) if _mt_dbg_key else False,
+                    "last_error": _argos_last_error,
+                },
+                "libre": {
+                    "enable": l_enable,
+                    "api_url": l_api_url,
+                    "cached": (_mt_dbg_key in _tag_mt_cache) if _mt_dbg_key else False,
+                    "last_error": _libre_last_error,
                 },
             }
         return {"tag": t, "jp": jp}

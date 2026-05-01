@@ -527,13 +527,27 @@
         setTimeout(init, 1500);
     }
 
-    // Gradio load observer
+    // Gradio load observer (body may not exist yet at script eval time — use fallback + retry)
     const observer = new MutationObserver((mutations, obs) => {
         if (document.getElementById('pc_asset_cards')) {
             obs.disconnect();
             setTimeout(init, 500);
         }
     });
-    observer.observe(document.body, { childList: true, subtree: true });
+    function startAssetObserver() {
+        const target = (typeof document.body !== 'undefined' && document.body)
+            ? document.body
+            : document.documentElement;
+        if (!(target instanceof Node)) {
+            requestAnimationFrame(startAssetObserver);
+            return;
+        }
+        try {
+            observer.observe(target, { childList: true, subtree: true });
+        } catch (_) {
+            requestAnimationFrame(startAssetObserver);
+        }
+    }
+    startAssetObserver();
 
 })();

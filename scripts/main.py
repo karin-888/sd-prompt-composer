@@ -55,10 +55,44 @@ def on_app_started(demo, app):
 def on_ui_settings():
     # Optional machine translation fallback for unknown manual tags
     shared.opts.add_option(
+        "pc_argos_enable",
+        shared.OptionInfo(
+            False,
+            "Prompt Composer: Use Argos Translate (無料・ローカル) for unknown tags",
+            section=("prompt_composer", "Prompt Composer"),
+        ),
+    )
+    shared.opts.add_option(
+        "pc_libre_enable",
+        shared.OptionInfo(
+            True,
+            "Prompt Composer: Use LibreTranslate API (無料運用可) for unknown tags",
+            section=("prompt_composer", "Prompt Composer"),
+        ),
+    )
+    shared.opts.add_option(
+        "pc_libre_api_url",
+        shared.OptionInfo(
+            "http://127.0.0.1:5001/translate",
+            "Prompt Composer: LibreTranslate API URL（自前サーバー推奨）",
+            section=("prompt_composer", "Prompt Composer"),
+        ),
+    )
+    shared.opts.add_option(
+        "pc_libre_api_key",
+        shared.OptionInfo(
+            "",
+            "Prompt Composer: LibreTranslate API key（必要なサーバーのみ）",
+            section=("prompt_composer", "Prompt Composer"),
+        ),
+    )
+
+    # Paid providers (optional, lower priority than free providers)
+    shared.opts.add_option(
         "pc_deepl_enable",
         shared.OptionInfo(
             False,
-            "Prompt Composer: Use DeepL for unknown manual tags",
+            "Prompt Composer: Use DeepL for unknown tags (free providers fail時の有料フォールバック)",
             section=("prompt_composer", "Prompt Composer"),
         ),
     )
@@ -75,6 +109,30 @@ def on_ui_settings():
         shared.OptionInfo(
             "https://api-free.deepl.com/v2/translate",
             "Prompt Composer: DeepL API URL",
+            section=("prompt_composer", "Prompt Composer"),
+        ),
+    )
+    shared.opts.add_option(
+        "pc_google_translate_enable",
+        shared.OptionInfo(
+            False,
+            "Prompt Composer: Use Google Cloud Translation API for unknown tags (最終フォールバック・有料)",
+            section=("prompt_composer", "Prompt Composer"),
+        ),
+    )
+    shared.opts.add_option(
+        "pc_google_translate_api_key",
+        shared.OptionInfo(
+            "",
+            "Prompt Composer: Google Cloud Translation API キー（GCPでCloud Translationを有効化し、キーを発行）",
+            section=("prompt_composer", "Prompt Composer"),
+        ),
+    )
+    shared.opts.add_option(
+        "pc_google_translate_api_url",
+        shared.OptionInfo(
+            "https://translation.googleapis.com/language/translate/v2",
+            "Prompt Composer: Google Translation REST のベースURL（通常は変更不要）",
             section=("prompt_composer", "Prompt Composer"),
         ),
     )

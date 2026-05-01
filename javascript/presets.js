@@ -261,6 +261,20 @@
             setTimeout(init, 500);
         }
     });
-    observer.observe(document.body, { childList: true, subtree: true });
+    function startPresetObserver() {
+        const target = (typeof document.body !== 'undefined' && document.body)
+            ? document.body
+            : document.documentElement;
+        if (!(target instanceof Node)) {
+            requestAnimationFrame(startPresetObserver);
+            return;
+        }
+        try {
+            observer.observe(target, { childList: true, subtree: true });
+        } catch (_) {
+            requestAnimationFrame(startPresetObserver);
+        }
+    }
+    startPresetObserver();
 
 })();

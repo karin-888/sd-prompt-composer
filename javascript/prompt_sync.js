@@ -193,6 +193,24 @@
         // Re-init when Prompt Composer elements are re-rendered
         if (appRoot().getElementById('pc_apply_txt2img')) setTimeout(init, 100);
     });
-    observer.observe(document.body, { childList: true, subtree: true });
+    function startPromptSyncObserver() {
+        let rootDoc;
+        try {
+            rootDoc = appRoot();
+        } catch (_) {
+            rootDoc = document;
+        }
+        const target = rootDoc.body || rootDoc.documentElement;
+        if (!(target instanceof Node)) {
+            requestAnimationFrame(startPromptSyncObserver);
+            return;
+        }
+        try {
+            observer.observe(target, { childList: true, subtree: true });
+        } catch (_) {
+            requestAnimationFrame(startPromptSyncObserver);
+        }
+    }
+    startPromptSyncObserver();
 
 })();

@@ -12,6 +12,10 @@ data/user-data.json
 data/assets-cache.json
 data/presets.json
 data/order-profiles.json
+data/ips-collections.json
+
+## IPS data symlink (points at infinite-prompt-studio/app/data)
+ips_data
 
 ## Optional: If you don't want to version tag CSVs, uncomment these:
 # tags/*.csv

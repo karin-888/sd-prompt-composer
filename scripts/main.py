@@ -31,6 +31,8 @@ import preset_store
 import order_profiles
 import tag_dictionary
 import tag_suggest
+import ips_data_loader
+import ips_collections_store
 import api as composer_api
 from modules import shared
 
@@ -43,6 +45,8 @@ def on_app_started(demo, app):
     order_profiles.init(EXTENSION_PATH)
     tag_dictionary.init(EXTENSION_PATH)
     tag_suggest.init(EXTENSION_PATH)
+    ips_data_loader.init(EXTENSION_PATH)
+    ips_collections_store.init(EXTENSION_PATH)
     import user_data
     user_data.init(EXTENSION_PATH)
     
@@ -184,11 +188,30 @@ def on_ui_tabs():
                     '<div id="pc_tokenizer_view" class="pc-tokenizer-view">プロンプトを入力して「トークン数を計算」を押すと結果が表示されます。</div>'
                 )
             with gr.Column(scale=1, min_width=200):
+                gr.HTML('<div class="pc-section-header">🎨 生成</div>')
+                gr.HTML(
+                    '<div id="pc_generate_preview_wrap" class="pc-generate-preview-wrap">'
+                    '<div id="pc_generate_progress" class="pc-generate-progress" style="display:none">'
+                    '<div class="pc-generate-progress-track"><div class="pc-generate-progress-fill"></div></div>'
+                    '<div class="pc-generate-progress-text">生成中...</div>'
+                    '</div>'
+                    '<div id="pc_generate_preview" class="pc-generate-preview">'
+                    '<span class="pc-generate-preview-empty">「生成」を押すと txt2img の結果がここに表示されます</span>'
+                    '</div>'
+                    '<button type="button" id="pc_open_txt2img_gallery" class="pc-generate-open-tab" title="txt2imgタブのギャラリーを表示">txt2imgタブで見る</button>'
+                    '</div>'
+                )
+                generate_txt2img_btn = gr.Button(
+                    "🎨 生成 (txt2img)",
+                    elem_id="pc_generate_txt2img",
+                    variant="primary",
+                )
+                gr.HTML('<div style="margin-top:14px;"></div>')
                 gr.HTML('<div class="pc-section-header">🔄 同期</div>')
                 apply_txt2img_btn = gr.Button(
                     "📤 txt2img に適用",
                     elem_id="pc_apply_txt2img",
-                    variant="primary"
+                    variant="secondary"
                 )
                 apply_img2img_btn = gr.Button(
                     "📤 img2img に適用",
@@ -341,7 +364,6 @@ def on_ui_tabs():
                             elem_id="pc_wc_list",
                             value='<div id="pc_wildcards_container" class="pc-wc-container"></div>'
                         )
-
         # --- Backend Events for UI Interactivity ---
         def update_subfolders(asset_type):
             type_map = {

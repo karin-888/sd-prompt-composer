@@ -26,6 +26,8 @@ import tag_dictionary
 import user_data
 import tag_suggest
 import wildcards
+import ips_data_loader
+import ips_collections_store
 from modules import shared, sd_hijack
 import open_clip.tokenizer
 import urllib.parse
@@ -601,6 +603,76 @@ def register_api(app: FastAPI, extension_dir: str):
         """Get list of available (section/category/group) paths."""
         paths = tag_dictionary.list_paths()
         return {"paths": paths}
+
+    # --- IPS data (Infinite Prompt Studio dictionaries) ---
+
+    @app.get("/prompt-composer/api/ips/status")
+    async def api_ips_status():
+        return ips_data_loader.get_status()
+
+    @app.get("/prompt-composer/api/ips/modules")
+    async def api_ips_modules():
+        return {"modules": ips_data_loader.list_modules()}
+
+    @app.get("/prompt-composer/api/ips/tags")
+    async def api_ips_tags(
+        module: str,
+        q: Optional[str] = None,
+        cat: Optional[str] = None,
+        limit: int = 120,
+    ):
+        if not module:
+            return JSONResponse(status_code=400, content={"error": "module is required"})
+        items = ips_data_loader.search_module_tags(module, q=q or "", cat=cat, limit=limit)
+        mod = next((m for m in ips_data_loader.list_modules() if m["id"] == module), None)
+        return {
+            "items": items,
+            "module": module,
+            "block": (mod or {}).get("block", "character"),
+        }
+
+    @app.get("/prompt-composer/api/ips/fashion/genres")
+    async def api_ips_fashion_genres():
+        return {"genres": ips_data_loader.list_fashion_genres()}
+
+    @app.get("/prompt-composer/api/ips/fashion/presets")
+    async def api_ips_fashion_presets(
+        genre: str,
+        q: Optional[str] = None,
+        limit: int = 80,
+    ):
+        if not genre:
+            return JSONResponse(status_code=400, content={"error": "genre is required"})
+        return {
+            "genre": genre,
+            "items": ips_data_loader.list_fashion_presets(genre, q=q or "", limit=limit),
+        }
+
+    @app.get("/prompt-composer/api/ips/collections")
+    async def api_ips_collections_list(block: Optional[str] = None):
+        return {"collections": ips_collections_store.list_collections(block=block)}
+
+    @app.get("/prompt-composer/api/ips/collections/{collection_id}")
+    async def api_ips_collection_get(collection_id: str):
+        col = ips_collections_store.get_collection(collection_id)
+        if not col:
+            return JSONResponse(status_code=404, content={"error": "Collection not found"})
+        return col
+
+    @app.post("/prompt-composer/api/ips/collections")
+    async def api_ips_collection_save(data: dict):
+        if not (data.get("name") or "").strip():
+            return JSONResponse(status_code=400, content={"error": "Name is required"})
+        col = ips_collections_store.save_collection(data)
+        if col:
+            return col
+        return JSONResponse(status_code=500, content={"error": "Failed to save collection"})
+
+    @app.delete("/prompt-composer/api/ips/collections/{collection_id}")
+    async def api_ips_collection_delete(collection_id: str):
+        if ips_collections_store.delete_collection(collection_id):
+            return {"message": "Deleted"}
+        return JSONResponse(status_code=404, content={"error": "Collection not found"})
 
     # --- Wildcards endpoints ---
 

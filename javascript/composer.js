@@ -41,7 +41,34 @@
     let blockDragScrollListenerBound = false;
     const jpLookupTried = new Map(); // token.id -> normalized key
     let jpBackfillTimer = null;
+    let batchUpdateDepth = 0;
+    let renderBlocksRaf = 0;
+    let pcContainerDelegated = false;
     // NOTE: token selection is used for keyboard weight adjust (↑↓).
+
+    function beginBatchUpdate() {
+        batchUpdateDepth++;
+    }
+
+    function endBatchUpdate() {
+        batchUpdateDepth = Math.max(0, batchUpdateDepth - 1);
+        if (batchUpdateDepth === 0) {
+            scheduleRenderBlocks();
+        }
+    }
+
+    function scheduleRenderBlocks() {
+        if (batchUpdateDepth > 0) return;
+        if (renderBlocksRaf) return;
+        renderBlocksRaf = requestAnimationFrame(() => {
+            renderBlocksRaf = 0;
+            renderBlocksImmediate();
+        });
+    }
+
+    function renderBlocks() {
+        scheduleRenderBlocks();
+    }
 
     // ===== Initialization =====
     function init() {
@@ -133,7 +160,7 @@
     }
 
     // ===== Rendering =====
-    function renderBlocks() {
+    function renderBlocksImmediate() {
         const container = document.getElementById('pc_blocks_container');
         if (!container) return;
 
@@ -237,6 +264,18 @@
                     <button class="pc-block-clear" data-block-id="${block.id}" title="この欄のタグをすべて削除">🧹</button>
                     <button class="pc-block-delete" data-block-id="${block.id}" title="この欄を削除">🗑️</button>
                     <span class="pc-block-count">${block.tokens.length}</span>
+                </div>
+                <div class="pc-block-tagset-bar" data-block-id="${block.id}" data-block-type="${block.type}">
+                    <input type="text" class="pc-block-tagset-name" data-block-id="${block.id}" placeholder="保存名..." autocomplete="off" />
+                    <select class="pc-block-tagset-select" data-block-id="${block.id}">
+                        <option value="">保存済み</option>
+                    </select>
+                    <div class="pc-block-tagset-actions">
+                        <button type="button" class="pc-block-tagset-btn pc-block-tagset-save-new" data-block-id="${block.id}" title="新規保存" aria-label="新規保存">＋</button>
+                        <button type="button" class="pc-block-tagset-btn pc-block-tagset-load" data-block-id="${block.id}" title="読込（Shift+クリックで追加）" aria-label="読込">↓</button>
+                        <button type="button" class="pc-block-tagset-btn pc-block-tagset-overwrite" data-block-id="${block.id}" title="上書き" aria-label="上書き">↻</button>
+                        <button type="button" class="pc-block-tagset-btn pc-block-tagset-delete" data-block-id="${block.id}" title="削除" aria-label="削除">×</button>
+                    </div>
                 </div>
                 <div class="pc-block-body">
                     <div class="pc-token-list">${tokensHtml}</div>
@@ -759,150 +798,217 @@
         }
     }
 
+    function ensurePcDelegatedListeners(container) {
+        if (pcContainerDelegated) return;
+        pcContainerDelegated = true;
+
+        container.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.pc-block-toggle, .pc-block-clear, .pc-block-delete, .pc-block-tagset-btn, .pc-token-edit, .pc-token-remove')) {
+                e.stopPropagation();
+            }
+        });
+
+        container.addEventListener('click', async (e) => {
+            const TAG = window.PromptComposerBlockTagsets;
+
+            const saveNewBtn = e.target.closest('.pc-block-tagset-save-new');
+            if (saveNewBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const blockId = saveNewBtn.dataset.blockId;
+                if (blockId && TAG) {
+                    try { await TAG.saveNew(blockId); } catch (err) {
+                        console.warn('[Prompt Composer] Save new failed:', err);
+                        alert('保存に失敗しました');
+                    }
+                }
+                return;
+            }
+
+            const loadBtn = e.target.closest('.pc-block-tagset-load');
+            if (loadBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const blockId = loadBtn.dataset.blockId;
+                if (blockId && TAG) {
+                    try { await TAG.load(blockId, e.shiftKey); } catch (err) {
+                        console.warn('[Prompt Composer] Load failed:', err);
+                        alert('読込に失敗しました');
+                    }
+                }
+                return;
+            }
+
+            const overwriteBtn = e.target.closest('.pc-block-tagset-overwrite');
+            if (overwriteBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const blockId = overwriteBtn.dataset.blockId;
+                if (blockId && TAG) {
+                    try { await TAG.overwrite(blockId); } catch (err) {
+                        console.warn('[Prompt Composer] Overwrite failed:', err);
+                        alert('上書きに失敗しました');
+                    }
+                }
+                return;
+            }
+
+            const delTagsetBtn = e.target.closest('.pc-block-tagset-delete');
+            if (delTagsetBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const blockId = delTagsetBtn.dataset.blockId;
+                if (blockId && TAG) {
+                    try { await TAG.delete(blockId); } catch (err) {
+                        console.warn('[Prompt Composer] Delete failed:', err);
+                        alert('削除に失敗しました');
+                    }
+                }
+                return;
+            }
+
+            const editBtn = e.target.closest('.pc-token-edit');
+            if (editBtn) {
+                e.stopPropagation();
+                e.preventDefault();
+                const blockId = editBtn.dataset.blockId;
+                const tokenIdx = parseInt(editBtn.dataset.tokenIdx, 10);
+                if (blockId && !Number.isNaN(tokenIdx)) startTokenInlineEdit(blockId, tokenIdx);
+                return;
+            }
+
+            const removeBtn = e.target.closest('.pc-token-remove');
+            if (removeBtn) {
+                e.stopPropagation();
+                const blockId = removeBtn.dataset.blockId;
+                const tokenIdx = parseInt(removeBtn.dataset.tokenIdx, 10);
+                if (blockId && !Number.isNaN(tokenIdx)) removeToken(blockId, tokenIdx);
+                return;
+            }
+
+            const clearBtn = e.target.closest('.pc-block-clear');
+            if (clearBtn) {
+                e.stopPropagation();
+                const blockId = clearBtn.dataset.blockId;
+                if (blockId) clearBlockTokens(blockId);
+                return;
+            }
+
+            const deleteBlockBtn = e.target.closest('.pc-block-delete');
+            if (deleteBlockBtn) {
+                e.stopPropagation();
+                const blockId = deleteBlockBtn.dataset.blockId;
+                if (blockId) deleteBlock(blockId);
+                return;
+            }
+
+            const toggleBtn = e.target.closest('.pc-block-toggle');
+            if (toggleBtn) {
+                const blockId = toggleBtn.dataset.blockId;
+                if (blockId) toggleBlock(blockId);
+                return;
+            }
+
+            const tokenEl = e.target.closest('.pc-token');
+            if (tokenEl && !tokenEl.classList.contains('pc-token-editing') && !e.target.closest('.pc-token-edit-input')) {
+                const id = tokenEl.dataset.tokenId;
+                if (!id) return;
+                const isMulti = e.ctrlKey || e.metaKey;
+                if (!isMulti) {
+                    clearTokenSelection();
+                    selectedTokenIds.add(id);
+                } else if (selectedTokenIds.has(id)) {
+                    selectedTokenIds.delete(id);
+                } else {
+                    selectedTokenIds.add(id);
+                }
+                applyTokenSelectionClasses();
+            }
+        });
+
+        container.addEventListener('dblclick', (e) => {
+            const label = e.target.closest('.pc-block-label');
+            if (label) {
+                e.preventDefault();
+                e.stopPropagation();
+                const blockEl = label.closest('.pc-block');
+                const blockId = blockEl ? blockEl.dataset.blockId : null;
+                if (blockId) renameBlockLabel(blockId);
+                return;
+            }
+
+            const tokenEl = e.target.closest('.pc-token');
+            if (!tokenEl || tokenEl.classList.contains('pc-token-editing')) return;
+            if (e.target.closest('.pc-token-edit-input, .pc-token-remove, .pc-token-edit')) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const blockId = tokenEl.dataset.blockId;
+            const tokenIdx = parseInt(tokenEl.dataset.tokenIdx, 10);
+            if (blockId && !Number.isNaN(tokenIdx)) toggleTokenHidden(blockId, tokenIdx);
+        });
+
+        container.addEventListener('dragstart', (e) => {
+            if (e.target.closest('.pc-token[draggable="true"]')) {
+                onTokenDragStart(e);
+                return;
+            }
+            if (e.target.closest('.pc-block-header-draggable')) {
+                onDragStart(e);
+            }
+        });
+
+        container.addEventListener('dragover', (e) => {
+            if (e.target.closest('.pc-token, .pc-token-list')) {
+                onTokenDragOver(e);
+            } else if (e.target.closest('.pc-block')) {
+                onDragOver(e);
+            }
+        });
+
+        container.addEventListener('drop', (e) => {
+            if (e.target.closest('.pc-token, .pc-token-list')) {
+                onTokenDrop(e);
+            } else if (e.target.closest('.pc-block')) {
+                onDrop(e);
+            }
+        });
+
+        container.addEventListener('dragend', (e) => {
+            if (e.target.closest('.pc-token[draggable="true"]')) {
+                onTokenDragEnd(e);
+            } else if (e.target.closest('.pc-block-header-draggable')) {
+                onDragEnd(e);
+            }
+        });
+
+        container.addEventListener('change', (e) => {
+            const TAG = window.PromptComposerBlockTagsets;
+            const sel = e.target.closest('.pc-block-tagset-select');
+            if (sel && TAG && sel.dataset.blockId) {
+                TAG.onSelectChange(sel.dataset.blockId);
+            }
+        });
+
+        container.addEventListener('input', (e) => {
+            const TAG = window.PromptComposerBlockTagsets;
+            const inp = e.target.closest('.pc-block-tagset-name');
+            if (inp && TAG && inp.dataset.blockId) {
+                TAG.onNameInput(inp.dataset.blockId);
+            }
+        });
+    }
+
     function attachBlockListeners() {
         const container = document.getElementById('pc_blocks_container');
         if (!container) return;
 
-        // Prevent block drag from stealing header button clicks
-        container.querySelectorAll('.pc-block-toggle, .pc-block-clear, .pc-block-delete').forEach(btn => {
-            btn.addEventListener('mousedown', (e) => {
-                e.stopPropagation();
-            });
-        });
-        container.querySelectorAll('.pc-token-edit, .pc-token-remove').forEach(btn => {
-            btn.addEventListener('mousedown', (e) => {
-                e.stopPropagation();
-            });
-        });
+        ensurePcDelegatedListeners(container);
 
-        // Toggle buttons
-        container.querySelectorAll('.pc-block-toggle').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const blockId = e.currentTarget.dataset.blockId;
-                toggleBlock(blockId);
-            });
-        });
-
-        // Block label rename (dblclick)
-        container.querySelectorAll('.pc-block-label').forEach(el => {
-            el.addEventListener('dblclick', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const blockEl = el.closest('.pc-block');
-                const blockId = blockEl ? blockEl.dataset.blockId : null;
-                if (!blockId) return;
-                renameBlockLabel(blockId);
-            });
-        });
-
-        // Token edit / remove buttons
-        container.querySelectorAll('.pc-token-edit').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                const blockId = e.currentTarget.dataset.blockId;
-                const tokenIdx = parseInt(e.currentTarget.dataset.tokenIdx, 10);
-                if (!blockId || Number.isNaN(tokenIdx)) return;
-                startTokenInlineEdit(blockId, tokenIdx);
-            });
-        });
-        container.querySelectorAll('.pc-token-remove').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const blockId = e.currentTarget.dataset.blockId;
-                const tokenIdx = parseInt(e.currentTarget.dataset.tokenIdx, 10);
-                removeToken(blockId, tokenIdx);
-            });
-        });
-
-        // Block-level clear buttons (clear tokens only inside the block)
-        container.querySelectorAll('.pc-block-clear').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const blockId = e.currentTarget.dataset.blockId;
-                clearBlockTokens(blockId);
-            });
-        });
-
-        // Block delete buttons (remove the whole block)
-        container.querySelectorAll('.pc-block-delete').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const blockId = e.currentTarget.dataset.blockId;
-                deleteBlock(blockId);
-            });
-        });
-
-        // Token click (selection for multi-move)
-        container.querySelectorAll('.pc-token').forEach(el => {
-            el.addEventListener('click', (e) => {
-                if (el.classList.contains('pc-token-editing')) return;
-                if (e.target && e.target.closest && e.target.closest('.pc-token-edit-input')) return;
-                // ignore clicks on remove / edit button
-                if (e.target && e.target.classList && e.target.classList.contains('pc-token-remove')) {
-                    return;
-                }
-                if (e.target && e.target.classList && e.target.classList.contains('pc-token-edit')) {
-                    return;
-                }
-                const id = el.dataset.tokenId;
-                if (!id) return;
-
-                const isMulti = e.ctrlKey || e.metaKey;
-                if (!isMulti) {
-                    // single select
-                    clearTokenSelection();
-                    selectedTokenIds.add(id);
-                } else {
-                    // toggle
-                    if (selectedTokenIds.has(id)) {
-                        selectedTokenIds.delete(id);
-                    } else {
-                        selectedTokenIds.add(id);
-                    }
-                }
-                applyTokenSelectionClasses();
-            });
-        });
-
-        // Token double click: temporary hide/unhide (excluded from final prompt)
-        container.querySelectorAll('.pc-token').forEach(el => {
-            el.addEventListener('dblclick', (e) => {
-                if (el.classList.contains('pc-token-editing')) return;
-                if (e.target && e.target.closest && e.target.closest('.pc-token-edit-input')) return;
-                if (e.target && e.target.classList && e.target.classList.contains('pc-token-remove')) {
-                    return;
-                }
-                if (e.target && e.target.classList && e.target.classList.contains('pc-token-edit')) {
-                    return;
-                }
-                e.preventDefault();
-                e.stopPropagation();
-                const blockId = el.dataset.blockId;
-                const tokenIdx = parseInt(el.dataset.tokenIdx, 10);
-                toggleTokenHidden(blockId, tokenIdx);
-            });
-        });
-
-        // Token drag-and-drop: reorder + move between blocks (same polarity).
-        // Listeners must be on .pc-token-list as well — empty lists have no .pc-token
-        // children, so drops on an empty column (or on flex gap / list padding) would
-        // otherwise never hit a token and the move would silently fail.
-        container.querySelectorAll('.pc-token[draggable="true"]').forEach(el => {
-            el.addEventListener('dragstart', onTokenDragStart);
-            el.addEventListener('dragover', onTokenDragOver);
-            el.addEventListener('drop', onTokenDrop);
-            el.addEventListener('dragend', onTokenDragEnd);
-        });
-        container.querySelectorAll('.pc-token-list').forEach(el => {
-            el.addEventListener('dragover', onTokenDragOver);
-            el.addEventListener('drop', onTokenDrop);
-        });
-
-        // Token input fields
         container.querySelectorAll('.pc-token-input').forEach(input => {
+            if (input.dataset.pcInputBound === '1') return;
+            input.dataset.pcInputBound = '1';
+
             input.addEventListener('keydown', (e) => {
-                // If local tag suggestion is handling Enter, skip default add-from-input
                 if (e.key === 'Enter' && tagSuggestBox && tagSuggestBox.style.display === 'block' && tagSuggestSelectedIndex >= 0) {
                     return;
                 }
@@ -913,7 +1019,6 @@
                     e.target.value = '';
                 }
             });
-            // Remember last-focused block for tag dictionary insertion
             input.addEventListener('focus', (e) => {
                 const blockId = e.target.dataset.blockId;
                 if (blockId) {
@@ -921,31 +1026,17 @@
                 }
             });
 
-            // Integrate with a1111-sd-webui-tagcomplete if available
             try {
                 if (typeof window.addAutocompleteToArea === 'function') {
                     window.addAutocompleteToArea(input);
                 } else if (typeof addAutocompleteToArea === 'function') {
                     addAutocompleteToArea(input);
                 }
-            } catch (e) {
+            } catch (err) {
                 // ignore if tagcomplete is not loaded
             }
 
-            // Local lightweight tag suggestions (danbooru.csv)
             setupLocalTagSuggest(input);
-        });
-
-        // Special token buttons (BREAK / AND) were moved to Tag Dictionary quickbar.
-
-        // Block reorder: drag from header only (body stays free for token drag)
-        container.querySelectorAll('.pc-block-header-draggable').forEach(el => {
-            el.addEventListener('dragstart', onDragStart);
-            el.addEventListener('dragend', onDragEnd);
-        });
-        container.querySelectorAll('.pc-block').forEach(el => {
-            el.addEventListener('dragover', onDragOver);
-            el.addEventListener('drop', onDrop);
         });
     }
 
@@ -1289,10 +1380,7 @@
         }
     }
 
-    function addToken(blockId, label, text, options = {}) {
-        const block = findBlock(blockId);
-        if (!block) return;
-
+    function pushTokenToBlock(block, label, text, options = {}) {
         const token = {
             id: generateId(),
             label: label,
@@ -1304,12 +1392,35 @@
             previewUrl: options.previewUrl || null,
             jp: options.jp || null
         };
-
         block.tokens.push(token);
+        return token;
+    }
+
+    function addToken(blockId, label, text, options = {}) {
+        const block = findBlock(blockId);
+        if (!block) return;
+        const token = pushTokenToBlock(block, label, text, options);
         renderBlocks();
         if (!token.jp) {
             const key = getTokenJpLookupKey(token);
             if (key) scheduleJpBackfill(120);
+        }
+    }
+
+    function addTokensBulk(blockId, tokenSpecs, options = {}) {
+        const block = findBlock(blockId);
+        if (!block || !tokenSpecs || !tokenSpecs.length) return;
+        beginBatchUpdate();
+        try {
+            tokenSpecs.forEach(spec => {
+                if (!spec) return;
+                pushTokenToBlock(block, spec.label, spec.text, spec);
+            });
+        } finally {
+            endBatchUpdate();
+        }
+        if (options.scheduleJpBackfill !== false) {
+            scheduleJpBackfill(options.jpBackfillDelay || 200);
         }
     }
 
@@ -1534,13 +1645,29 @@
     }
 
     function addTokenFromInput(blockId, rawText) {
-        // If contains separators, split into multiple tokens
+        // If contains separators, split into multiple tokens (one render)
         if (/[,\n、]/.test(rawText)) {
-            rawText
-                .split(/[,\n、]/)
-                .map(t => t.trim())
-                .filter(t => t.length > 0)
-                .forEach(part => addTokenFromInput(blockId, part));
+            const block = findBlock(blockId);
+            if (!block) return;
+            beginBatchUpdate();
+            try {
+                rawText
+                    .split(/[,\n、]/)
+                    .map(t => t.trim())
+                    .filter(t => t.length > 0)
+                    .forEach(part => {
+                        const parsed = parseComposerTokenSlice(part);
+                        if (!parsed) return;
+                        pushTokenToBlock(block, parsed.label, parsed.emittedText, {
+                            weight: parsed.weight,
+                            sourceType: 'manual',
+                            isTrigger: false
+                        });
+                    });
+            } finally {
+                endBatchUpdate();
+            }
+            scheduleJpBackfill(120);
             return;
         }
 
@@ -1602,6 +1729,137 @@
         if (!confirm(`「${block.label}」のタグをすべて削除しますか？`)) return;
         block.tokens = [];
         renderBlocks();
+    }
+
+    function clearBlockTokensSilent(blockId) {
+        const block = findBlock(blockId);
+        if (!block) return;
+        block.tokens = [];
+    }
+
+    function findBlockByType(type, useNegative = false) {
+        const list = useNegative ? negativeBlocks : blocks;
+        return list.find(b => b.type === type && b.enabled !== false)
+            || list.find(b => b.type === type);
+    }
+
+    function fillBlockFromText(blockId, text) {
+        const raw = String(text || '').trim();
+        if (!raw || !blockId) return;
+        const block = findBlock(blockId);
+        if (!block) return;
+        const parts = raw.split(/[,\n、]/).map(t => t.trim()).filter(Boolean);
+        if (!parts.length) return;
+
+        const applyParts = () => {
+            parts.forEach(part => {
+                const parsed = parseComposerTokenSlice(part);
+                if (!parsed) return;
+                pushTokenToBlock(block, parsed.label, parsed.emittedText, {
+                    weight: parsed.weight,
+                    sourceType: 'ips',
+                    isTrigger: false
+                });
+            });
+        };
+
+        if (batchUpdateDepth > 0) {
+            applyParts();
+        } else {
+            beginBatchUpdate();
+            try {
+                applyParts();
+            } finally {
+                endBatchUpdate();
+            }
+        }
+    }
+
+    /**
+     * Import prompt slots from Infinite Prompt Studio (IPS).
+     * @param {object} payload
+     * @param {'replace'|'append'} [payload.mode]
+     * @param {object} [payload.slots] quality, character, outfit, environment, pose, r18, lora
+     * @param {string} [payload.negative]
+     * @param {object} [payload.options] includeQuality, onlySlots, switchTab
+     */
+    function importFromIPS(payload) {
+        if (!payload || typeof payload !== 'object') {
+            return { ok: false, error: 'invalid payload' };
+        }
+
+        const mode = payload.mode === 'append' ? 'append' : 'replace';
+        const slots = payload.slots || {};
+        const opts = payload.options || {};
+        const includeQuality = opts.includeQuality === true;
+        const onlySlots = Array.isArray(opts.onlySlots) ? opts.onlySlots : null;
+        const onlyBlockTypes = Array.isArray(opts.onlyBlockTypes) ? opts.onlyBlockTypes : null;
+
+        const shouldImport = (key) => !onlySlots || onlySlots.includes(key);
+        const shouldImportBlock = (blockTypes) => {
+            if (!onlyBlockTypes) return true;
+            const list = Array.isArray(blockTypes) ? blockTypes : [blockTypes];
+            return list.some(t => onlyBlockTypes.includes(t));
+        };
+
+        const slotPlan = [
+            { key: 'quality', blockTypes: ['quality', 'style'], targetType: 'quality', enabled: includeQuality && shouldImport('quality') && shouldImportBlock(['quality', 'style']) },
+            { key: 'character', blockTypes: ['character', 'subject', 'appearance'], targetType: 'character', enabled: shouldImport('character') && shouldImportBlock(['character', 'subject', 'appearance']) },
+            { key: 'outfit', blockTypes: ['outfit'], targetType: 'outfit', enabled: shouldImport('outfit') && shouldImportBlock('outfit') },
+            { key: 'environment', blockTypes: ['background', 'lighting'], targetType: 'background', enabled: shouldImport('environment') && shouldImportBlock(['background', 'lighting']) },
+            { key: 'pose', blockTypes: ['composition', 'expression'], targetType: 'composition', enabled: shouldImport('pose') && shouldImportBlock(['composition', 'expression']) },
+            { key: 'r18', blockTypes: ['composition', 'expression'], targetType: 'composition', enabled: shouldImport('r18') && shouldImportBlock(['composition', 'expression']) },
+            { key: 'lora', blockTypes: ['lora', 'embedding'], targetType: 'lora', enabled: shouldImport('lora') && shouldImportBlock(['lora', 'embedding']) }
+        ];
+
+        let imported = 0;
+
+        beginBatchUpdate();
+        try {
+        for (const plan of slotPlan) {
+            if (!plan.enabled) continue;
+            const text = String(slots[plan.key] || '').trim();
+            if (!text) continue;
+
+            const block = findBlockByType(plan.targetType);
+            if (!block) continue;
+
+            const isCompositionR18 = plan.key === 'r18';
+            if (mode === 'replace' && !isCompositionR18) {
+                clearBlockTokensSilent(block.id);
+            } else if (mode === 'replace' && isCompositionR18 && plan.key === 'r18') {
+                const poseText = String(slots.pose || '').trim();
+                if (!poseText) {
+                    clearBlockTokensSilent(block.id);
+                }
+            }
+
+            fillBlockFromText(block.id, text);
+            imported += 1;
+        }
+
+        if (shouldImport('negative') && payload.negative != null) {
+            const negText = String(payload.negative || '').trim();
+            const negBlock = findBlockByType('negative', true);
+            if (negBlock) {
+                if (mode === 'replace') clearBlockTokensSilent(negBlock.id);
+                if (negText) {
+                    fillBlockFromText(negBlock.id, negText);
+                    imported += 1;
+                }
+            }
+        }
+        } finally {
+            endBatchUpdate();
+        }
+
+        scheduleJpBackfill(200);
+
+        try {
+            window.dispatchEvent(new CustomEvent('pc:ips-imported', { detail: { imported, payload } }));
+        } catch (_) {}
+
+        return { ok: true, imported };
     }
 
     function deleteBlock(blockId) {
@@ -2155,7 +2413,7 @@
                 if (key) jpLookupTried.set(t.id, key);
             }
         }
-        if (updated) renderBlocks();
+        if (updated) scheduleRenderBlocks();
 
         const remaining = missing.length - Math.min(batchSize, missing.length);
         if (continueUntilDone && remaining > 0) {
@@ -2278,8 +2536,14 @@
         getState,
         loadState,
         addToken,
+        addTokensBulk,
+        beginBatchUpdate,
+        endBatchUpdate,
         renderBlocks,
         sortBlocksByProfile,
+        importFromIPS,
+        findBlockByType,
+        clearBlockTokensSilent,
         get blocks() { return blocks; },
         get negativeBlocks() { return negativeBlocks; }
     };

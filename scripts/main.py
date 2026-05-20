@@ -342,13 +342,13 @@ def on_ui_tabs():
                 # Tag Dictionary / Wildcards tabs (rendered client-side by javascript)
                 with gr.Tabs(elem_id="pc_dict_tabs"):
                     with gr.TabItem("🏷️ Tag Dictionary"):
-                        gr.HTML('<div id="pc_tag_path_label" class="pc-tag-path-label"></div>')
                         tag_search = gr.Textbox(
                             elem_id="pc_tag_search",
                             placeholder="タグ / 日本語で検索...",
                             label="",
                             show_label=False
                         )
+                        gr.HTML('<div id="pc_tag_path_label" class="pc-tag-path-label"></div>')
                         tag_list = gr.HTML(
                             elem_id="pc_tag_list",
                             value='<div id="pc_tags_container" class="pc-tags-container"></div>'

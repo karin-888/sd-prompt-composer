@@ -186,6 +186,11 @@
         attachBlockListeners();
         updateFinalPrompt();
 
+        const tagsets = window.PromptComposerBlockTagsets;
+        if (tagsets && typeof tagsets.refreshAllBlockTagSetBars === 'function') {
+            tagsets.refreshAllBlockTagSetBars().catch(() => {});
+        }
+
         scheduleAutoSave();
     }
 

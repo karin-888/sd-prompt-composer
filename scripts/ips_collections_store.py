@@ -108,7 +108,12 @@ def _normalize_tags(tags: Any) -> List[Dict[str, Any]]:
 
 def _normalize_block(block: str) -> str:
     b = (block or "character").strip()
-    return b if b in BLOCK_TYPES else "character"
+    if b in BLOCK_TYPES:
+        return b
+    # Custom column ids from order profiles (e.g. ________)
+    if b and set(b) == {"_"}:
+        return b
+    return "character"
 
 
 def list_collections(block: Optional[str] = None) -> List[Dict[str, Any]]:

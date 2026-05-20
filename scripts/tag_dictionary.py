@@ -157,3 +157,36 @@ def list_paths() -> List[Dict]:
         )
     return paths
 
+
+def _path_key(section: str, category: str = "", group: str = "") -> str:
+    """Build a UI tree path key (matches javascript/tags.js)."""
+    sec = (section or "").strip() or "(未分類)"
+    cat = (category or "").strip()
+    grp = (group or "").strip()
+    parts = [sec]
+    if cat:
+        parts.append(cat)
+        if grp:
+            parts.append(grp)
+    return "/".join(parts)
+
+
+def path_tag_counts() -> Dict[str, int]:
+    """Return tag counts for each folder node in the path tree."""
+    if not _loaded:
+        return {}
+
+    counts: Dict[str, int] = {}
+    for item in _tags:
+        sec = item.get("section") or ""
+        cat = item.get("category") or ""
+        grp = item.get("group") or ""
+        keys = [_path_key(sec)]
+        if (cat or "").strip():
+            keys.append(_path_key(sec, cat))
+            if (grp or "").strip():
+                keys.append(_path_key(sec, cat, grp))
+        for key in keys:
+            counts[key] = counts.get(key, 0) + 1
+    return counts
+

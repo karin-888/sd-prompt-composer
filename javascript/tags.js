@@ -14,9 +14,15 @@
     let currentCategory = null;
     let currentGroup = null;
     let allPaths = [];
+    let tagPathCounts = {};
     let wildcardItems = [];
     let wildcardSources = [];
     let wcExpanded = new Set(); // expanded node keys (folder paths)
+    let tagExpanded = new Set();
+    let selectedPathKey = '';
+    let tagPathTreeHost = null;
+    let tagLeavesCache = new Map(); // pathKey -> items[]
+    let tagPathTreeScrollEl = null;
 
     function init() {
         const container = document.getElementById('pc_tags_container');
@@ -26,6 +32,8 @@
         }
 
         setupSearch();
+        hideTagsListContainer();
+        reorderTagDictionaryLayout();
         loadWildcards('');
         loadPathsAndInitialTags();
         console.log('[Prompt Composer] Tag dictionary initialized');
@@ -36,33 +44,45 @@
             const resp = await fetch('/prompt-composer/api/tag-paths');
             if (resp.ok) {
                 const data = await resp.json();
-                setupPathSelector(data.paths || []);
+                setupPathSelector(data.paths || [], data.counts || {});
             }
         } catch (err) {
             console.warn('[Prompt Composer] Failed to load tag paths:', err);
         }
-        await loadTags('');
+    }
+
+    async function fetchTagItems(query, sec, cat, grp, limit) {
+        const params = new URLSearchParams();
+        if (query) params.set('q', query);
+        if (sec) params.set('section', sec);
+        if (cat) params.set('category', cat);
+        if (grp) params.set('group', grp);
+        params.set('limit', String(limit || 500));
+        const resp = await fetch('/prompt-composer/api/tags?' + params.toString());
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const data = await resp.json();
+        return (data.items || []).slice().sort((a, b) => {
+            const aKey = (a.tag || '').toLowerCase();
+            const bKey = (b.tag || '').toLowerCase();
+            if (aKey < bKey) return -1;
+            if (aKey > bKey) return 1;
+            return 0;
+        });
     }
 
     async function loadTags(query) {
+        const q = (query || '').trim();
         try {
-            const params = new URLSearchParams();
-            if (query) params.set('q', query);
-            if (currentSection) params.set('section', currentSection);
-            if (currentCategory) params.set('category', currentCategory);
-            if (currentGroup) params.set('group', currentGroup);
-            params.set('limit', '80');
-            const resp = await fetch('/prompt-composer/api/tags?' + params.toString());
-            if (!resp.ok) throw new Error('HTTP ' + resp.status);
-            const data = await resp.json();
-            currentItems = (data.items || []).slice().sort((a, b) => {
-                const aKey = (a.tag || '').toLowerCase();
-                const bKey = (b.tag || '').toLowerCase();
-                if (aKey < bKey) return -1;
-                if (aKey > bKey) return 1;
-                return 0;
-            });
-            renderList();
+            if (q) {
+                currentItems = await fetchTagItems(q, null, null, null, 500);
+                renderSearchResults(currentItems);
+                return;
+            }
+            hideSearchResults();
+            if (selectedPathKey) {
+                tagLeavesCache.delete(selectedPathKey);
+                await ensureNodeTagsLoaded(selectedPathKey, true);
+            }
         } catch (err) {
             console.warn('[Prompt Composer] Failed to load tags:', err);
         }
@@ -237,107 +257,216 @@
         });
     }
 
-    function renderList() {
+    function hideTagsListContainer() {
         const container = document.getElementById('pc_tags_container');
-        if (!container) return;
+        if (container) container.innerHTML = '';
+        const listWrap = document.getElementById('pc_tag_list');
+        if (listWrap) listWrap.classList.add('pc-tag-list-embedded');
+    }
 
-        if (!currentItems.length) {
-            container.innerHTML = '<div class="pc-empty">タグが見つかりません</div>';
-            return;
-        }
-
-        // Group by section/category/group for hierarchical view
-        const tree = {};
-        currentItems.forEach(item => {
-            const section = item.section || 'その他';
-            const category = item.category || '';
-            const group = item.group || '';
-            tree[section] = tree[section] || {};
-            tree[section][category] = tree[section][category] || {};
-            tree[section][category][group] = tree[section][category][group] || [];
-            tree[section][category][group].push(item);
-        });
-
-        let html = '<div class="pc-taglist">';
-        // Compute common path to show above list
-        updatePathLabel(currentItems);
-        Object.keys(tree).forEach(section => {
-            html += `<div class="pc-tag-section">
-                <div class="pc-tag-section-header">${escapeHtml(section)}</div>
-                <div class="pc-tag-section-body">
-            `;
-            const cats = tree[section];
-            Object.keys(cats).forEach(cat => {
-                if (cat) {
-                    html += `<div class="pc-tag-category">
-                        <div class="pc-tag-category-header">${escapeHtml(cat)}</div>
-                        <div class="pc-tag-category-body">
-                    `;
-                }
-                const groups = cats[cat];
-                Object.keys(groups).forEach(group => {
-                    if (group) {
-                        html += `<div class="pc-tag-group">
-                            <div class="pc-tag-group-header">${escapeHtml(group)}</div>
-                            <div class="pc-tag-group-body">
-                        `;
-                    }
-                    groups[group].forEach(item => {
-                        const tag = escapeHtml(item.tag);
-                        const jp = escapeHtml(item.jp || '');
-                        html += `
-                            <button class="pc-tag-row" data-tag="${tag}" data-jp="${jp}">
-                                <div class="pc-tag-main">
-                                    <span class="pc-tag-en">${tag}</span>
-                                    ${jp ? `<span class="pc-tag-jp">${jp}</span>` : ''}
-                                </div>
-                            </button>
-                        `;
-                    });
-                    if (group) {
-                        html += '</div></div>'; // group-body + group
-                    }
-                });
-                if (cat) {
-                    html += '</div></div>'; // category-body + category
-                }
-            });
-            html += '</div></div>'; // section-body + section
-        });
-        html += '</div>';
-
-        container.innerHTML = html;
-
-        container.querySelectorAll('.pc-tag-row').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tag = btn.dataset.tag;
-                if (!tag || !window.PromptComposer) return;
-                const jp = (btn.dataset.jp || '').trim();
-
-                const blocks = (window.PromptComposer.blocks || []).concat(window.PromptComposer.negativeBlocks || []);
-
-                // 1) Prefer last focused token input's block
-                let target = null;
-                const activeId = window.PromptComposerActiveBlockId;
-                if (activeId) {
-                    target = blocks.find(b => b.id === activeId);
-                }
-
-                // 2) Fallback: first enabled positive block
-                if (!target) {
-                    target = blocks.find(b => b.enabled) || blocks[0];
-                }
-
-                if (!target) return;
-
-                window.PromptComposer.addToken(target.id, tag, tag, {
-                    sourceType: 'dict',
-                    isTrigger: false,
-                    jp: jp || null
-                });
-            });
+    function insertTagFromRow(btn) {
+        const tag = btn.dataset.tag;
+        if (!tag || !window.PromptComposer) return;
+        const jp = (btn.dataset.jp || '').trim();
+        const blocks = (window.PromptComposer.blocks || []).concat(window.PromptComposer.negativeBlocks || []);
+        let target = null;
+        const activeId = window.PromptComposerActiveBlockId;
+        if (activeId) target = blocks.find(b => b.id === activeId);
+        if (!target) target = blocks.find(b => b.enabled) || blocks[0];
+        if (!target) return;
+        window.PromptComposer.addToken(target.id, tag, tag, {
+            sourceType: 'dict',
+            isTrigger: false,
+            jp: jp || null
         });
     }
+
+    function renderTagLeavesHtml(items) {
+        if (!items || !items.length) {
+            return '<div class="pc-empty pc-tag-path-empty">タグがありません</div>';
+        }
+        return items.map(item => {
+            const tag = escapeHtml(item.tag);
+            const jp = escapeHtml(item.jp || '');
+            return `
+                <button type="button" class="pc-tag-row" data-tag="${tag}" data-jp="${jp}">
+                    <div class="pc-tag-main">
+                        <span class="pc-tag-en">${tag}</span>
+                        ${jp ? `<span class="pc-tag-jp">${jp}</span>` : ''}
+                    </div>
+                </button>
+            `;
+        }).join('');
+    }
+
+    function findLeavesHost(key) {
+        if (!tagPathTreeHost || !key) return null;
+        const nodes = tagPathTreeHost.querySelectorAll('[data-tag-leaves]');
+        for (const el of nodes) {
+            if (el.getAttribute('data-tag-leaves') === key) return el;
+        }
+        return null;
+    }
+
+    function renderSearchResults(items) {
+        if (!tagPathTreeHost) return;
+        const box = tagPathTreeHost.querySelector('.pc-tag-path-search-results');
+        if (!box) return;
+        box.style.display = 'block';
+        if (!items.length) {
+            box.innerHTML = '<div class="pc-empty">タグが見つかりません</div>';
+            return;
+        }
+        box.innerHTML = `
+            <div class="pc-tag-path-search-head">検索結果 (${items.length})</div>
+            <div class="pc-tag-path-leaves-inner">${renderTagLeavesHtml(items)}</div>
+        `;
+    }
+
+    function hideSearchResults() {
+        if (!tagPathTreeHost) return;
+        const box = tagPathTreeHost.querySelector('.pc-tag-path-search-results');
+        if (box) {
+            box.style.display = 'none';
+            box.innerHTML = '';
+        }
+    }
+
+    function expandAncestors(key) {
+        if (!key) return;
+        const parts = key.split('/').filter(Boolean);
+        let acc = '';
+        parts.forEach(p => {
+            acc = acc ? `${acc}/${p}` : p;
+            tagExpanded.add(acc);
+        });
+    }
+
+    function syncTreeExpandState() {
+        if (!tagPathTreeHost) return;
+        tagPathTreeHost.querySelectorAll('[data-tag-toggle]').forEach(btn => {
+            const key = btn.getAttribute('data-tag-toggle');
+            if (!key) return;
+            const open = tagExpanded.has(key);
+            const caret = btn.querySelector('.pc-wc-caret');
+            if (caret) caret.textContent = open ? '▾' : '▸';
+        });
+        tagPathTreeHost.querySelectorAll('[data-tag-children]').forEach(el => {
+            const key = el.getAttribute('data-tag-children');
+            el.style.display = tagExpanded.has(key) ? 'block' : 'none';
+        });
+        tagPathTreeHost.querySelectorAll('[data-tag-leaves]').forEach(el => {
+            const key = el.getAttribute('data-tag-leaves');
+            el.style.display = tagExpanded.has(key) ? 'block' : 'none';
+        });
+    }
+
+    function updateTreeSelectionStyles() {
+        if (!tagPathTreeHost) return;
+        tagPathTreeHost.querySelectorAll('.pc-tag-path-row').forEach(row => {
+            const select = row.querySelector('[data-tag-select]');
+            const key = select ? select.getAttribute('data-tag-select') : '';
+            row.classList.toggle('is-selected', key === selectedPathKey);
+        });
+    }
+
+    function collapseAllTagPaths() {
+        tagExpanded.clear();
+        selectedPathKey = '';
+        currentSection = null;
+        currentCategory = null;
+        currentGroup = null;
+        hideSearchResults();
+        syncTreeExpandState();
+        updateTreeSelectionStyles();
+    }
+
+    function reorderTagDictionaryLayout() {
+        const label = document.getElementById('pc_tag_path_label');
+        const search = document.getElementById('pc_tag_search');
+        const list = document.getElementById('pc_tag_list');
+        if (!label || !search || !label.parentElement) return;
+        const parent = label.parentElement;
+        if (search.parentElement === parent && search.compareDocumentPosition(label) & Node.DOCUMENT_POSITION_FOLLOWING) {
+            parent.insertBefore(search, label);
+        }
+        if (list && list.parentElement === parent) {
+            parent.appendChild(list);
+        }
+    }
+
+    async function ensureNodeTagsLoaded(key, force) {
+        if (!key || !tagPathTreeHost) return;
+        const host = findLeavesHost(key);
+        if (!host) return;
+        if (!force && host.dataset.loaded === '1') return;
+
+        host.innerHTML = '<div class="pc-tag-path-loading">読込中…</div>';
+        host.style.display = tagExpanded.has(key) ? 'block' : 'none';
+
+        const f = filtersFromPathKey(key);
+        const qInput = document.querySelector('#pc_tag_search input, #pc_tag_search textarea');
+        const q = (qInput ? qInput.value : '').trim();
+
+        try {
+            const items = await fetchTagItems(q, f.sec, f.cat, f.grp, 500);
+            tagLeavesCache.set(key, items);
+            host.innerHTML = `<div class="pc-tag-path-leaves-inner">${renderTagLeavesHtml(items)}</div>`;
+            host.dataset.loaded = '1';
+        } catch (err) {
+            host.innerHTML = '<div class="pc-empty">読込に失敗しました</div>';
+            console.warn('[Prompt Composer] Failed to load tags for path:', key, err);
+        }
+    }
+
+    function hasChildFoldersInDom(key) {
+        if (!tagPathTreeHost || !key) return false;
+        for (const el of tagPathTreeHost.querySelectorAll('[data-tag-children]')) {
+            if (el.getAttribute('data-tag-children') === key) return true;
+        }
+        return false;
+    }
+
+    function toggleTagPathNode(key) {
+        if (!key) return;
+        if (tagExpanded.has(key)) tagExpanded.delete(key);
+        else tagExpanded.add(key);
+        syncTreeExpandState();
+        // 子フォルダがある場合は展開のみ（タグは末端フォルダで表示）
+        if (tagExpanded.has(key) && !hasChildFoldersInDom(key)) {
+            ensureNodeTagsLoaded(key, false);
+        }
+    }
+
+    function bindTagPathTreeEvents() {
+        if (!tagPathTreeHost || tagPathTreeHost.dataset.bound === '1') return;
+        tagPathTreeHost.dataset.bound = '1';
+        tagPathTreeHost.addEventListener('click', (e) => {
+            const toggle = e.target.closest('[data-tag-toggle]');
+            if (toggle) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleTagPathNode(toggle.getAttribute('data-tag-toggle') || '');
+                return;
+            }
+            const tagBtn = e.target.closest('.pc-tag-row');
+            if (tagBtn) {
+                insertTagFromRow(tagBtn);
+                return;
+            }
+            const collapseAll = e.target.closest('.pc-tag-path-collapse-all');
+            if (collapseAll) {
+                collapseAllTagPaths();
+                return;
+            }
+            const select = e.target.closest('[data-tag-select]');
+            if (select) {
+                const key = select.getAttribute('data-tag-select') || '';
+                applyTagPathKey(key);
+            }
+        });
+    }
+
 
     function setupSearch() {
         const tagRoot = document.getElementById('pc_tag_search');
@@ -354,6 +483,12 @@
                     debounceTimer = setTimeout(() => {
                         loadTags(value.trim());
                         loadWildcards(value.trim());
+                        if (tagPathTreeHost && value.trim()) {
+                            const scrollEl = tagPathTreeHost.querySelector('.pc-tag-path-tree');
+                            const st = scrollEl ? scrollEl.scrollTop : 0;
+                            renderTagPathTreeUI(true);
+                            if (scrollEl) scrollEl.scrollTop = st;
+                        }
                     }, 250);
                 });
             }
@@ -376,7 +511,10 @@
 
     function ensureQuickInsertBar(root) {
         if (!root) return;
-        if (root.querySelector('.pc-tag-quickbar')) return;
+        if (root.querySelector('.pc-tag-dict-toolbar')) return;
+
+        const toolbar = document.createElement('div');
+        toolbar.className = 'pc-tag-dict-toolbar';
 
         const label = document.createElement('div');
         label.className = 'pc-tag-quicklabel';
@@ -397,9 +535,9 @@
             insertSpecial(kind);
         });
 
-        // Put right under the search input (Tag Dictionary area)
-        root.appendChild(label);
-        root.appendChild(bar);
+        toolbar.appendChild(label);
+        toolbar.appendChild(bar);
+        root.insertBefore(toolbar, root.firstChild);
     }
 
     function insertSpecial(kind) {
@@ -431,274 +569,223 @@
         });
     }
 
-    function setupPathSelector(paths) {
+    function buildTagPathTree(paths) {
+        const root = { name: '', path: '', children: new Map(), pathData: null };
+        (paths || []).forEach(p => {
+            const sec = (p.section || '').trim() || '(未分類)';
+            const cat = (p.category || '').trim();
+            const grp = (p.group || '').trim();
+            const parts = [sec];
+            if (cat) parts.push(cat);
+            if (grp) parts.push(grp);
+
+            let node = root;
+            let key = '';
+            for (let i = 0; i < parts.length; i++) {
+                const part = parts[i];
+                const isLast = i === parts.length - 1;
+                key = key ? `${key}/${part}` : part;
+                if (!node.children.has(part)) {
+                    node.children.set(part, {
+                        name: part,
+                        path: key,
+                        children: new Map(),
+                        pathData: null
+                    });
+                }
+                const child = node.children.get(part);
+                if (isLast) child.pathData = p;
+                node = child;
+            }
+        });
+        return root;
+    }
+
+    function getTagPathCount(key) {
+        if (!key) return 0;
+        const cached = tagLeavesCache.get(key);
+        if (cached && cached.length) return cached.length;
+        return tagPathCounts[key] || 0;
+    }
+
+    function nodeMatchesQuery(node, qLower) {
+        if (!qLower) return true;
+        if ((node.name || '').toLowerCase().includes(qLower)) return true;
+        if (node.pathData) {
+            const blob = [node.pathData.section, node.pathData.category, node.pathData.group]
+                .join(' ')
+                .toLowerCase();
+            if (blob.includes(qLower)) return true;
+        }
+        let childHit = false;
+        node.children.forEach(child => {
+            if (nodeMatchesQuery(child, qLower)) childHit = true;
+        });
+        return childHit;
+    }
+
+    function filtersFromPathKey(key) {
+        if (!key) return { sec: null, cat: null, grp: null };
+        const parts = key.split('/').filter(Boolean);
+        const decode = (s) => (s === '(未分類)' ? '' : s);
+        const sec = parts[0] ? decode(parts[0]) : '';
+        const cat = parts[1] ? decode(parts[1]) : '';
+        const grp = parts[2] ? decode(parts[2]) : '';
+        return {
+            sec: sec || null,
+            cat: cat || null,
+            grp: grp || null
+        };
+    }
+
+    function renderTagPathTreeNode(node, qLower) {
+        const children = Array.from(node.children.keys()).sort((a, b) => a.localeCompare(b, 'ja'));
+        let html = '';
+
+        children.forEach(name => {
+            const child = node.children.get(name);
+            if (qLower && !nodeMatchesQuery(child, qLower)) return;
+
+            const key = child.path;
+            const hasChildren = child.children.size > 0;
+            const isOpen = qLower ? true : tagExpanded.has(key);
+            const caret = isOpen ? '▾' : '▸';
+            const count = getTagPathCount(key);
+            const isSelected = selectedPathKey === key;
+
+            html += '<div class="pc-wc-node">';
+            html += `<div class="pc-tag-path-row${isSelected ? ' is-selected' : ''}">`;
+            html += `
+                <button type="button" class="pc-wc-toggle pc-tag-path-toggle" data-tag-toggle="${escapeHtmlAttr(key)}" title="展開 / 折りたたみ">
+                    <span class="pc-wc-caret">${caret}</span>
+                </button>`;
+            html += `
+                <button type="button" class="pc-tag-path-select" data-tag-select="${escapeHtmlAttr(key)}" title="${escapeHtmlAttr(key)}">
+                    <span class="pc-wc-folder">${escapeHtml(name)}</span>
+                    <span class="pc-wc-count-mini">${count}</span>
+                </button>
+            `;
+            html += '</div>';
+            if (hasChildren) {
+                html += `<div class="pc-wc-children" data-tag-children="${escapeHtmlAttr(key)}" style="display:${isOpen ? 'block' : 'none'}">`;
+                html += renderTagPathTreeNode(child, qLower);
+                html += '</div>';
+            } else {
+                html += `<div class="pc-tag-path-leaves" data-tag-leaves="${escapeHtmlAttr(key)}" style="display:${isOpen ? 'block' : 'none'}"></div>`;
+            }
+            html += '</div>';
+        });
+
+        return html;
+    }
+
+    function applyTagPathSelection(sec, cat, grp, pathKey) {
+        currentSection = sec;
+        currentCategory = cat;
+        currentGroup = grp;
+        selectedPathKey = pathKey || '';
+
+        if (pathKey) {
+            expandAncestors(pathKey);
+            tagExpanded.add(pathKey);
+        }
+
+        updateTreeSelectionStyles();
+        syncTreeExpandState();
+
+        const qInput = document.querySelector('#pc_tag_search input, #pc_tag_search textarea');
+        const q = (qInput ? qInput.value : '').trim();
+        if (q) {
+            loadTags(q);
+        } else if (pathKey) {
+            ensureNodeTagsLoaded(pathKey, false);
+        }
+    }
+
+    function applyTagPathKey(key) {
+        if (!key) {
+            selectedPathKey = '';
+            currentSection = null;
+            currentCategory = null;
+            currentGroup = null;
+            hideSearchResults();
+            updateTreeSelectionStyles();
+            return;
+        }
+        const f = filtersFromPathKey(key);
+        applyTagPathSelection(f.sec, f.cat, f.grp, key);
+    }
+
+    function renderTagPathTreeUI(preserveScroll) {
+        if (!tagPathTreeHost) return;
+
+        const scrollEl = tagPathTreeHost.querySelector('.pc-tag-path-tree');
+        const scrollTop = preserveScroll && scrollEl ? scrollEl.scrollTop : 0;
+
+        const qInput = document.querySelector('#pc_tag_search input, #pc_tag_search textarea');
+        const qLower = (qInput ? (qInput.value || '') : '').trim().toLowerCase();
+        const tree = buildTagPathTree(allPaths);
+        let total = 0;
+        tree.children.forEach(child => { total += getTagPathCount(child.path); });
+
+        let html = `
+            <div class="pc-tag-path-tree-head">
+                <span class="pc-tag-path-tree-title">タグ辞書</span>
+                <span class="pc-wc-count">(${total})</span>
+                <button type="button" class="pc-tag-path-collapse-all" title="すべて閉じる" aria-label="すべて閉じる">
+                    <span class="pc-tag-path-collapse-icon" aria-hidden="true">⊟</span>
+                </button>
+            </div>
+            <div class="pc-tag-path-search-results" style="display:none"></div>
+            <div class="pc-wc-tree pc-tag-path-tree">${renderTagPathTreeNode(tree, qLower)}</div>
+            <div class="pc-wc-more">▸で展開 — フォルダ内にタグが表示されます</div>
+        `;
+        tagPathTreeHost.innerHTML = html;
+        tagPathTreeHost.dataset.bound = '';
+        tagPathTreeScrollEl = tagPathTreeHost.querySelector('.pc-tag-path-tree');
+
+        bindTagPathTreeEvents();
+        syncTreeExpandState();
+        updateTreeSelectionStyles();
+
+        tagExpanded.forEach(key => {
+            const cached = tagLeavesCache.get(key);
+            const host = findLeavesHost(key);
+            if (host && cached) {
+                host.innerHTML = `<div class="pc-tag-path-leaves-inner">${renderTagLeavesHtml(cached)}</div>`;
+                host.dataset.loaded = '1';
+            }
+        });
+
+        if (preserveScroll && tagPathTreeScrollEl) {
+            tagPathTreeScrollEl.scrollTop = scrollTop;
+        }
+    }
+
+    function setupPathSelector(paths, counts) {
         const labelEl = document.getElementById('pc_tag_path_label');
         if (!labelEl) return;
 
         allPaths = (paths || []).slice();
-
-        function labelForPath(p) {
-            const sec = p.section || '';
-            const cat = p.category || '';
-            const grp = p.group || '';
-            const parts = [sec, cat, grp].filter(Boolean);
-            return parts.join(' / ') || '(未分類)';
-        }
-
-        // Build section/category/group sets from full path list
-        const sections = new Map(); // sec -> Map(cat -> Set(grp))
-        allPaths.forEach(p => {
-            const sec = (p.section || '').trim();
-            const cat = (p.category || '').trim();
-            const grp = (p.group || '').trim();
-            if (!sections.has(sec)) sections.set(sec, new Map());
-            const cats = sections.get(sec);
-            if (!cats.has(cat)) cats.set(cat, new Set());
-            cats.get(cat).add(grp);
-        });
-
-        let selectedSection = '';
-        let selectedCategory = '';
-        let selectedGroup = '';
+        tagPathCounts = counts || {};
+        tagExpanded = new Set();
+        tagLeavesCache = new Map();
+        selectedPathKey = '';
 
         labelEl.innerHTML = '';
-        const wrapper = document.createElement('div');
-        wrapper.className = 'pc-tag-path-grid';
+        tagPathTreeHost = document.createElement('div');
+        tagPathTreeHost.className = 'pc-tag-path-tree-host';
+        tagPathTreeHost.dataset.bound = '';
+        labelEl.appendChild(tagPathTreeHost);
 
-        const hint = document.createElement('div');
-        hint.className = 'pc-tag-path-hint';
-        hint.textContent = 'パス絞り込み（セクション → カテゴリ → グループ）';
+        buildTagPathTree(allPaths).children.forEach((_child, name) => {
+            tagExpanded.add(name);
+        });
 
-        const listHost = document.createElement('div');
-        listHost.className = 'pc-tag-path-matches';
-
-        function makeSearchDropdown(title) {
-            const host = document.createElement('div');
-            host.className = 'pc-tag-dd';
-
-            const lbl = document.createElement('div');
-            lbl.className = 'pc-tag-dd-label';
-            lbl.textContent = title;
-
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'pc-tag-dd-input';
-            input.placeholder = '(すべて)';
-
-            const list = document.createElement('div');
-            list.className = 'pc-tag-dd-list';
-            list.style.display = 'none';
-
-            host.appendChild(lbl);
-            host.appendChild(input);
-            host.appendChild(list);
-
-            function openList() { list.style.display = 'block'; }
-            function closeListSoon() { setTimeout(() => { list.style.display = 'none'; }, 150); }
-
-            input.addEventListener('focus', openList);
-            input.addEventListener('blur', closeListSoon);
-
-            return { host, input, list, openList };
-        }
-
-        const secDD = makeSearchDropdown('セクション');
-        const catDD = makeSearchDropdown('カテゴリ');
-        const grpDD = makeSearchDropdown('グループ');
-
-        function uniqSorted(arr) {
-            return Array.from(new Set(arr)).sort((a, b) => (a || '').localeCompare(b || '', 'ja'));
-        }
-
-        function renderDD(dd, items, onPick, selectedValue) {
-            let raw = (dd.input.value || '').trim();
-            // Treat placeholder display as "no filter"
-            if (raw === '(すべて)') raw = '';
-            // When just showing the selected value, don't use it as a filter
-            if (selectedValue && raw === selectedValue) {
-                raw = '';
-            }
-            const q = raw.toLowerCase();
-            let filtered = items;
-            if (q) filtered = items.filter(x => (x || '').toLowerCase().includes(q));
-
-            const maxItems = 80;
-            if (filtered.length > maxItems) filtered = filtered.slice(0, maxItems);
-
-            let html = `<button type="button" class="pc-tag-dd-item" data-value="">(すべて)</button>`;
-            filtered.forEach(v => {
-                const label = v || '(未分類)';
-                html += `<button type="button" class="pc-tag-dd-item" data-value="${escapeHtml(v)}">${escapeHtml(label)}</button>`;
-            });
-            dd.list.innerHTML = html;
-
-            dd.list.querySelectorAll('.pc-tag-dd-item').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const v = btn.dataset.value ?? '';
-                    onPick(v);
-                    dd.list.style.display = 'none';
-                });
-            });
-        }
-
-        function updateMatchesAndLoad() {
-            // Apply partial filters directly (section only / section+category / full)
-            currentSection = selectedSection ? selectedSection : null;
-            currentCategory = selectedCategory ? selectedCategory : null;
-            currentGroup = selectedGroup ? selectedGroup : null;
-
-            const hasAnySelection = !!(selectedSection || selectedCategory || selectedGroup);
-
-            // Render matching paths list (click to set exact triple)
-            const matches = allPaths.filter(p => {
-                const sec = (p.section || '').trim();
-                const cat = (p.category || '').trim();
-                const grp = (p.group || '').trim();
-                if (selectedSection && sec !== selectedSection) return false;
-                if (selectedCategory && cat !== selectedCategory) return false;
-                if (selectedGroup && grp !== selectedGroup) return false;
-                return true;
-            });
-
-            // Initial state: keep it clean (show nothing until user selects something)
-            if (!hasAnySelection) {
-                listHost.innerHTML = '';
-                const qInput = document.querySelector('#pc_tag_search input, #pc_tag_search textarea');
-                const q = qInput ? qInput.value : '';
-                loadTags(q || '');
-                return;
-            }
-
-            const shown = matches.slice(0, 120);
-            listHost.innerHTML = `
-                <div class="pc-tag-path-matches-head">候補: ${matches.length}件</div>
-                <div class="pc-tag-path-matches-list">
-                    ${shown.map(p => {
-                        const label = labelForPath(p);
-                        const idx = matches.indexOf(p);
-                        // store index into the filtered matches list (stable for this render)
-                        return `<button type="button" class="pc-tag-path-match" data-match-index="${idx}">${escapeHtml(label)}</button>`;
-                    }).join('')}
-                    ${matches.length > shown.length ? `<div class="pc-tag-path-more">… ${matches.length - shown.length}件省略（さらに絞り込み）</div>` : ''}
-                </div>
-            `;
-
-            listHost.querySelectorAll('.pc-tag-path-match').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const idx = parseInt(btn.dataset.matchIndex || '', 10);
-                    if (isNaN(idx) || idx < 0 || idx >= matches.length) return;
-                    const p = matches[idx];
-                    if (!p) return;
-
-                    selectedSection = (p.section || '').trim();
-                    selectedCategory = (p.category || '').trim();
-                    selectedGroup = (p.group || '').trim();
-
-                    // reflect inputs
-                    secDD.input.value = selectedSection || '(すべて)';
-                    catDD.input.value = selectedCategory || '(すべて)';
-                    grpDD.input.value = selectedGroup || '(すべて)';
-
-                    // rebuild dependent dropdowns + refresh matches/tag list
-                    refreshDropdowns();
-                    updateMatchesAndLoad();
-                });
-            });
-
-            const qInput = document.querySelector('#pc_tag_search input, #pc_tag_search textarea');
-            const q = qInput ? qInput.value : '';
-            loadTags(q || '');
-        }
-
-        function refreshDropdowns() {
-            function setDisplay(dd, v) {
-                dd.input.value = (v && String(v).trim()) ? String(v).trim() : '(すべて)';
-            }
-
-            // sections
-            const secItems = uniqSorted(Array.from(sections.keys()));
-            renderDD(secDD, secItems, (v) => {
-                selectedSection = (v || '').trim();
-                if (!selectedSection) {
-                    selectedCategory = '';
-                    selectedGroup = '';
-                } else {
-                    // reset dependent selections when section changes
-                    selectedCategory = '';
-                    selectedGroup = '';
-                }
-                setDisplay(secDD, selectedSection);
-                setDisplay(catDD, selectedCategory);
-                setDisplay(grpDD, selectedGroup);
-                updateMatchesAndLoad();
-                refreshDropdowns();
-            }, selectedSection);
-
-            // categories depend on section
-            let catItems = [];
-            if (selectedSection && sections.has(selectedSection)) {
-                catItems = uniqSorted(Array.from(sections.get(selectedSection).keys()));
-            } else {
-                // when section not selected, show all categories across sections (still searchable)
-                const allCats = [];
-                sections.forEach(cats => cats.forEach((_g, cat) => allCats.push(cat)));
-                catItems = uniqSorted(allCats);
-            }
-            renderDD(catDD, catItems, (v) => {
-                selectedCategory = (v || '').trim();
-                selectedGroup = '';
-                setDisplay(catDD, selectedCategory);
-                setDisplay(grpDD, selectedGroup);
-                updateMatchesAndLoad();
-                refreshDropdowns();
-            }, selectedCategory);
-
-            // groups depend on section+category (best), else broaden
-            let grpItems = [];
-            if (selectedSection && sections.has(selectedSection)) {
-                const cats = sections.get(selectedSection);
-                if (selectedCategory && cats.has(selectedCategory)) {
-                    grpItems = uniqSorted(Array.from(cats.get(selectedCategory)));
-                } else if (!selectedCategory) {
-                    const allGrps = [];
-                    cats.forEach(gs => gs.forEach(g => allGrps.push(g)));
-                    grpItems = uniqSorted(allGrps);
-                }
-            } else if (selectedCategory) {
-                const allGrps = [];
-                sections.forEach(cats => {
-                    if (cats.has(selectedCategory)) cats.get(selectedCategory).forEach(g => allGrps.push(g));
-                });
-                grpItems = uniqSorted(allGrps);
-            } else {
-                const allGrps = [];
-                sections.forEach(cats => cats.forEach(gs => gs.forEach(g => allGrps.push(g))));
-                grpItems = uniqSorted(allGrps);
-            }
-
-            renderDD(grpDD, grpItems, (v) => {
-                selectedGroup = (v || '').trim();
-                setDisplay(grpDD, selectedGroup);
-                updateMatchesAndLoad();
-                refreshDropdowns();
-            }, selectedGroup);
-        }
-
-        // typing filters the suggestion list live
-        secDD.input.addEventListener('input', () => refreshDropdowns());
-        catDD.input.addEventListener('input', () => refreshDropdowns());
-        grpDD.input.addEventListener('input', () => refreshDropdowns());
-
-        wrapper.appendChild(hint);
-        wrapper.appendChild(secDD.host);
-        wrapper.appendChild(catDD.host);
-        wrapper.appendChild(grpDD.host);
-        labelEl.appendChild(wrapper);
-        labelEl.appendChild(listHost);
-
-        refreshDropdowns();
-        updateMatchesAndLoad();
+        renderTagPathTreeUI(false);
+        hideTagsListContainer();
     }
+
 
     function updatePathLabel(items) {
         const labelEl = document.getElementById('pc_tag_path_label');
@@ -715,7 +802,10 @@
 
     window.PromptTags = {
         init,
-        reload: () => loadTags('')
+        reload: () => {
+            loadTags('');
+            if (tagPathTreeHost) renderTagPathTreeUI(true);
+        }
     };
 
     if (document.readyState === 'loading') {

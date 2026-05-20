@@ -602,7 +602,7 @@ def register_api(app: FastAPI, extension_dir: str):
     async def api_get_tag_paths():
         """Get list of available (section/category/group) paths."""
         paths = tag_dictionary.list_paths()
-        return {"paths": paths}
+        return {"paths": paths, "counts": tag_dictionary.path_tag_counts()}
 
     # --- IPS data (Infinite Prompt Studio dictionaries) ---
 

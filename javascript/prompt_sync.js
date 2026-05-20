@@ -105,6 +105,88 @@
         if (textEl) textEl.textContent = label.trim();
     }
 
+    let _pcPreviewLightboxBound = false;
+
+    function ensurePcPreviewLightbox() {
+        let box = document.getElementById('pc_preview_lightbox');
+        if (box) return box;
+
+        box = document.createElement('div');
+        box.id = 'pc_preview_lightbox';
+        box.className = 'pc-preview-lightbox';
+        box.setAttribute('role', 'dialog');
+        box.setAttribute('aria-modal', 'true');
+        box.setAttribute('aria-label', '生成画像プレビュー');
+        box.innerHTML =
+            '<div class="pc-preview-lightbox-backdrop" data-pc-lightbox-close="1"></div>' +
+            '<div class="pc-preview-lightbox-panel">' +
+            '<button type="button" class="pc-preview-lightbox-close" data-pc-lightbox-close="1" aria-label="閉じる">×</button>' +
+            '<img class="pc-preview-lightbox-img" alt="生成プレビュー（拡大）" />' +
+            '</div>';
+        document.body.appendChild(box);
+
+        if (!_pcPreviewLightboxBound) {
+            _pcPreviewLightboxBound = true;
+            box.addEventListener('click', (ev) => {
+                if (ev.target.closest('[data-pc-lightbox-close]')) {
+                    closePcPreviewLightbox();
+                }
+            });
+            document.addEventListener('keydown', (ev) => {
+                if (ev.key === 'Escape') closePcPreviewLightbox();
+            });
+        }
+        return box;
+    }
+
+    function closePcPreviewLightbox() {
+        const box = document.getElementById('pc_preview_lightbox');
+        if (!box) return;
+        box.style.display = 'none';
+        box.classList.remove('pc-preview-lightbox-open');
+        const img = box.querySelector('.pc-preview-lightbox-img');
+        if (img) img.removeAttribute('src');
+    }
+
+    function tryOpenWebUiLightbox(src) {
+        const root = appRoot();
+        const lb = root.getElementById('lightboxModal');
+        const modalImage = root.getElementById('modalImage');
+        if (!lb || !modalImage || !src) return false;
+        try {
+            modalImage.src = src;
+            modalImage.style.display = '';
+            lb.style.display = 'flex';
+            lb.focus();
+            if (typeof updateModalImage === 'function') {
+                updateModalImage();
+            }
+            return true;
+        } catch (err) {
+            console.warn('[Prompt Composer] WebUI lightbox failed:', err);
+            return false;
+        }
+    }
+
+    function openPreviewLightbox(src, e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        const url = (src || '').trim();
+        if (!url) return;
+
+        if (tryOpenWebUiLightbox(url)) return;
+
+        const box = ensurePcPreviewLightbox();
+        const img = box.querySelector('.pc-preview-lightbox-img');
+        if (img) img.src = url;
+        box.style.display = 'flex';
+        box.classList.add('pc-preview-lightbox-open');
+        const closeBtn = box.querySelector('.pc-preview-lightbox-close');
+        if (closeBtn) closeBtn.focus();
+    }
+
     function setPreviewImage(preview, src, isLive) {
         if (!preview || !src) return;
         if (preview.dataset.pcPreviewSrc === src && !isLive) return;
@@ -112,13 +194,10 @@
         preview.innerHTML = '';
         const img = document.createElement('img');
         img.className = 'pc-generate-preview-img' + (isLive ? ' pc-generate-preview-img-live' : '');
-        img.alt = isLive ? '生成中プレビュー' : '生成プレビュー';
+        img.alt = isLive ? '生成中プレビュー（クリックで拡大）' : '生成プレビュー（クリックで拡大）';
+        img.title = 'クリックで拡大表示';
         img.src = src;
         img.loading = 'eager';
-        img.addEventListener('click', () => {
-            const openBtn = appRoot().getElementById('pc_open_txt2img_gallery');
-            if (openBtn) openBtn.click();
-        });
         preview.appendChild(img);
     }
 
@@ -218,19 +297,103 @@
         syncGeneratePreview('txt2img');
     }
 
+    /** Switch to the top-level txt2img tab (Gradio 3/4 + extension tabs). */
+    function switchToTxt2imgTab() {
+        const root = appRoot();
+        const tabsRoot = root.querySelector('#tabs');
+        if (!tabsRoot) return false;
+
+        const tabButtons = tabsRoot.querySelectorAll(
+            '.tab-nav button, .tab-nav > button, div.tab-nav button, :scope > button'
+        );
+
+        const findByLabel = () => Array.from(tabButtons).find(btn => {
+            const label = (btn.textContent || btn.innerText || '').trim();
+            return /^txt2img$/i.test(label);
+        });
+
+        let targetBtn = findByLabel();
+
+        if (!targetBtn) {
+            targetBtn = tabsRoot.querySelector(
+                'button[id*="txt2img" i], button[aria-controls*="txt2img" i]'
+            );
+        }
+
+        if (!targetBtn) {
+            const panel = root.getElementById('tab_txt2img');
+            const panelId = panel && panel.id;
+            if (panelId) {
+                targetBtn = tabsRoot.querySelector(
+                    `button[aria-controls="${panelId}"], button[data-tab="${panelId}"]`
+                );
+            }
+        }
+
+        // WebUI global (index-based; safe when txt2img is still the first tab)
+        if (!targetBtn && typeof window.switch_to_txt2img === 'function') {
+            try {
+                window.switch_to_txt2img();
+                return true;
+            } catch (err) {
+                console.warn('[Prompt Composer] switch_to_txt2img failed:', err);
+            }
+        }
+
+        if (!targetBtn && tabButtons.length) {
+            targetBtn = tabButtons[0];
+        }
+
+        if (targetBtn) {
+            targetBtn.click();
+            return true;
+        }
+        return false;
+    }
+
+    function scrollToTxt2imgGallery() {
+        const root = appRoot();
+        const gallery = root.querySelector('#txt2img_gallery')
+            || root.querySelector('#txt2img_gallery_container');
+        const tabPanel = root.getElementById('tab_txt2img');
+        const target = gallery || tabPanel;
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    function openTxt2imgGalleryTab(e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        const switched = switchToTxt2imgTab();
+        if (!switched) {
+            console.warn('[Prompt Composer] txt2img tab button not found');
+        }
+        requestAnimationFrame(() => {
+            setTimeout(scrollToTxt2imgGallery, 50);
+            setTimeout(scrollToTxt2imgGallery, 250);
+        });
+    }
+
     function setupGeneratePreview() {
         const root = appRoot();
-        const openBtn = root.getElementById('pc_open_txt2img_gallery');
-        if (openBtn && openBtn.dataset.pcOpenTabBound !== '1') {
-            openBtn.dataset.pcOpenTabBound = '1';
-            openBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const tab = root.querySelector('#tab_txt2img, button#txt2img_tab, #tabs > .tab-nav button');
-                const txt2imgTab = root.querySelector('#tab_txt2img')
-                    || Array.from(root.querySelectorAll('#tabs button, .tab-nav button')).find(b => /txt2img/i.test(b.textContent || ''));
-                if (txt2imgTab) txt2imgTab.click();
-                const gallery = root.querySelector('#txt2img_gallery');
-                if (gallery) gallery.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Delegation survives Gradio DOM refreshes better than a single-node listener.
+        if (root.dataset.pcOpenTxt2imgDelegation !== '1') {
+            root.dataset.pcOpenTxt2imgDelegation = '1';
+            root.addEventListener('click', (ev) => {
+                const previewImg = ev.target && ev.target.closest
+                    ? ev.target.closest('#pc_generate_preview .pc-generate-preview-img')
+                    : null;
+                if (previewImg) {
+                    openPreviewLightbox(previewImg.currentSrc || previewImg.src, ev);
+                    return;
+                }
+                const hit = ev.target && ev.target.closest
+                    ? ev.target.closest('#pc_open_txt2img_gallery')
+                    : null;
+                if (hit) openTxt2imgGalleryTab(ev);
             });
         }
         ensureGalleryObserver();
@@ -426,7 +589,11 @@
         generateTxt2img,
         syncGeneratePreview,
         startPcProgressWatch,
-        stopPcProgressWatch
+        stopPcProgressWatch,
+        openTxt2imgGalleryTab,
+        switchToTxt2imgTab,
+        openPreviewLightbox,
+        closePcPreviewLightbox
     };
 
     if (document.readyState === 'loading') {

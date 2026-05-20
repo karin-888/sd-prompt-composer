@@ -20,7 +20,36 @@
 
     function normalizeBlockType(blockType) {
         const t = (blockType || '').trim();
-        return BLOCK_TYPES.has(t) ? t : 'character';
+        if (BLOCK_TYPES.has(t)) return t;
+        // Order-profile custom column ids (e.g. ________) — group with same normalized key
+        if (t && /^_+$/.test(t)) return t;
+        return 'character';
+    }
+
+    function normalizeBlockLabel(label) {
+        return String(label || '').trim();
+    }
+
+    /** Saved sets visible in this column (match display name memo and/or block type). */
+    function collectionsForBar(blockOrType, optLabel) {
+        let blockType;
+        let label = '';
+        if (blockOrType && typeof blockOrType === 'object') {
+            blockType = blockOrType.type;
+            label = normalizeBlockLabel(blockOrType.label);
+        } else {
+            blockType = blockOrType;
+            label = normalizeBlockLabel(optLabel);
+        }
+        const norm = normalizeBlockType(blockType);
+        return collectionsCache.filter(c => {
+            const cMemo = normalizeBlockLabel(c.memo);
+            const cNorm = normalizeBlockType(c.block);
+            if (label && cMemo && cMemo === label) return true;
+            if (cNorm !== norm) return false;
+            if (cMemo && label && cMemo !== label) return false;
+            return true;
+        });
     }
 
     function showTagsetMessage(message) {
@@ -191,15 +220,10 @@
         return collectionsCache;
     }
 
-    function collectionsForBlock(blockType) {
-        const norm = normalizeBlockType(blockType);
-        return collectionsCache.filter(c => normalizeBlockType(c.block) === norm);
-    }
-
-    function findCollectionByName(blockType, name) {
+    function findCollectionByName(blockOrType, name) {
         const n = (name || '').trim();
         if (!n) return null;
-        return collectionsForBlock(blockType).find(c => c.name === n) || null;
+        return collectionsForBar(blockOrType).find(c => c.name === n) || null;
     }
 
     function setSelection(blockId, collectionId) {
@@ -224,7 +248,7 @@
         }
         const block = findBlock(blockId);
         if (!block) return;
-        const hit = findCollectionByName(block.type, name);
+        const hit = findCollectionByName(block, name);
         if (hit) {
             sel.value = hit.id;
             setSelection(blockId, hit.id);
@@ -255,8 +279,9 @@
         const prevSel = (preserve && preserve.selId) || '';
         const prevName = (preserve && preserve.name) || '';
         let restoreId = (st && st.collectionId) || prevSel || '';
-        if (!restoreId && prevName && blockType) {
-            const hit = findCollectionByName(blockType, prevName);
+        if (!restoreId && prevName && blockId) {
+            const block = findBlock(blockId);
+            const hit = block ? findCollectionByName(block, prevName) : null;
             restoreId = hit ? hit.id : '';
         }
         if (restoreId && list.some(c => c.id === restoreId)) {
@@ -287,6 +312,20 @@
         restoreBarSelection(blockId, sel, nameInput, list, blockType, preserve);
     }
 
+    function populateBarFromBlock(bar, forceList) {
+        const blockId = bar.dataset.blockId;
+        const sel = bar.querySelector('.pc-block-tagset-select');
+        const nameInput = bar.querySelector('.pc-block-tagset-name');
+        if (!sel || !blockId) return;
+        const block = findBlock(blockId);
+        const list = forceList || (block ? collectionsForBar(block) : collectionsForBar(bar.dataset.blockType));
+        const preserve = {
+            selId: sel.value,
+            name: nameInput ? nameInput.value.trim() : ''
+        };
+        populateTagsetSelect(sel, list, blockId, nameInput, block ? block.type : bar.dataset.blockType, preserve);
+    }
+
     function refreshBarsForBlockType(blockType, forceFetch) {
         const container = document.getElementById('pc_blocks_container');
         if (!container) return Promise.resolve();
@@ -294,17 +333,9 @@
         const run = async () => {
             if (forceFetch) await fetchCollections(true);
             else if (!collectionsCache.length) await fetchCollections(false);
-            const list = collectionsForBlock(norm);
-            container.querySelectorAll(`.pc-block-tagset-bar[data-block-type="${norm}"]`).forEach(bar => {
-                const blockId = bar.dataset.blockId;
-                const sel = bar.querySelector('.pc-block-tagset-select');
-                const nameInput = bar.querySelector('.pc-block-tagset-name');
-                if (!sel || !blockId) return;
-                const preserve = {
-                    selId: sel.value,
-                    name: nameInput ? nameInput.value.trim() : ''
-                };
-                populateTagsetSelect(sel, list, blockId, nameInput, norm, preserve);
+            container.querySelectorAll('.pc-block-tagset-bar').forEach(bar => {
+                if (normalizeBlockType(bar.dataset.blockType) !== norm) return;
+                populateBarFromBlock(bar);
             });
         };
         return run();
@@ -316,18 +347,7 @@
         await fetchCollections(false);
 
         container.querySelectorAll('.pc-block-tagset-bar').forEach(bar => {
-            const blockType = bar.dataset.blockType;
-            const blockId = bar.dataset.blockId;
-            const sel = bar.querySelector('.pc-block-tagset-select');
-            const nameInput = bar.querySelector('.pc-block-tagset-name');
-            if (!sel || !blockId) return;
-
-            const preserve = {
-                selId: sel.value,
-                name: nameInput ? nameInput.value.trim() : ''
-            };
-            const list = collectionsForBlock(blockType);
-            populateTagsetSelect(sel, list, blockId, nameInput, blockType, preserve);
+            populateBarFromBlock(bar);
         });
     }
 
@@ -337,7 +357,7 @@
         const block = findBlock(blockId);
         if (!block) return '';
         const name = getEnteredName(blockId);
-        const hit = findCollectionByName(block.type, name);
+        const hit = findCollectionByName(block, name);
         return hit ? hit.id : '';
     }
 
@@ -360,7 +380,7 @@
         }
 
         const blockKey = normalizeBlockType(block.type);
-        const existing = findCollectionByName(block.type, name);
+        const existing = findCollectionByName(block, name);
         if (!overwriteId && existing) {
             showTagsetMessage(`「${name}」は既にあります。\n上書きボタン（↻）を使うか、別の名前で新規保存してください。`);
             return false;
@@ -373,7 +393,7 @@
         const payload = {
             id: overwriteId || undefined,
             name,
-            block: blockKey,
+            block: (block.type || blockKey).trim(),
             memo: block.label || '',
             tags
         };
@@ -413,7 +433,7 @@
             updatedAt: saved.updatedAt || ''
         });
         cacheTime = Date.now();
-        await refreshBarsForBlockType(blockKey, false);
+        await refreshAllBlockTagSetBars();
         const sel = getSelect(blockId);
         const input = getNameInput(blockId);
         if (input) input.value = saved.name || name;
@@ -531,8 +551,7 @@
         const blockKey = block ? normalizeBlockType(block.type) : '';
         collectionsCache = collectionsCache.filter(c => c.id !== collectionId);
         cacheTime = Date.now();
-        if (blockKey) await refreshBarsForBlockType(blockKey, false);
-        else await refreshAllBlockTagSetBars();
+        await refreshAllBlockTagSetBars();
         showTagsetMessage(`「${name || '保存'}」を削除しました`);
         return true;
     }

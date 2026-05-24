@@ -62,3 +62,36 @@ def bootstrap_json(extension_dir: str, filename: str, *, default_factory=None):
             json.dump(default_factory(), f, ensure_ascii=False, indent=2)
 
     return dest
+
+
+def tag_previews_dir(extension_dir: str) -> str:
+    """Directory for tag dictionary preview images (filename = tag name)."""
+    root = user_root_dir()
+    if root:
+        path = os.path.join(root, "tag-previews")
+    else:
+        path = os.path.join(extension_dir, "data", "tag-previews")
+    os.makedirs(path, exist_ok=True)
+    readme = os.path.join(path, "Put tag preview images here.txt")
+    if not os.path.isfile(readme):
+        try:
+            with open(readme, "w", encoding="utf-8") as f:
+                f.write(
+                    "Tag Dictionary preview images\n"
+                    "=============================\n"
+                    "Place image files here. The filename (without extension) must match the tag name exactly.\n"
+                    "\n"
+                    "Examples:\n"
+                    "  goatee.webp\n"
+                    "  beard, facial hair.png\n"
+                    "\n"
+                    "Supported: .webp .png .jpg .jpeg .gif\n"
+                    "\n"
+                    "Optional YAML override (group_tags/default.yaml):\n"
+                    "  goatee:\n"
+                    "    jp: goatee\n"
+                    "    preview: goatee.webp\n"
+                )
+        except OSError:
+            pass
+    return path

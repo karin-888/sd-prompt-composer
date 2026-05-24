@@ -598,6 +598,33 @@ def register_api(app: FastAPI, extension_dir: str):
         )
         return {"items": items}
 
+    @app.get("/prompt-composer/api/tags/preview")
+    async def api_get_tag_preview(tag: str):
+        """Serve a preview image for a dictionary tag."""
+        tag = (tag or "").strip()
+        if not tag:
+            return JSONResponse(status_code=400, content={"error": "tag is required"})
+
+        preview_path = tag_dictionary.get_preview_file(tag)
+        if not preview_path or not os.path.isfile(preview_path):
+            return JSONResponse(status_code=404, content={"error": "Preview not found"})
+
+        mime_type, _ = mimetypes.guess_type(preview_path)
+        if not mime_type:
+            mime_type = "image/webp"
+
+        return FileResponse(
+            preview_path,
+            media_type=mime_type,
+            headers={"Cache-Control": "public, max-age=86400"},
+        )
+
+    @app.post("/prompt-composer/api/tags/previews/rescan")
+    async def api_rescan_tag_previews():
+        """Rescan tag-previews folder after adding new image files."""
+        count = tag_dictionary.rescan_previews()
+        return {"message": f"Rescan complete. Found {count} tag preview images."}
+
     @app.get("/prompt-composer/api/tag-paths")
     async def api_get_tag_paths():
         """Get list of available (section/category/group) paths."""

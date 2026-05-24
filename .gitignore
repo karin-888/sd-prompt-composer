@@ -1,6 +1,7 @@
 ## OS / Editor
 .DS_Store
 Thumbs.db
+.playwright-cli/
 
 ## Python
 __pycache__/
@@ -13,6 +14,9 @@ data/assets-cache.json
 data/presets.json
 data/order-profiles.json
 data/ips-collections.json
+data/tag-previews/
+group_tags/ai_nante.yaml
+group_tags/noplog.yaml
 
 ## IPS data symlink (points at infinite-prompt-studio/app/data)
 ips_data

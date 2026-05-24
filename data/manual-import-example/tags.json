@@ -1,0 +1,26 @@
+{
+  "name": "example-site",
+  "categories": [
+    {
+      "name": "【例】口元プロンプト｜example.com",
+      "url": "https://example.com/mouth-prompts/",
+      "groups": [
+        {
+          "name": "アヒル口・キス待ちなど",
+          "tags": [
+            {
+              "tag": "duck lips",
+              "jp": "アヒル口の美少女",
+              "image": "duck lips.jpg"
+            },
+            {
+              "tag": "kissable lips",
+              "jp": "キス待ちをする女の子の唇",
+              "image": "kissable lips.jpg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

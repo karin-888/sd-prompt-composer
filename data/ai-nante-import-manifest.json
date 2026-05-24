@@ -1,0 +1,23 @@
+{
+  "imported_at": 1779621500.401425,
+  "source_category": "https://ai-nante.com/category/ai-image-generator/girl-art-design/",
+  "article_count": 2,
+  "tag_count": 145,
+  "entries_with_image_url": 60,
+  "images_downloaded_ok": 58,
+  "images_failed": 2,
+  "yaml_path": "/Users/hiori222/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/group_tags/ai_nante.yaml",
+  "previews_dir": "/Users/hiori222/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/data/tag-previews",
+  "articles": [
+    {
+      "title": "大人の女性のプロンプト集（顔立ち・服装・雰囲気）",
+      "url": "https://ai-nante.com/adult-female-prompt/",
+      "tag_count": 52
+    },
+    {
+      "title": "画像AIで年齢を表現するプロンプト完全ガイド",
+      "url": "https://ai-nante.com/age-prompt-list/",
+      "tag_count": 94
+    }
+  ]
+}

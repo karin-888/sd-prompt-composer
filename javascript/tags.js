@@ -24,6 +24,92 @@
     let tagLeavesCache = new Map(); // pathKey -> items[]
     let tagPathTreeScrollEl = null;
 
+    function getTagPreviewObserver(root) {
+        const key = root || document.documentElement;
+        if (!getTagPreviewObserver._byRoot) getTagPreviewObserver._byRoot = new Map();
+        const cached = getTagPreviewObserver._byRoot.get(key);
+        if (cached) return cached;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                loadTagPreviewImage(entry.target);
+                observer.unobserve(entry.target);
+            });
+        }, { root: root || null, rootMargin: '200px 0px', threshold: 0.01 });
+        getTagPreviewObserver._byRoot.set(key, observer);
+        return observer;
+    }
+
+    function findScrollRoot(el) {
+        let node = el.parentElement;
+        while (node && node !== document.body) {
+            const style = window.getComputedStyle(node);
+            const scrollable = /(auto|scroll|overlay)/.test(style.overflowY)
+                && node.scrollHeight > node.clientHeight + 8;
+            if (scrollable) return node;
+            node = node.parentElement;
+        }
+        return null;
+    }
+
+    function normalizePreviewUrl(url) {
+        const raw = (url || '').trim();
+        if (!raw) return '';
+        try {
+            const parsed = new URL(raw, window.location.origin);
+            const tag = parsed.searchParams.get('tag');
+            if (tag != null) {
+                return `${parsed.pathname}?tag=${encodeURIComponent(tag)}`;
+            }
+        } catch (_) { /* ignore malformed URLs */ }
+        return raw;
+    }
+
+    function markTagPreviewLoaded(img) {
+        if (!img) return;
+        img.classList.add('is-loaded');
+        img.classList.remove('pc-tag-preview-pending', 'pc-tag-preview-error');
+        const art = img.closest('.pc-tag-card-art');
+        if (art) art.classList.remove('is-preview-error');
+    }
+
+    function markTagPreviewError(img) {
+        if (!img) return;
+        img.classList.add('pc-tag-preview-error');
+        img.classList.remove('pc-tag-preview-pending');
+        img.removeAttribute('src');
+        const art = img.closest('.pc-tag-card-art');
+        if (art) art.classList.add('is-preview-error');
+        const card = img.closest('.pc-tag-card');
+        if (card) card.classList.remove('has-preview');
+    }
+
+    function loadTagPreviewImage(img) {
+        if (!img || img.dataset.loaded === '1') return;
+        const src = normalizePreviewUrl(img.dataset.src || '');
+        if (!src) return;
+        img.dataset.loaded = '1';
+        img.addEventListener('load', () => markTagPreviewLoaded(img), { once: true });
+        img.addEventListener('error', () => markTagPreviewError(img), { once: true });
+        img.src = src;
+        if (img.complete && img.naturalWidth > 0) {
+            markTagPreviewLoaded(img);
+        }
+    }
+
+    function observeTagPreviewImages(root) {
+        if (!root) return;
+        root.querySelectorAll('img.pc-tag-preview[data-src]:not([data-loaded])').forEach((img) => {
+            const scrollRoot = findScrollRoot(img);
+            getTagPreviewObserver(scrollRoot).observe(img);
+        });
+    }
+
+    function scheduleTagPreviewObserve(root) {
+        if (!root) return;
+        requestAnimationFrame(() => observeTagPreviewImages(root));
+    }
+
     function init() {
         const container = document.getElementById('pc_tags_container');
         if (!container) {
@@ -277,26 +363,103 @@
         window.PromptComposer.addToken(target.id, tag, tag, {
             sourceType: 'dict',
             isTrigger: false,
-            jp: jp || null
+            jp: jp || null,
+            previewUrl: (btn.dataset.previewUrl || '').trim() || null
         });
+    }
+
+    function renderTagCard(item) {
+        const tag = escapeHtml(item.tag);
+        const jp = escapeHtml(item.jp || '');
+        const previewUrl = normalizePreviewUrl(item.previewUrl || '');
+        const previewAttr = previewUrl ? ` data-preview-url="${escapeHtml(previewUrl)}"` : '';
+        const hasPreview = Boolean(previewUrl);
+        const art = hasPreview
+            ? `<div class="pc-tag-card-art">
+                    <img class="pc-tag-preview pc-tag-preview-pending" data-src="${escapeHtml(previewUrl)}" alt="" decoding="async" />
+                    <span class="pc-tag-card-no-image">No image</span>
+               </div>`
+            : `<div class="pc-tag-card-art pc-tag-card-art-empty"><span class="pc-tag-card-art-icon" aria-hidden="true">🏷️</span></div>`;
+        return `
+            <button type="button" class="pc-tag-card${hasPreview ? ' has-preview' : ''}" data-tag="${tag}" data-jp="${jp}"${previewAttr}>
+                ${art}
+                <div class="pc-tag-card-body">
+                    <span class="pc-tag-en" title="${tag}">${tag}</span>
+                    ${jp ? `<span class="pc-tag-jp" title="${jp}">${jp}</span>` : ''}
+                </div>
+            </button>
+        `;
     }
 
     function renderTagLeavesHtml(items) {
         if (!items || !items.length) {
             return '<div class="pc-empty pc-tag-path-empty">タグがありません</div>';
         }
-        return items.map(item => {
-            const tag = escapeHtml(item.tag);
-            const jp = escapeHtml(item.jp || '');
-            return `
-                <button type="button" class="pc-tag-row" data-tag="${tag}" data-jp="${jp}">
-                    <div class="pc-tag-main">
-                        <span class="pc-tag-en">${tag}</span>
-                        ${jp ? `<span class="pc-tag-jp">${jp}</span>` : ''}
-                    </div>
-                </button>
-            `;
-        }).join('');
+        return `<div class="pc-tag-card-grid">${items.map(renderTagCard).join('')}</div>`;
+    }
+
+    let tagPreviewFloatEl = null;
+
+    function ensureTagPreviewFloat() {
+        if (tagPreviewFloatEl) return tagPreviewFloatEl;
+        tagPreviewFloatEl = document.createElement('div');
+        tagPreviewFloatEl.id = 'pc_tag_preview_float';
+        tagPreviewFloatEl.className = 'pc-tag-preview-float';
+        tagPreviewFloatEl.innerHTML = '<img alt="" />';
+        document.body.appendChild(tagPreviewFloatEl);
+        return tagPreviewFloatEl;
+    }
+
+    function positionTagPreviewFloat(artEl) {
+        const floatEl = ensureTagPreviewFloat();
+        const rect = artEl.getBoundingClientRect();
+        const floatW = Math.min(240, Math.max(180, rect.width * 2.1));
+        const floatH = floatW * (4 / 3);
+        let left = rect.left + rect.width / 2 - floatW / 2;
+        let top = rect.top - floatH - 10;
+        if (top < 8) top = rect.bottom + 10;
+        left = Math.max(8, Math.min(left, window.innerWidth - floatW - 8));
+        top = Math.max(8, Math.min(top, window.innerHeight - floatH - 8));
+        floatEl.style.width = `${floatW}px`;
+        floatEl.style.height = `${floatH}px`;
+        floatEl.style.left = `${left}px`;
+        floatEl.style.top = `${top}px`;
+    }
+
+    function hideTagPreviewFloat() {
+        if (tagPreviewFloatEl) tagPreviewFloatEl.classList.remove('is-visible');
+    }
+
+    function bindTagCardPreviewHover(host) {
+        if (!host || host.dataset.previewHover === '1') return;
+        host.dataset.previewHover = '1';
+        const floatEl = ensureTagPreviewFloat();
+        const floatImg = floatEl.querySelector('img');
+        let activeArt = null;
+
+        host.addEventListener('mouseover', (e) => {
+            const art = e.target.closest('.pc-tag-card-art:not(.pc-tag-card-art-empty):not(.is-preview-error)');
+            if (!art || !host.contains(art)) return;
+            const img = art.querySelector('.pc-tag-preview');
+            const card = art.closest('.pc-tag-card');
+            const previewUrl = (card && card.dataset.previewUrl) || (img && img.dataset.src) || '';
+            if (!img || !previewUrl) return;
+            loadTagPreviewImage(img);
+            activeArt = art;
+            floatImg.src = img.src || previewUrl;
+            positionTagPreviewFloat(art);
+            floatEl.classList.add('is-visible');
+        });
+
+        host.addEventListener('mouseout', (e) => {
+            if (!activeArt) return;
+            const related = e.relatedTarget;
+            if (related && (activeArt.contains(related) || floatEl.contains(related))) return;
+            activeArt = null;
+            hideTagPreviewFloat();
+        });
+
+        window.addEventListener('scroll', hideTagPreviewFloat, true);
     }
 
     function findLeavesHost(key) {
@@ -321,6 +484,7 @@
             <div class="pc-tag-path-search-head">検索結果 (${items.length})</div>
             <div class="pc-tag-path-leaves-inner">${renderTagLeavesHtml(items)}</div>
         `;
+        scheduleTagPreviewObserve(box);
     }
 
     function hideSearchResults() {
@@ -413,6 +577,7 @@
             tagLeavesCache.set(key, items);
             host.innerHTML = `<div class="pc-tag-path-leaves-inner">${renderTagLeavesHtml(items)}</div>`;
             host.dataset.loaded = '1';
+            scheduleTagPreviewObserve(host);
         } catch (err) {
             host.innerHTML = '<div class="pc-empty">読込に失敗しました</div>';
             console.warn('[Prompt Composer] Failed to load tags for path:', key, err);
@@ -441,6 +606,7 @@
     function bindTagPathTreeEvents() {
         if (!tagPathTreeHost || tagPathTreeHost.dataset.bound === '1') return;
         tagPathTreeHost.dataset.bound = '1';
+        bindTagCardPreviewHover(tagPathTreeHost);
         tagPathTreeHost.addEventListener('click', (e) => {
             const toggle = e.target.closest('[data-tag-toggle]');
             if (toggle) {
@@ -449,8 +615,9 @@
                 toggleTagPathNode(toggle.getAttribute('data-tag-toggle') || '');
                 return;
             }
-            const tagBtn = e.target.closest('.pc-tag-row');
+            const tagBtn = e.target.closest('.pc-tag-card, .pc-tag-row');
             if (tagBtn) {
+                hideTagPreviewFloat();
                 insertTagFromRow(tagBtn);
                 return;
             }
@@ -754,8 +921,11 @@
             if (host && cached) {
                 host.innerHTML = `<div class="pc-tag-path-leaves-inner">${renderTagLeavesHtml(cached)}</div>`;
                 host.dataset.loaded = '1';
+                scheduleTagPreviewObserve(host);
             }
         });
+
+        scheduleTagPreviewObserve(tagPathTreeHost);
 
         if (preserveScroll && tagPathTreeScrollEl) {
             tagPathTreeScrollEl.scrollTop = scrollTop;

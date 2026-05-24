@@ -191,6 +191,8 @@
             tagsets.refreshAllBlockTagSetBars().catch(() => {});
         }
 
+        dispatchStateChange('render');
+
         scheduleAutoSave();
     }
 
@@ -1028,6 +1030,7 @@
                 const blockId = e.target.dataset.blockId;
                 if (blockId) {
                     window.PromptComposerActiveBlockId = blockId;
+                    dispatchActiveBlockChange(blockId);
                 }
             });
 
@@ -2534,6 +2537,45 @@
         checkWarnings();
     }
 
+    function dispatchStateChange(reason) {
+        try {
+            window.dispatchEvent(new CustomEvent('pc:state-changed', {
+                detail: {
+                    reason: reason || 'unknown',
+                    state: getState(),
+                    activeBlockId: window.PromptComposerActiveBlockId || null
+                }
+            }));
+        } catch (_) {}
+    }
+
+    function dispatchActiveBlockChange(blockId) {
+        try {
+            window.dispatchEvent(new CustomEvent('pc:active-block-changed', {
+                detail: { blockId: blockId || null }
+            }));
+        } catch (_) {}
+    }
+
+    function focusBlock(blockId) {
+        if (!blockId) return false;
+        const container = document.getElementById('pc_blocks_container');
+        if (!container) return false;
+        const blockEl = container.querySelector(`.pc-block[data-block-id="${blockId}"]`);
+        if (!blockEl) return false;
+
+        window.PromptComposerActiveBlockId = blockId;
+        dispatchActiveBlockChange(blockId);
+
+        const input = blockEl.querySelector('.pc-token-input');
+        blockEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (input) {
+            input.focus();
+            return true;
+        }
+        return true;
+    }
+
     // ===== Public API =====
     window.PromptComposer = {
         init,
@@ -2547,6 +2589,7 @@
         renderBlocks,
         sortBlocksByProfile,
         importFromIPS,
+        focusBlock,
         findBlockByType,
         clearBlockTokensSilent,
         get blocks() { return blocks; },

@@ -228,7 +228,7 @@ def on_ui_tabs():
                     elem_id="pc_auto_format",
                     variant="secondary"
                 )
-        
+
         # ===== MAIN: 3-column layout =====
         with gr.Row(elem_id="pc_main_area"):
             

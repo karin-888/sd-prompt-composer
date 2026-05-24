@@ -1,0 +1,3588 @@
+- name: ai-nante
+  categories:
+  - name: AIイラストの目元パーツ別プロンプト一覧｜瞳・まつ毛・眉毛の整え方
+    groups:
+    - name: まつ毛のプロンプト一覧｜長さ・濃さ・下まつ毛など
+      tags:
+        clumped eyelashes: マスカラによる束感まつげのAIイラスト
+        curled eyelashes: カールまつげのAIイラスト
+        dark eyelashes: くっきりまつげのAIイラスト
+        lower eyelashes: 下まつげを強調したAIイラスト
+        thick eyelashes / thick lashes: 濃いまつげのAIイラスト
+        thick eyelashes または thick lashes: 濃いまつげ
+        voluminous eyelashes: ボリュームまつげのAIイラスト
+    - name: 目の形｜つり目・たれ目・半目など
+      tags:
+        big round eyes: 大きく丸い目のAIイラスト
+        big round eyes, doe eyes, innocent eyes: 大きく丸い目
+        droopy eyes: たれ目（柔らか）のAIイラスト
+        droopy eyes, gentle eyes, puppy eyes: たれ目（柔らか）
+        half-lidded eyes: 半目のAIイラスト
+        half-lidded eyes, sleepy eyes: 半目
+        narrow eyes: 細い目・切れ長のAIイラスト
+        narrow eyes, thin eyes, cat-like eyes: 細い目・切れ長
+        sharp eyes: つり目（鋭い）のAIイラスト
+        sharp eyes, slanted eyes, fox-like eyes: つり目（鋭い）
+        wide open eyes: 見開いた目のAIイラスト
+        wide open eyes, shocked eyes, surprised eyes: 見開いた目
+    - name: 眉毛の形を指定する｜太眉・困り眉・上がり眉など
+      tags:
+        drooped eyebrows: 下がり眉のAIイラスト
+        one eyebrow raised, eyebrow twitch: 非対称・動きのある眉のAIイラスト
+        raised eyebrows: 上がり眉のAIイラスト
+        thick straight eyebrows, bold eyebrows: 太め・平行眉のAIイラスト
+        thin eyebrows: 細く長い眉のAIイラスト
+        thin eyebrows, arched eyebrows: 細く長い眉
+        worried eyebrows, inward-slanted eyebrows: 八の字眉（困り眉）のAIイラスト
+    - name: 瞳に光を入れるプロンプト｜キャッチライト・反射・きらめき
+      tags:
+        catchlight: キャッチライトが入った瞳のAIイラスト
+        glimmering eyes: 小さなキラキラのキャッチライトの瞳のAIイラスト
+        multiple eye highlights: 複数のキャッチライトの瞳のAIイラスト
+        reflected light in eyes: リフレクション・キャッチライトのAIイラスト
+        soft iris glow: 虹彩の柔光の瞳のAIイラスト
+        specular eye highlights: 点状ハイライトが入った瞳のAIイラスト
+        wet eyes: うるうる感のある瞳のAIイラスト
+    - name: 瞳の色｜青・赤・金・オッドアイなど
+      tags:
+        amber eyes: 琥珀色の瞳のAIイラスト
+        deep emerald eyes: 深緑
+        gold eyes: 金
+        gray eyes: 灰色
+        icy gray eyes: 氷灰
+        pale blue eyes: 淡青
+        violet eyes: 紫
+        vivid crimson eyes: 鮮やかな赤い瞳のAIイラスト
+    - name: 瞳孔・虹彩の形状｜縦長・ハート・星型など
+      tags:
+        cross-shaped pupils: 十字型の瞳のAIイラスト
+        diamond-shaped pupils: 菱形（ひし形）の瞳のAIイラスト
+        heart-shaped pupils: ハート型の瞳のAIイラスト
+        multi-layered irises おすすめ！: 虹彩構造強調のAIイラスト
+        multi-layered irises, reflective eyes, moist eyes: 虹彩構造強調
+        multi-pupil eyes: 複数瞳孔のAIイラスト
+        normal pupils: normal pupilsのAIイラスト
+        ring-shaped pupils: 光輪状（リング型）の瞳のAIイラスト
+        star pupils: 星型の瞳のAIイラスト
+        vertical slit pupils: 縦長スリット（猫目）のAIイラスト
+  - name: AIイラスト用の線画プロンプト14集と使い方ガイド【NovelAI】
+    groups:
+    - name: 90〜2000年代アニメの太線画プロンプト
+      tags:
+        thick lineart, bold outlines, 1990s anime style, retro anime lineart, strong lines, monochrome: 90〜2000年代アニメの太線画のプロンプト紹介
+    - name: クリーンなアニメ線画を出すプロンプト
+      tags:
+        monochrome, thick lineart, outline with lineart, no shadow: まず一番オーソドックスなクリーンラインのプロンプトです。
+    - name: グラデーション塗りのプロンプト
+      tags:
+        gradient shading, light pink to white gradient, airbrush pale pink, soft pink gradient fill, dreamy pink fade: グラデーション塗りのプロンプト紹介
+    - name: スクリーントーン風のプロンプト
+      tags:
+        screentone, halftone dots, light pink manga tone, pale pink screentone shading: スクリーントーン風のプロンプト紹介
+    - name: フラット塗り（アニメ塗り）のプロンプト
+      tags:
+        flat color, solid light pink fill, pale pink flat coloring, anime flat shading, no shadows: フラット塗り（アニメ塗り）のプロンプト紹介
+    - name: 厚塗り風の着色プロンプト
+      tags:
+        thick paint, impasto, oil painting, painterly, light pink palette, soft pink brush strokes: 厚塗り風の着色のプロンプト紹介
+    - name: 塗り残し（白抜き）風のプロンプト
+      tags:
+        partial coloring, unfinished light pink painting, some areas white, pale pink rough coloring, white highlights remain: 塗り残し（白抜き）風のプロンプト紹介
+    - name: 少しラフなアニメ線画のプロンプト
+      tags:
+        detailed sketch, hand-drawn lineart, pencil sketch vibes, linear hatching, rough sketch, pencil drawing, monochrome: 少しラフなアニメ線画のプロンプト紹介
+    - name: 極細・繊細な美少女ゲーム風線画のプロンプト
+      tags:
+        very fine lineart, ultra detailed lineart, thin lines, delicate lines, detailed hair, monochrome: 極細・繊細な美少女ゲーム風線画のプロンプト紹介
+    - name: 漫画のペン入れ風線画のプロンプト
+      tags:
+        manga lineart, ink drawing, g-pen lines, manga pen lines, screentones, traditional manga style: 漫画のペン入れ風線画のプロンプト紹介
+    - name: 色トレス（線画に色をつける）風プロンプト
+      tags:
+        pale pink monochrome, colored lineart, light pink lineart, pale pink outlines, sakura pink contours, soft pink linework: 色トレス（線画に色をつける）のプロンプト紹介
+    - name: 色鉛筆塗りのプロンプト
+      tags:
+        colored pencil, light pink colored pencil texture, pale pink prismacolor style, crayon texture light pink: 色鉛筆塗りのプロンプト紹介
+  - name: ChatGPTで表情豊かな美少女を描く｜感情別プロンプト総まとめ
+    groups:
+    - name: よく使う表情プロンプト集｜笑顔・涙・照れなど
+      tags:
+        blushing angrily, arms crossed, pouty face: 怒り＋赤面（ツンデレ）
+        blushing, hiding face with hands: 恥ずかしがって隠れる
+        calm expression, hair swaying, soft lighting: 夜風に佇む表情
+        clinging pose, blushing, teary eyes: 甘えた顔
+        confident smile, smug expression: ドヤ顔
+        expressionless, neutral face: 無表情（クール）
+        gentle smile, warm expression: 微笑み
+        pouting, cheeks puffed out: ふくれっ面
+        puppy eyes, hands clasped: おねだり顔
+        scared, trembling, wide eyes: 怯え顔
+        serious face, looking straight, sparkles: キメ顔（正面ドーン）
+        sleepy eyes, messy hair, yawning: 寝ぼけ顔
+        smiling while crying, soft eyes: 泣き笑い（尊い）
+        smirking, mischievous grin: にやけ顔・いたずら
+        surprised, eyes wide open, open mouth: 驚き
+        teary eyes, sad expression: 泣き顔（涙うるうる）
+        tired eyes, slouched posture, faint smile: 疲れた顔
+        wink, tongue out, playful look: あざと顔
+        あざと顔 wink, tongue out, playful look: あざと顔をを再現したイラスト
+        おねだり顔 puppy eyes, hands clasped: おねだり顔を再現したイラスト
+        にやけ顔・いたずら smirking, mischievous grin: にやけ顔を再現したイラスト
+        はにかみ笑顔 bashful smile, slight blush, looking down: はにかみ笑顔をを再現したイラスト
+        ふくれっ面 pouting, cheeks puffed out: ふくれっ面を再現したイラスト
+        キメ顔（正面ドーン） serious face, looking straight, sparkles: 決め顔を再現したイラスト
+        ドヤ顔 confident smile, smug expression: ドヤ顔をを再現したイラスト
+        夜風に佇む表情 calm expression, hair swaying, soft lighting: 夜風に佇む表情を再現したイラスト
+        寝ぼけ顔 sleepy eyes, messy hair, yawning: 寝ぼけ顔を再現したイラスト
+        微笑み gentle smile, warm expression: 微笑みを再現したイラスト
+        怒り＋赤面（ツンデレ） blushing angrily, arms crossed, pouty face: 怒りと赤面（ツンデレ）顔をを再現したイラスト
+        怯え顔 scared, trembling, wide eyes: 怯えた顔を再現したイラスト
+        恥ずかしがって隠れる blushing, hiding face with hands: 恥ずかしがって顔を隠す表情を再現したイラスト
+        泣き笑い（尊い） smiling while crying, soft eyes: 泣き笑い（尊い）顔をを再現したイラスト
+        泣き顔（涙うるうる） teary eyes, sad expression: 泣き顔を再現したイラスト
+        無表情（クール） expressionless, neutral face: 無表情（クール）な顔を再現したイラスト
+        照れ・赤面 blushing, looking away, shy smile: まずは、美少女イラストでよく使われる表情を中心に、特によく見かける定番のものを厳選してご紹介しています。
+        甘えた顔 clinging pose, blushing, teary eyes: 甘えた顔を再現したイラスト
+        疲れた顔 tired eyes, slouched posture, faint smile: 疲れた顔を再現したイラスト
+        驚き surprised, eyes wide open, open mouth: 驚き顔をを再現したイラスト
+    - name: ギャグ・ネタ顔 プロンプト｜変顔・狂気・ビックリ系
+      tags:
+        evil grin, glowing eyes, sharp teeth: 悪魔の笑み
+        flustered expression, wide eyes, spiraling pupils: パニック顔
+        heart-shaped pupils, intense blush, sparkling eyes: トキめき顔
+        maniacal smile, wide open eyes, tilted head: 狂気の笑顔
+        shocked, mouth agape, eyes wide open: ビックリ顔
+        teasing look, wink, sticking out tongue: あざとすぎ顔
+    - name: ツンデレ・元気顔 プロンプト｜いたずら・キメ顔
+      tags:
+        blushing angrily, arms crossed, looking away: ツン＋赤面
+        grin, smug look, playful eyes: にやけ顔
+        mischievous grin, wink, sideways glance: いたずら顔
+        serious expression, sparkles, cool pose: キメ顔
+        smug smile, one eyebrow raised, confident pose: ドヤ顔
+    - name: ユニーク・特殊顔 プロンプト｜寄り目・酔い顔・小悪魔など
+      tags:
+        naughty face: 小悪魔顔
+    - name: 不安・苦しさ プロンプト｜内面の揺れや耐える顔を表現
+      tags:
+        arms crossed, pouting, looking away: 拗ねる
+        biting lip, teary eyes, clenched fists: 悔しい
+        depressed look, dull eyes, slouched shoulders: 憂鬱
+        disgusted look, turned head, narrowed eyes: 嫌悪
+        expression of patience: 我慢の表情
+        painful face: 痛み
+        worried expression, furrowed brows, looking around: 不安・心配
+    - name: 怒った顔 プロンプト｜激怒・しかめっ面の表情
+      tags:
+        a little angry: 少し怒り
+        furious, frontal face: 真正面で激怒
+        glowering look: にらみつける
+        reddened face: 顔が赤くなる
+        scowling face: 怒った顔
+    - name: 恐怖・絶望 プロンプト｜重苦しい表情やショックの再現
+      tags:
+        bereaved countenance: 喪失の表情
+        heavy expression: 重苦しい表情
+        sorrowful expression: 悲痛な表情
+        tremble face: 震える顔
+    - name: 泣き顔・悲しみ プロンプト｜儚さ・涙・感情の揺れ
+      tags:
+        crying, teary eyes, looking down: 泣き顔
+        forced smile, biting lips, teary eyes: 強がり笑顔
+        lamentation: 嘆きの表情
+        serene expression, distant gaze, soft lighting: 夜風に佇む
+        smiling while crying, bittersweet eyes: 泣き笑い
+        tearful: 涙ぐんだ顔
+        tired eyes, weak smile, slouched posture: 疲れ顔
+        unhappy: 不幸そう
+        watery eyes: 潤んだ目
+    - name: 無表情・クール プロンプト｜眠気や雰囲気で魅せる表情
+      tags:
+        dim lighting, tired expression, distant gaze: 深夜の切なさ
+        expressionless, blank eyes, calm demeanor: 無表情（クール）
+        melancholic expression, looking into distance: 憂い顔
+        sleepy eyes, half-closed lids, yawning: 眠い／寝ぼけ
+        warm smile, sparkling eyes, loving gaze: 恋する視線
+    - name: 照れ・赤面 プロンプト｜あざと可愛い＆甘えた表情
+      tags:
+        bashful smile, slight blush, looking down: はにかみ笑顔
+        blushing, clinging, teary eyes: 甘えた顔
+        blushing, looking away, shy smile: 照れ・赤面
+        embarrassed, nose blush: 恥ずかしがる＋鼻赤
+        hiding face with hands, heavy blush: 恥ずかしがって隠れる
+        nose blush: 鼻の赤み
+        pouting, puffed cheeks: ふくれっ面
+        puppy eyes, clasped hands, slight pout: おねだり顔
+        red cheek: 赤い頬
+        wink, teasing smile, tongue out: あざと顔
+    - name: 笑顔のプロンプト
+      tags:
+        happy, smile: 幸せな笑顔
+        light smile: 淡い笑み
+        seductive smile: 艶のある笑顔
+        smile, closed eyes: 目を閉じた笑顔
+        smile, closed mouth: 笑顔（口を閉じて）
+        smile, one eye closed: ウィンク笑顔
+        smile, open mouth: 笑顔（口を開けて）
+        ウィンク笑顔 smile, one eye closed: ウィンクの笑顔を再現したイラスト
+        幸せな笑顔 happy, smile: 幸せな顔を再現したイラスト
+        淡い笑み light smile: 淡い笑み（微笑）を再現したイラスト
+        目を閉じた笑顔 smile, closed eyes: 目を閉じた笑顔を再現したイラスト
+        笑顔 smile: 笑顔を再現したイラスト
+        笑顔（口を閉じて） smile, closed mouth: 笑顔（口を閉じている）を再現したイラスト
+        笑顔（口を開けて） smile, open mouth: 笑顔（口を開けている）を再現したイラスト
+        艶のある笑顔 seductive smile: 艶のある絵がを再現したイラスト
+    - name: 美少女の喜怒哀楽プロンプトセット｜感情表現の入門編
+      tags:
+        angry, frown, narrowed eyes: 怒った顔
+        bittersweet smile, teary eyes, distant gaze: 切ない微笑み
+        blushing angrily, crossed arms, averted gaze: ツン＋赤面
+        expressionless, calm eyes, frontal look: 無表情で見つめる
+        happy, smile, closed eyes: 嬉しい笑顔
+        moist eyes, worried expression, furrowed brows: うるんだ目の不安顔
+        shy smile, blushing, looking away: 照れ隠しの笑顔
+        smile, open mouth, sparkling eyes: 無邪気な笑顔
+        tearful eyes, sad expression, looking down: 涙ぐむ
+        upward gaze, soft smile, slightly tilted head: 上目づかいで微笑む
+    - name: 表情×構図で魅せるアングル演出
+      tags:
+        表情に 「eyes gently squinting, satisfied smile」 を使用し、構図のプロンプトとして 「from side veiw」 を使用。: 笑顔で清涼飲料水を飲む女子高生のイラスト
+        表情に 「faint, shy smile, cheeks softly flushed, eyes slightly moist」 を使用し、構図のプロンプトとして 「dutch angle」 を使用。: 花火大会で照れた表情の美少女のイラスト
+        表情に 「slightly annoyed expression, slight blush, pouty lips, sharp eyes (jitome)」 を使用し、構図のプロンプトとして 「low angle view」 を使用。: ジト目顔の美少女のイラスト
+    - name: 驚き・困惑 プロンプト｜視線そらしや予想外のリアクション
+      tags:
+        looking away, half open mouth: 視線そらし＋半開きの口
+        stressed: ストレスを感じた顔
+        stupefied: 呆然
+  - name: ChatGPT画像生成に使える構図とアングル40選【プロンプト・呪文付き】
+    groups:
+    - name: 「シネマティックアングル」ってどういう意味？
+      tags:
+        cinematic close-up 光と影で演出されたドラマチックなクローズアップ: シネマティッククローズアップ 光と影でドラマを演出するアップ cinematic close-up, dramatic lighting
+        cinematic close-up, dramatic lighting: 光と影で演出されたドラマチックなクローズアップ
+        cinematic depth / foreground blur: 前景・中景・背景の三層で奥行きを演出する構図
+        cinematic depth 前景・中景・背景の三層で奥行きを演出する構図: 奥行きの強い構図 前景〜中景〜背景の三層構成 cinematic depth / foreground blur
+        cinematic leading lines: 光や線で視線が自然に主役へ向かう構図
+        cinematic leading lines 光や線で視線が自然に主役へ向かう構図: 視線誘導の構図 ラインや影で視線を誘導 cinematic leading lines
+        cinematic low-angle with backlight: 見上げ構図、逆光で空や光を背景に
+        cinematic low-angle with backlight 見上げ構図、逆光で空や光を背景に: ローアングル＋逆光 見上げて、後光や空が映る構図 cinematic low-angle with backlight
+        cinematic wide shot / landscape framing: 広い風景の中に小さく人物を配置したワイドショット
+        cinematic wide shot 広い風景の中に小さく人物を配置したワイドショット: ワイドショット（遠景） 人物が小さく風景がドラマチック cinematic wide shot / landscape framing
+        film frame ratio, cinematic tones: 映画風の色調・16:9構図比率でフィルム調に仕上げる
+        film frame ratio, cinematic tones 映画風の色調・16:9構図比率でフィルム調に仕上げる: フィルムライクな構図 16:9比率や映画のような色調 film frame ratio, cinematic
+          tones
+        shallow depth of field / cinematic bokeh: 背景を大きくぼかし、主役を浮き立たせる構図
+        shallow depth of field 背景を大きくぼかし、主役を浮き立たせる構図: 被写界深度の浅い構図 背景が強くボケて主役が浮き立つ shallow depth of field / cinematic bokeh
+    - name: イラスト構図の基本、定番アングル15種類をマスターしよう
+      tags:
+        back view: キャラの背中が見える構図
+        back view キャラの背中が見える構図: キャラの背中が見える構図 back view
+        bust shot / upper body shot: 胸から上の構図
+        bust shot 胸から上の構図: 胸から上の構図 bust shot / upper body shot
+        close-up 顔を画面いっぱいに写す: 顔や物体を画面いっぱいに写す close-up
+        cowboy shot: 太ももより上を写した構図
+        cowboy shot 太ももより上を写した構図: カウボーイショット 太ももより上を写した構図 cowboy shot
+        dutch angle / tilted angle: カメラを傾けて不安定さを表現
+        dutch angle カメラを傾けて不安定さを表現: カメラを傾けて不安定さを表現 dutch angle / tilted angle
+        eye-level angle: 視線と同じ高さで自然な構図
+        eye-level angle 視線と同じ高さで自然な構図: 視線と同じ高さで自然な構図 eye-level angle
+        from side キャラを真横から見た自然な構図: 横からの構図 キャラを真横から見た自然な構図 from side
+        front view / straight-on angle: キャラや物体を正面から見る構図
+        front view 正面から見る構図: まずは、もっともオーソドックスな15種類のプロンプトを紹介します。日本語と英語の両方のプロンプトがあります。どちらでも再現可能です。
+        full body / long shot: 全身が入る遠目の構図
+        full body 全身が入る遠目の構図: 全身が入る遠目の構図 full body / long shot
+        low-angle view / worm’s-eye view: キャラを下から見上げる構図
+        low-angle view キャラを下から見上げる構図: キャラを下から見上げる構図 low-angle view / worm’s-eye view
+        over-the-shoulder shot: 肩越しに対象を見る構図
+        over-the-shoulder shot 肩越しに対象を見る構図: 肩越しに対象を見る構図 over-the-shoulder shot
+        selfie / self-portrait angle: キャラが自分でカメラを持って撮っている構図
+        selfie / self-portrait angle キャラが自分でカメラを持って撮っている構図: 自撮り構図 キャラが自分でカメラを持って撮っている構図 selfie / self-portrait angle
+        side view / profile view: 真横から見た構図
+        side view 真横から見た構図: 真横から見た構図 side view / profile view
+        three-quarter view / 3/4 angle: 斜め45度の構図、よく使われる
+        three-quarter view 斜め45度の構図: 斜め45度の構図、よく使われる three-quarter view / 3/4 angle
+        top-down view / bird’s-eye view: キャラや風景を上から見る
+        top-down view キャラや風景を上から見る: キャラや風景を上から見る top-down view / bird's-eye view
+    - name: 他と差がつく、意外性のある構図＆アングルまとめ
+      tags:
+        chiaroscuro / dramatic contrast: 光と影で空間を分割しドラマを演出する構図
+        chiaroscuro 光と影で空間を分割しドラマを演出する構図: ライト＆シャドウ重視構図 光と影で構図を分ける演出 chiaroscuro / dramatic contrast
+        dramatic slow-motion angle: 一瞬を切り取ったようなドラマチック構図
+        dramatic slow-motion angle 一瞬を切り取ったようなドラマチック構図: スローモーション構図 一瞬を切り取ったような構図 dramatic slow-motion angle
+        minimal symmetry composition: 空間を広く使い、主役を中央に配置したシンプル構図
+        minimal symmetry composition 空間を広く使い、主役を中央に配置したシンプル構図: 対称＆ミニマル構図 空間を広く使って主役を中央に minimal symmetry composition
+        overhead angle: 少し離れた頭上からの視点構図
+        overhead angle 少し離れた頭上からの視点構図: オーバーヘッドショット 頭上から少し離れて撮った視点 overhead angle
+        POV shot / from character’s eyes: キャラの目線から見た視点構図
+        POV shot キャラの目線から見た視点構図: イラストや演出にもう一味加えたいときに、ぜひ試してみてください
+        reaction shot: 対象に反応するキャラのリアクションにフォーカスした構図
+        reaction shot 対象に反応するキャラのリアクションにフォーカスした構図: リアクションショット 対象に対しての反応を中心に描く reaction shot
+    - name: 応用テクで差がつく、演出に効く構図＆アングル集
+      tags:
+        asymmetrical composition: 意図的にバランスを崩し印象を強くする構図
+        asymmetrical composition 意図的にバランスを崩し印象を強くする構図: 非対称バランス構図 意図的にバランスを崩し印象を強くする構図 asymmetrical composition
+        deep focus composition: 手前・中間・奥の三層を使って奥行きを演出
+        deep focus composition 手前・中間・奥の三層を使って奥行きを演出: 奥行き強調構図 手前・中間・奥の三層を使って奥行きを演出 deep focus composition
+        dynamic perspective / forced perspective: 遠近感を強調した構図
+        dynamic perspective 遠近感を強調した構図: 遠近感を強調した構図　dynamic perspective / forced perspective
+        framing composition / frame-in: 窓やドアなど「枠」を使ってキャラを囲む構図
+        framing composition フレームイン構図: 窓やドアなど「枠」を使ってキャラを囲む構図 framing composition / frame-in
+        leading lines / eye-guiding composition: 見る人の視線が自然に誘導される構図
+        leading lines 見る人の視線が自然に誘導される構図: 視線誘導構図 見る人の視線が自然に誘導される構図 leading lines / eye-guiding composition
+        low-position shot: 足元など低い位置から見上げるように写す
+        low-position shot 足元など低い位置から見上げるように写す: ローポジション構図 足元など低い位置から見上げるように写す low-position shot
+        partial close-up / body part focus: 顔や手、目、口元など、身体の一部を強調
+        partial close-up 顔や手、目、口元など、身体の一部を強調: パーツフォーカス構図 顔や手、目、口元など、身体の一部を強調 partial close-up / body part focus
+        reflection shot / mirror composition: 鏡や水面などに映った姿を映す構図
+        reflection shot 鏡や水面などに映った姿を映す構図: リフレクション構図 鏡や水面などに映った姿を映す構図 reflection shot / mirror composition
+        silhouette shot: 光に照らされてシルエットだけが見える
+        silhouette shot 光に照らされてシルエットだけが見える: 光に照らされてシルエットだけが見える silhouette shot
+        symmetrical composition: 左右対称で整った構図
+        symmetrical composition 左右対称で整った構図: シンメトリー構図 左右対称で整った構図 symmetrical composition
+        top lighting angle: 真上から光が当たって影が印象的な構図
+        top lighting angle 真上から光が当たって影が印象的な構図: トップライト構図 真上から光が当たって影が印象的な構図 top lighting angle
+        wide background shot / establishing shot: キャラを小さく、風景を広く描く
+        wide background shot キャラを小さく、風景を広く描く: 背景重視構図 キャラを小さく、風景を広く描く wide background shot / establishing shot
+  - name: 【AIイラスト】占い師のプロンプト集（キャラ,背景,アイテム込み）
+    groups:
+    - name: 占い師に使えるアイテム別プロンプト一覧
+      tags:
+        ancient spellbook: 古い本・魔導書
+        antique mirror: 鏡
+        black cat: 黒猫
+        candles: キャンドル
+        cobwebs: 蜘蛛の巣
+        constellation chart: 星図・天文図
+        crystal ball: 水晶玉
+        crystal cluster: クリスタルクラスター
+        divination dice: 占いサイコロ
+        dripping wax: 蝋燭の蝋
+        hourglass: 砂時計
+        incense smoke: お香・煙
+        magic circle: 魔法陣
+        pendulum: 振り子
+        quill pen: 羽根ペン
+        raven: カラス・鴉
+        rose petals: バラの花びら
+        rune stones: ルーン石
+        scrying bowl: 水差し・ボウル
+        skull: 髑髏
+        tarot cards: タロットカード
+  - name: 【AI画像】口元を可愛くするプロンプトまとめ｜アヒル口・キス待ち・リップグロスほか
+    groups:
+    - name: アヒル口・ぷく口・あへ顔まで！印象に残る口元の演出プロンプト
+      tags:
+        3-shaped mouth: 可愛い女の子の3字口
+        akanbe: 美少女のあかんべえ
+        duck lips: アヒル口の美少女
+        duck lips, puckered lips: アヒル口
+        kissable lips: キス待ちをする女の子の唇
+        kissable lips, waiting for a kiss: キス待ちの唇
+        pout, pouty lips: ぷく口（膨れっ面）
+        visible teeth, open: 可愛い女の子の歯が見える口
+        visible teeth, open mouth with teeth: 歯が見える口
+        yaeba: 美少女の八重歯
+        yaeba, snaggletooth: 八重歯（ヤエバ）
+    - name: 可愛い表情を作る「口の形」プロンプト一覧
+      tags:
+        :O, O-shaped mouth: O字口
+        biting lip: 可愛い女の子の噛み唇
+        biting lip, bitten lips: 噛み唇
+        cat mouth: 可愛い女の子のネコ口
+        cat mouth, omega mouth: ネコ口（ω型）
+        closed mouth, smile: 美少女の微笑み
+        fang, sharp tooth: 牙・ファング
+        grin, wide grin: にやりと笑う（歪み口）
+        laughing mouth: 美少女の大笑いした時の口
+        laughing mouth, eyes closed: 大笑い（目閉じ）
+        O-shaped mouth: 可愛い女の子のO字口
+        open mouth, wide open: 大きく開けた口
+        parted lips, pursed lips: 少し開けた口
+        smile open mouth: 可愛い女の子のD字口
+        smile open mouth, frown open mouth: D字口／逆D字口
+        smirk, one-sided smile: 美少女のニヤリとした口
+        straight mouth line: 美少女の真一文字の口
+        upturned corners: 美少女の口角上がり
+        upturned corners, downturned corners: 口角上がり／口角下がり
+    - name: 唇の種類と質感のプロンプトパターン集
+      tags:
+        bow lips: 弓形唇の美少女
+        chapped lips: 荒れた唇の美少女
+        full lips: 厚い唇（ふっくら）の美少女
+        full lips, plump lips: 厚い唇（ふっくら）
+        heart-shaped lips: ハート型の唇の美少女
+        lip gloss おすすめです！: ツヤのある唇の美少女
+        lip gloss, shiny lips: ツヤのある唇
+        lip liner: リップライナーを強調した美少女
+        lip liner, defined lips: リップライナー強調
+        matte lips: マットリップの美少女
+        ombre lips: グラデーションリップの美少女
+        ombre lips, gradient lips: グラデーションリップ／オムブレ
+        overlined lips: オーバーラインドリップの美少女
+        prominent cupid's bow: キューピッドボウの唇の美少女
+        thin lips: 薄い唇の美少女
+        wide lips: 唇を広げた美少女
+  - name: 【画像AI】前髪のプロンプト39種｜美少女イラスト向けの質感・分け方・色まで網羅
+    groups:
+    - name: よく使われる髪質表現：儚さ・透明感・きらめき系
+      tags:
+        bouncy hair: 弾むような髪
+        delicate hair: 繊細な髪
+        ethereal hair: 儚げな髪
+        flowing hair: なびく髪
+        glossy black hair: 黒曜石のような黒髪
+        long flowing hair: 長く、なびく髪
+        shimmering hair: きらめく髪
+        soft wavy hair cascading down shoulders: 肩にかかる柔らかいウェーブヘア
+        twin-tailed hair, bouncy: ツインテール、弾むような
+        voluminous hair: ボリュームのある髪
+        windswept hair: 風になびいた髪
+    - name: カットラインで印象操作：アーチ・非対称などの前髪
+      tags:
+        arched bangs: arched bangs, 前髪のプロンプト紹介
+        asymmetrical bangs: asymmetrical bangs,前髪のプロンプト紹介
+        baby bangs: baby bangs, 前髪のプロンプト紹介
+        choppy bangs: choppy bangs, 前髪のプロンプト紹介
+        cut bangs: cut bangs, 前髪のプロンプト紹介
+        fanged bangs: fanged bangs,前髪のプロンプト紹介
+        jagged bangs: jagged bangs, 前髪のプロンプト紹介
+        medium bangs: medium bangs, 前髪のプロンプト紹介
+        micro bangs: micro bangs, 前髪のプロンプト紹介
+        short bangs: short bangs, 前髪のプロンプト紹介
+        single bang: single bang,前髪のプロンプト紹介
+        straight bangs: straight bangs, 前髪のプロンプト紹介
+    - name: グラデーション
+      tags:
+        balayage hair: バレイヤージュヘア
+        gradient hair from {color1} to {color2}: '{color1}から{color2}へのグラデーション髪 例 : gradient hair from pink to purple (ピンクから紫へのグラデーション)'
+        ombre hair: オンブレヘア
+    - name: メッシュ・ハイライト
+      tags:
+        highlights in hair: ハイライト入りの髪
+        inner color hair: インナーカラー髪
+        lowlights in hair: ローライト入りの髪
+        split dye hair: スプリットダイヘア
+        '{color1} hair with {color2} highlights': '{color1}の髪に{color2}のハイライト 例 : black hair with red highlights (黒髪に赤いハイライト)'
+        '{color1} hair with {color2} streaks': '{color1}の髪に{color2}のメッシュ 例 : brown hair with blonde streaks (茶髪に金色のメッシュ)'
+    - name: 分け目や流れで変わる印象：前髪スタイルの違い
+      tags:
+        center-flap bangs: center-flap bangs, 前髪のプロンプト紹介
+        center-parted bangs: センターパート前髪のプロンプト紹介
+        diagonal bangs: diagonal bangs, 前髪のプロンプト紹介
+        double-parted bangs: double-parted bangs, 前髪のプロンプト紹介
+        parted bangs: 分け目前髪のプロンプト紹介
+        side-parted bangs: サイドパート前髪のプロンプト紹介
+        side-swept bangs: サイドスイープバング、前髪のプロンプト紹介
+    - name: 前髪がない・額を見せるスタイル
+      tags:
+        bangs pinned back: ピン留め前髪のプロンプト紹介
+        forehead exposed: forehead exposed, 前髪のプロンプト紹介
+        hair pulled back: オールバック、前髪のプロンプト紹介
+        long straight hair: ロングストレート（前髪なし）
+        long straight hair , no bangs: long straight hair, no bangs, 前髪のプロンプト紹介
+        no bangs: no bangs, 前髪のプロンプト紹介
+    - name: 単色（基本）
+      tags:
+        pink hair: ピンク髪
+    - name: 単色（濃淡・特殊）
+      tags:
+        ash blonde hair: アッシュブロンド
+        auburn hair: 濃い赤褐色 / 栗色
+        burgundy hair / wine red hair: バーガンディ / ワインレッド
+        chestnut hair: 栗色
+        copper hair: 銅色
+        dark brown hair: 濃い茶髪 / 暗い茶髪
+        dark red hair: 濃い赤髪 / 暗い赤髪
+        emerald green hair: エメラルドグリーン髪
+        hot pink hair: ホットピンク髪
+        lavender hair: ラベンダー髪
+        light red hair: 薄い赤髪 / 明るい赤髪
+        magenta hair: マゼンタ髪
+        mint green hair: ミントグリーン髪
+        navy blue hair: ネイビーブルー髪
+        pastel pink hair: パステルピンク髪
+        platinum blonde hair: プラチナブロンド
+        sky blue hair: スカイブルー髪
+        strawberry blonde hair: ストロベリーブロンド
+        teal hair: ティール髪
+        vermilion hair: 朱色髪
+    - name: 厚さ・透け感で選ぶ前髪：ぱっつん〜シースルーまで
+      tags:
+        full bangs: full bangs, 前髪のプロンプト紹介
+        see-through bangs: see-through bangs, 前髪のプロンプト紹介
+        wispy bangs: wispy bangs,前髪のプロンプト紹介
+    - name: 基本の髪質指定：ナチュラル・ストレート・ウェーブなど
+      tags:
+        glossy hair: ツヤのある髪
+        shiny hair: 輝く髪
+        silky hair: シルクのような髪
+        smooth hair: サラサラの髪
+        soft hair: 柔らかい髪
+        straight hair: ストレートヘア
+    - name: 応用・特殊系：編み込みや染め前髪のバリエーション
+      tags:
+        ahoge bangs: アホ毛付き前髪のプロンプト紹介
+        curled bangs: カール前髪のプロンプト紹介
+        curly bangs: curly bangs, 前髪のプロンプト紹介
+        dyed bangs: dyed bangs, 前髪のプロンプト紹介
+        wavy bangs: wavy bangs, 前髪のプロンプト紹介
+    - name: 最近のトレンド髪質：繊細な光沢・重めの質感など
+      tags:
+        bouncy twin tails, light brown, with individual strands catching the light: リムライトのあたる髪の毛
+        ethereal long silver hair, with subtle blue highlights and a velvet sheen: ベルベットのような光沢
+        Re:Zero style, glossy, dark blue bob with a neat, slightly inward-curling shape: リゼロのレムような前下がりボブ
+    - name: 特殊・抽象的
+      tags:
+        earth tone hair: アースカラー髪
+        fantasy hair color: ファンタジーヘアカラー
+        galaxy hair: ギャラクシーヘア
+        holographic hair: ホログラフィックヘア
+        iridescent hair: イリデセントヘア
+        jewel tone hair: ジュエルトーンヘア
+        metallic hair: メタリックヘア
+        muted color hair: くすんだ色の髪
+        neon hair: ネオンヘア
+        pastel hair: パステルヘア
+        rainbow hair: レインボーヘア
+        unusual hair color: 珍しい髪色
+        vivid color hair: 鮮やかな色の髪
+    - name: 髪の質感プロンプト集：やわらかさ・ツヤ・毛束感を描く
+      tags:
+        silky shine: 美少女イラストでよく使われる髪質表現を中心に、最新の流行りも踏まえて髪質を指定するためのプロンプト例をいくつか紹介します。
+  - name: お嬢様ヘアのプロンプト集【AIイラスト】
+    groups:
+    - name: お嬢様ヘアに合うヘアアクセサリープロンプト
+      tags:
+        bowknot on top of head: 頭の上のリボン
+        bun cover: お団子カバー
+        flower hair ornament: 花の髪飾り
+        frilled hairband: フリルのヘアバンド
+        hair beads: ビーズの髪飾り
+        hair ribbon: ヘアリボン
+        hair stick: 簪（かんざし）
+        hair tubes, sidelocks: 髪筒
+        jewel hair ornament: 宝石の髪飾り
+        knot hair ornament: 結び目型の髪飾り
+        lace hairband: レースのヘアバンド
+        tress ribbon, sidelocks: 毛束を結ぶリボン
+    - name: お嬢様ヘアの完成プロンプト例（作例まとめ）
+      tags:
+        champagne blonde hair, single drill, short bangs, curly ends, silky smooth hair, hair stick: シングルドリル
+        chestnut brown long hair, braided ponytail, curtained hair, wavy ends, glossy voluminous hair, hair beads: 三つ編みポニーテール
+        deep navy blue long hair, hime cut, sidelocks, swept bangs, wavy ends, straight hair, knot hair ornament: 姫カットストレート
+        honey brown long hair, ringlets, curtained hair, blunt ends, shiny voluminous hair, lace hairband: ゆるやかなリングレット
+        jet black hair, very low bun, parted bangs, blunt tresses, shiny hair, hair beads: 上品な低めシニヨン
+        lavender silver hair, hair rings, center-flap bangs, split ends, shiny curled hair, jewel hair ornament: ヘアリング
+        light blonde long hair, half updo, blunt bangs, blunt ends, shiny hair, white velvet hair ribbon: 柔らかなハーフアップ
+        midnight blue long hair, crown braid, parted bangs, curly ends, sleek glossy hair, tress ribbon sidelocks: クラウンブレイド（ツイン）
+        platinum silver hair, crown braid, short bangs, curly ends, silky hair, flower hair ornament: クラウンブレイド
+        rose gold hair, twin drills, hime cut, center-flap bangs, wavy ends, lustrous hair, jewel hair ornament: 華やかなツインドリル
+        rose pink hair, very low bun, braided bangs, wavy ends, soft lustrous hair, knot hair ornament: 低めお団子（姫カット風）
+        wine red hair, half up bun, swept bangs, blunt tresses, lustrous wavy hair, bun cover: ハーフアップお団子
+    - name: その他のお嬢様ヘア（姫カット・リボンなど）
+      tags:
+        braided hair rings: 三つ編みヘアリング
+        crown braid: クラウンブレイド
+        drill ponytail: ドリルポニーテール
+        drill sidelocks: ドリルサイドロック
+        hair rings: ヘアリング
+        half up bun: ハーフアップのお団子
+        half updo: ハーフアップ
+        quad drills: クアドリル
+        single drill: シングルドリル
+        twin drills: ツインドリル
+        very low bun: シニヨン
+        その他定番: その他定番
+        ドリルヘア系: ドリルヘア系
+        ハーフアップ・お団子系: ハーフアップ・お団子系
+        リングレット・巻き毛系: リングレット・巻き毛系
+        編み込み系: 編み込み系
+    - name: まとめ
+      tags:
+        blunt bangs / swept bangs / braided bangs: 前髪
+        blunt ends / curly ends / wavy ends: 毛先
+        half updo / twin braids / drill hair / ringlets / hime cut: 髪型
+        shiny hair / hair ribbon / hair ornament: 補助要素
+    - name: 毛先（カット・カール・ウェーブ）のプロンプト
+      tags:
+        blunt ends: 切り揃えられた毛先
+        curly ends: 毛先がカール
+        long hair, blunt tresses: 毛束が切り揃え
+        split ends: 別れた毛先
+        wavy ends: 毛先がウェーブ
+  - name: アメリカンダイナー衣装のプロンプト集【AIイラスト】
+    groups:
+    - name: まとめ
+      tags:
+        diner, fast food on tray: 店内・ダイナー要素を入れる
+        peter pan collar, rounded collar, open collar, detached collar: 襟の形を変える
+        roller skates: ローラースケート
+        vertical-striped dress, pleated dress, frilled dress, checkered skirt: ワンピース・スカートを変える
+        visor cap, striped dress, double-breasted, apron, waitress: これだけでダイナーらしさが出る（基本形）
+        waist apron, frilled apron, striped apron, gingham apron: エプロンを変える
+        white thighhighs, striped pantyhose, polka dot pantyhose, mismatched thighhighs: ニーハイ・パンストを変える
+        wrist cuffs, back long bow, headscarf, mini hat, name tag: 小物を足す
+    - name: ダイナー衣装の作例プロンプト一覧
+      tags:
+        GPT Image 2.0: GPT Image 2.0の生成例
+    - name: ダイナー衣装の基本プロンプトと作り方
+      tags:
+        diner: ダイナー店内
+        striped dress, double-breasted: ダブルブレストのドレス
+        visor cap: バイザー付きキャップ
+        waitress, apron: ウェイトレスのエプロン
+    - name: 小物・アクセントのプロンプト
+      tags:
+        back long bow: 後ろリボン
+        brown pantyhose: 茶色のパンスト
+        button gap, strained fabric, waitress: 胸囲にテンションがかかる
+        checkered skirt: チェック柄スカート
+        checkered thighhighs: チェック柄
+        collar with orange trim: 縁取り付き襟
+        collared dress: 襟付きドレス
+        detached collar: 付け襟
+        frilled apron: フリル付きエプロン
+        frilled dress: フリルドレス
+        frilled shirt collar: フリル付き
+        gingham apron: ギンガムチェックエプロン
+        headscarf: ヘッドスカーフ
+        heart-shaped name tag: ハート型ネームタグ
+        horizontal-striped thighhighs: 横縞（ボーダー）
+        impossible clothes, waitress: 乳袋を強調
+        mini hat: ミニハット
+        mismatched thighhighs: 左右デザイン違い
+        muffin top: ハミ肉（お腹周り）
+        multicolored skirt: カラフルなスカート
+        multicolored thighhighs: カラフルなニーハイ
+        name tag: ネームタグ
+        open collar: 開いた襟
+        peter pan collar: ピーターパンカラー
+        pleated dress: プリーツドレス
+        polka dot pantyhose: 水玉模様
+        puffy short sleeves: パフスリーブ
+        red vest: 赤ベスト
+        rounded collar: 丸襟
+        sleeve cuffs: 袖口カフス
+        striped apron: ストライプ柄エプロン
+        striped pantyhose: ストライプ柄
+        striped shirt: ストライプシャツ
+        tented shirt, waitress: 乳テントを強調
+        vertical-striped dress: 縦ストライプのドレス
+        vertical-striped thighhighs: 縦縞のニーハイ
+        waist apron: ウエストエプロン
+        white thighhighs: 白色のニーハイ
+        wrist cuffs: リストカフス
+        その他のアクセント: その他のアクセント
+        ウエスト・太もも周りの体型: ウエスト・太もも周りの体型
+        エプロン: エプロン
+        シャツ: シャツ
+        ストッキング・ニーハイ: ストッキング・ニーハイ
+        バスト周り: バスト周り
+        ワンピース・スカート: ワンピース・スカート
+        襟の種類: 襟の種類
+  - name: イケメン女子のプロンプト集 かっこいい女の子をAIイラストで再現するコツ
+    groups:
+    - name: イケメン女子のヘアスタイル別のプロンプト
+      tags:
+        center-part medium-length hair, lavender hair, silver highlights mesh: Gl-13 センターパートミディ
+        ear-tucked short hairstyle, mint green hair, inner color lavender: Gl-11 耳掛けショート
+        Gl-10: 前髪長めショート
+        Gl-11: 耳掛けショート
+        Gl-12: ラフな外ハネボブ
+        Gl-13: センターパートミディ
+        Gl-14: 軽めのマッシュ
+        Gl-15: 低めポニテ
+        Gl-16: 無造作ショート
+        Gl-17: ミディレイヤー
+        Gl-18: 軽いウェーブショート
+        light mash cut, silver hair, gradient dark gray to silver: Gl-14 軽めのマッシュ
+        light wavy short hairstyle, ash blonde hair, asymmetrical cut: Gl-18 軽いウェーブショート
+        long bangs short hairstyle, pastel pink hair, messy hair: Gl-10 前髪長めショート
+        low ponytail hairstyle, navy blue hair, undercut detail: Gl-15 低めポニテ
+        medium layered haircut, teal hair, twisted braid accent: Gl-17 ミディレイヤー
+        messy outward-flipped bob, caramel brown hair, subtle outward flip: Gl-12 ラフな外ハネボブ
+        tousled short hairstyle, rose gold hair, soft waves: Gl-16 無造作ショート
+    - name: イケメン女子の顔再現用AIプロンプト｜輪郭と目の特徴
+      tags:
+        Gl-01: シャープ×長前髪×直視
+        Gl-02: マスキュリン×耳掛け×伏し目
+        Gl-03: フェミン×ポニテ×優しい目
+        Gl-04: シャープ×外ハネ×片目閉じ
+        Gl-05: マスキュリン×流し髪×見下ろし
+        Gl-06: フェミン×束ねロング×潤み目
+        Gl-07: シャープ×シャギー×睨み目
+        Gl-08: マスキュリン×片耳かけ×余裕笑
+        Gl-09: フェミン×軽ハネ×無邪気笑顔
+    - name: キュロットスタイルのプロンプト
+      tags:
+        B-01: モードタキシード
+        B-01 モードタキシード: 上半身はジレでマニッシュ、裾広がりのキュロットで脚線を長く見せる
+        B-02: ストリートデニム
+        B-02 ストリートデニム: 裾切りっぱなしのラフ感とフーディのボリュームで少年っぽさを強調
+        B-03: リラックスリネン
+        B-03 リラックスリネン: 風合い重視のリネン×リネン、袖まくり＋手首アクセで抜け感
+        B-04: アスレジャーミックス
+        B-04 アスレジャーミックス: ジャケットはややタイト、キュロットは伸縮性ありで機能美を前面に
+        B-05: スマートウール
+        B-05 スマートウール: 上質ウール素材×細身ローファーで秋冬オフィスカジュアル対応
+        B-06: フェミニンレザー
+        B-06 フェミニンレザー: 透けブラウスとレザーの質感差で中性的＋色気バランス
+        B-07: ヴィンテージチェック
+        B-07 ヴィンテージチェック: 上下柄リンク、クロップド丈でウエスト位置を高く見せて脚長効果
+        B-08: テックパラシュート
+        B-08 テックパラシュート: 機能ポケットを強調しつつ、色味はアーストーンで都会的アウトドア感
+        B-09: ボヘミアンプリント
+        B-09 ボヘミアンプリント: シルエットはゆるめでも色数を抑えて中性的バランスを保持
+    - name: ハイファッション系コーデのプロンプト
+      tags:
+        C-01: カラーブロックモード
+        C-01 カラーブロックモード: 直線的なブレザーと大胆配色プリーツでモード感、色を三分割で配置し視線誘導
+        C-02: フューチャーパステル
+        C-02 フューチャーパステル: 透け感＋光沢素材で近未来的。淡色でも高彩度でモノトーン回避、メッシュのレイヤリングで立体感
+        C-03: ネオトライバル
+        C-03 ネオトライバル: ビビッド×アースカラーの対比でアート性、ベストの直線 vs スカートの曲線で中性的バランス
+        C-04: デジタルフローラル
+        C-04 デジタルフローラル: 高彩度同系色でまとめ、花柄をデジタル加工風にして甘さを抑えたフェミニンモード
+        C-05: スポーツシック
+        C-05 スポーツシック: 原色×補色でポップ、ボンバーのボリュームとプリーツの軽さで動き強調
+        C-06: メタリックエレガンス
+        C-06 メタリックエレガンス: サテン×メタリックで光沢レイヤー、曲線ボウタイと鋭角プリーツでモードとフェミを両立
+        C-07: アールデコポップ
+        C-07 アールデコポップ: 裾刺繍モチーフでアート性、補色イエロー×パープル、ボクシーシルエットで中性的に
+        C-08: ボヘミアンモード
+        C-08 ボヘミアンモード: 色味を暖色×寒色でコントラスト、透けチュール層が動くたび表情変化、シャツのドレープでマニッシュ感
+        C-09: スカルプチュアルオリガミ
+        C-09 スカルプチュアルオリガミ: トップの立体ショルダーと折り紙プリーツで彫刻的シルエット、補色寄りのビビッド2色でアートピース化
+    - name: パンツスタイルのプロンプト
+      tags:
+        A-01: モードマニッシュ
+        A-01 モードマニッシュ: 黒×白で統一し、無造作に流した髪でフェミニンな顔立ちとのギャップを演出
+        A-02: カジュアルストリート
+        A-02 カジュアルストリート: ポケットに手を突っ込み、肩の力を抜いたラフな着こなし
+        A-03: スマートフェミ・ハンサム
+        A-03 スマートフェミ・ハンサム: 深Vネックで程よくフェミニン、顔立ちの中性感を際立たせる
+        A-04: スポーティミックス
+        A-04 スポーティミックス: 髪をラフに結ぶ or 前髪を垂らして、少年っぽさを強調
+        A-05: 軽クラシカルジャケット
+        A-05 軽クラシカルジャケット: 髪を耳かけして顔周りをスッキリ見せ、中性的な印象を強化
+        A-06: ヴィンテージカジュアル
+        A-06 ヴィンテージカジュアル: シャツ袖ロールアップ＆片側耳かけで抜け感を演出
+        A-07: アーバンスポーティ
+        A-07 アーバンスポーティ: モノトーンで統一しつつ、キャップをかぶらず髪の動きを見せて中性的魅力アップ
+        A-08: エフォートレスフェミ
+        A-08 エフォートレスフェミ: 第2ボタン開け＆ストラップサンダルで程よく肌見せ、脚長効果
+        A-09: ロングコートハンサム
+        A-09 ロングコートハンサム: マフラーを使わず髪を流して顔まわりを強調、イケメン感を際立たせる
+    - name: 中性的・クール系など顔タイプ別のプロンプト
+      tags:
+        androgynous girl, sharp jawline, elongated face, slim cheekbones, minimal roundness, elevated nose bridge, thin lips: 中性的シルエット
+    - name: 概要
+      tags:
+        ChatGPT（4o）: ChatGPT（4o）で生成したイケメン女子のAIイラスト作例
+  - name: エルフ・サキュバス・妖精ほか亜人種族のプロンプト68種
+    groups:
+    - name: アンデッド・幽霊・ヴァンパイアのプロンプト
+      tags:
+        1girl, zombie, stitches, tattered coat, skirt, uneven gait, abandoned street, drifting papers, blank stare: ゾンビ（傷跡や縫い目がある朽ちた体）
+        dullahan: デュラハン
+        dullahan, headless, carrying head, knight armor, cape, standing, misty graveyard, lantern, composed posture: デュラハン（首のない騎士の姿）
+        ghost: 幽霊
+        ghost, semi-transparent, long hair, floating, night corridor, paper doors, faint glow, distant stare, expressionless: 幽霊（半透明で漂う儚げな姿）
+          ※再現のランダム性の幅がかなり広め
+    - name: ケモ耳キャラのプロンプト
+      tags:
+        catgirl: 猫娘
+    - name: 人外キャラ（元素・爬虫類・水棲・鳥類系）のプロンプト
+      tags:
+        1girl, aarakocra, avian humanoid, spread wings, sky temple, wind trails, heroic stance: アーラコクラ（鳥の翼を持つ人型）
+        1girl, air genasi, flowing hair like wind, translucent veil, swirling leaves, cliff edge, gust effects: エア・ジェナシ（風をまとった半人半精霊の姿）
+          ※再現のランダム性の幅がかなり広め
+        1girl, dryad, bark skin, leaf hair, ancient tree, sun shafts, forest glade, serene: ドリアード（木の精霊のような樹皮を持つ姿）
+        1girl, fire genasi, flame hair, ember particles, charred ground, dramatic contrast: ファイア・ジェナシ（炎のような髪を持つ姿）
+        1girl, kenku, raven features, feathers cloak, dagger, nocturnal city rooftops, stealth, backlight: ケンクー（烏の頭と羽を持つ姿）
+        1girl, lizardfolk, vivid scales, tribal jewelry, trident, swamp reeds, foggy morning, wet skin highlights: リザードフォーク（鱗に覆われた爬虫類の姿）
+        1girl, medusa, living snake hair, marble ruins, broken statues, moonlit, intense eye contact: メデューサ（髪が生きた蛇となった女性）
+        1girl, naga, serpentine lower body, ornate bangles, jungle temple, waterfalls, humid atmosphere: ナーガ（人間の上半身と蛇の下半身を持つ姿）
+        1girl, nymph, nature spirit, streamside rocks, soft petals, morning haze, gentle smile: ニンフ（美しい自然の精霊の姿）
+        1girl, siren, ocean cliffs, windblown hair, musical notes motif, crashing waves, alluring eyes: セイレーン（海辺で歌う妖艶な存在）
+        1girl, sylph, airy spirit, translucent drapery, flower meadow, soft breeze trails, ethereal lighting: シルフ（風の精霊のような透き通った姿）
+        1girl, triton, blue skin, gills, trident, underwater ruins, caustic light, floating hair: トリトン（青い肌と鰓を持つ海の戦士）
+        1girl, water genasi, wet skin sheen, floating droplets, shoreline mist, sea-blue palette: ウォーター・ジェナシ（水のきらめきをまとう姿）
+          ※再現のランダム性の幅がかなり広め
+        aarakocra: アーラコクラ
+        air genasi: エア・ジェナシ
+        earth genasi: アース・ジェナシ
+        earth genasi, stone-textured skin, moss accents, ruins, falling dust, grounded stance: アース・ジェナシ（石や苔をまとった大地の姿）
+        fire genasi: ファイア・ジェナシ
+        kenku: ケンクー
+        lizardfolk: リザードフォーク
+        naga: ナーガ
+        sylph: シルフ
+        triton: トリトン
+        water genasi: ウォーター・ジェナシ
+    - name: 半人半獣・モンスター娘のプロンプト
+      tags:
+        1girl, alraune, flower throne, vine dress, leaf ornament, seated, garden, morning dew, calm smile: アルラウネ（花を纏った植物の姿）
+        alraune: アルラウネ
+        arachne: アラクネ（蜘蛛女）
+        dragon girl: 竜人（ドラゴン娘）
+        satyr / faun: サテュロス/ファウン
+        slime girl: スライム娘
+    - name: 和妖怪のプロンプト
+      tags:
+        1girl, kappa, dish on head, beak hint, riverside, lotus leaves, humid air, playful pose: 河童（頭に皿を持つ水棲の妖怪）
+        1girl, nekomata, two tails, cat ears, shrine torii, paper lanterns, playful wink: 猫又（分かれた二本の尾を持つ猫妖怪）
+        kappa: 河童
+        nekomata: 猫又
+        oni: 鬼
+        oni, oni horns, kimono, tiger-stripe obi, wrist beads, standing, mountain shrine, paper lanterns, strong gaze: 鬼（頭に角を持ち力強い姿）
+        tengu: 天狗
+        tengu, tengu mask, crow wings, yamabushi outfit, staff, descending steps, cedar forest, mist, composed look: 天狗（長い鼻や烏の翼を持つ山の妖怪）
+        yuki onna: 雪女
+        yuki onna, long black hair, white kimono, sash, standing, snowfall, icy mist, quiet gaze: 雪女（白い着物を纏う氷のように冷たい美女）
+    - name: 天使と堕天使のプロンプト
+      tags:
+        1girl, aasimar, halo, white wings, holy light, ornate silver armor, cathedral glow, soft bloom: アアシマール（光を帯びた聖なる雰囲気の存在）
+        1girl, valkyrie, winged warrior, braid, fur cloak, battle axe, stormy sky, divine glow: ワルキューレ（翼と戦装束を備えた戦乙女）
+        aasimar: アアシマール
+        fallen angel: 堕天使
+        nephilim: ネフィリム
+        nephilim, towering wings, holy aura, gold-white armor, clouds, sunrays, heroic pose: ネフィリム（巨大な翼と荘厳な気配を放つ存在）
+        valkyrie: ワルキューレ
+    - name: 悪魔・サキュバス・魔族系のプロンプト
+      tags:
+        1girl, cambion, small horns, faint tail, dark finery, gothic hall, crimson rimlight: カンビオン（角と尾を持つ人と悪魔の混血）
+        1girl, tiefling, curved horns, spaded tail, red skin, leather robes, infernal sigils, ember sparks: ティーフリング（赤い肌と大きな角を持つ人型魔族）
+        cambion: カンビオン
+    - name: 機械・SF亜人種のプロンプト
+      tags:
+        1girl, githyanki, gaunt features, silver greatsword, astral sky, battle stance, wind-blown cloak: ギスヤンキ（痩せた異形の顔立ちを持つ戦闘種族）
+        1girl, thri-kreen, mantid humanoid, chitin sheen, desert rocks, dual wield, dynamic leap: スリ＝クリーン（昆虫のような外骨格を持つ姿）
+        android: 人造人間（アンドロイド）
+        githyanki: ギスヤンキ
+        thri-kreen: スリ＝クリーン
+    - name: 王道ファンタジー亜人種（エルフ・ドワーフ・妖精・ゴブリンなど）
+      tags:
+        1girl, bugbear, tall and shaggy, leather straps, morningstar, primitive village backdrop, dusk, rim light: バグベア（大柄で毛深い体格）
+        1girl, gnoll, hyena head, bone armor, scavenged gear, desert ruins, sandstorm, fierce glare: ノール（ハイエナの顔と獣の体格）
+        1girl, goblin, long ears, sharp teeth, patchwork outfit, daggers, torch-lit cave, mischievous grin, moody lighting: ゴブリン（尖った耳と鋭い歯）
+        1girl, halfling, rustic clothes, satchel, barefoot, countryside path, tavern sign, bright daytime, gentle smile: ハーフリング（小さく丸みのある体格）
+        1girl, hobgoblin, reddish skin, disciplined posture, lamellar armor, command banner, camp fires, warlord vibe: ホブゴブリン（筋肉質で戦士風の姿）
+        1girl, kobold, small dragonkin, snout, tail, miner outfit, lantern, cavern crystals, spark effects: コボルド（小柄で竜のような顔立ち）
+        bugbear: バグベア
+        dark elf: ダークエルフ
+        gnoll: ノール
+        half-elf: ハーフエルフ
+        hobgoblin: ホブゴブリン
+  - name: キャバ嬢の髪型プロンプト集（盛り髪と前髪の指定方法）
+    groups:
+    - name: キャバ嬢の基本となる盛り髪プロンプト
+      tags:
+        big hair, voluminous hair: 盛り髪
+        makeup, cheek: メイクアップ
+    - name: キャバ嬢の髪型オリジナルプロンプト20種一覧
+      tags:
+        hhs-01: 王道ゆるふわ巻き下ろし
+        hhs-02: 巻きポニーテール
+        hhs-03: 盛れるアップお団子
+        hhs-04: 名古屋巻き強め
+        hhs-05: ハーフアップカール
+        hhs-06: サイドポニー巻き
+        hhs-07: ツインテールカール
+        hhs-08: フルアップシニヨン
+        hhs-09: ウェーブダウンロング
+        hhs-10: アシンメトリック巻き
+        hhs-11: 韓国風ゆるふわウェーブレイヤー
+        hhs-12: 三つ編みポニーテール
+        hhs-13: 外ハネボブパーマ
+        hhs-14: 変形シニヨンアップ
+        hhs-15: グラデーションロングストレート
+        hhs-16: テクスチャードボブパーマ
+        hhs-17: フレンチツイストアップ
+        hhs-18: 編み下ろしブレイド
+        hhs-19: ワンレンボブストレート
+        hhs-20: シースルーバングレイヤーロング
+    - name: キャバ嬢らしさを出す前髪・顔周りのプロンプト
+      tags:
+        no bangs, center parted bangs, forehead: センター分けの前髪
+    - name: 概要
+      tags:
+        というわけで今回は、キャバ嬢の髪型をAIイラストで作るためのプロンプトの組み立て方を解説し、最後は実際にわたしが作成したキャバ嬢の髪型のプロンプト一覧を紹介していきます。: キャバ嬢の髪型を再現したAIイラストの作例-2
+        キャバ嬢の髪型の魅力は、盛り髪と気合の入ったセットアップです。: アイリー(AI)
+    - name: 盛り髪をベースにした巻き髪プロンプト（ゆるふわ・強め巻き）
+      tags:
+        curly hair, wavy hair: ゆるふわの髪型
+        fluffy hair: ふんわりした髪型
+        ringlets / drill sidelocks: 強め巻き髪：強め巻きに寄せたい時に使用、drill sidelocksでも同じような再現になります
+  - name: ギャルの髪型プロンプト44選：AIイラスト用ギャル髪ヘアカタログ
+    groups:
+    - name: まとめ｜ギャルの髪型プロンプト早見表
+      tags:
+        '[colorful] hair extensions': つけ毛（エクステンション）
+        C-curl ends: Cカール毛先
+        flipped-out ends / outward curls: 外ハネ
+        inward curls / compact inward-curled tips: 内巻き
+        large barrel curls: バレルカール
+        teased voluminous hair: 盛り髪
+        ギャルの髪型を指定する際に便利なプロンプトをまとめました。: ギャルの髪型を再現したAIイラスト
+    - name: ウェーブ＆巻き髪ロング｜ギャルの髪型プロンプト
+      tags:
+        gh-003: Sウェーブロング
+        gh-020: グラデロング
+        gh-026: Sウェーブボブ
+        gh-029: 外巻きミディレイヤー
+        gh-030: 内巻きミディレイヤー
+        gh-036: バレルカールロング
+        gh-038: 外巻きミディ
+        gh-041: 波巻きグラデロングレイヤー
+        long hair with large barrel curls, platinum blonde, icy highlights, voluminous silhouette, glossy layered strands: gh-036
+          バレルカールロング（プラチナ）
+        medium-long layered hair with inward curls, pink beige, shadow roots, silky glossy strands, small pearl hair clip: gh-030
+          内巻きミディレイヤー（ピンクベージュ）
+        medium-long layered hair with outward curls, honey blonde, beige lowlights, glossy finish, rhinestone barrette on side: gh-029
+          外巻きミディレイヤー（ハニーブロンド）
+        short bob with deep S-waves, mushroom beige, shadow roots, soft volume, silky texture, small velvet bow clip: gh-026
+          Sウェーブボブ（マッシュベージュ）
+    - name: ストレート＆ロングヘア｜ギャルの髪型プロンプト
+      tags:
+        center parted long hair, parted bangs, honey blonde, face-framing highlights, sleek and silky, soft layered ends, glossy: gh-002
+          センターパートロングレイヤー（ハニーブロンド）
+        gh-001: ゴールデンロング
+        gh-002: センターパートロング
+        gh-013: 前髪ぱっつんロング
+        gh-015: グラデロング
+        gh-017: Uレイヤーロング
+        gh-018: エクステ付きロング
+        gh-019: Cカールロング
+        gh-037: インナーカラーロングストレート
+        long hair with blunt bangs, caramel pink, soft gradient, sleek and glossy, gentle inward tips: gh-013 前髪ぱっつんロング（カラメルピンク）
+        ombre long hair, dark ash brown roots to milk tea beige tips, silky smooth, glossy shine, soft S-waves: gh-015 グラデロング（ミルクティーベージュ）
+    - name: ツインテール・お団子ヘア｜ギャルの髪型プロンプト
+      tags:
+        double side braids, caramel blonde, soft highlights, playful texture, glossy finish, colorful satin scrunchies: gh-024
+          サイド三つ編みツイン（キャラメルブロンド）
+        gh-006: ハイカールツイン
+        gh-008: カールハーフアップ
+        gh-024: サイド三つ編みツイン
+        gh-033: 高めお団子ツイン
+        gh-034: ロングハーフツイン
+        gh-043: 低めふわツインお団子
+        half twin tails at ear height, ash blonde, baby lights, curled ends, glossy texture, satin scrunchies: gh-034 ロングハーフツイン（アッシュブロンド）
+        twin high buns with loose long strands, pastel pink to peach gradient, silky texture, organza bows at buns: gh-033
+          高めお団子ツイン（パステルピンク）
+    - name: ボブ・ショートヘア｜ギャルの髪型プロンプト
+      tags:
+        asymmetrical graduated bob, greige blonde, cool tone, jaw-hugging inward curl, sleek glossy finish: gh-027 前下がり内巻きボブ（グレージュ）
+        center parted hair with thick front braids, milk tea blonde, light beige streaks, silky texture: gh-040 太編みセンターパート（ミルクティーブロンド）
+        gh-010: 外ハネミディレイヤー
+        gh-011: グレージュレイヤーウルフ
+        gh-014: シースルーバングショート
+        gh-016: ハイライト束感ロング
+        gh-027: 前下がり内巻きボブ
+        gh-028: 外ハネ切りっぱなしボブ
+        gh-039: ショートウルフ
+        gh-040: 太編みセンターパート
+        layered wolf cut, greige blonde, soft highlights, textured layers, voluminous crown, reflective gloss: gh-011 グレージュレイヤーウルフ
+        medium length hair, ash beige, subtle lowlights, flipped-out ends, airy layered cut, shiny and sleek: gh-010 外ハネミディレイヤー（アッシュベージュ）
+        short wolf cut, ash silver, dark roots, textured layers, glossy finish: gh-039 アッシュシルバーショートウルフ
+    - name: ポニーテール・ローポニーまとめ髪｜ギャルの髪型プロンプト
+      tags:
+        crown braid, caramel blonde, face-framing highlights, silky texture, gold hair chain woven in braid: gh-032 編み込みカチューシャ（キャラメルブロンド）
+        double-tiered high ponytail, cinnamon brown, subtle highlights, curled tiered ends, glossy strands, gold hair cuff: gh-031
+          二段ハイポニー（シナモンブラウン）
+        gh-004: 大きめカールのハイポニー
+        gh-005: ゆるカールのサイドポニー
+        gh-012: エクステ超ロング
+        gh-021: 波巻きローポニー
+        gh-022: 外ハネローポニー
+        gh-023: 編み込みハイポニー
+        gh-031: 二段ハイポニー
+        gh-032: 編み込みカチューシャ
+        gh-035: 内巻きローポニー
+        gh-044: 横編み込みハイポニー
+        low ponytail with flipped-out ends, ash brown, gray highlights, airy layered tips, silky texture, satin scrunchie: gh-022
+          外ハネローポニー（アッシュブラウン）
+        side ponytail, golden blonde, soft highlights, curled voluminous ends, ribbon hair accessory, glossy finish: gh-005
+          ゆるカールのサイドポニー（ゴールド）
+    - name: 盛り髪・華やかアップスタイル｜ギャルの髪型プロンプト
+      tags:
+        gh-007: サイド編み込みポニー
+        gh-009: 縦スジ盛りアップ
+        gh-025: 編み込みクラウンハーフアップ
+        gh-042: サイド編み込みローポニー
+  - name: グラビアポーズの有名プロンプトまとめ：女豹のポーズやM字開脚など
+    groups:
+    - name: M字開脚のポーズ
+      tags:
+        sitting, spread legs wide, knees up, knees apart, feet apart wide, leaning back: 座りのM字開脚
+        squatting, spread legs, knees up, hands behind head: スクワットのM字開脚
+    - name: S字ポーズで立つポーズ
+      tags:
+        contrapposto, arched back, hand on hip, legs apart: S字ポーズで立つポーズ
+    - name: かっこいい系グラビアポーズのプロンプト
+      tags:
+        contrapposto, hands on hips, legs apart: 腰に手を当てた立ちポーズ
+        lying on back, legs up high, looking afar, head on ground, outstretched legs forward, profile, from side: 仰向け脚上げポーズ
+        standing, adjusting hair, arched back, arms on head, facing up, looking afar, butt out, profile: シャワーポーズ（髪かき上げ）
+        standing, crossed legs, tiptoes: 脚クロス立ちポーズ
+    - name: だっちゅーのポーズ（胸寄せ前屈み）
+      tags:
+        standing, leaning forward, narrow waist, breasts squeezed together, cleavage, pigeon-toed: だっちゅーのポーズ（胸を寄せて前屈み）
+    - name: アヒル座りのポーズ
+      tags:
+        wariza, hand on ground, cleavage, head tilt, finger on lips: アヒル座りのポーズ
+    - name: セクシー系グラビアポーズのプロンプト
+      tags:
+        breasts on table: 胸乗せテーブルポーズ
+        breasts squeezed together, w arms, cleavage: 胸寄せポーズ
+        kneeling, arched back, hip lift, arms behind head, legs apart: 膝立ち開脚ポーズ
+        kneeling, hip lift, legs apart wide, leaning back, arms behind back: 膝立ち反り開脚ポーズ
+        lying on back, single leg up, , kneepit, sole: 仰向け片脚上げポーズ
+        lying on side, elbow on ground, propped on elbow: 横寝そべりポーズ
+        standing on one leg, leaning on a chair, arched back, kneepits, butt out, visible sole, looking back, from behind: 椅子に片足乗せポーズ
+        standing, bent over, arched back, twisted torso, butt out, hands on lap, bent knees slightly: 前屈みヒップ強調ポーズ
+        the pose, cleavage: 寝そべり上体起こしポーズ
+        twisted torso, yokozuwari: 腰ひねりポーズ（くびれ強調）
+        visible armpit, armpit focus, arm on head, butt out, twisted torso: 脇見せポーズ
+    - name: 可愛い系グラビアポーズのプロンプト
+      tags:
+        clenched hands on cheek, head tilt: ぐー手ほっぺポーズ
+        hugging own legs, crossed ankles, cleavage straight-on: まゆゆのポーズ（膝抱え）
+        rabbit pose: うさぎポーズ（耳真似）
+        up gaze, head tilt, cleavage, finger on lips, from above: 上目遣い
+    - name: 女豹のポーズ
+      tags:
+        all fours, arched back, elbows on ground, bent knees, hip raised, head rest: 女豹のポーズ
+    - name: 概要
+      tags:
+        もちろんシンプルなプロンプトを指定するだけでも再現できますが、グラビアポーズの魅力はそこだけじゃありません。 頭の傾き、手の位置、腰の反り、脚の開き具合 ――細かい組み合わせが絶妙に噛み合うことで、バランスが生まれます。: アイリー(AI)
+    - name: 見返り美人のポーズ
+      tags:
+        looking back, narrow waist, arm around waist, strap gap from behind: 見返り美人のポーズ
+  - name: グラマラス体型・腰のくびれ・曲線美のプロンプト集
+    groups:
+    - name: まとめ
+      tags:
+        今回は、グラマラスな体型や腰のくびれを再現するためのプロンプトを紹介してきました。: グラマラス体型・腰のくびれ・曲線美のプロンプト集の記事の図解イラスト
+    - name: 曲線美・砂時計型体型を指定するプロンプト（hourglass figure）
+      tags:
+        hourglass figure: 曲線美のある体型
+        シルエット: 流れるようなライン 。細身であっても、腰の曲線や背中のラインが美しい状態を指す。
+        印象: 健康的、パワフル、自信、セクシー。
+        色々な衣装での作例です。: 曲線美・砂時計型体型を指定するプロンプト（hourglass figure）紹介
+    - name: 服の締め付けで腰のくびれを作るプロンプト（cinched waist）
+      tags:
+        cinched waist: 締め付けられたウエスト（服による締め付け）
+    - name: 細い腰・くびれたウエストを指定するプロンプト（narrow waist）
+      tags:
+        constricted waist: 締め付けられたような細いくびれ
+        narrow waist: 細い腰・腰のくびれ
+        slender waist: 全体的に細い腰
+        snatched waist: 引き締まった、かっこいい腰
+        tiny waist: 驚くほど細い・小柄な腰
+        wasp waist: 蜂のような極細ウエスト
+    - name: 腰が細く腰骨が見える体型のプロンプト（hip bones）
+      tags:
+        hip bones: 腰骨
+        white dress shirt, baggy navy pleated mini skirt, navel, hip bones, narrow waist: 腰が細く腰骨が見える体型のプロンプト（hip bones）紹介
+    - name: 腰が細く見える服装のプロンプト一覧
+      tags:
+        clothes around waist: 腰巻き
+        cross-laced clothes: レースアップの服
+        high-waist clothes: ハイウエストの服
+        whale tail (clothing): ホエールテール
+  - name: ネイルのプロンプト集とAIイラストで色気を足す指の描写
+    groups:
+    - name: まとめ
+      tags:
+        ネイルのプロンプトは、少し指定を足すだけで、指や手に自然と視線を集められるのが特徴です。: ネイルのプロンプト集とAIイラストで色気を足す指の描写の記事のまとめ用の図解イラスト
+    - name: ネイルのプロンプトまとめ一覧表
+      tags:
+        applying manicure, painting fingernails: マニキュアを塗っている
+        black nails: 黒色のネイル
+        blue nails: 青色のネイル
+        gem-studded nails: 宝石付きネイル
+        green nails: 緑色のネイル
+        long fingernails: 長い爪
+        multicolored nails: 複数色のネイル
+        nail art: ネイルアート
+        nail ornament: ネイル飾り
+        nail polish bottle: マニキュアの瓶
+        orange nails: オレンジ色のネイル
+        painting toenails: 足の爪を塗る
+        pink nails: ピンク色のネイル
+        purple nails: 紫色のネイル
+        red nails: 赤色のネイル
+        sharp fingernails: 尖った爪
+        toenail polish: 足の爪のマニキュア
+        very long fingernails: とても長い爪
+        white nails: 白色のネイル
+        yellow nails: 黄色のネイル
+    - name: ネイルを強調する指・手のポーズプロンプト
+      tags:
+        claw pose: がおーのポーズ
+        finger to cheek: 指を頬にあてる
+        finger to eye: 指を目にかざす
+        finger to face: 指を顔にあてる
+        finger to mouth: 指を口にあてる
+        hand on own knee, hugging own legs: 膝を抱える
+        hand on own knee, hugging own legs,: 膝を抱える
+        holding steel pole, pole over one eye: ポールを掴む
+        looking through fingers: 指の隙間から覗くポーズ
+        playing recorder: リコーダーを拭く
+        warming hands: 手を温める
+    - name: 概要
+      tags:
+        ネイルプロンプトを取り入れて、手をモチーフにしたイラストを作ってみると、思っている以上に、しっかり色っぽい雰囲気になります。: アイリー(AI)
+  - name: ファッションショーのプロンプト【AIイラスト】
+    groups:
+    - name: まとめ
+      tags:
+        contrapposto, crossed legs, hand on own hip, walking, arms at sides: ポージング
+        expressionless, facing ahead, sideways glance: 表情
+        fashion show, catwalk (modeling), stage, spotlight, stage lights: 基本3点セット
+        marquee lights, colored lights, truss, smoke, confetti, screen, projected inset: ステージ演出
+        silver floor, gold floor, reflective floor, shiny floor, glass floor, marble floor, red carpet など: 床
+    - name: ステージ照明・演出のプロンプト
+      tags:
+        brick floor: レンガ床
+        checkered floor: チェック柄の床
+        colored lights: カラーライト
+        glass floor: ガラスの床
+        glowing floor: 光る床
+        gold floor: ゴールドの光沢床
+        marble floor: 大理石の床
+        marquee lights: マーキーライト
+        parquet floor: パーケット床
+        red carpet: 赤いカーペット
+        reflective floor: 鏡のように反射する床
+        screen, projected inset: スクリーン投影
+        shiny floor: ピカピカ光沢のある床
+        silver floor: シルバーの光沢床
+        smoke: スモーク
+        stone floor: 石の床
+        tile floor: タイル床
+        truss: 鉄骨フレーム
+        wooden floor: 木製フローリング
+        ステージ照明・演出: ステージ照明・演出
+        ランウェイの床・フロア: ランウェイの床・フロア
+    - name: ファッションショーの作例プロンプトまとめ
+      tags:
+        fashion show, catwalk (modeling), stage, spotlight, stage lights, marble floor, reflective floor, shiny floor, truss: ホワイトマーブルのミニマルランウェイ
+    - name: ファッションショーの基本プロンプト3 点セット
+      tags:
+        catwalk (modeling): モデル歩き
+        fashion show: ファッションショー
+        stage, spotlight, stage lights: ステージ照明
+        stage, stage lights, spotlight: ステージとステージ照明
+    - name: モデルの表情プロンプト
+      tags:
+        crossed legs ,standing: 脚をクロス
+        expressionless, facing ahead: 無表情で前方を向く
+        expressionless, sideways glance, head tilt: 首を傾げて横目で見る
+        legs apart, feet apart, standing, hand on own hip: 腰に手を当てて足を広げて立つ
+        standing, sway back: 重心を後ろに置いて立つ
+        walking, arms at sides, facing ahead: 腕を下ろして歩く
+        watson cross: ワトソンクロス
+        ポージング: ポージング
+    - name: ランウェイ構図・カメラアングルのプロンプト
+      tags:
+        audience, three quarter view, wide shot, from above, looking afar, red carpet: 斜め上からのアングル
+        blurry foreground, audience, from side, profile, feet out of frame: 前ボケ入りの横アングル
+        character on the left side of the image, vanishing point: 余白を作って遠近感を強調
+        straight-on, vanishing point, perspective: 真正面・奥行きのある構図
+  - name: マーチングバンドの衣装のプロンプト集【AIイラスト】
+    groups:
+    - name: まとめ
+      tags:
+        band uniform, blue and white clothes, red accents: 青 × 白｜赤
+        band uniform, shako cap, marching: 基本セット
+        detailed clothes, exquisite clothes, ornate clothes, layered clothes: 豪華衣装化
+        holding instrument, playing instrument: 演奏者
+        majorette, marching band baton: バトントワラー
+        red and black clothes, gold accents royal blue and white clothes, gold accents black and gold clothes, white accents: その他人気配色
+    - name: バトントワラーと演奏者のプロンプト
+      tags:
+        conductor baton: 指揮棒
+        drum major: ドラムメジャー、行進楽団の指揮者（リーダー）
+        holding instrument: 楽器を持つ
+        majorette: メジャレット、バトンを回す女性トワラー
+        marching band baton: 指揮棒やトワリング用バトン全般
+        playing instrument: 楽器を演奏する
+        twirl baton: トワリング用バトン
+    - name: マーチングバンド衣装を再現する基本セット
+      tags:
+        band uniform: マーチングバンド衣装
+        marching: 行進
+        shako cap: シャコー帽
+    - name: マーチング衣装の配色プロンプト
+      tags:
+        band uniform, black and gold clothes, white accents: 黒 × 金｜白
+        band uniform, black and neon blue clothes, neon pink accents: 黒 × ネオン青｜ネオンピンク
+        band uniform, black and red clothes, silver accents: 黒 × 赤｜銀
+        band uniform, green and black clothes, gold accents: 緑 × 黒｜金
+        band uniform, maroon and gold clothes, white accents: マルーン × 金｜白
+        band uniform, orange and black clothes, white accents: オレンジ × 黒｜白
+        band uniform, purple and black clothes, gold accents: 紫 × 黒｜金
+        band uniform, purple and white clothes, gold accents: 紫 × 白｜金
+        band uniform, red and black clothes, gold accents: 赤 × 黒｜金
+        band uniform, red and white clothes, black accents: 赤 × 白｜黒
+        band uniform, royal blue and white clothes, gold accents: 青 × 白｜金
+        band uniform, white and gray clothes, blue accents: 白 × グレー｜青
+        blue and gray gradient clothes, silver accents: 青 × グレー（グラデ）｜銀
+    - name: マーチング衣装を豪華にするプロンプト
+      tags:
+        detailed clothes: 衣装への書き込み量を増やす指示
+        exquisite clothes: 精巧なデザイン性のある衣装にする指示
+        layered clothes: 衣装の重ね着を指示（レイヤード）
+        ornate clothes: 宝飾を衣装に付与する指示
+        red band uniform, shako cap: ↓
+        red band uniform, shako cap, detailed clothes , exquisite clothes , ornate clothes , layered clothes: ↓
+    - name: 帽子・首元・小物のプロンプト
+      tags:
+        ankle boots: アンクルブーツ
+        band uniform with blue side panels: サイドパネル装飾
+        band uniform with checkered pattern: チェック柄
+        band uniform with green panel lines: パネルライン装飾
+        band uniform with red center panel: センターパネル装飾
+        band uniform with red piping: パイピング装飾
+        band uniform with tassel: タッセル（房）付き
+        buttoned cuffs: 袖口ボタン
+        chest bow: 胸元のリボン
+        collared shirt: 襟付きのシャツ
+        detached sleeves: 付け袖
+        elbow gloves: エルボーグローブ
+        fingerless gloves: フィンガーレスグローブ
+        fold-over gloves: 折り返し手袋
+        gold buttons: 金のボタン装飾
+        knee boots: ニーブーツ
+        latex pleated skirt: エナメル製のプリーツスカート
+        multicolored jacket: カラフルなジャケット
+        plaid skirt: プレイド柄のスカート
+        pleated skirt: プリーツスカート
+        pleated skirt with red thick panels: 太いパネル入り
+        pleated skirt with red thin panel lines: 細いパネルライン入り
+        pleated skirt with red trim: 縁取りのあるプリーツスカート
+        shako cap with plume: 羽飾り付き
+        shako cap with pom pom (clothes): ポンポン付き
+        shako cap, hat ornament: 豪華な装飾付き
+        sleeveless shirt: 袖なしのシャツ
+        thigh boots: サイハイブーツ
+        two-tone pants, red and blue pants: ツートンカラーのパンツ
+        white pantyhose: 白色パンスト
+        white thighhighs, zettai ryouiki: 白色ニーハイと絶対領域
+        上半身（ジャケット・シャツ類）: 上半身（ジャケット・シャツ類）
+        下半身（スカート・パンツ類）: 下半身（スカート・パンツ類）
+        帽子・首元・小物: 帽子・首元・小物
+        手袋・ブーツ: 手袋・ブーツ
+  - name: 三つ編みヘアスタイルのプロンプト64選 編み込み種類別に紹介
+    groups:
+    - name: クラウンやお団子向けの三つ編みのプロンプト
+      tags:
+        ballerina braids: バレリーナブレイド
+        braided bun: 編み込みお団子
+        milkmaid braid: ミルクメイド三つ編み
+        top-knot braid: トップノット付きブレイド
+    - name: コーンロウやボックスなど保護スタイルのプロンプト
+      tags:
+        box braid: ボックス三つ編み
+        feed-in braid: フィードイン編み
+        fulani braid: フルニ族三つ編み
+        ghana braid: ガーナ三つ編み
+        knotless braid: ノットレス三つ編み
+        lemonade braid: レモネード三つ編み
+        stitch cornrows: ステッチコーンロウ
+    - name: ツイスト・ロープ系のプロンプト
+      tags:
+        coral twist: コーラルツイスト
+        in-twist: インツイスト
+        passion twist: パッションツイスト
+        twist-out: ツイストアウト
+    - name: デザイン性の高い三つ編みのプロンプト
+      tags:
+        butterfly stitch braid: バタフライステッチブレイド
+        flower braid: フラワーブレイド
+        heart braid: ハート編み込み
+        ladder braid: ラダーブレイド
+        pull-through braid: プルスルー編み
+        ribbon braid: リボン編み込み
+        zebra-part braid: ゼブラ柄編み分け
+        zigzag braid: ジグザグブレイド
+    - name: ベーシックな三つ編みのプロンプト
+      tags:
+        braid, three-strand braid: 三つ編み
+        dutch braid: オランダ式三つ編み
+        fishtail braid: フィッシュテール三つ編み
+        five-strand braid: 五つ編み
+        four-strand braid: 四つ編み
+        french braid: フレンチブレイド
+        single braid: シングルブレイド
+        three-strand braid: 三つ編み
+    - name: ボヘミアン・ファンタジー向けの三つ編みプロンプト
+      tags:
+        boho braid: ボーホー三つ編み
+        borabora braid: ボラボラ三つ編み
+        bubble braid: バブル三つ編み
+        goddess braid: ゴッデス三つ編み
+        gypsy braid: ジプシー三つ編み
+        mermaid braid: マーメイド三つ編み
+        peekaboo braid: ピーカブー三つ編み
+        pick-and-drop braid: ピックアンドドロップブレイド
+    - name: ボリューム感ある多本三つ編みプロンプト
+      tags:
+        long braid: ロングブレイド
+        low-braided long hair: 低め編み下ろしロングヘア
+        micro braids: マイクロブレイズ
+        multiple braids: マルチブレイド
+        quad braids: クワッドブレイド
+        rope braid: ロープ編み
+        short braid: ショートブレイド
+        tri braids: 三連ブレイド
+    - name: レイヤード＆アクセサリー混合の三つ編みプロンプト
+      tags:
+        bandana braid: バンダナブレイド
+        crochet braid: かぎ針編みブレイド
+        curl-end braid: カールエンド編み
+        double dutch braid: ダブルダッチブレイド
+        double french braid: ダブルフレンチブレイド
+        freestyle cornrows: フリースタイルコーンロウ
+        half-down waterfall braid: ハーフダウンウォーターフォール編み
+    - name: 三つ編みのベーシックプロンプト早見表
+      tags:
+        back braid: 編み下ろし
+        back braid with white cloth headband: 後ろ一本編み × 白い布製ヘアバンド
+        braid: 三つ編み
+        braid interlaced with ribbon: 編み下ろし × 編み込みリボン
+        braided half up: ハーフアップ編み込み
+        braided headband: 三つ編みヘアバンド
+        crown braid with floral barrette: クラウン三つ編み × 花のバレッタ
+        long braid with beret: ロング三つ編み＋帽子
+        messy braid: メッシーブレイド
+        ribbon braided hair: リボン編み込み
+        side braid with thin headband: サイド三つ編み × 細めカチューシャ
+        twin braids with ribbon tips: 両サイド三つ編み × リボン留め
+        twisted braid with pearl hairpin: 片側ロープ編み × パールピン
+    - name: 定番の三つ編みの基本プロンプト
+      tags:
+        ChatGPT (4o): ChatGPTで生成した三つ編みの美少女のAIイラスト
+    - name: 顔まわり・部分編み向けのプロンプト（三つ編みハーフアップ・レース編み など）
+      tags:
+        braided sidelock: 編み込みサイドロック
+        half-up braid: ハーフアップ編み込み
+        lace braid: レース編み込み
+        ponytail braid: ポニーテール編み込み
+        side braid: サイドブレイド
+        side-swept braid: サイドスイープ三つ編み
+        waterfall braid: ウォーターフォール編み
+  - name: 中学生を再現するプロンプト集（髪型・体型・服装）
+    groups:
+    - name: まとめ
+      tags:
+        backpack / sports watch / smartphone: 小物
+        emaciated / slim body / long neck / narrow waist: 体型
+        freckles / pointy chin / thick eyebrows: 顔・特徴
+        low ponytail / low twintails / bob cut: 髪型
+        oversized clothes / casual / sporty: 私服
+        pinafore dress / pleated skirt / oversized clothes: 制服
+        white ankle socks / uwabaki / sneakers: 足元
+    - name: ゆるダボ系ストリートコーデのプロンプト
+      tags:
+        over sized white dress shirt, baggy light blue jeans, oversized clothes, untucked shirt, low rise pants, yellow accents: ゆるダボ系ストリートコーデのプロンプト
+        oversized gray hoodie, loose black pants, cargo shorts, baggy clothes, white sneakers, crossbody bag, mint green accents: ゆるダボ系ストリートコーデのプロンプト
+    - name: スポーティ・アクティブ系コーデのプロンプト
+      tags:
+        gray jersey jacket, denim shorts, athletic wear, line pants, black sports wristwatch, drawstring bag, white accents: スポーティ・アクティブ系コーデのプロンプト
+        navy polo shirt, cargo shorts, athletic bottoms, side line pants, wristwatch, black sports bag, red accents: スポーティ・アクティブ系コーデのプロンプト
+    - name: 中学生の体型を再現するプロンプト一覧
+      tags:
+        emaciated: 痩せた体型
+        long legs, slim legs: 細長い脚
+        pointy chin: とがった顎
+        small breasts: 小さな胸
+        全体的に痩せたプロポーションにしているので、「small breasts」でも、小さな膨らみが割と分かりやすい感じになります。: ↓
+    - name: 中学生の制服プロンプト（ジャンパースカート・サイズ感）
+      tags:
+        above the knee skirt: 膝上丈のスカートのAIイラスト
+        black pinafore dress, pleated dress, school uniform, simple rounded collar, red chest ribbon: 中学校の制服（ジャンパースカートタイプ、丸襟のブラウス、プリーツスカート、赤いリボン）
+        long skirt: ロングスカート
+        oversized clothes: ブカブカの服
+        white ankle socks, red uwabaki: くるぶしソックスと上履き
+        white ankle socks, sneakers: くるぶしソックスとスニーカー
+    - name: 中学生の小物・持ち物プロンプト（リュック・スマホ・時計）
+      tags:
+        backpack on one shoulder: リュックサックを片方の肩にかける
+        black hiking backpack: リュックサック
+        black sports wristwatch: スポーツウォッチ
+        holding drink can: 缶ジュース
+        holding smartphone, smartphone case: スマホ（ケース付き）
+        holding snack bag: スナック菓子
+    - name: 中学生らしい髪型のプロンプト一覧
+      tags:
+        black simple hairpin: シンプルなヘアピン
+        bob cut, blunt bangs: ぱっつん前髪のボブカット
+        bob cut, long bangs: 前髪が長めのボブカット
+        low ponytail: 低い位置で結んだポニーテール
+        low ponytail, blunt ends, straight hair: 毛先を切り揃えたポニーテール
+        low twintails: 低い位置で結んだツインテール
+        low twintails, blunt ends, straight hair: 毛先を切り揃えたツインテール
+        ponytail, split tail: 毛束の別れたポニーテール
+        simple hair tie: シンプルなヘアゴム
+        twintails, split tail: 毛束の別れたツインテール
+    - name: 概要
+      tags:
+        中学生は、高校生ほど完成されておらず、小学生ほど幼くない、その途中のバランスがすごく大事です。: アイリー(AI)
+  - name: 体のパーツ（部位）別のプロンプトと名称の一覧
+    groups:
+    - name: その他・全身的要素のパーツのプロンプト
+      tags:
+        beauty mark / mole: ほくろ（ビューティーマーク）
+        body hair: 体毛
+        body warmth: 体温
+        bone structure: 骨格
+        core / trunk: 体幹
+        muscle / muscular tone: 筋肉
+        shoulder width: 肩幅
+        skin: 肌
+        spine: 背骨
+        vein(s): 血管
+    - name: 上半身パーツのプロンプト
+      tags:
+        abdomen / abs: 腹部
+        Adam’s apple / laryngeal prominence: のど仏
+        arm: 腕
+        armpit: 脇
+        chest / bust: 胸
+        collarbone / clavicle: 鎖骨
+        elbow: ひじ
+        finger / fingers: 指
+        fingertip(s): 指先
+        forearm: 前腕
+        hand: 手
+        knuckle(s): 指の関節（ナックル）
+        lower back: 腰背部（下背）
+        nail / fingernail: 爪
+        nape: うなじを再現したAIイラスト
+        nape / back of neck: 首筋（後ろ）
+        navel / belly button: へそ
+        neck / side of neck: 首筋
+        palm: 手のひら
+        rib cage (thoracic cage): 肋骨／胸郭
+        shoulder: 肩
+        shoulder blades / scapulae: 肩甲骨
+        solar plexus: みぞおち
+        torso: 胴
+        upper arm: 上腕
+        wrist: 手首
+    - name: 下半身パーツのプロンプト
+      tags:
+        Achilles tendon: アキレス腱
+        ankle: 足首
+        arch of the foot: 土踏まず
+        ball of the foot: 母趾球（足の拇指球）
+        bare feet, sole: 足の裏
+        butt out: お尻をつき出す姿勢を再現したAIイラスト
+        calf: ふくらはぎ
+        calf, sitting: ふくらはぎ
+        hamstring: ハムストリング（大腿後面）
+        heel: かかと
+        hips / butt（buttocks）: お尻
+        instep: 足の甲
+        kneecap / patella: 膝蓋（ひざのお皿）
+        kneepits, lying: 膝裏
+        pelvis: 骨盤
+        shin: すね
+        sitting, lying, the pose: 再現に相性のいい組み合わせ動作
+        sole / sole of the foot: 足の裏
+        thigh / upper leg: 太もも
+        toenail(s): 足指の爪
+        toes / toe tips: つま先
+        waist: 腰
+    - name: 概要
+      tags:
+        最初は「どうやってこういう角度にするんだろう？」「どんなポーズのプロンプトを使えばいいの？」と、悩みに悩んで、なかなか思った通りに再現できなかった記憶があります。: アイリー(AI)
+    - name: 頭・顔のパーツのプロンプト
+      tags:
+        bridge of the nose: 鼻筋
+        cheekbone: 頬骨
+        chin / jawline: 顎
+        cupid’s bow: 唇の弓（上唇の山）
+        ear: 耳
+        earlobe: 耳たぶ
+        eyebrow: 眉毛
+        eyelash: まつげ
+        gentle smile, portrait, nose tip, lips, bridge of the nose, cheek, upper eyelid: 顔パーツのプロンプトを詳細に記述して生成した美少女AIイラストの作例
+        gums: 歯ぐき
+        hair: 髪の毛
+        hairline: 生え際
+        inner corner of the eye / inner canthus: 目頭
+        iris / pupil: 瞳
+        lower eyelid: まぶた（下）
+        mouth corner / lip corner: 口角
+        nasal ala / alar (side of nose): 小鼻
+        nose tip: 鼻先
+        nostril(s): 鼻孔
+        outer canthus / lateral canthus: 目尻
+        philtrum: 人中
+        scalp: 頭皮
+        sclera: 白目
+        throat: のど（前頸部）
+        under-eye area / eye bags / tear trough: 目の下（涙袋）
+        upper eyelid: まぶた（上）
+  - name: 可愛いポーズ・萌えポーズ集｜美少女イラスト向けプロンプト付き【ChatGPT】
+    groups:
+    - name: うつ伏せ×ベッド｜顔を支えた自然なリラックスポーズ
+      tags:
+        ベッドの上でうつ伏せになり、上半身を起こして肘をつくポーズです。ここに両手で顔を支える仕草を加えると、より可愛らしい印象になります。カメラとの距離が近くなる構図なので、見る側との距離感がぐっと縮まるようなイラストに仕上がります。: うつ伏せで寝転ぶ
+    - name: にゃーのポーズ｜猫の仕草風の可愛い立ちポーズ
+      tags:
+        いわゆる「にゃ～のポーズ」は、プロンプトでいうと「paw pose」で再現できます。ちなみに “paw” は英語で「肉球」という意味で、猫っぽい仕草を表すときによく使われます。: にゃーのポーズ
+    - name: ぺたんこ座り×手の仕草｜可愛いメイド系ポーズ
+      tags:
+        いわゆる「女の子座り」は、可愛いポーズの定番です。呼び方はいろいろあって、「ぺたんこ座り」や「wariza（割座）」と表現されることもあります。: 女の子座り
+    - name: 一覧表｜美少女イラスト向け可愛いポーズプロンプト
+      tags:
+        both hands covering lower face, shy pose: 顔を隠すように両手を当てる
+        both hands doing peace signs, winking: 両手ピース＋ウインク
+        both hands raised like claws, mock roar expression: がぉーのポーズ（両手を広げて威嚇）
+        clenching both fists in front of chest: 両手を胸の前でぎゅっと握る
+        elbow bent, fist raised in a subtle victory pose: 肘を曲げてガッツポーズ
+        finger resting on cheek, thinking expression: 頬に指をあてる考えポーズ
+        forming a small heart with fingers, winking: 指ハート＋ウインク
+        hand raised to forehead in a casual salute: 額に手をあてて敬礼風
+        hands clasped together in front, pleading gesture: 手を合わせて「お願い」ポーズ
+        hands near face, fists clenched like cat paws: にゃーのポーズ（猫手）
+        leaning forward slightly, hands behind back: 両手を後ろにして前かがみ
+        lightly lifting skirt with both hands: スカートの裾を両手で持って軽く持ち上げる
+        looking back while pinching hem of skirt: 振り返りながらスカートをつまむ
+        lying down, looking up toward viewer: 寝転びながら上目遣い
+        making a heart shape with fingers: 手でハートマーク
+        one finger gently placed near lips: 指をくわえる・口元に添える
+        one hand making a peace sign: ピースサイン（片手）
+        one leg bent upward, as if in a light hop: 片足をあげて軽く跳ねるような立ち姿
+        puffing cheeks, slightly pouting: ほっぺを膨らませる（ぷく顔）
+        tilting head slightly, looking up softly: 小首をかしげて見上げる
+    - name: 上品ポーズ｜お行儀よく座る可愛い構図
+      tags:
+        石段に腰をかけて、両膝を揃えて座るお行儀のいいポーズです。手は膝の上に重ねるように置き、上半身は少しだけ前に傾けます。首をわずかに傾けながら、控えめな笑顔を見せているのがポイントです。: お行儀よく座る
+    - name: 仰向け×芝生シーン｜自然体でリラックスした可愛い座りポーズ
+      tags:
+        芝生の上に仰向けで寝転ぶポーズは、美少女イラストでもよく使われる構図のひとつです。バストアップ構図にすることで、主観視点に近い印象を出すこともできます。: 仰向けで寝転ぶ
+    - name: 前かがみ×太ももに手｜控えめな仕草で魅せる可愛い構図
+      tags:
+        花畑の中で立ち、上体を少し前に傾けて両手を太ももの上に置いているポーズです。このポーズは、体のラインがきれいに見えるので、美少女イラストでもよく使われます。: 前屈み、太ももに手
+    - name: 可愛い仕草を再現するポーズプロンプト集｜自然な動き・構図の演出に
+      tags:
+        美少女イラストをつくるときに使える「可愛いポーズ」を、ChatGPTの画像生成AIでいろいろ試してみました。: 可愛い仕草を再現するためのポーズのプロンプト
+    - name: 後ろに体重をかけた座りポーズ｜風を受ける髪と柔らかな姿勢
+      tags:
+        女の子の座りポーズの中でも、体を後ろに傾けたバリエーションです。: 後ろに体重をかけて座る
+    - name: 振り返り×スカートの裾を持つポーズ｜動きのある可愛い構図
+      tags:
+        セーラー服のキャラクターが立ち姿のまま、上半身をひねって後ろを振り返っているポーズです。: 振り返り・スカートの裾を持つ
+    - name: 机に手をついた前屈みポーズ｜赤面×視線演出の定番構図
+      tags:
+        教室内で、後ろの机に両手をついて少し前屈みになっているポーズです。: 前屈み、後ろに手をおく
+    - name: 水面での仰向けポーズ｜静かな表情のリラックスシーン
+      tags:
+        浅い水の上に仰向けで浮かびながら、目を閉じて静かに横たわっているポーズです。腕は体の横にそっと下ろされていて、脚もゆったりと伸びたまま。全体的に力が抜けていて、女の子のリラックスした雰囲気が伝わってきます。: 仰向けで水面に寝る
+    - name: 胸元に手を添える立ちポーズ｜赤面した可愛い仕草の表現
+      tags:
+        ハートマークをイラストに入れたいときは、プロンプトに「floating hearts」と書くと再現できます。ふわっと浮かぶタイプのハートです。また、「spoken heart」と指定すると、吹き出しの中にハートが描かれることがあります。: 胸元に手を添える
+    - name: 膝立ち×前傾（前屈み）＋見上げ視線｜表情が映える構図
+      tags:
+        前傾姿勢（前かがみ）のポーズは、可愛さと動きの両方を表現できる人気のポーズです。髪の揺れなどを加えると、シーンに自然な動きが出て、やわらかい印象になります。: 膝立ち前屈み
+    - name: 足を前に伸ばす座りポーズ｜夜空背景と合わせた静かな構図
+      tags:
+        女の子の座りポーズのバリエーションのひとつです。両脚を前に伸ばして、足首を軽くクロスさせた状態で座っていて、腕は膝の上に自然に添えられています。上半身はまっすぐで、首をほんの少し傾けながら、落ち着いた表情で前を見つめています。: 足を前に伸ばして座る
+    - name: 髪を乾かす日常ポーズ｜ドライヤー使用時の自然な立ち構図
+      tags:
+        室内で立った状態で、片手にドライヤーを持ちながら微笑んでいるポーズです。: 髪を乾かす
+  - name: 可愛い女の子を画像生成AIで作る｜美少女プロンプト設計ガイド
+    groups:
+    - name: アニメ寄り・リアル寄り・年齢別プロンプトの違い
+      tags:
+        anime girl, small face, big eyes: アニメ寄り美少女イラスト作成例
+        beautiful anime woman, elegant: アニメ寄り美女イラスト作成例
+        beautiful woman, realistic face, elegant: リアル寄り美女イラスト作成例
+        cute anime girl, small face, big eyes: アニメ寄り可愛いロリ寄り女の子作成例
+        cute girl, small face, realistic face: リアル寄りの少女イラスト作成例
+        girl, small face, realistic face: リアル寄り美少女イラスト作成例
+    - name: 体型・スタイル別で作る可愛い女の子プロンプト
+      tags:
+        6-7頭身の美少女 7-head-tall: 6-7頭身美少女イラスト作成例
+        8-head-tall fashion model figure: モデル体型（8頭身）
+        8頭身の美少女 8-head-tall: 8頭身美少女イラスト作成例
+        androgynous figure flat chest, narrow hips: 少年体型（ボーイッシュ）
+        chibi body childlike proportion: デフォルメ体型（ちびキャラ）
+        curvy figure voluptuous body big bust, wide hips: 豊満・グラマラス
+        petite girl 7-head-tall proportion: 少女体型（6～7頭身）
+        slender body graceful silhouette thin arms and legs: 華奢でスリムな体
+        small, delicate face balanced proportions: 小顔・バランスの取れた体型
+        tall girl long legs: 背が高い印象
+        toned body athletic build defined abs: アスリート系（筋肉・引き締め）
+        ちびキャラの可愛い女の子 chibi body: ちびキャラの可愛い女の子イラスト作成例
+        アスリート系美少女 toned body: アスリート系美少女イラスト作成例
+        中性的な美少女 androgynous figure: 中性的な美少女イラスト作成例
+        平均体型の美少女 balanced proportions: ここでは、体型やスタイルに関するプロンプトを紹介し、実際にどのような変化が出るのか、イラスト付きでまとめています。画像生成にはChatGPTを使っていますが、プロンプトは汎用性を意識して作成しているので、Stable
+          DiffusionやMidjourneyなど他の画像生成AIでも活用できる内容になっています。
+        華奢な体型の美少女 slender body: 華奢な体型の美少女イラスト作成例
+        豊満な体型の美少女 voluptuous body: 豊満な体型の美少女イラスト作成例
+        高身長の美少女 tall girl: 高身長美少女イラスト作成例
+  - name: 大人の女性のプロンプト集（顔立ち・服装・雰囲気）
+    groups:
+    - name: まとめ
+      tags:
+        center parted bangs, forehead: 前髪
+        dress shirt, pencil skirt, short jacket: ジャケットとペンシルスカート
+        hair flowing over, strap slip: 私生活
+        long eyelashes, cheek, lips: 顔（基本）
+        long neck, slim neck, narrow waist, curvy: 体型
+        tight clothes: ピチピチの服
+        wavy hair, blunt ends: 髪型
+        young adult / adult female / mature female: 年齢
+    - name: 体型を大人女性にするプロンプト（くびれ・曲線・首）
+      tags:
+        center parted bangs, forehead, no bangs: おでこを出す
+        cheek: チーク
+        glossy lips: 艶のあるリップ
+        large breasts: 大きなバスト
+        long neck, slim neck: 細く長い首
+        mole on shoulder: 肩のほくろ
+        mole under breast: 胸のほくろ
+        mole under eye: 泣きぼくろ
+    - name: 大人の女性の年齢感を出すプロンプト
+      tags:
+        adult female: 標準的な大人女性
+        girl, aged up: 少女の年齢アップ
+        mature female: 成熟した大人の女性
+        woman, aged up: 女性の年齢アップ
+    - name: 大人の女性の雰囲気を作るプロンプトの基本（メイク・前髪）
+      tags:
+        girl, brown hair, long hair, detailed clothes, dress, outdoors, city below, light particles: ↓
+    - name: 大人女性の髪型プロンプト
+      tags:
+        bob cut, voluminous hair, curly hair, wavy hair, fluffy hair, swept bangs: 流し前髪のウェーブボブ
+        bowl cut, straight hair, no bangs, center parted bangs, forehead, blunt ends: センター分けの切りっぱなしボブ
+        half updo, fluffy hair, swept bangs: 流し前髪のハーフアップヘア
+        low ponytail, long hair, voluminous hair, curly hair: 低め結びのウェーブポニーテール
+        shiny hair, black hair, long hair, blunt ends, blunt bangs: 切り揃え前髪のロングヘア
+        shiny hair, black hair, long hair, choppy bangs: チョッピーバングのロングヘア
+        wavy hair, blonde hair, swept bangs, voluminous long hair: かき上げ横流しのロングヘア
+        wavy hair, brown hair, showing forehead, parted bangs: センター分けのゆるふわウェーブヘア
+    - name: 峰不二子タイプのプロンプト（曲線体型・タイトな服）
+      tags:
+        tight dress: ピチピチのドレス
+        tight dress with slit: サイドスリット入りのピチピチドレス
+        tight ornate clothes: 装飾性の高いピチピチの服
+    - name: 葛城ミサトタイプのプロンプト（仕事服・私生活のギャップ）
+      tags:
+        button gap, bra peek: ボタンの隙間からブラがチラ見えする
+        dress shirt, ascot: アスコット
+        dress shirt, pencil skirt: シャツとペンシルスカート
+        long sidelocks, hair flowing over: 髪の毛（横髪）が無造作に垂れ下がる
+        short jacket, shoulder pads: 肩パッド付きジャケット
+        single off shoulder, strap slip: 服のストラップがずり落ちる
+        sleeves rolled up: 袖捲り
+        tented shirt: シャツ越しに胸がツンとする
+  - name: 太ももを美しく再現するプロンプト完全ガイド【AIイラスト】
+    groups:
+    - name: 4タイプのふとももを指定するプロンプト
+      tags:
+        muscular thighs: 筋肉質のふともも
+        muscular thighs with veins: 筋肉質のふともも
+        slim legs: 細いふともも
+        thick thighs: ふくよかなふともも
+        veiny thighs: 静脈の浮いたふともも
+        veiny thighs, thighs with visible veins: 静脈の浮いたふともも
+    - name: S字立ちポーズ（コントラポスト）で太ももを魅せる
+      tags:
+        contrapposto, thighs: コントラポストによる太もも
+    - name: kneepitsでうらももを自然に描くプロンプト
+      tags:
+        standing, sitting, lying: – （バリエーション用）
+    - name: thigh gapで太ももの隙間を再現する方法
+      tags:
+        thigh gap: 太ももの隙間
+        thigh gap, facing away, from behind: 後ろからみた太ももの隙間
+        visible ear: – （おすすめ）片耳が見える
+        ほんのわずかな差ではあるのですが、この効果は思っている以上に大きいです。 ぜひ、「thigh gap」を入れた場合と入れない場合で、イラスト全体の印象がどれくらい変わるかを見比べてみてください。: thigh gapを再現したAIイラスト作例
+    - name: twisted torsoで身体のひねりを描くプロンプト
+      tags:
+        from behind, from front, from side: – 推奨アングル
+        twisted torso, lying, thighs: 体をひねった寝ポーズから見えるふともも
+        twisted torso, sitting, thighs: 体をひねった座り姿から見えるふともも
+        twisted torso, standing, thighs, kneepits, leaning forward: 体をひねった立ち姿から見えるふともも
+    - name: ジャンプ・キックなど動作に連動するふともものプロンプト
+      tags:
+        ballet outfit, thighs, calves, ballet pose, high kick, from side, profile view, backlighting: キックで見える太もも（バレエのポーズ）
+        calves（複数形）, calf（単数系）: – ふくらはぎ
+        thighs, calves, narrow waist, twisted torso, jumping, midair, from below: ジャンプして見える太もも・ふくらはぎ
+    - name: ソックスやレオタードでふとももを強調する方法
+      tags:
+        sitting on chair, loose socks, thigh muffin top, loose socks focus: ルーズソックスから見えるふともも
+    - name: 基本プロンプト｜AIにふとももを明示的に描かせる
+      tags:
+        thighs: ふともも
+    - name: 座り方・脚の動きによるふとももの変化を指定する
+      tags:
+        hugging own legs, thighs, three quarter view: 体育座りで見えるふともも
+        lying on stomach, thighs, kneepits, back, from above, from behind: うつ伏せで見える太もも
+        sitting on sofa, reclining, thighs, knees apart, outstretched legs, straight-on: 開脚して見える太もも（リラックス）
+    - name: 接写と肌質表現に適したプロンプト（Close-up Detail）
+      tags:
+        thigh muffin top: – ニーハイを履いた時の食い込み
+        thighs, dry skin, flaky skin,: – かさかさな肌質の太もも （光沢のない状態として再現されやすい）
+        thighs, oily skin,: – 油っぽい肌質の太もも
+        thighs, shiny skin: – 光沢のある肌質（良い意味で）の太もも
+        upper body, eyes out of frame, thighs, silky thighs, thigh gap, black thighhighs, narrow waist: 太もものクローズアップ構図
+    - name: 概要
+      tags:
+        たとえば、正面から見るふともも、横から、裏から（うらもも）、ふくらはぎが見えるかどうかなど、気にしはじめるとキリがありません。 でも、こうした要素は一つひとつ丁寧にプロンプトを組むことで、思い通りに再現することができます。: アイリー(AI)
+  - name: 女子大生ファッションのプロンプト集【AIイラスト】
+    groups:
+    - name: まとめ
+      tags:
+        casual fashion + skirt / pants / shorts: コーデの基本
+        pantyhose / thighhighs: レッグウェア
+        pleated skirt / denim skirt / skinny jeans: ボトムス
+        ribbed sweater / cardigan / blouse / hoodie: トップス
+        sneakers / flats / ankle boots: フットウェア
+        trench coat / jacket / denim jacket: アウター
+        外見の調整: 髪色・髪型の自由度、lipstickによるナチュラルメイク
+    - name: アウター｜女子大生ファッションのプロンプト
+      tags:
+        denim jacket: デニムジャケット
+        denim shirt: デニムシャツ
+        denim skirt: デニムスカート
+        flats: フラットパンプス
+        pantyhose under shorts: ショーパンの下にパンスト
+        platform sneakers: 厚底スニーカー
+        pleated skirt, belt: プリーツスカート（ベルト付き）
+        quilted skirt: キルトスカート
+        ribbed sweater: リブ編みセーター
+        skinny jeans: スキニージーンズ
+        strapless shirt: ストラップレスシャツ
+        tank top: タンクトップ
+        thighhighs, zettai ryouiki: ニーハイ
+        trench coat: トレンチコート
+        white blouse, center frills: ブラウス（センターフリル）
+        white satin collared shirt: サテンの襟付きシャツ
+    - name: 女子大生らしく見える髪型・外見プロンプト
+      tags:
+        black hair, brown eyes, low ponytail, swept bangs, makeup, lipstick: 黒髪ローポニー
+        blonde hair, brown eyes, straight long hair, showing forehead, lipstick, silver earrings,: 金髪ストレートロング
+        blue hair, brown eyes, half updo, medium hair, wispy bangs, makeup, lipstick, eyeliner, long eyelashes: 青髪ハーフアップ
+        brown hair, brown eyes, wavy hair, swept bangs, lipstick, simple earrings,: 茶髪ウェーブ
+        light brown hair, brown eyes, folded ponytail, swept bangs, single sidelock, lipstick, hoop earrings: 折り返しポニーテール
+        light brown hair, brown eyes, short hair, lipstick, ring earrings,: 明るい茶色ショート
+        light green hair, green eyes, short hair, blunt bangs, blunt ends, makeup, lipstick, small earrings: 前髪ぱっつん・毛先切り揃え
+    - name: 女子大生ファッションに合うポーズのおすすめプロンプト
+      tags:
+        impossible sweater, strained fabric sweater: 乳袋が強調されたセーター
+        leaning on table, elbow rest: 肘をついてテーブルに寄りかかる
+        standing on one leg, foot up, holding own heel: 自分の踵を掴む
+        twisted torso, arched back, butt out: 体を捻って背中を反らせる
+    - name: 女子大生ファッションを作る基本プロンプト
+      tags:
+        cardigan, blouse, beige pleated skirt: カーディガン+スカート
+        casual fashion, pants: カジュアル+パンツ
+        casual fashion, pinafore dress: ジャンパースカート
+        casual fashion, shorts: カジュアル+ショーパン
+        casual fashion, skirt: カジュアル+スカート
+        casual, jacket, skirt: ジャケット+スカート
+        collared shirt, dark red miniskirt: 襟付きシャツ+ミニスカ
+        hoodie, jeans: パーカー+ジーンズ
+        lipstick：口紅: ↓
+        sleeveless shirt, shorts: 袖なしシャツ+ショーパン
+        sweater, coat, scarf: セーター+コート+スカーフ
+        sweater, skirt: セーター+スカート
+        white hoodie, denim shorts: パーカー+ショーパン
+  - name: 嫌がる表情・苦痛の表情のプロンプト集【AIイラスト用】
+    groups:
+    - name: ガチで嫌がる表情（怯え寄り）
+      tags:
+        suffering face, streaming tears, shrugging, covering chest, trembling,: ガチで嫌がる表情（怯え寄り）のプロンプト
+    - name: ムッとした表情（不機嫌寄り）
+      tags:
+        frowning, pursed lips: ムッとした表情（不機嫌寄り）のプロンプト
+    - name: 口の表情プロンプト（嫌悪・耐える表情に有効）
+      tags:
+        biting own lip: 下唇を噛む
+        clenched teeth: 歯を食いしばる
+        pouting: ふくれっ面
+        straight mouth: 真一文字の口
+    - name: 嫌がって目をそらす表情（拒否の態度）
+      tags:
+        furrowed brows, averted gaze, clenched teeth, chin pulled back: 嫌がって目をそらす表情（拒否の態度）のプロンプト
+    - name: 嫌がりながら強く耐えている表情（泣きそう・苦痛寄り）
+      tags:
+        tears, clenched eyes, wince, trembling, sheet bite, sheet grab, on stomach: 嫌がりながら強く耐えている表情（泣きそう・苦痛寄り）のプロンプト
+    - name: 嫌がりながら耐える表情（軽度の苦痛）
+      tags:
+        squinting, clenched teeth, reluctant mouth: 嫌がりながら耐える表情（軽度の苦痛）のプロンプト
+    - name: 嫌がる表情・苦痛の表情を出せる基本プロンプト一覧
+      tags:
+        anguish face: 苦悶の表情
+        frowning: 眉をひそめる
+        hurting expression: 痛ましい表情
+        suffering: 苦しい表情
+    - name: 目の表情プロンプト（嫌がる・苦痛に使える）
+      tags:
+        averted gaze: 視線を逸らす
+        clenched eyes: ぎゅっと目を閉じる
+        squinting: 目をすぼめている
+        trembling eyes: 目の震える描写
+    - name: 眉の表情プロンプト（嫌がる・困惑を再現）
+      tags:
+        furrowed brows: 眉間を寄せる
+    - name: 苦痛で泣き叫ぶ表情（強い苦痛）
+      tags:
+        pain, crying with eyes open, screaming, anguish, contorted face, wince, very sweaty, sheet grab: 苦痛で泣き叫ぶ表情（強い苦痛）のプロンプト
+    - name: 軽い嫌がる表情（軽度の嫌悪）
+      tags:
+        disgusted face, nose wrinkle, face in shadow: 軽い嫌がる表情（軽度の嫌悪）のプロンプト
+    - name: 露骨に嫌がる表情（怒り寄りの嫌悪）
+      tags:
+        disgust, furious, uneven eyes, disdain: 露骨に嫌がる表情（怒り寄りの嫌悪）のプロンプト
+  - name: 子供キャラを再現するプロンプト集【AIイラスト】
+    groups:
+    - name: child / aged down について
+      tags:
+        aged down: 子供を再現するプロンプト「aged down」によるAIイラストの作例
+    - name: 兄弟・姉妹など子供同士の関係性プロンプト
+      tags:
+        brother and sister: 兄妹・姉弟
+        childhood friends: 幼馴染
+        siblings: 兄弟姉妹全般
+    - name: 子供の体型プロンプト（チビ／幼児体型／細身・太め）
+      tags:
+        chibi girl: チビ
+        emaciated, child: 痩せている（ガリガリ）子供
+        fat body: 太った体
+        fat body, child: 太った子供
+        plump body: ふっくらした体
+        plump body, child: ふっくらした体の子供
+        slim body: 細身体型
+        slim body, child: 細身体型の子供
+        toddler body: 幼児体型
+    - name: 子供の服を指定するプロンプトについて
+      tags:
+        子供服については、以下の記事でイラスト付きで紹介しています。園児向けの服やカジュアルな服に加えて、フォーマルなお受験服まで、幅広くまとめています。あわせて活用してもらえると参考になると思います。: 子供の服を指定するプロンプト集の記事の紹介用イラスト
+    - name: 子供の顔・手などパーツ別のプロンプト
+      tags:
+        chubby cheeks: ぽっちゃりした頰
+        chubby hands: ぽっちゃりした手
+        chubby legs, short legs: ずんぐりした短い脚
+        puffy cheeks: ふくらんだ頬
+        small hands: 小さな手
+    - name: 子供を抱っこするプロンプト
+      tags:
+        carrying baby: 赤ちゃんを抱っこする
+        carrying child: 子供を抱っこする
+        piggyback ride: 子供をおんぶする
+        piggyback ride / carrying over shoulder: 子供をおんぶする
+        shoulder carry: 子供を肩車する
+    - name: 年齢差・身長差・体格差を指定するプロンプト
+      tags:
+        age difference: 年齢差がある
+        'Base: size difference, height difference, age difference, spring, road Character1: girl, child Character:2 woman, mother': 年齢差・身長差・体格差を再現したAIイラスト
+        size difference: 体格差がある
+    - name: 親子などキャラクターの関係性を指定するプロンプト
+      tags:
+        father and daughter: 父と娘
+        father and son: 父と息子
+        mother and daughter: 母と娘
+        mother and son: 母と息子
+  - name: 幼い少女を再現するプロンプト集【NovelAI】
+    groups:
+    - name: まとめ
+      tags:
+        child / toddler / young / girl, aged down: 年齢
+        curled fingers / behind tree, peeking out: 仕草
+        pigeon-toed / wariza / crawling: ポーズ
+        romper / overalls / child smock: 服装
+        short / petite / flat chest / big head: 体型
+        sundress + ribbon strap / lace-trimmed: 服装（応用）
+        wide eyed / pout / crying with eyes open: 表情
+    - name: よく使われる幼い少女の服プロンプト
+      tags:
+        child smock: スモック
+        hoodie, shorts: パーカーとショーパン
+        romper: ロンパース
+        sweater, shorts: セーターとショーパン
+    - name: サンドレスのバリエーションプロンプト
+      tags:
+        floral print sundress: 花柄プリント
+        lace-trimmed sundress: レースの縁取り
+        plaid sundress: プレイド柄
+        polka dot sundress: 水玉模様
+        striped sundress: ストライプ柄
+        sundress, ribbon strap: リボンストラップ
+        sundress, see-through skirt layer, see-through silhouette: 透け感のある裾
+        sundress, spaghetti strap: スパゲッティストラップ
+    - name: 年齢を調整するプロンプトの使い分け
+      tags:
+        girl, aged down: 少女の年齢を下げる
+        young: 若い・幼い
+    - name: 幼い少女の表情・ポーズ・仕草プロンプト
+      tags:
+        behind tree, hiding, peeking out: 木陰から顔をだす
+        crawling, smile: 笑顔でハイハイ
+        crying with eyes open, wiping tears: 目を開けたまま泣く
+        curled fingers: 指を曲げる（にぎにぎ）
+        embarrassed posing, blush: 照れた仕草
+        fallen down, flustered, standing on one foot, reaching towards viewer, leaning forward, midair: バランスを崩す、転倒する
+        fallen down, flustered, wavy mouth, leaning back, lying: 尻餅をつく
+        hands on own knees, sitting: 手を膝の上に乗せて座る
+        legs together, standing: 脚を揃えて立つ
+        lying, fetal position, from above: 胎児のポーズ
+        open hands, palms, incoming giving, smile: ちょーだいのポーズ
+        pleading eyes, head tilt: じっと見つめる
+        pleading, begging, open mouth: お願いのポーズ
+        upturned eyes, from above: 上目遣い
+        wariza, v arms: 女の子座り
+        'wide eyed, : o': きょとん顔
+    - name: 頭身・体型を調整するプロンプト
+      tags:
+        big head: 大きな頭
+        chibi only: ちびキャラ（デフォルメでさらに幼く見せる場合）
+        girl, aged down, short, petite, flat chest: 小柄・背が低い
+        girl, aged down, short, petite, flat chest, big head: デフォルメ寄り・大きな頭
+        girl, aged down, short, petite, flat chest, chibi only: ちびキャラ寄り
+        oppai loli: おっぱいロリ、見た目は幼いのに胸が大きいというギャップのあるキャラクターを再現する場合に使われる
+        short: 背が低い
+  - name: 快楽や恍惚の表情を描くプロンプトの使い方と組み合わせ方
+    groups:
+    - name: イキ顔のプロンプト
+      tags:
+        closed eyes, open mouth wide, saliva trail, wince, head back: イキ顔
+        looking up: – 上を見る
+    - name: キス待ちの顔
+      tags:
+        waiting for kiss: キス待ちの顔
+        可愛い‥‥。: キス待ちの顔を再現したAIイラスト
+    - name: ゲス顔のプロンプト
+      tags:
+        gesugao: ゲス顔
+    - name: 快楽で放心した顔のプロンプト
+      tags:
+        empty eyes, parted lips, saliva trail: 放心した顔（事後の表情）
+        empty eyes, parted lips, saliva trail, limp wrist, steaming body, sweat, messy hair: 快楽で放心した顔を再現したAIイラスト
+        limp wrist: – 力の抜けた手首（脱力感がでる）
+    - name: 快楽で気絶した顔のプロンプト
+      tags:
+        blank eyes, blank expression, parted lips, drooling, messy hair: 快楽で気絶した顔を再現したAIイラスト
+        blank eyes, parted lips, drooling: 気絶した顔
+    - name: 快楽に身悶える顔のプロンプト
+      tags:
+        ringed eyes: 目が回る（目がリング状）顔を再現したAIイラスト
+        saliva trail: よだれを垂らす
+        squinting, open mouth wide, saliva trail: 身悶える顔
+        steaming body, sweat, squinting, open mouth wide, saliva trail, twitching, wince: 快楽に身悶える顔を再現したAIイラスト
+    - name: 快楽を我慢する顔のプロンプト
+      tags:
+        closed eyes, clenched teeth, furrowed brow: 我慢する顔
+        closed eyes, clenched teeth, furrowed brow, squinting, teardrop, nose blush, sheet grab, sweat, breath: 快楽を我慢する顔を再現したAIイラスト
+        frown, closed mouth: 逆への字の口を再現したAIイラスト
+        sheet grab: – シーツを掴む
+    - name: 快楽表情の基本プロンプト一覧（軽度）
+      tags:
+        glowing eyes, glowing pupils: 瞳を輝かせる
+        narrowed eyes, downturned eyes: 目尻が下がる
+        relaxed face: リラックスした顔
+        tongue out, open mouth: 舌を出す
+        twitching, wince: 高揚感で体を震わす
+    - name: 昇天し、大きくのけぞるプロンプト（顔が見えなくなる）
+      tags:
+        ceiling: – （補強用）天井
+        head back, leaning back, arched back, head thrown back, face obscured: 昇天し、大きくのけぞる
+  - name: 恐怖の表情・怯える表情のプロンプト【AIイラスト】
+    groups:
+    - name: ベースとなる恐怖・怯える表情プロンプト
+      tags:
+        horrified: 恐怖に震えた表情
+        panicking: パニック
+        shocked: 衝撃
+    - name: 怯える表情（不安・嫌な予感）のプロンプト例
+      tags:
+        nervous, furrowed brow, head tilt, pale skin, cowering: 姿勢で表現：体が縮こまる不安
+        nervous, raised inner eyebrows, averted eyes, nervous sweating, biting lip: 困り眉重視：困り眉＋冷や汗で「気まずい予感」
+        nervous, raised inner eyebrows, biting lip, trembling, head tilt: 微妙な震え：唇を噛みながら微かに震える
+        worried, furrowed brows, looking away, subtle sweat, trembling: 視線泳ぎ重視：視線が泳いで落ち着かない不安
+    - name: 恐怖表情（絶望・戦慄）のプロンプト例
+      tags:
+        horrified, streaming tears, clenched teeth, trembling, nervous sweating, turn pale: 涙＋震え：涙目で全身震える戦慄
+        horrified, turn pale, v-shaped eyebrows, screaming, nervous sweating, sweatdrops, covering face: 叫び＋防御：顔を覆って絶叫する絶望的な恐怖の表情
+        traumatized, blank eyes, heavy breathing, turn pale: 虚脱系：目が虚ろで心が折れた感じ
+    - name: 恐怖表情（衝撃・驚愕）のプロンプト例
+      tags:
+        panicking, red sclera, clenched teeth, raised shoulders, trembling: パニック寄り：肩がガチガチ震える
+        shocked, raised eyebrows, wide-eyed, recoiling, nervous sweating, hands on chest: 防御反応：恐怖の表情と手を胸に当てる仕草
+        shocked, wide-eyed, open mouth, nervous sweating, looking away: 汗＋視線：汗だくで視線を逸らす瞬間
+        surprised, unusually open eyes, dilated pupils, gasping, recoiling: 瞳孔＋口：瞳孔開いて息をのむ衝撃顔
+    - name: 目の動きで表現する恐怖表情プロンプト
+      tags:
+        dilated pupils: 瞳孔が拡大
+        red sclera: 目が充血する
+        unusually open eyes: 極端に目を見開く
+    - name: 眉の形で表現する恐怖表情プロンプト
+      tags:
+        raised inner eyebrows: 眉の内側（眉頭）が上がる
+    - name: 顔を隠す・防御姿勢の恐怖表現プロンプト
+      tags:
+        covering body: 体を覆う
+        covering face: 顔を隠す
+        cowering: おずおずする
+        despair, gloom: 絶望による虚脱
+        hands between legs: 両手を脚の間に挟む
+        heavy breathing: 荒い呼吸
+        nervous sweating: 冷や汗
+        pale skin, turn pale: 肌が青白い
+        sweatdrops: 汗の雫が垂れる
+        traumatized, empty eyes: 心が折れた瞬間
+        turn pale: 血の気が引く
+  - name: 悔しがる表情・屈辱の表情のプロンプト（描き分けのコツ）
+    groups:
+    - name: まとめ
+      tags:
+        今回の記事では、悔しがる表情と屈辱の表情について、感情の強さや向きの違いを意識しながら、プロンプトを整理して紹介してきました。: 悔しがる表情・屈辱の表情のプロンプト（描き分けのコツ）のまとめ用の図解イラスト
+    - name: 屈服・精神的崩壊を表す屈辱の表情プロンプト
+      tags:
+        empty eyes, open mouth, screaming, sobbing, trembling, nose-blush, looking down, facing down, averted gaze: 屈服・精神的崩壊を表す屈辱の表情
+    - name: 屈辱の表情のプロンプト
+      tags:
+        その後の反応: 「次は見てろ」という反発
+        主な感情: 怒り・後悔
+        原因: 失敗、敗北
+        表情の強さ: 激しく、動きがある
+    - name: 強い悔しがる表情のプロンプト（怒りを含む表情）
+      tags:
+        angry, clenched teeth, furrowed brow: 悔しくて怒りを抑えきれない
+        disgust, grimace, turn pale: 相手の行動に悔しくて嫌悪
+        furious: 強い悔恨
+        furious, scowl, glaring: 大きな失敗後の悔しさ
+    - name: 怒り・憤りを耐え忍ぶ屈辱の表情プロンプト
+      tags:
+        grimace, averted gaze, squinting, biting own lip, looking down, facing down, nose blush, trembling, tears: 怒り・憤りを耐え忍ぶ屈辱の表情
+    - name: 恥辱を受ける屈辱の表情プロンプト
+      tags:
+        embarrassed, full-face blush, sweatdrop, open mouth, wavy mouth, trembling, facing down, looking down: 恥ずかしさが強い屈辱の表情
+        horrified , full-face blush, sweatdrop, facing down, looking down, open mouth, wavy mouth, trembling: 恐怖を伴う恥辱の表情
+    - name: 悲しみを伴う屈辱の表情プロンプト
+      tags:
+        crying, tearing up, squinting, blush, clenched teeth, trembling, sad: 悲しみを伴う屈辱の表情
+    - name: 精神的に積もった悔しさの表情プロンプト（疲弊・後悔）
+      tags:
+        exhausted, gloom (expression), sigh: 繰り返しの失敗で悔しがる
+        facepalm, annoyed, closed eyes: 自分のミスに悔しがる
+        gloom (expression): 陰鬱な表情
+        gloom (expression), sad, frustrated: 深い悔恨・後悔
+    - name: 視線で描き分ける表情プロンプト（悔しさと屈辱の違い）
+      tags:
+        facing down, looking down: 視線を落とす
+    - name: 軽度の悔しがる表情のプロンプト（日常的な不満・もどかしさ）
+      tags:
+        annoyed, squiggle, frown: 他者の迷惑行為に耐える
+        frustrated, furrowed brow, grimace: 行動がうまくいかず苛立つ
+        sulking, pout, closed eyes: 負けを認めたくない悔しさ
+    - name: 顔パーツで表現する悔しがる表情のプロンプト（しかめっ面・顔の歪み）
+      tags:
+        frown, furrowed brow, annoyed: 悔しがる表情（一般的）
+        grimace, clenched teeth, sweat: 耐えきれない悔しさ
+        scowl, glaring, annoyed: 相手を睨み悔しがる
+  - name: 擬人化のプロンプト一覧（動物・モンスター娘ほか種類別に整理）
+    groups:
+    - name: モンスター娘の擬人化プロンプト
+      tags:
+        demon girl: 悪魔の擬人化
+        imp girl: 小悪魔の擬人化
+    - name: 兵器・メカの擬人化プロンプト
+      tags:
+        mecha girl, heavily armed futuristic war machine design: 兵器・メカの擬人化のAIイラスト
+        ヴァルキリーっぽいものもあります。: ヴァルキリーっぽいものもあります。
+        以下は、ガッツリとした重装備です。: 兵器・メカの擬人化のAIイラスト作例3
+    - name: 動物・獣耳の補助プロンプト
+      tags:
+        kemonomimi mode: ケモ耳・尻尾を追加した擬人化モードを指定するプロンプト
+    - name: 動物娘の擬人化プロンプト一覧（猫・狐・犬ほか）
+      tags:
+        bear girl: 熊の擬人化
+        cat girl: 猫の擬人化
+        cow girl: 牛の擬人化
+        deer girl: 鹿の擬人化
+        dog girl: 犬の擬人化
+        fox girl: 狐の擬人化
+        goat girl: 山羊の擬人化
+        horse girl: 馬の擬人化
+        moose girl: ヘラジカの擬人化
+        mouse girl: ネズミの擬人化
+        panda girl: パンダの擬人化
+        rabbit girl: ウサギの擬人化
+        raccoon girl: たぬきの擬人化
+        reindeer girl: トナカイの擬人化
+        sheep girl: 羊の擬人化
+        squirrel girl: リスの擬人化
+        tiger girl: 寅の擬人化
+        wolf girl: 狼の擬人化
+    - name: 尻尾・牙・爪など動物パーツのプロンプト
+      tags:
+        animal ear fluff: ふわふわの動物の耳の毛
+        animal ear piercing: ピアス付きのケモノ耳
+        animal ears: 動物の耳
+        animal tail: 動物の尻尾
+        claws: 爪
+        ears through headwear: ヘッドウェアから耳が出る
+        floppy ears: 垂れ耳
+        fluffy tail: ふさふさの尻尾
+        fur collar: 毛皮風の服の襟
+        mismatched animal ear colors: 左右で色の違うケモノ耳
+        paw gloves: 肉球のグローブ
+        tail around another’s leg: 尻尾が他人の足に絡みつく
+        tail wrap: 尻尾が巻き付く
+        whiskers: 髭
+    - name: 昆虫・植物の擬人化プロンプト
+      tags:
+        ant girl: 蟻の擬人化
+        arthropod girl: 触覚系の擬人化全般
+        bee girl: 蜂の擬人化
+        butterfly girl: 蝶々の擬人化
+        ladybug girl, ladybug costume: てんとう虫の擬人化
+        mandragora girl: マンドラゴラ娘
+        mantis girl: カマキリの擬人化
+        moth girl: 蛾の擬人化
+        mushroom girl: キノコ娘
+        wasp girl: スズメバチの擬人化
+  - name: 日焼けした肌・日焼け跡のプロンプト集（ビキニ跡やチラ見えなど）
+    groups:
+    - name: まとめ
+      tags:
+        今回は、AIイラストで日焼けした肌や日焼け跡を再現するためのプロンプトを、種類別・組み合わせ別に紹介してきました。: 日焼けした肌・日焼け跡のプロンプト集のまとめ用の図解イラスト
+    - name: アオザイと日焼け跡のコントラスト表現プロンプト
+      tags:
+        ao_dai clothes, side slit, tanline peek: アオザイと日焼けの跡のチラ見え
+    - name: オフィス服と日焼け跡のチラ見えプロンプト
+      tags:
+        dress shirt, tight mini skirt, shirt tan, tanlines, tanline peek, shorts tan: オフィス服と日焼けの跡
+    - name: シャツの袖口に残る日焼け跡のプロンプト
+      tags:
+        girl, black long hair, muted gray eyes, low ponytail, tan skin, arm focus, tanline, short-sleeved shirt tan , rain: これはやや再現が不安定です。ガチャ必要ですが一応再現可能です。
+        short-sleeved shirt tan, tanline: シャツの袖口の日焼けの跡
+    - name: シャツ・Tシャツ跡の日焼け跡プロンプト
+      tags:
+        shirt tan: シャツ・Tシャツ跡の日焼け跡
+    - name: ショーツ・短パンによる日焼け跡のプロンプト
+      tags:
+        shorts tan: ショーツ・短パンの日焼けの跡
+    - name: スリングショット（水着）による日焼け跡のプロンプト
+      tags:
+        slingshot tan: スリングショット（水着）の日焼けの跡
+    - name: ビキニによる日焼け跡のプロンプト
+      tags:
+        bikini tan: ビキニ・ブラ・スポーツブラの日焼け跡
+    - name: レオタードと日焼け跡の組み合わせプロンプト
+      tags:
+        leotard, tanlines: レオタードと日焼けの跡
+    - name: ワンピース水着・レオタードによる日焼け跡のプロンプト
+      tags:
+        one-piece tan: ワンピース水着やレオタードによる日焼け跡
+    - name: 修道服と日焼け跡を組み合わせたプロンプト
+      tags:
+        nun, side slit, tanline peek: 修道士の服と日焼けの跡
+    - name: 日焼けした肌・日焼け跡の基本プロンプト
+      tags:
+        tan skin: 日焼けした肌
+    - name: 日焼け跡のチラ見えのプロンプト
+      tags:
+        tanline peek: 日焼け跡のチラ見え
+    - name: 服装別｜日焼け跡の組み合わせプロンプト一覧
+      tags:
+        bodycon, tanlines: ボディコンから見える日焼けの跡
+        punk clothes, mini skirt, arm up, armpit peek, tanline peek: パンクファッションから見える日焼けの跡
+        school uniform, arm up, armpit peek, tanline peek: セーラー服から見える日焼けの跡
+        sophisticated clothes, off shoulder, arm up, armpit peek, tanline peek: 洗練された服から見える日焼けの跡
+        sporty clothes, tanline peek: スポーツウェアから見える日焼けの跡
+        sundress, tanlines: サンドレスから見える日焼けの跡
+    - name: 概要
+      tags:
+        そこで今回は、日焼けした肌・日焼け跡を再現するプロンプトを詳しく紹介していきます。 ベーシックなものから、日焼け跡の種類別、さらに服との組み合わせによってどのような印象になるのかまで、イラスト付きでまとめています。: ちなみに欧米圏では、小麦色の肌は「バカンスに行ける余裕がある」ことのひとつのステータスシンボルでもあります。
+        たとえば、日焼けしているだけで、「夏を満喫している＝リアルが充実している」といったイメージを自然とイラストに与えることができます。: 実は日焼け跡というのは、アートの観点から見てもさまざまな効果を持っています。
+        特に日焼け跡は、普段は服で隠れている「本来の肌の色」と、太陽に晒された「小麦色の肌」とのコントラストが魅力です。: アイリー(AI)
+    - name: 背中開きドレスと日焼け跡の組み合わせプロンプト
+      tags:
+        navy backless dress, side slit, bridal gauntlets, tanlines, slingshot tan: 背中開きドレスと日焼けの跡
+  - name: 服を脱ぐプロンプト完全ガイド（開ける・ずらす・チラ見え他）【AIイラスト】
+    groups:
+    - name: まとめ｜服を脱ぐプロンプト早見表
+      tags:
+        hand on zipper, pulling zipper down: ジッパーを下ろす
+        lifting bra with one hand ／ lifting bra with both hands: ブラをたくし上げ（片手／両手）
+        lifting shirt: 服（シャツ）をたくし上げる
+        open skirt ／ undone skirt: スカートのホックが開いている状態・緩んでいる状態
+        opening buttoned shirt with both hands: 服（シャツ）の前を開ける
+        pulling down black pantyhose, removing pantyhose: ストッキングを脱ぐ
+        pulling down bra with one hand ／ pulling down bra with both hands: ブラをずり下げ（片手／両手）
+        pulling down one sock, removing one sock: 靴下を脱ぐ
+        pulling down strap, strap slip: 肩紐をずらす・下ろす
+        removing one shoe: 靴を脱ぐ
+        shirt tucked in ／ shirt hanging out: シャツの裾状態
+        unbuttoning shirt with both hands: シャツのボタンを外す
+        undressing, arms up: 腕を上げて脱いでいる状態
+        undressing, pulling down denim pants: ズボンを下ろす・脱ぐ
+        undressing, pulling down skirt: スカートを下ろす・脱ぐ
+        undressing, show navel ／ undressing, show shoulder ／ undressing, bra ／ undressing, underboob: 見せる部位の指定（おへそ・肩・ブラ・下乳）
+        undressing, skirt around legs ／ undressing, skirt around one ankle, leg lift: スカートの脱ぎかけ（残る位置）
+        unhooking bra with both hands, arms behind back: 普通のブラ（背中ホック）を外す
+        unhooking front-clasp bra with both hands: フロントホックブラを外す
+        untying front ribbon with both hands: 制服のリボンを解く
+        untying shoelaces with both hands: 靴紐を解く
+        unzipping pants, open fly, denim pants: ズボンのチャックを開ける
+        unzipping skirt, pulling down skirt fastener, hand on skirt fastener: スカートのファスナーを下ろす
+    - name: シャツのボタンを外す
+      tags:
+        cleavage peek: – ボタンを外して胸の谷間が見える
+    - name: ジッパーを下ろす
+      tags:
+        black tank top peek: – ボタンを外してタンクトップが見える
+        head down, looking down: – 自然な視線・顔の動きの指定
+        white hoodie with zipper: – ジッパー付きの服の例（パーカー）
+    - name: スカートのファスナーを下ろす
+      tags:
+        twisted torso, looking down, head down, contrapposto: – ファスナーを下ろす時の自然な仕草
+    - name: スカートのファスナー・ホックが開いている状態
+      tags:
+        open skirt: スカートの側面のボタン・ジッパーが開いている状態
+        undone skirt: スカートが緩んでいる状態
+    - name: スカートを下ろす・脱ぐ
+      tags:
+        black bike shorts, panties: – インナーの指定（スパッツ・下着など）
+        leaning forward, bent knee: – リアリティを出すための追加ポーズ
+        undressing, skirt around legs: スカートが両足に残っている状態（脱ぎかけ）
+        undressing, skirt around one ankle, leg lift: スカートが片足に残っている状態（脱ぎかけ）
+    - name: ストッキング・靴下を脱ぐ
+      tags:
+        sitting, knee up, hunched over, face down, looking down: – リアリティアップのための追加の仕草
+    - name: ブラのホックを外す
+      tags:
+        strap gap: – ストラップの隙間を再現
+    - name: ブラをたくし上げる・ずり下げる
+      tags:
+        lifting bra with one hand: ブラをたくし上げる
+        pulling down bra with one hand: ブラをずり下げる
+    - name: 制服のリボンを解く
+      tags:
+        sailor uniform, sailor collar: – 制服の指定
+    - name: 服をたくし上げる
+      tags:
+        lifting shirt with both hands: 服（シャツ）を両手でたくし上げる
+        lifting shirt with one hand: 服（シャツ）を片手でたくし上げる
+        shirt hanging out: – インナーのシャツの裾を出している
+        shirt tucked in: – インナーのシャツの裾がイン（タックイン）
+    - name: 服を脱ぐ動作の基本プロンプト（undressing）
+      tags:
+        black tank top, tube top, bra: – インナーの指定例（トップス）
+    - name: 脱ぎ方を細かく指定するプロンプト例
+      tags:
+        arms up: 腕を上げて脱いでいる状態
+        navel peek, shoulder peek, bra peek: – 僅かに見える状態（見え方の調整用）
+        show navel: おへそが見える状態
+        show shoulder: 肩が見える状態
+        undressing, bra: 服を脱いでブラが見える
+        undressing, show navel: 服を脱いでおへそが見える
+        undressing, show shoulder: 服を脱いで肩が見える
+        undressing, underboob: 服を脱いで下乳が見える
+    - name: 靴紐を解く・靴を脱ぐ
+      tags:
+        face down, looking down, hair falling forward, hair hanging down, knee to chest: – リアリティアップのための追加の仕草
+  - name: 横髪のプロンプト完全ガイド（長さ・種類・応用など）
+    groups:
+    - name: drill sidelocksで動きを作る（M字開脚・横たわる構図）
+      tags:
+        hair over one breast: 髪の毛が片方の胸の上にかかっている状態
+    - name: まとめ
+      tags:
+        デザイン効果: 曲線が増える → 柔らかい印象
+        構図効果: 髪のカーブ → 画面に動き
+        物理的効果: 横髪が垂れる → 重力を感じる → 生きてる感が強まる
+        視覚効果: 顔周りを覆う → 小顔効果
+    - name: 横髪が口元にかかるプロンプト
+      tags:
+        hair over mouth: 髪が口元を覆う
+        long hair, wind, long side locks, hair over mouth: 横髪が口元にかかるプロンプトとAIイラスト作例
+    - name: 横髪なしを指定するプロンプト
+      tags:
+        sidelocks, hair intakes: ネガティブ ・ プロンプト（除外したい要素）
+        visible both ears: プロンプト
+    - name: 横髪の種類プロンプト一覧
+      tags:
+        blunt sidelocks, blunt ends: 毛先がバッサリ揃った横髪
+        braided sidelocks: 両側三つ編みの横髪
+        curly sidelocks: カール横髪
+        low-tied sidelocks: 下の方で結んだ横髪
+        ring sidelocks, ringlets: 毛先がリング上の横髪
+        short hair with long locks: 短髪に長い横髪
+        sidelocks tied back: 後ろで結ばれた横髪
+        twisted sidelocks: 毛先がねじれた横髪
+        wavy sidelocks: ウェーブ横髪
+    - name: 横髪の長さを指定するプロンプト
+      tags:
+        サイドバング: 額に近い位置からスタート、前髪の側面部分が長く垂れたり分かれたりするもの
+        サイドヘア: 顔の横（耳のあたり〜後ろ寄り）の髪全体。耳にかける・流す・短めの横髪も含む
+        サイドロック: 耳の直前に生えた長い毛束、頬くらいまで垂れることが標準イメージ
+    - name: 顔の両側に横髪を垂らすプロンプト
+      tags:
+        curtained hair: 髪が顔の両側をカーテンのように覆う状態
+    - name: 顔周りに長い横髪を垂らすプロンプト
+      tags:
+        hair flowing over, wavy sidelocks: ウェーブのかかった横髪が無造作に垂れ下がる状態
+  - name: 泣き顔を描くためのAIプロンプト一覧｜涙・悲しみの表現に使える呪文集
+    groups:
+    - name: よくあるミスとその修正例
+      tags:
+        crying loudly など強い表現のみ: 顔の歪みが激しく、不自然な泣き顔になる
+        crying のみ: 表情が固すぎる／感情が伝わらない
+        crying, big eyes: 目が不自然に大きい／泣いてる感がない
+        scared expression のみ: 怯えの表現が伝わらず、ただ目を見開いているだけに見える
+        smiling while crying のみ: 泣き笑いのはずが、ただ明るく笑っているだけに見える
+        tearful だけ: 涙の表現が弱い／ほとんど見えない
+        背景・光指定なし、またはデフォルトの光設定: 泣いているはずなのに背景が明るく、雰囲気が壊れる
+    - name: 光の演出プロンプト
+      tags:
+        dim streetlight illumination: ストリートライトの照明
+        filtered light through curtain: カーテン越しの光
+        rainy ambiance, twilight lighting: 雨や夕暮れの光
+        soft side lighting: 横からの斜光（静かさ）
+        underlighting: 下からの光（不安定感）
+    - name: 小道具のプロンプト
+      tags:
+        gripping a smartphone: スマホ（握りしめてる）
+        holding a book close to chest: 本を胸に抱える
+        holding a handkerchief: ハンカチ
+        staring at an old photo: 写真を見つめる
+        tear-stained hands: 涙の跡がついた手
+        wiping tears with fingers: 指で涙を拭う
+        wiping tears with uniform sleeve: 制服の袖で涙を拭う
+    - name: 構図のプロンプト（※演出的構図）
+      tags:
+        back view with face turned: 後ろ姿（顔は振り返る）
+        bust-up, hands in frame: バストアップ（手の動きが入る）
+        close-up, focus on eyes: 顔アップ（目元重視）
+        looking up angle: 見上げる構図（泣きながら誰かを見上げる）
+        profile view: 片側の横顔
+        slight low angle: ややあおり（緊張感）
+        slight top-down angle: やや俯瞰
+    - name: 泣き顔・涙表現のプロンプト一覧｜画像生成AI用
+      tags:
+        crying loudly, crouched down, covering face: 泣き崩れる
+        lamentation, sorrowful expression, tears: 嘆きの表情
+        scared expression, trembling, teary eyes: 恐怖・怯え
+        serene expression, tear-streaked cheeks, vacant eyes: じっと涙を流す
+        shaking outline, trembling outline, vibration lines: 震える線の演出
+        silent crying, covering mouth with hands: 声を殺して泣く（わんわん泣く）
+        smiling while crying, bittersweet expression: 泣き笑い
+        tear-streaked face, hollow eyes, slouched posture: 泣き疲れた顔
+        tear-streaked face, red and puffy eyes from crying, peaceful yet emotionally tired look: 泣き疲れた顔（少し落ち着く）
+        tearful, watery eyes: 涙ぐむ
+        tired eyes, weak smile, tear-streaked face: 無力感
+        unhappy, downcast eyes, shadowed face: 不幸そう
+        じっと涙を流す serene expression, tear-streaked cheeks, vacant eyes: じっと涙を流すプロンプトのためのイラスト
+        不幸そう unhappy, downcast eyes, shadowed face: 不幸そうな表情のプロンプトのためのイラスト
+        嘆きの表情 lamentation, sorrowful expression, tears: 嘆きの表情のプロンプトのためのイラスト
+        声を殺して泣く silent crying, covering mouth with hands: 声を殺して泣くプロンプトのためのイラスト
+        夜風に佇む serene expression, distant gaze, soft lighting: 夜風に佇むプロンプトのためのイラスト
+        強がり forced smile, biting lips, teary eyes: 強がりのプロンプトのためのイラスト
+        恐怖・怯え scared expression, trembling, teary eyes: 恐怖・怯えのプロンプトのためのイラスト
+        泣き崩れる（わんわん泣く） crying loudly, crouched down, covering face: 泣き崩れるプロンプトのためのイラスト
+        泣き疲れた顔 tear-streaked face, hollow eyes, slouched posture: 泣き疲れた顔のプロンプトのためのイラスト
+        泣き疲れた顔（少し落ち着く） tear-streaked face, red and puffy eyes from crying, peaceful yet emotionally tired look: 少し落ち着いた泣き疲れ顔のプロンプトのためのイラスト
+        泣き笑い smiling while crying, bittersweet expression: 泣き笑いのプロンプトのためのイラスト
+        泣き顔 crying, teary eyes, looking down: 泣き顔のプロンプトのためのイラスト
+        涙ぐむ tearful, watery eyes: 涙ぐむプロンプトのためのイラスト
+        涙を堪える顔 on the verge of tears, clenched fists, tense mouth: 涙を堪える顔のプロンプトのためのイラスト
+        無力感 tired eyes, weak smile, tear-streaked face: 無力感のプロンプトのためのイラスト
+        震える線の演出 shaking outline, trembling outline, vibration lines: 震える線の演出のためのプロンプトのイラスト
+    - name: 背景のプロンプト
+      tags:
+        by the classroom window: 教室の窓辺
+        by the hospital window: 病室の窓際
+        quiet rain: 静かな雨
+        rainy park: 雨に濡れた公園
+        school hallway at sunset: 夕暮れの廊下
+        sitting on a bench at night: 夜のベンチ
+        walking home alone: 一人きりの帰り道
+    - name: 表情・仕草のプロンプト
+      tags:
+        biting lips: 唇を噛む
+        covering face with both hands: 両手で顔を覆う
+        covering mouth with hand: 口元を手で覆う
+        hiding face behind hair: 髪で顔を隠す
+        raised eyebrows, worried look: 眉を上げる（困り眉）
+        turning face away: 顔をそむける
+        wiping tears: 手で涙を拭く
+    - name: 視線のプロンプト
+      tags:
+        eyes closed: 目をつむる
+        gazing downward: 下を見つめる
+        looking at someone: 誰かを見つめる
+        looking away: 正面を見ない
+        looking to the side: 視線を斜めに外す
+        staring into space: 虚空を見る
+  - name: 無表情・クール系 表情プロンプト集｜静かな感情を魅せるイラスト設計【ChatGPT】
+    groups:
+    - name: キャラ設定と無表情プロンプトの組み合わせ例
+      tags:
+        いつも疲れている部活マネージャー: 物静かで優しいが、やや限界気味
+        クールな先輩: 冷静で知的、余裕を感じさせる静けさ
+        儀礼的に黙っている生徒会長: 感情を表に出さないのが“正しさ”の象徴
+        感情を抑える無口キャラ: 本当は心が揺れているのにそれを隠す
+        憂いを秘めた文学少女: 言葉少なく、何かを考え込んでいる風
+        無表情な後輩: 感情を出さず、いつも落ち着いている
+        眠そうな優等生: 真面目なのに常に眠気を我慢している
+    - name: 失敗しやすいプロンプトと改善キーワード例
+      tags:
+        blank eyes, calm demeanor, soft lighting: 無表情なのに怖く見える（睨んでる）
+        expressionless, soft shadows, slight head tilt: 人間味がなく、機械的になる
+        subtle expression, composed demeanor, relaxed eyes: 表情が「無」すぎて読めない
+    - name: 応用編：プロンプトの組み合わせで表情の印象を調整する
+      tags:
+        blank eyes + soft lighting + distant gaze: 空気感を加える
+        expressionless + calm demeanor: 無機質さを和らげる
+        melancholic expression + downward gaze + subtle tension: 感情の余韻を出す
+        sleepy eyes + tired face + relaxed pose: 脱力＋静
+    - name: 怖さ・不自然さを防ぐための追加プロンプト一覧
+      tags:
+        distant gaze, off-center framing, dim background: 孤独感を強調
+        slight head tilt, open posture, ambient light: 緊張をほぐす
+        soft lighting, relaxed posture, natural shadows: 優しさ・柔らかさ
+    - name: 抑えた感情・微かな動揺を描く
+      tags:
+        blank expression, held breath, downturned eyes, fragile stillness: 感情を飲み込んだ顔
+        calm face, slightly averted eyes, subtle unease, composed posture: 平静を装う微かな動揺
+        expressionless face, clenched jaw, cold eyes: 怒りを押し殺す無表情
+        looking down, shy eyes, silent pose: 俯き／目を伏せる
+        moist eyes, tightened lips, downward gaze, silent tension: 涙の気配を静かに抱える
+        俯き／目を伏せる looking down, shy eyes, silent pose: 俯き目を伏せるイラスト
+        平静を装う微かな動揺 calm face, slightly averted eyes, subtle unease, composed posture: 平静を装う僅かな同様を見せるイラスト
+        怒りを押し殺す無表情 expressionless face, clenched jaw, cold eyes: 怒りを押し殺す表情のイラスト
+        恋する視線 warm smile, sparkling eyes, loving gaze: 恋する視線の表情のイラスト
+        感情を飲み込んだ顔 blank expression, held breath, downturned eyes, fragile stillness: 感情を飲み込んだ顔のイラスト
+        憂い顔 melancholic expression, looking into distance: 憂い顔の表情のイラスト
+        涙の気配を静かに抱える moist eyes, tightened lips, downward gaze, silent tension: 涙の気配を静かに抱える表情をしたイラスト
+        深夜の切なさ dim lighting, tired expression, distant gaze: 深夜の切なさを現す表情のイラスト
+    - name: 比較表：無表情・クール系プロンプトの意味と使い分け例
+      tags:
+        calm demeanor: 冷静で落ち着いた印象。知的・理性的な雰囲気にも◎
+        melancholic expression: 悲しみよりも「憂い」。内に秘めた静かな感情
+        sleepy eyes: 自然体・脱力・眠気。感情を出さない＝眠い時も同じ
+        vacant expression: 意識がない、または思考が止まっているような雰囲気
+    - name: 無表情・空虚な視線で魅せる
+      tags:
+        blank stare, contemplative look, calm atmosphere: 思索中／無言の沈思
+        bored face, uninterested eyes, slightly open mouth: 面倒くさそうな無表情
+        calm expression, composed face, formal posture, polite silence: 儀礼的な沈黙
+        cold stare, unfriendly eyes, distant gaze: 冷たい視線
+        dull eyes, lifeless expression, slouched posture: 気怠さ・無気力
+        tired face, loose expression, relaxed eyes: 脱力した表情
+        vacant expression, unfocused eyes, quiet atmosphere: 虚ろな表情
+        儀礼的な沈黙 calm expression, composed face, formal posture, polite silence: 儀礼的な沈黙の表情のイラスト
+        冷たい視線 cold stare, unfriendly eyes, distant gaze: 冷たい視線のイラスト
+        思索中／無言の沈思 blank stare, contemplative look, calm atmosphere: 思索中の表情のイラスト
+        気怠さ・無気力 dull eyes, lifeless expression, slouched posture: 気怠さ・無気力な表情のイラスト
+        無表情（クール） expressionless, blank eyes, calm demeanor: 無表情（クール）のイラスト
+        脱力した表情 tired face, loose expression, relaxed eyes: 脱力した表情のイラスト
+        虚ろな表情 vacant expression, unfocused eyes, quiet atmosphere: 虚ろな表情のイラスト
+        面倒くさそうな無表情 bored face, uninterested eyes, slightly open mouth: 面倒くさそうな無表情のイラスト
+    - name: 無表情・静かな感情を引き立てる演出テクニック集
+      tags:
+        empty classroom, soft afternoon light, still desks: 放課後の教室
+        empty hallway, ambient light, silent corridor: 誰もいない廊下
+        navy sailor uniform, simple design, neat collar: ネイビー系セーラー服
+        nighttime park, dim lamps, empty benches, soft shadows: 夜の公園
+        overcast plaza, wide open space, no people: 曇り空の広場
+        plain one-piece dress, subdued tone, calm aesthetic: 無地のワンピース
+        quiet tatami room, paper sliding doors, natural light: 静かな和室
+        school uniform with cardigan, draped jacket, modest appearance: 制服＋羽織（羽織る上着）
+        silent library, tall bookshelves, low lighting: 静かな書庫
+        traditional japanese clothing, muted colors, elegant style: 和装（落ち着いた色味）
+        white blouse, soft fabric, clean appearance: 白系ブラウス
+  - name: 特殊な服・衣装（あまり知られていない）のプロンプト集
+    groups:
+    - name: ゆめかわいいファッションのプロンプト
+      tags:
+        yume kawaii fashion: ゆめかわいいファッション、パステルカラーでお姫様（メルヘン）チックな服装
+    - name: カットアウト衣装のプロンプト
+      tags:
+        above-cleavage cutout: 谷間より上側の胸元カット
+        arm cutout: 腕部分のカットアウト
+        armpit cutout: 脇部分のカットアウト
+        back cutout: 背中のカットアウト
+        cleavage cutout: 胸の谷間を意図的にくり抜いた穴
+        shoulder cutout: 肩部分のカットアウト
+        underboob cutout: 胸の下側を露出させるカットアウト
+        カットアウト系: カットアウト系
+    - name: クラシック・テーマ系の特殊衣装プロンプト
+      tags:
+        borrowed clothes: 彼シャツ、借りてきた服（サイズが合わない服）
+        bunny suit: バニースーツ
+        cassock: カソック
+        crinoline: クリノリン
+        half-skirt: ハーフスカート
+        harem outfit: ハーレム衣装のAIイラスト
+        high-low skirt: フィッシュテールスカート
+        magical girl outfit: 魔法少女
+        pirate costume: 海賊
+        princess outfit: お姫様衣装
+        showgirl outfit: ショーガール
+        surcoat: サーコート
+        train (clothing): トレーン
+        unitard: ユニタード
+        その他・特殊: その他・特殊
+        スカート形状: スカート形状
+        ファンタジー・歴史: ファンタジー・歴史
+        可愛い系・パフォーマンス: 可愛い系・パフォーマンス
+        宗教・神聖系: 宗教・神聖系
+    - name: スパゲッティストラップのプロンプト
+      tags:
+        spaghetti strap: 肩紐がスパゲッティのように細いストラップ
+    - name: 乳カーテンの服プロンプト
+      tags:
+        crop top overhang: 乳カーテン
+    - name: 乳袋・乳テント・胸囲の布が引っ張られる服のプロンプト
+      tags:
+        impossible clothes: 乳袋
+        strained fabric: 胸囲の布が引っ張られる
+    - name: 天使界隈のプロンプト
+      tags:
+        tenshi kaiwai: 天使界隈、水色と白をベースにした儚げなコーデ、ジャージメイド風のコーデ
+    - name: 病みかわいいファッションのプロンプト
+      tags:
+        yami kawaii fashion: 病みかわいいファッション、幼い系の可愛いさにメンヘラ要素を足したスタイル。
+    - name: 童貞を殺すセーター系プロンプト
+      tags:
+        virgin killer outfit: 童貞を殺す服（フェミニン系）（特殊な服）のAIイラスト
+        virgin killer sweater: 童貞を殺すセーター（特殊な服）のAIイラスト
+        virgin killer swimsuit: 童貞を殺す水着、胸元が大胆に開いた露出度の高い水着
+    - name: 職業・機能系の特殊衣装プロンプト
+      tags:
+        animal costume: 動物着ぐるみ衣装のAIイラスト
+        armored dress: アーマードレス
+        bikini armor: ビキニアーマー
+        diving suit, flippers: ダイビングスーツ
+        flight suit: フライトスーツ
+        g-suit: Gスーツ
+        ghost costume: 幽霊衣装
+        hazmat suit: ハザードスーツのAIイラスト
+        jiangshi costume: キョンシー
+        mascot costume: マスコット
+        mecha pilot suit: メカパイロットスーツ
+        mummy costume: 包帯ミイラ
+        racing suit: レーシングスーツのAIイラスト
+        skeleton costume: 骸骨衣装
+        superhero costume: スーパーヒーロー衣装
+        ファンタジー・戦闘: ファンタジー・戦闘
+        マスコット・特殊: マスコット・特殊
+        職業・機能系: 職業・機能系
+    - name: 露出デザイン系の服パーツプロンプト
+      tags:
+        breast curtains: 胸を細い布を垂らして隠すデザインの服
+        crotchless outfit: クロッチレス。股間部分がカットアウトされた大胆衣装（‥大胆というか露骨です笑）
+        frontless outfit: 前見頃がない服（胸がそのまま露出する）
+        impossibly low neckline: 胸でギリギリ支える超低ネックライン
+        naked apron: 裸エプロン、naked ~ で様々な服を裸の上に羽織る状態になる
+        nipple cutout: 乳首部分のみがカットアウトされた服
+        nude tape: テープでプライベートパーツを隠した状態の服（‥というかテープ）
+        reverse outfit: バニーガールのレオタードの胸元・お腹・股間まわりがカットアウトされたデザインの服（プライベートパーツだけを隠さない）。本来の服は、プライベートパーツを隠し、腕や脚を露出するが、それがリバース（逆）になった服
+        slingshot swimsuit: 紐だけでギリギリの極小露出水着
+  - name: 画像AIで年齢を表現するプロンプト完全ガイド
+    groups:
+    - name: シニア世代
+      tags:
+        gardening, tending flowers: 庭で花を世話
+        knitting on sofa, knitting yarn: ソファで編み物
+        looking at photo album, reminiscing: 写真を見返す、思い出に浸る
+        old, mature female: シニア世代（60–79歳）を再現したAIイラスト
+        wearing glasses, close-up portrait: 眼鏡をかけたポートレート
+        with cat or dog, pet companion: ペットと一緒（犬や猫）
+        ここから先の年齢プロンプトは同じですが、「wrinkles（しわ）」のタグや年齢を示すタグの強調をバランスよく変化させることで、自然な差を表現できます。: シニア世代の様子を再現したAIイラスト
+    - name: ティーン（中高生）
+      tags:
+        casual stylish clothes: おしゃれな私服
+        hair ribbon, scrunchie: ヘアアクセ（リボン、シュシュ）
+        holding a present box, embarrassed, nose blush, head down: 恥じらい
+        holding smartphone: スマホを操作している
+        school uniform: 制服姿
+        teenager, adolescent: ティーン（中高生）（13–17歳）を再現したAIイラスト
+        wind blowing hair: 風に吹かれる髪
+        やや幼さの残る年齢層です。: ティーン（中高生）の様子を再現したAIイラスト
+    - name: 中年世代
+      tags:
+        calm smile, composed expression: 軽く笑う穏やかな表情
+        cocktail, urban bar, sitting, city lights in background, elegant atmosphere: お酒を飲む
+        driving, car: 車を運転する
+        middle-aged: 中年（40–59歳）を再現したAIイラスト
+        picking up child, parent with kids: 子育て中（子ども連れ）
+        reading newspaper at home,: 家庭で新聞を読む
+        wearing glasses: メガネ着用
+        wearing watch, subtle accessories: シンプルなジュエリーや小物
+        大人の女性の年齢プロンプトです。家庭的なシチュエーションのプロンプトと合わせると、より雰囲気を固めることができます。: 中年世代の様子を再現したAIイラスト
+    - name: 児童（小学生）
+      tags:
+        big grin showing teeth, playful smile , one missing tooth: 歯が抜けてニカッと笑う ※再現難易度は高め
+        bob haircut, hair band: 短めの髪型、ヘアバンド
+        curious expression, bright-eyed: 明るく好奇心旺盛な表情
+        jumping with joy: 笑いながら跳ぶ
+        older child, preteen: 児童（小学生）（8–12歳）を再現したAIイラスト
+        playing in park: 公園で遊ぶ
+        riding bicycle, kiddie ride: 自転車に乗る
+        wearing backpack: 学校用リュックを背負う
+        小学生くらいの年齢のイラストを生成したい場合のプロンプトです。服を原色系にすると活発な子供っぽさの雰囲気を出せます。: 児童（小学生）の様子を再現したAIイラスト
+    - name: 年齢ごとの基本プロンプト一覧表
+      tags:
+        0–1歳: 赤ちゃん
+        13–17歳: ティーン（中高生）
+        18–25歳: 若年成人
+        1–3歳: 幼児
+        26–39歳: 成人
+        40–59歳: 中年世代
+        4–7歳: 未就学児（園児）
+        60–79歳: シニア世代
+        60代以降については、「old, mature female」のプロンプトを利用するのが一番変化をつけられると思います。また80歳以降などの年齢幅については、プロンプトを強調することで対応するのがいいです。: まずは、年齢を変化させるポピュラーなプロンプトを紹介します。見た目の変化をイラストで一覧にしてみました。イラストはNovelAIにて生成しています。
+        80歳～: 高齢
+        8–12歳: 児童（小学生）
+    - name: 幼児
+      tags:
+        arms out for balance: 歩きながら手を広げる
+        colorful round-bead hair ties: カラフルなまんまるがついた髪ゴム
+        crying with eyes open, teardrop, rubbing eyes, open mouth wide,: 目をこすりながら泣く
+        joyful expression, wide smile: 笑顔・楽しそうな表情
+        learning to walk: 歩き始める
+        playing with toy: おもちゃで遊ぶ
+        tousled hair: 動きのある髪
+    - name: 成人
+      tags:
+        business casual attire: ビジネスカジュアル服
+        carrying briefcase: ビジネスバッグ持ち
+        commuting on train, crowd, holding hand grip: 通勤電車に乗る
+        desk with computer, bookshelf background: 書斎やデスク背景
+        reading documents, sorting files: 書類を整理・読む
+        working at office, typing on laptop: オフィスで仕事中
+        大人っぽい年齢層の女性を再現したい場合は、このあたりの年齢プロンプトがおすすめです。: 成人の様子を再現したAIイラスト
+    - name: 未就学児（園児）
+      tags:
+        colorful dress or t‑shirt: カラフルな服（子供服）
+        drawing with crayons, sitting, table: お絵描きする
+        fallen down, flustered, bent over, standing on one foot, outstretched arm,: 転びそうになる
+        hair ribbon, cute hair clip: アクセサリー（髪飾り、リボン）
+        running around: 走り回る
+        toy blocks, stacking toys: 幼児用おもちゃ
+        young child, preschooler: 未就学児（園児）（4–7歳）を再現したAIイラスト
+        幼い顔のイラストを生成する場合にはこのあたりのプロンプトがよいです。元気な動作プロンプトと合わせると子供らしさを出せます。: 未就学児（園児）の動作を再現したAIイラスト
+    - name: 若年成人
+      tags:
+        AIイラストで美少女キャラクターを生成する場合は、だいたいデフォルトになる年齢です。: 若年成人の様子を再現したAIイラスト
+        carrying backpack, tote bag: バックパックやトートバッグ
+        holding coffee cup, latte art: カフェドリンク（カフェラテ等）
+        jeans and t‑shirt, casual outfit: カジュアルな服装（ジーンズ＋Tシャツ）
+        using laptop at cafe, coffee shop study: カフェでノートPC作業
+        wearing earphones, listening to music: 音楽を聴く（イヤフォン装着）
+        young adult: 若年成人（18–25歳）を再現したAIイラスト
+    - name: 赤ちゃん
+      tags:
+        baby blanket: ベビーブランケット
+        baby, infant: 赤ちゃん（0–1歳）を再現したAIイラスト
+        bib: よだれかけ
+        head slightly tilted: 首をかしげる
+        innocent expression: 無邪気な表情
+        playing on tummy: うつ伏せで遊ぶ
+        rattle: ガラガラおもちゃ
+        reaching hands out: 手を差し伸べる
+        sitting unaided: 自力で座る
+        ハイハイがめちゃ可愛いです。: 赤ちゃんの動作を再現したAIイラスト
+    - name: 高齢
+      tags:
+        deep wrinkles, gentle smile: 深いしわと穏やかな表情
+        holding grandchild, hugging grandchild: 孫を抱っこする
+        looking at photo album: 写真アルバムを眺める
+        old, mature female ※シニア世代と同じプロンプト。強調構文などで対応。: 高齢（80歳～）を再現したAIイラスト
+        walking with cane, strolling in park: 散歩しながら杖をつく
+  - name: 画像AIで肌の色・肌質・肌の状態を再現するプロンプト集
+    groups:
+    - name: まとめとオマケ作例
+      tags:
+        dark brown skin, smooth skin, matte skin: dark brown skin, smooth skin, matte skin
+        fair skin, translucent skin: fair skin, translucent skin
+        glistening skin, oiled skin, greasy skin: glistening skin, oiled skin, greasy skin
+        light skin, freckled skin, oiled skin, tan line skin: light skin, freckled skin, oiled skin, tan line skin
+    - name: 滑らかで均一な肌を再現するプロンプト
+      tags:
+        baby skin: 赤ちゃんのような肌
+        baby skin, youthful skin: 赤ちゃんのような肌
+        fine-grained skin: きめ細かい肌
+        fine-grained skin, detailed skin, poreless skin: きめ細かい肌
+        healthy skin: 健康的な肌
+        healthy skin, vibrant skin: 健康的な肌
+        matte skin: マットな肌
+        porcelain skin: 陶器のような肌
+        smooth skin: 滑らかな肌
+        smooth skin, flawless skin, silky skin, soft skin: 滑らかな肌
+        translucent skin: 透明感のある肌
+        translucent skin, clear skin: 透明感のある肌
+    - name: 潤いやツヤ感のある肌を指定するプロンプト
+      tags:
+        glistening skin: きらめく肌
+        glossy skin: つやのある肌
+        glossy skin, shiny skin, dewy skin: つやのある肌
+        oiled skin: オイリー肌
+        oiled skin, greasy skin: オイリー肌
+        sweaty skin: 汗ばむ肌
+        wet skin: 濡れた肌
+    - name: 肌の状態や個性を表すプロンプト一覧
+      tags:
+        acne-prone skin: ニキビ肌
+        acne-prone skin, blemished skin: ニキビ肌
+        blemished skin: シミのある肌
+        dry skin: 乾燥した肌
+        freckled skin: そばかすのある肌
+        mole on skin, beauty mark: ほくろのある肌
+        rough skin: ざらついた肌
+        tan line skin: 日焼け跡のある肌
+        tan line skin, uneven tanned skin, sunburn line skin: 日焼け跡のある肌
+        wrinkled skin: しわ肌
+    - name: 肌の色を指定するプロンプト一覧｜色調の違いと使い方を比較
+      tags:
+        brown skin: 中間〜濃いブラウン肌
+        dark brown skin: 非常に深いブラウン肌
+        fair skin: 非常に明るい肌
+        light brown skin: 明るめのブラウン肌
+        light skin: 明るい肌
+        sun-kissed skin: 日光を感じる肌
+  - name: 縛る・拘束するプロンプト完全ガイド（部位別・道具別の使い分け）
+    groups:
+    - name: Y字・T字に腕を広げて吊るす拘束プロンプト
+      tags:
+        bound arms, arms up, separated arms, y-shaped suspension: 体を縛って吊るす
+        t-pose: – 腕をT字に広げる
+    - name: スプレッダーバーで脚を広げて拘束するプロンプト
+      tags:
+        spreader bar restraint ankles, spread legs, lying: スプレッダーバーによる拘束
+    - name: ポーズや体勢ごとの拘束プロンプト
+      tags:
+        ここからは、縛り方のバリエーションを再現するためのプロンプトを紹介していきます。: 男性騎士が拘束された状態を再現したAIイラストの作例
+    - name: 体を縛って後ろ手で吊るす拘束プロンプト
+      tags:
+        hanging, bound torso, arms behind back, suspension: 体を縛って吊るす
+    - name: 全身を包帯のように巻くミイラ縛りのプロンプト
+      tags:
+        mummy costume, mummy binding, full body wrap: ミイラ縛り
+    - name: 基本の拘束プロンプト一覧と使い分け
+      tags:
+        battlefield, gray sky, dust cloud: – 戦場
+        bound together bondage shibari: 体を縛る・緊縛
+        bound together, bondage: 拘束する
+        NovelAI: NovelAIで生成した拘束された女性騎士を再現したAIイラスト
+        Stable Diffusion: Stable Diffusionで生成した拘束された女性騎士を再現したAIイラスト
+    - name: 縛る素材や道具のプロンプト
+      tags:
+        ball and chain restraint: 鎖と重い鉄球でできた拘束具
+        bondage mittens: 拘束ミトン
+        chain bondage: 鎖での拘束
+        glowing magical ropes bondage: 魔法による拘束
+        harness bondage: ハーネスによる拘束
+        ribbon bondage: リボン縛り
+        rope bondage: 縄で縛る
+        stocks: 腕や足だけを拘束する板
+        straitjacket: 拘束衣
+    - name: 腕を縛って上に吊るす拘束プロンプト
+      tags:
+        hanging, bound arms, arms up, own hands together: 腕を縛って吊るす
+    - name: 触手や蛇など特殊な拘束のプロンプト（ファンタジー）
+      tags:
+        snake restraint snake wrapped around body: ヘビによる拘束
+        tentacles bound arms: 触手による拘束
+    - name: 逆海老縛り（うつ伏せ・背中縛り）のプロンプト
+      tags:
+        hogtie, bondage, arched back, on stomach: 逆海老縛り
+    - name: 部位を指定して拘束するプロンプト
+      tags:
+        ball gag: ボール状の口枷
+        bound arms back: 縛られた腕（後）
+        bound arms front: 縛られた腕（前）
+        bound legs: 足を縛る
+        bound thighs: 太ももを縛る
+        bound torso: 上半身を拘束
+        cleave gag: 猿轡（さるぐつわ）
+        dental gag: 開口器
+  - name: 背中を綺麗に再現するプロンプト集【AIイラスト】
+    groups:
+    - name: 概要
+      tags:
+        というわけで今回は、 背中を美しく・色っぽく再現するためのプロンプトを紹介していきます。: うなじの後毛などを少し入れてあげるのも、よきですね。
+        真後ろのアングルだと顔が見えないぶん、自然と視線が背中に集まり、より色っぽく見えることもありますよね。: アイリー(AI)
+    - name: 背中を大きく見せるための推奨カメラアングル指定
+      tags:
+        crown of the head out of frame: 頭頂部をフレームアウトさせる
+        extreme close-up back: 背中を極端にクローズアップする
+    - name: 背中を描写する基本プロンプトの指定方法
+      tags:
+        back focus: 背中にフォーカスを合わせる
+        bare back: 裸の背中（背中が露出している状態の指示）
+        facing away: 背を向けた構図（顔が見えないことの指示）
+        looking back: 振り返りで表情を入れたい場合に使用
+    - name: 背中を美しく・色っぽく見せるための補助プロンプト一覧
+      tags:
+        back muscles: 背筋
+        backless dress: 背中開きドレス
+        backless outfit: 背中が大きく開いた服全般
+        dimples of venus: ヴィーナスのえくぼ
+        lone nape hair: うなじの後れ毛
+        median furrow: 脊柱溝
+        prominent cervical vertebra: 棘突起：第7頚椎（C7）
+        shoulder blades: 肩甲骨
+        spine bumps: 背骨の突起
+  - name: 胸のプロンプト完全ガイド（形状からポーズ・衣装まで一覧で紹介）
+    groups:
+    - name: その他の胸に関するプロンプト
+      tags:
+        bound breasts with ribbon: 胸をリボンで巻く
+        bound breasts, tied breasts: 縛られた胸
+        breastfeeding: 授乳
+        breasts against floor: 胸を床や地面に押し付けて潰れる（重力で平たく広がる）
+        breasts on tray: トレイの上に胸を乗せる
+        button gap: ボタンの隙間で胸の谷間が見える
+        compressed breasts on glass: 胸が潰れる（乳ワイパー）
+        convenient breasts: 胸を出さない
+        covered nipples: 胸ポチ（服の上にポチッと形がくっきりわかる状態）
+        fanning breasts, sundress, summer: 扇風機を胸にあてて涼む
+        hair censor: 髪の毛で胸を隠す
+        mole on breast: 乳ぼくろ
+        object on breast, breasts squeezed together: 胸で物を挟む
+        pov breasts: 胸越しの視界
+        red rose tattoo on chest: 胸のタトゥー ※red roseなど具体表記したほうが再現されやすい
+    - name: 服装・デザインで胸を表現するプロンプト
+      tags:
+        breast cutout: 胸の部分がカットされた服
+        breast pocket: 胸ポケット
+        breast zipper: 胸ジッパー
+        breastless clothes: 胸を露出させる服（胸の部分だけ開いた服）
+        chest belt: 胸ベルト
+        chest belt / breast strap: 胸ベルト
+        chest sarashi: 胸のさらし
+        chest strap: 胸の紐
+        open-chest sweater: 胸開きタートルネック
+    - name: 胸の大きさを調整するプロンプト
+      tags:
+        alternate breast size: 左右で大きさの違う胸 （再現性が低い）
+        asymmetrical breasts: 左右非対称の胸
+        breast expansion / puffy chest: 膨らんだ胸
+        breasts: 胸
+        breasts squeezed together: 寄せ乳
+        bursting breasts, shirt: 張り裂けそうな胸
+        perky breasts, three quarter view: ハリのある胸（上向きの胸）
+        pointy breasts: 先端の尖った胸
+        tented shirt, three quarter view: 乳テント
+        unaligned breasts / bouncing breasts: 胸がばいんばいんする（乳揺れ）
+        undersized breast cup: ハミ乳
+    - name: 胸の形状プロンプト一覧
+      tags:
+        breast expansion: 膨らんだ胸
+        perky breasts: ハリのある胸
+    - name: 胸への接触を表現するプロンプト
+      tags:
+        breast biting: 胸を噛む
+        breast lift: 乳上げ
+        breast pillow: 乳枕
+        breast rest: 乳乗せ
+        breast rest desk: – 机に乳乗せ
+        breast rest on another’s head: – 他キャラクターの頭に乳乗せ
+        breast smother: ぱふぱふ
+        breast-to-breast: 乳合わせ
+        face to breasts: 胸に顔を埋める
+        face to breasts, from side: 胸に顔を埋める
+        grabbed breast over shoulder: 肩越しに胸を揉む
+        grabbing another’s breasts from behind: 背後から胸を揉む
+        grabbing own breasts: 自分の胸を掴む
+        hand on another’s chest: 他キャラの胸に手を置く
+        hand under clothes: 服の中に手を入れる
+        hands on another’s chest: 他キャラの胸を触る
+        head between breasts: 胸に頭を埋める
+        head between breasts, from side: 胸に頭を埋める
+        head on chest: 胸の上に頭を置く
+        nipple tweak: 乳首を摘む
+        tickling breasts: 胸をくすぐる
+    - name: 胸を使ったポーズ・動きのプロンプト
+      tags:
+        arm across chest: 胸の周囲に腕を回す
+        arm between breasts: 胸の間に腕を入れる
+        arm under breasts: 腕で胸を支える
+        arms under breasts: 両腕で胸を支える
+        breast hold: 胸を抱える
+        breast press: 胸を当てる
+        breast press, hug from behind, front-to-back, from side: 胸を当てる（背中に胸を押しつける）
+        breast suppress: 手を胸の上に置く
+        clutching chest, pain: 胸をかきむしる
+        covering breasts: – 手ブラ （服を着ていない場合は手ブラになる）
+        covering breasts over clothes: 胸を抑える
+        covering chest: 手で胸を隠す
+        covering one breast: 片方の胸を隠す
+        covering one breast, bare shoulder: 片方の胸を隠す
+        grabbing another’s pectoral: 大胸筋を触る
+        grabbing another’s pectoral, face-to-face, from side ※男性キャラに（pectoral）を入れておく: 男性キャラクターの大胸筋を触る
+        hand on own chest: 胸に手を当てる
+        hands on own breasts: 胸に両手を置く
+        hands on own chest: 両手を胸に当てる
+    - name: 胸を見せる構図・見せ方のプロンプト
+      tags:
+        backboob: 後ろから見える乳
+        breast awe: – 他キャラの胸を羨む・畏敬する
+        breast envy: 胸囲の格差社会
+        breast focus: 胸にフォーカス
+        cleavage cutout, sweater: 胸元がカットされた服
+        cleavage reach with hand: 胸元を見せる
+        downblouse: 胸チラ
+        extended downblouse: – お腹まで見えそうな胸チラ
+        framed breasts: 胸を強調する服
+        framed breasts, narrow waist: 胸を強調する服
+        innerboob: 胸の谷間を下まで露出 （下乳よりやや強め）
+        looking at breasts: 他キャラの胸を見る
+        sideboob, apron, from side: 横乳
+        sidepec: 服の隙間から見える横乳
+        underboob: 下乳
+        underboob cutout, sweater: 下乳だけが見える服
+        underpec: 服の隙間から見える下乳
+  - name: 胸サイズや体型を整えるプロンプト集｜画像AI美少女イラスト用
+    groups:
+    - name: まとめ｜美少女イラストの理想体型を自在にカスタマイズするコツ
+      tags:
+        long legs ＋ narrow waist: long legs ＋ narrow waistのプロンプトの生成
+        small breasts ＋ slim legs: small breasts ＋ slim legsのプロンプトの生成
+        wide hips ＋ thick thighs: wide hips ＋ thick thighsのプロンプトの生成
+        健康美の演出 wide hips ＋ tight shorts: wide hips ＋ tight shortsのプロンプトの生成
+        優雅さの演出 long neck ＋ slender neck: long neck ＋ slender neckのプロンプトの生成
+        少女感の演出 delicate shoulders ＋ slim arms: delicate shoulders ＋ slim armsのプロンプトの生成
+    - name: ウエストを細く見せるプロンプト
+      tags:
+        moderate waist: 普通のウエストの再現プロンプト作例-1
+        moderate waist, average waist, balanced waist: 普通のウエスト
+        slim waist: 細いウエストの再現プロンプト作例-1
+        slim waist, narrow waist, tiny waist, thin waist: 細いウエスト
+        thick waist: 太いウエストの再現プロンプト作例-1
+        thick waist, wide waist, fuller waist: 太いウエスト
+    - name: ヒップラインを整えるプロンプト
+      tags:
+        moderate hips: 普通のお尻の再現プロンプト作例-1
+        moderate hips, balanced hips, proportional hips: 普通のお尻
+        narrow hips: 小さなお尻の再現プロンプト作例-1
+        narrow hips, slim hips, petite hips: 小さなお尻
+        wide hips: 大きなお尻の再現プロンプト作例-1
+        wide hips, curvy hips, voluptuous hips, full hips, round hips: 大きなお尻
+    - name: 美少女体型をさらに調整するプロンプトオプション集
+      tags:
+        delicate shoulders: 肩を華奢にする
+        extremely slim figure / fragile figure: 全体をさらに華奢にする
+        extremely slim waist: ウエストをさらに細くする
+        long legs: 脚を長くする
+        long neck / slender neck: 首を細長くする
+        short torso: 胴を短くする
+        slim arms / delicate arms: 腕を細くする
+        slim legs / thin legs: 脚を細くする
+        thick thighs / plump thighs: 太ももを太く強調
+        tight shorts / bikini / form-fitting skirt: お尻をさらに強調
+        very large breasts / exaggerated bust: 胸をさらに大きく強調
+    - name: 胸のサイズを調整するプロンプト
+      tags:
+        large breasts, voluptuous bust, ample chest: 大きな胸（巨乳）
+        medium-sized breasts, modest bust, moderate chest: 中くらいの胸（普通乳）
+        small chest, flat chest, petite bust: 小さな胸（貧乳）
+    - name: 身長バランスをカスタマイズするプロンプト
+      tags:
+        average height: 普通の身長の美少女の再現プロンプト作例-1
+        average height, well-proportioned, 6-heads-tall, balanced proportions: 背が普通
+        short girl: 背の低い美少女の再現プロンプト作例-1
+        short girl, petite, compact body, 5-heads-tall, cute proportions: 背が低い
+        tall girl: 背の高い美少女の再現プロンプト作例-1
+        tall girl, long-legged, model-like proportions, 7-heads-tall, graceful: 背が高い （高身長）
+  - name: 表情のプロンプト集：喜怒哀楽から繊細な感情まで【AIイラスト】
+    groups:
+    - name: コミカル演出・漫画的な表情プロンプト
+      tags:
+        blank stare: ぼーっとする
+        cute expression: 可愛い表情
+        false smile: 偽りの笑顔
+        goofy smile: にへら笑い
+        pained expression: 痛みの表情
+        tehepero, tongue out: てへぺろ
+    - name: 喜びの表情プロンプト
+      tags:
+        bashful smile, nose blush: 照れ笑い
+        big smile: 満面の笑み
+        gentle smile: 優しい微笑み
+        happy tears: 嬉し泣き
+        pleased: 静かな喜び
+        relieved smile: 安堵の笑み
+        smiling: にこにこ
+        stifled laugh: こらえた笑い
+    - name: 困惑・戸惑いの表情プロンプト
+      tags:
+        curious expression: きょとん顔
+        exasperated: 呆れた表情
+        looking down, from below: 見下ろす表情
+        lowered eyebrows: 下がり眉
+        pensive: 考え中の表情
+        perturbed: 落ち着きを失う
+        raised eyebrow: 眉をひそめる
+        side-eyed: 斜め目線
+        troubled: 困った表情
+        upset: 動揺する
+    - name: 好意・満足感の表情プロンプト
+      tags:
+        satisfied: 満たされた表情
+    - name: 嫌悪の表情プロンプト
+      tags:
+        disgusted: 嫌そう
+        displeased: 不快そう
+        grimacing: 顔をしかめる
+        grossed out: 気持ち悪そう
+    - name: 屈辱・気まずさ・複雑な表情のプロンプト
+      tags:
+        awkward: きまずい
+        desperate: 必死な表情
+        humiliated: 屈辱
+        humiliateddesperate: 必死な表情
+        nervous smile: ぎこちない笑顔
+    - name: 強調・リアクション表情プロンプト
+      tags:
+        comedic sweatdrop: 冷や汗
+        eyes closed smile: 目を閉じて笑う表情
+        wide-eyed: 目を見開く表情
+    - name: 怒りの表情プロンプト
+      tags:
+        anger vein: 怒りマーク
+        angry, shouting: 怒鳴る
+        gritting teeth: 歯を食いしばる
+    - name: 恐れの表情プロンプト
+      tags:
+        panicked: パニック
+        terrified: 恐怖の表情
+    - name: 悲しみの表情プロンプト
+      tags:
+        averting eyes, biting own lip: 罪悪感の表情
+        dejected: しょんぼり
+        looking down: うつむく
+        sobbing, screaming: 大泣き
+        streaming tears: 涙が流れる表情
+        teary eyes: 涙ぐむ
+        wistful: 切なげ
+    - name: 挑発・強気・決意の表情を示すプロンプト
+      tags:
+        confident face: 自信満々の表情
+        defiant expression: 生意気な顔
+        resolute: キリッとした表情
+    - name: 無表情・真面目な表情プロンプト
+      tags:
+        calm expression: 冷静
+        scrutinizing: 観察する目つき
+        serious face: 真面目な顔
+    - name: 照れ・恥ずかしさの表情プロンプト
+      tags:
+        bashful: 照れ
+        full-face blush: 赤面
+        shy, index fingertips touching: もじもじ
+    - name: 疲労・体調不良の表情プロンプト
+      tags:
+        sick: 風邪気味
+        tired, eye bags: 寝不足の顔
+    - name: 自信・得意・含み笑いのプロンプト
+      tags:
+        crazy grin: 狂ったようなニヤニヤ笑い
+        crazy laugh: 狂ったような笑い
+        evil grin: 邪悪な笑み
+    - name: 軽蔑の表情プロンプト
+      tags:
+        contemptuous: 軽蔑の表情
+        derisive smile: 嘲笑する
+        disdainful: 見下す表情
+        indifferent: 無関心そう
+        indifferent, uninterested: 無関心そう
+        sneer: 冷笑
+    - name: 驚きの表情プロンプト
+      tags:
+        ': o': O字口
+        astonished: 畏敬の念
+        eyes widened: 目を見開く
+        slightly surprised: 軽い驚き
+        stunned: 呆然とする
+  - name: 誘惑・魅惑的な表情のプロンプト集（自然な色気を生み出す方法）
+    groups:
+    - name: M字開脚のポーズ
+      tags:
+        3つめは、M字開脚のポーズです。ポーズ名自体がよく知られていて、最近ではストレッチにも取り入れられることがあります。 ただし、AIでの再現は意外と難しいこともあるので、プロンプトの組み立て方について詳しく解説しています。: M字開脚のポーズを再現したAIイラスト
+    - name: ミステリアスな表情のプロンプト
+      tags:
+        mysterious expression: 神秘的な表情
+    - name: 体全体の状態を強調するプロンプト｜吐息・熱を帯びた体など
+      tags:
+        breath: 吐息
+        steaming body, sweat: 熱を帯びた体
+    - name: 前屈みのポーズ
+      tags:
+        これは、特に誘惑的な表情との相性がよいポーズです。 実際に人気が高く、よく使われているプロンプトのひとつでもあります。 表情をより魅力的に見せるためのプロンプト設定のポイントも紹介しているので、ぜひ参考にしてみてください。: 前屈みのポーズを再現したAIイラスト
+    - name: 唇のプロンプト｜半開き・舌なめずり・赤い唇など
+      tags:
+        biting lower lip: 唇を噛む
+        biting tongue: 舌を噛む
+        bold red lips: 赤い唇
+        full mouth: ふっくらした唇
+        full mouth, luscious lips, puffy lips: 豊かな唇
+        own lip pull: 唇を引っ張る
+        slightly parted lips: 半開きの唇
+    - name: 四つん這いポーズ
+      tags:
+        これも、前屈みに続いて人気の高いプロンプトです。 四つん這いや前屈みは、よく使われる定番のシチュエーションなので、ぜひあわせて以下の記事も参考にしてみてください。: 四つん這いポーズを再現したAIイラスト
+    - name: 妖艶な表情のプロンプト
+      tags:
+        head tilt: – （推奨組み合わせ）頭を傾ける
+        sensual expression: 妖艶・魅惑的な表情
+    - name: 手の動きのプロンプト｜髪を触る・頬に手を添えるなど
+      tags:
+        collar grab: 襟を掴む
+        hand on cheek: 顔に手を添える
+        hand on nape: 首筋に触れる
+        running fingers through hair: 髪を触る
+    - name: 目と視線のプロンプト｜流し目・上目遣い・伏し目など
+      tags:
+        downward gaze: 伏し目
+        downward gaze, averting eyes, shy, downturned eyes, facing down: 伏し目
+        judge eyes: 値踏みするような視線
+        pleading eyes: じっとみつめる
+        sideways glance: 流し目
+        upturned eyes: 上目づかい
+  - name: 野球部のマネージャーのプロンプト（服装・ポーズ・アイテム等）
+    groups:
+    - name: まとめ
+      tags:
+        baseball cap with number print: 野球帽
+        baseball field / baseball diamond: 背景
+        cheering / holding bottle / wiping sweat: ポーズ
+        polo shirt / t-shirt / baseball uniform top + navy pleated miniskirt: 服装
+        whistle / holding clipboard / holding stopwatch: 小物
+        wide hips / thigh gap / thick thighs: 体型
+    - name: 野球部マネージャーの仕草・ポーズを作るプロンプト組み合わせ
+      tags:
+        arms up, armpit peek, armpit crease, rolled up sleeves: 腕を上げて脇が見える
+        holding water hose, splashing: ホースで水をかける
+        incoming sports bottle, perspective: スポーツドリンクを差し出す
+        looking down, adjusting shorts, from behind: ショーパンの裾を直す
+        open mouth, shouting, cheering, arm up, looking afar: 声を張り上げて応援する
+        pen in mouth, holding clipboard: ペンを咥える
+        pointing at viewer, holding clipboard: 指差し
+        thumbs up, holding stopwatch: グッドサイン
+        water bottle, holding bottle: 水筒・ボトルを持つ
+        wiping another’s face, wiping sweat: 汗を拭いてあげる
+    - name: 野球部マネージャーを再現する小物・アイテムのプロンプト一覧
+      tags:
+        baseball cap, backwards hat: 野球帽を後ろにかぶる
+        baseball diamond: 野球場のダイヤモンド部分
+        baseball field: 野球グラウンド背景
+        baseball mit: グローブ（野球ミット）
+        baseball uniform with number print, shorts: 野球ユニフォームセット
+        dirt baseball field: 土の野球グラウンド
+        grass baseball field: 芝生の野球グラウンド
+        holding baseball: 野球ボールを持つ
+        holding baseball bat: 野球バットを持つ
+        holding baseballs (object) green basket: ボールカゴを持つ
+        holding clipboard: スコアブックを持つ
+        holding large duffel bag with baseball equipment: 大きなダッフルバッグ（野球道具入り）を持つ
+        holding stopwatch: ストップウォッチを持つ
+        locker, wooden bench, indoors: ロッカールームとベンチ
+        sweatband: 汗拭きバンド
+        towel around neck: タオルを首にかける
+        whistle: ホイッスル
+    - name: 野球部マネージャー女子を作る基本プロンプト
+      tags:
+        baseball cap with number print, baseball uniform top, navy pleated miniskirt: 野球ユニフォームとミニスカ
+        baseball cap with number print, hoodie, navy pleated miniskirt: パーカーとミニスカ
+        baseball cap with number print, naked dark red track jacket, navy pleated miniskirt: ジャージとミニスカ
+        baseball cap with number print, sailor top, navy pleated miniskirt over red track pants: セーラー服の下にジャージ
+        baseball cap with number print, white t-shirt, navy pleated miniskirt over red track pants: Tシャツとミニスカの下にジャージ
+        navy baseball cap with number print, polo shirt, navy pleated miniskirt: ポロシャツとミニスカ
+        navy baseball cap with number print, sleeveless shirt, navy pleated miniskirt: ノースリーブシャツとミニスカ
+        navy baseball cap with number print, white t-shirt, navy pleated miniskirt: Tシャツとミニスカ
+  - name: 鎖骨を綺麗に再現するプロンプト大全【AIイラスト】
+    groups:
+    - name: まとめ
+      tags:
+        collarbone / detailed collarbone: 基本描写
+        collarbone peek / collar tug: チラ見え
+        collarbone piercing / mole on collarbone: 装飾
+        covered collarbone / tight shirt: 服越し
+        dappled sunlight / chiaroscuro / sidelighting: 光と影
+        hair over shoulder / hair flowing over: 髪で隠す
+        leaning forward / arched back / self hug: ポーズ
+        sfumato / soft focus / no lineart: ぼかし
+    - name: 光と影で立体感を出す鎖骨プロンプト
+      tags:
+        chiaroscuro, dim lighting: キアロスクーロ（陰影強調）
+        dappled moonlight: 鎖骨に月明かりが落ちる
+        dappled sunlight: 鎖骨に木漏れ日が当たる
+    - name: 服越しに鎖骨ラインが見えるプロンプト
+      tags:
+        covered collarbone: 服越しに鎖骨のラインが透けて見える状態
+    - name: 鎖骨の境界をぼかして強調するプロンプト
+      tags:
+        no lineart: 輪郭線自体がないイラストスタイルを指定する
+        sfumato: 輪郭をぼかし、ソフトなグラデーション効果を加える、ただし絵画技法のような再現はできない
+        soft focus: ソフトフォーカス効果、全体がふんわりとぼやける雰囲気になる
+        soft shading: 影が柔らかい、滑らかなグラデーションにする
+    - name: 鎖骨チラ見えプロンプト
+      tags:
+        collar tug / collar pull: シャツの襟を引っ張る
+        collarbone peek: 鎖骨がチラ見えする
+        hair flowing over: 長い髪が垂れ下がり、覆い被さっている状態
+        hair over shoulder: 髪の毛が肩にかかっている状態
+    - name: 鎖骨ピアス・タトゥー・キスマーク・ホクロのプロンプト
+      tags:
+        collarbone piercing: 鎖骨ピアス
+        collarbone tattoo: 鎖骨のタトゥー
+        lipstick mark on collarbone: 鎖骨にキスマーク
+        mole on collarbone: 鎖骨のホクロ
+  - name: 閉じ込められるプロンプト集（狭い空間など）【AIイラスト】
+    groups:
+    - name: crampedの基本：狭い空間に閉じ込める
+      tags:
+        fetal position, bent knees, cramped: 体を丸める
+        girl, detailed clothes, cramped: キャラが狭い空間に閉じ込めるシーンのAIイラスト作例
+        hugging own legs, cramped: 体育座り
+        leaning back, leg up, cramped, from side: 寄りかかって足を上げる
+        lying on back, shoe soles, cramped, perspective, from above: 上からアングル
+        squatting, cramped: しゃがんだ体勢
+        top-down bottom-up, on stomach, cramped: うつ伏せ
+        「cramped」を活用した実際の作例とプロンプトを紹介していきます。: 「cramped」を活用した実際の作例とプロンプトを紹介していきます。
+    - name: まとめ
+      tags:
+        cheek press, breast press, against glass, cramped: ガラスドアに押し付けられる
+        cramped: 狭い空間・場所に無理やり閉じ込められる
+        cramped, crowded, train interior: 満員電車で挟まれる
+        cramped, in locker: ロッカーに閉じ込める
+        cramped, stuck in a box / prison cell / birdcage: 箱・檻・小鳥かごに閉じ込める
+        encasement: 全身を何かに覆い被さられて包み込まれる（樹脂・氷・粘液など）、ケーシング
+        enclosed: 密閉空間の中にすっぽりと収まっていて閉じ込められている状態
+        mini person, enclosed: 小さいキャラクターを容器に入れる
+        stuck / trapped / buried: 挟まる・絡まる表現を作る
+    - name: ロッカーに閉じ込められるプロンプト
+      tags:
+        face to breasts, head between breasts: 胸の間に顔が挟まる、埋める
+        height difference: キャラクター同士に身長差がある状態
+        in locker: ロッカーの中
+    - name: 全身が覆われるように閉じ込められるプロンプト：encasementの使い方
+      tags:
+        mini person, vacuum bag, encasement: 真空バックに閉じ込められる
+        mini person, vacuum bed, encasement: バキュームベッドで全身を覆われる
+        mini person, vacuum cube, encasement: 真空キューブに閉じ込められる
+        mini person, vacuum tube, encasement: 真空チューブに閉じ込められる
+    - name: 密閉空間に閉じ込められるプロンプト：enclosedの使い方
+      tags:
+        cardboard box, enclosed: 段ボール箱
+        fish bottle, enclosed: 水槽の中
+        gift box, enclosed: ギフトボックスに閉じ込められるシーンのAIイラスト
+        girl, mini person , detailed clothes, outdoors, spring, enclosed , negative space, backlighting: 違いが分かりにくいかもしれませんが、まずは作例とプロンプトを紹介します。
+        in bottle, enclosed: ボトルの中
+        in bowl, enclosed: ボウルの中
+        in cup, enclosed: カップの中
+        in hourglass, enclosed: 砂時計の中
+        in sack, enclosed: 袋の中
+        in snow globe, enclosed: スノードーム
+        inside creature, enclosed: 魔物の中に閉じ込められる（飲み込まれる）
+        mini person: ミニチュアサイズのキャラクター
+        plastic bottle, enclosed: ペットボトルの中
+    - name: 満員電車でガラスドアに押し付けられるプロンプト
+      tags:
+        cheek press, breast press, against glass: ガラスに頬と胸が押し付けられる
+    - name: 満員電車で乗客に挟まれるプロンプト
+      tags:
+        boy sandwich: 男性キャラクターに挟まれる（サンドイッチされる）
+        crowded: 混雑している状態
+        girl, upper body, detailed clothes, cramped, boy sandwich , crowded , train interior: 満員電車に閉じ込められて乗客に挟まれるシーンのAIイラスト
+        train interior: 電車内
+    - name: 箱・檻・小鳥かごに閉じ込められるプロンプト
+      tags:
+        cramped, birdcage: 小鳥かご
+        cramped, in container: 容器の中
+        cramped, prison cell: 狭い檻
+        cramped, stuck in a box: 箱の中
+    - name: 閉じ込められる・身動きがとれない関連プロンプト一覧
+      tags:
+        buried: 地面や床に埋まる
+        stuck: 挟まって動けない
+        stuck in wall: 壁に体が半分埋まって動けない
+        through bars, holding bars: 鉄格子を掴む
+        trapped, net: 網に絡まる
+        trapped, web: 蜘蛛の巣に絡まる
+  - name: 顔文字の表情プロンプト集【NovelAI】
+    groups:
+    - name: その他の顔文字の表情プロンプト
+      tags:
+        +++: 笑み線（えみせん）
+        '...': ため息・沈黙
+        ._.: 微妙・無関心
+        '0_0': 超ビックリ
+        '3:': 猫口＋しかめっ面
+        3;: 猫口・しかめっ面
+        '3_3': のび太目（目が3）
+        :): 笑顔
+        :/: 微妙・片口角上げ
+        :]: 口角が下がる
+        :c: Uの字口
+        :i / :t: ふくれっ面
+        :T: ぷくー（不満）
+        :x: X字口
+        ;(: ウィンク
+        ;): ウィンク笑顔
+        ;3: 猫口ウィンク
+        ;<: への字口＋ウィンク
+        ;>: V字口＋ウィンク
+        ;o: 口開け＋ウィンク
+        =_=: ジト目・呆れ・無気力
+        '> @': ぐるぐる＋ウィンク
+        '>:(': ニヤリ
+        '>:)': ドヤ顔
+        '>_<': 恥ずかし・我慢顔
+        '>o<': 目つぶり＋口開け
+        \o/: 歓喜・バンザイ
+        ^^^: びっくり！（衝撃線）
+        ^_^: 笑顔
+        ^o^: わーい！
+        ^q^: おいしいです
+        ^v^: とても幸せで明るい笑顔
+        'c:': にんまり
+        'D:': 口を開けた呆れ顔
+        o..o: 黒縁目・唖然
+        o3o: 口をすぼめる
+        o_o: 驚き・固まる
+        T_T: 泣き顔・涙目
+        u_u: 閉じた目
+        uwu: かわいい照れ
+        xd: 大爆笑
+        その他: –
+        ウィンク系: –
+        不満・怒り・悲しみ系: –
+        混乱・変顔・特殊系: –
+        笑顔・喜び系: –
+        驚き・びっくり系: –
+    - name: 不満・怒り・悲しみ系の顔文字プロンプト
+      tags:
+        :i: ふくれっ面
+    - name: 顔文字プロンプトを使った表情の作例集
+      tags:
+        girl, short hair with side bangs, blonde hair, t-shirt and shorts, jumping pose, beach, sunny, \o/: ビーチで興奮・わーい顔
+  - name: 髪型のプロンプト大全【NovelAI】
+    groups:
+    - name: お団子ヘアのプロンプト
+      tags:
+        bun with hair base: お団子の根元に土台を作る
+        cone hair bun: コーンヘアバン
+        donut hair bun: ドーナツヘアバン
+        feixianji (hairstyle): 飛仙髻
+        heart hair bun: ハートヘアバン
+        huge hair bun: 巨大なお団子
+        single hair bun: 1つお団子
+    - name: 三つ編み・ブレイド系のプロンプト
+      tags:
+        cornrows dreads: コーンロウ
+        folded braid: フォールデッド・ブレイド
+        front braid: フロントブレイド
+        half up braid: ハーフアップブレイド
+    - name: 前髪の種類別プロンプト
+      tags:
+        colored bangs: カラーバング
+        hair over eyes: 目隠れ
+        hair over one eye: 片目隠れ
+        loosely tucked bangs: ルーズタックバング
+        v-bangs: Vバング
+    - name: 横髪（サイドロック）のプロンプト
+      tags:
+        asymmetrical sidelocks: アシメサイドロック
+        blunt sidelocks: ぱっつんサイド
+        exposed ears: 耳だしヘア
+        flipped sidelocks: フリップサイド
+        hair behind ear: 耳掛けヘア
+        hair over ears, sidelocks, thick hair: 耳を隠す髪型
+        long sidelocks: ロングサイドロック
+        single sidelock: シングルサイドロック
+        very long sidelocks: ベリーロングサイドロック
+    - name: 毛先の状態・質感による髪型プロンプト
+      tags:
+        colored inner hair: 髪のインナーカラー
+        fade (haircut): フェードカット
+        feathered hair: フェザーヘア
+        flipped hair: 外ハネ
+        hair flaps: くせ毛
+        low drills: 低い位置のドリルヘア
+        pointy hair: ポインティヘア
+        spiked hair: スパイクヘア
+        undercut: 刈り上げ
+    - name: 特殊・複雑な髪型プロンプト
+      tags:
+        afro: アフロ
+        bow-shaped hair: ボウシェイプヘア
+        flower-shaped hair: フラワーシェイプヘア
+        fukumage: 福髷
+        hair ears: 髪耳ヘア
+        marumage: 丸髷
+        pigtails: おさげ髪
+        pixie cut: ピクシーカット
+        rabbit_hairstyle: ウサギ髪
+        shaggy hair / long hair, shaggy rogers: シャギー
+        shaggy hair long hair, shaggy rogers: シャギー
+        shuangyaji: 双丫髻
+        star-shaped hair: スターシェイプヘア
+        wing-shaped hair: 翼状の髪
+        wolf cut: ウルフカット
+        yuiwata: 結綿
+    - name: 結び系プロンプト（ポニーテール・ツインテールなど）
+      tags:
+        folded ponytail: フォールドポニー
+        folded twintails: フォールドツインテール
+        front ponytail: フロントポニー
+        high side ponytail: ハイサイドポニー
+        low side ponytail: ローサイドポニー
+        multi-tied hair: マルチタイドヘア
+        one side up: ワンサイドアップ
+        quad tails: クアッドテール
+        quin tails: クインテール
+        short side ponytail: ショートサイドポニー
+        short twintails: ショートツインテール
+        split ponytail: スプリットポニー
+        tri tails: トリテール
+        two side up: ツーサイドアップ
+    - name: 頭頂部・後頭部の特徴プロンプト
+      tags:
+        comb over: コムオーバー
+        hair intakes: エアインテーク
+        hair slicked back: スリックバック
+        heart ahoge: ハートのアホ毛
+        huge ahoge: 巨大なアホ毛
+        widow’s peak: 富士額
+    - name: 髪の長さ・ボリューム別プロンプト
+      tags:
+        absurdly long hair: 超ロングヘア
+        asymmetrical hair: アシンメトリー
+        bald girl: 禿頭
+        big hair: ボリュームヘア
+        buzz cut: 坊主頭
+        very short hair: ベリーショート
+  - name: 髪型プロンプト40選｜長さ・分け目・毛束感まで全部入りの完成例付き【ChatGPT】
+    groups:
+    - name: AIで髪型を高精度に描くために、必ず設定すべき10の要素
+      tags:
+        blunt bangs（ぱっつん前髪） side-swept bangs（横流し）: 前髪の形状 分け目・密度・長さなど
+        center part（センター分け） left-parted（左分け）: 分け目・流れ 頭頂部の分け方、左右方向
+        finely detailed strands（繊細な髪の束感） anime-style soft shading（アニメ調の柔らかい陰影）: テクスチャ・描写スタイル 描画上の指定（リアル寄り／アニメ風など）
+        hair framing her cheeks（頬にかかる） ears visible（耳が見える）: 顔とのバランス 頬のラインに沿うか、耳が出るかなど
+        long straight hair（ロングストレート） short bob cut（ショートボブ）: 長さ・スタイル 髪の長さ・全体のシルエット
+        red ribbon on the right（右のリボン） floral hair clip（花の髪飾り）: ヘアアクセサリー 髪飾り・リボン・ピンの位置と種類
+        silky, fine strands（さらさら） thick, voluminous（ボリューム感あり）: 毛束の質感 髪の太さ・密度・ふわっと感
+        silver hair with blue tips（銀髪＋青の毛先） dark brown with soft highlights（茶＋ハイライト）: 髪色・グラデーション ベースカラー、ハイライト、インナーカラー
+        slightly wind-blown（風になびく） resting neatly（整っている）: 動き・風の影響 静的か動きがあるか
+        twin tails（ツインテール） braided side ponytail（編み込みサイドポニー） messy bun（ラフなお団子）: ヘアアレンジ 結んだ・編んだ・お団子など
+    - name: 髪型プロンプト（長さ・分け目・毛束感など設定済）のカタログ40選
+      tags:
+        ざっくりと髪型を指定したい場合は、各スタイルの横に記載された 簡易プロンプト （例：「ノーマルポニーテール｜ponytail」）を使うだけでも、ある程度の再現が可能です。: ChatGPTの画像生成による髪型カタログ1
+  - name: 髪色プロンプト90集！単色・メッシュほかイラスト付き見本帳
+    groups:
+    - name: 2色で分けるツートンカラー髪色プロンプト
+      tags:
+        half black half white hair: 黒と白髪ツートーン
+        half red half blonde hair: 赤と金髪ツートーン
+        half silver half blonde hair: 銀と金髪ツートーン
+        half white half pink hair: 白と桃色髪ツートーン
+        split brown and gray hair: 茶と灰色髪ツートーン
+        split orange and navy hair: 橙と紺髪ツートーン
+        split pink and blue hair: 桃色と空色髪ツートーン
+        split purple and green hair: 紫と緑髪ツートーン
+        split yellow and violet hair: 黄と紫髪ツートーン
+    - name: インナーカラーを入れる髪色プロンプト
+      tags:
+        black hair with purple inner layer: 黒髪＋紫インナー
+        blonde hair with pastel pink inner layer: 金髪＋ピンクインナー
+        blue hair with white inner layer: 青髪＋白インナー
+        brown hair with teal inner layer: 茶髪＋ターコイズインナー
+        gray hair with orange inner layer: 灰色髪＋オレンジインナー
+        green hair with yellow inner layer: 緑髪＋黄インナー
+        pink hair with lavender inner layer: ピンク髪＋ラベンダーインナー
+        red hair with black inner layer: 赤髪＋黒インナー
+        white hair with blue inner layer: 白髪＋青インナー
+    - name: ハイライト・メッシュで髪色に動きをつけるプロンプト
+      tags:
+        black hair with red highlights: 黒髪に赤メッシュ
+        black hair with silver streaks: 黒髪に銀メッシュ
+        blonde hair with rose pink streaks: 金髪にローズ筋
+        brown hair with blue highlights: 茶髪に青ハイライト
+        gray hair with purple streaks: 灰色髪に紫筋
+        light blue hair with cyan highlights: 青髪にシアン筋
+        light green hair with yellow highlights: 緑髪に黄ハイライト
+        pink hair with white streaks: ピンク髪に白筋
+        white hair with gold highlights: 白髪に金ハイライト
+    - name: 偏光・銀河系カラー（オーロラ・ギャラクシー）髪色プロンプト
+      tags:
+        iridescent orange hair: 偏光オレンジ髪
+        iridescent pink hair: 偏光ピンク髪
+        iridescent teal hair: 偏光ターコイズ髪
+        iridescent violet hair: 偏光紫髪
+        oil slick hair: オイルスリック髪
+        pastel rainbow hair: 虹色パステル髪
+    - name: 単色髪色プロンプトの基本パターン
+      tags:
+        gray hair: 灰色髪
+    - name: 明るさや彩度を変える髪色トーンプロンプト
+      tags:
+        dark emerald hair: ダークエメラルド髪
+        dark navy hair: 濃紺髪
+        deep indigo hair: ディープインディゴ髪
+        light blue hair: 淡い水色髪
+        light gray hair: ライトグレー髪
+        muted orange hair: くすみオレンジ髪
+        pastel lavender hair: ソフトラベンダー髪
+        vivid red hair: ビビッドレッド髪
+    - name: 根元だけ色を変えるプリンカラーの再現プロンプト
+      tags:
+        blonde hair with black roots: 金髪＋黒い根元
+        blue hair with dark roots: 青髪＋黒い根元
+        brown hair with black roots: 茶髪＋黒い根元
+        brown hair with red roots: 茶髪＋赤い根元
+        gray hair with black roots: 灰色髪＋黒の根元
+        green hair with yellow roots: 緑髪＋黄の根元
+        pink hair with violet roots: ピンク髪＋紫の根元
+        red hair with brown roots: 赤髪＋茶の根元
+        white hair with blue roots: 白髪＋青い根元
+    - name: 毛先だけ色を変える髪色プロンプト
+      tags:
+        black hair with red tips: 黒髪の赤毛先
+        blonde hair with blue tips: 金髪のブルー毛先
+        blue hair with white tips: 青髪の白毛先
+        brown hair with green tips: 茶髪のグリーン毛先
+        gray hair with violet tips: 灰色髪の紫毛先
+        green hair with yellow tips: 緑髪の黄毛先
+        pink hair with silver tips: ピンク髪の銀毛先
+        red hair with orange tips: 赤髪のオレンジ毛先
+        white hair with pink tips: 白髪のピンク毛先
+    - name: 色を滑らかに変えるグラデーション髪色プロンプト
+      tags:
+        black-to-silver gradient hair: 黒→銀グラデ髪
+        blonde to pastel pink gradient hair: 金→桃グラデ髪
+        blue-to-green ombre hair: 青→緑グラデ髪
+        gray-to-lavender ombre hair: 灰→ラベンダーグラデ髪
+        navy-to-violet ombre hair: 紺→紫グラデ髪
+        pink-to-yellow gradient hair: 桃→黄グラデ髪
+        purple-to-blue ombre hair: 紫→青グラデ髪
+        red-to-orange ombre hair: 赤→橙グラデ髪
+        white-to-light blue gradient hair: 白→水色グラデ髪
+    - name: 質感を変えて印象を操作する髪色エフェクトプロンプト
+      tags:
+        champagne metallic shimmer hair: シャンパンゴールド粒子髪
+        gold metallic shimmer hair: 金のメタリック光沢髪
+        green hair with sparkling white strands: きらめく緑髪
+        lavender hair with sparkling strands: 星くずラベンダー髪
+        metallic fiery red hair: 炎のような赤光沢髪
+        pearlescent pink metallic hair: パールピンク光沢髪
+        silver metallic shimmer hair: 銀のメタリック光沢髪
+        translucent aqua hair: 透明感アクア髪
+        translucent blue hair: ガラス質ブルー髪

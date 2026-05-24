@@ -1,0 +1,14 @@
+Tag Dictionary preview images
+=============================
+Place image files here. The filename (without extension) must match the tag name exactly.
+
+Examples:
+  goatee.webp
+  beard, facial hair.png
+
+Supported: .webp .png .jpg .jpeg .gif
+
+Optional YAML override (group_tags/default.yaml):
+  goatee:
+    jp: goatee
+    preview: goatee.webp

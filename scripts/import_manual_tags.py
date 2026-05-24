@@ -64,6 +64,7 @@ if _SCRIPT_DIR not in sys.path:
     sys.path.insert(0, _SCRIPT_DIR)
 
 import preview_filenames
+import preview_convert
 import user_storage
 
 _PREVIEW_EXTS = (".webp", ".png", ".jpg", ".jpeg", ".gif")
@@ -100,16 +101,17 @@ def _resolve_image_path(import_dir: str, image_ref: str) -> Optional[str]:
 
 
 def _copy_preview(src: str, tag: str, previews_dir: str, dry_run: bool) -> Optional[str]:
-    ext = os.path.splitext(src)[1].lower()
-    if ext not in _PREVIEW_EXTS:
-        ext = ".webp"
-    dest = preview_filenames.preview_path_for_tag(previews_dir, tag, ext)
+    dest = preview_filenames.preview_path_for_tag(previews_dir, tag, ".webp")
     if dry_run:
         return os.path.basename(dest)
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     if os.path.isfile(dest):
         os.remove(dest)
-    shutil.copy2(src, dest)
+    ext = os.path.splitext(src)[1].lower()
+    if ext == ".webp":
+        shutil.copy2(src, dest)
+    else:
+        preview_convert.save_image_as_webp(src, dest)
     return os.path.basename(dest)
 
 

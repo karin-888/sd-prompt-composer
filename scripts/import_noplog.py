@@ -34,6 +34,7 @@ if _SCRIPT_DIR not in sys.path:
 import user_storage
 import tag_text_utils
 import preview_filenames
+import preview_convert
 
 USER_AGENT = "PromptComposerImporter/1.0 (personal local import)"
 CATEGORY_BASE = "https://noplog.com/blog/category/prompt-library/"
@@ -495,14 +496,12 @@ def parse_article(url: str, html: str) -> Dict:
     return {"title": title, "url": url, "entries": list(by_tag.values())}
 
 
-def preview_path_for_tag(previews_dir: str, tag: str, image_url: str) -> str:
-    ext = os.path.splitext(urllib.parse.urlparse(image_url).path)[1].lower()
-    if ext not in (".webp", ".png", ".jpg", ".jpeg", ".gif"):
-        ext = ".webp"
-    return preview_filenames.preview_path_for_tag(previews_dir, tag, ext)
+def preview_path_for_tag(previews_dir: str, tag: str, image_url: str = "") -> str:
+    return preview_filenames.preview_path_for_tag(previews_dir, tag, ".webp")
 
 
 def download_image(image_url: str, dest_path: str, dry_run: bool = False) -> bool:
+    dest_path = preview_convert.webp_dest_path(dest_path)
     if os.path.isfile(dest_path) and os.path.getsize(dest_path) > 0:
         return True
     if dry_run:
@@ -512,11 +511,7 @@ def download_image(image_url: str, dest_path: str, dry_run: bool = False) -> boo
     try:
         with urllib.request.urlopen(req, timeout=60) as resp:
             data = resp.read()
-        if len(data) < 128:
-            return False
-        with open(dest_path, "wb") as f:
-            f.write(data)
-        return True
+        return preview_convert.save_bytes_as_webp(data, dest_path)
     except Exception as e:
         print(f"  [warn] image download failed: {image_url} ({e})")
         return False

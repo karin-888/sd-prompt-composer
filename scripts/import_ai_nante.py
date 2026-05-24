@@ -35,6 +35,7 @@ if _SCRIPT_DIR not in sys.path:
 import user_storage
 import tag_text_utils
 import preview_filenames
+import preview_convert
 
 USER_AGENT = "PromptComposerImporter/1.0 (personal local import)"
 CATEGORY_BASE = "https://ai-nante.com/category/ai-image-generator/girl-art-design/"
@@ -346,13 +347,16 @@ def copy_related_previews(previews_dir: str, entries: List[Dict]) -> int:
         if not src:
             continue
         ext = os.path.splitext(src)[1]
-        dest = preview_filenames.preview_path_for_tag(previews_dir, tag, ext)
+        dest = preview_filenames.preview_path_for_tag(previews_dir, tag, ".webp")
         if os.path.isfile(dest):
             existing[tag.lower()] = dest
             continue
         try:
             os.makedirs(os.path.dirname(dest), exist_ok=True)
-            shutil.copy2(src, dest)
+            if ext.lower() == ".webp":
+                shutil.copy2(src, dest)
+            else:
+                preview_convert.save_image_as_webp(src, dest)
             existing[tag.lower()] = dest
             copied += 1
         except OSError:
@@ -360,11 +364,8 @@ def copy_related_previews(previews_dir: str, entries: List[Dict]) -> int:
     return copied
 
 
-def preview_path_for_tag(previews_dir: str, tag: str, image_url: str) -> str:
-    ext = os.path.splitext(urllib.parse.urlparse(image_url).path)[1].lower()
-    if ext not in (".webp", ".png", ".jpg", ".jpeg", ".gif"):
-        ext = ".webp"
-    return preview_filenames.preview_path_for_tag(previews_dir, tag, ext)
+def preview_path_for_tag(previews_dir: str, tag: str, image_url: str = "") -> str:
+    return preview_filenames.preview_path_for_tag(previews_dir, tag, ".webp")
 
 
 def _encode_request_url(url: str) -> str:
@@ -374,6 +375,7 @@ def _encode_request_url(url: str) -> str:
 
 
 def download_image(image_url: str, dest_path: str, dry_run: bool = False) -> bool:
+    dest_path = preview_convert.webp_dest_path(dest_path)
     if os.path.isfile(dest_path) and os.path.getsize(dest_path) > 0:
         return True
     if dry_run:
@@ -384,11 +386,7 @@ def download_image(image_url: str, dest_path: str, dry_run: bool = False) -> boo
     try:
         with urllib.request.urlopen(req, timeout=60) as resp:
             data = resp.read()
-        if len(data) < 128:
-            return False
-        with open(dest_path, "wb") as f:
-            f.write(data)
-        return True
+        return preview_convert.save_bytes_as_webp(data, dest_path)
     except Exception as e:
         print(f"  [warn] image download failed: {image_url} ({e})")
         return False

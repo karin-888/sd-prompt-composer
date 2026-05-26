@@ -14,6 +14,7 @@
     let currentCategory = null;
     let currentGroup = null;
     let allPaths = [];
+    let sectionOrderByName = new Map();
     let tagPathCounts = {};
     let wildcardItems = [];
     let wildcardSources = [];
@@ -23,6 +24,108 @@
     let tagPathTreeHost = null;
     let tagLeavesCache = new Map(); // pathKey -> items[]
     let tagPathTreeScrollEl = null;
+    let tagPathTreeRoot = null;
+    let tagChildrenRendered = new Set();
+    let tagPageState = new Map(); // pathKey -> { items, total, hasMore }
+    let wildcardsLoaded = false;
+
+    const TAG_PATH_SEP = '\x1f';
+    const TAG_PAGE_SIZE = 120;
+    const STAR_MARK_SECTIONS = new Set([
+        'ai-nante',
+        'naiv3_illustrious_artist_styles',
+        'noplog',
+        'note',
+        'runrunsketch',
+        'sorenuts'
+    ]);
+
+    function displayJpLabel(item) {
+        const jp = (item && item.jp ? String(item.jp) : '').trim();
+        if (/^(単体アーティスト|複数アーティスト)\s+No\.\d+\s*:/.test(jp)) {
+            return '';
+        }
+        return jp;
+    }
+
+    function tagPathDisplayLabel(name, pathKey) {
+        const label = (name || '').trim();
+        if (!label) return label;
+        const depth = splitTagPathKey(pathKey || label).length;
+        if (depth === 1 && STAR_MARK_SECTIONS.has(label)) {
+            return `★ ${label}`;
+        }
+        return label;
+    }
+
+    function splitTagPathKey(key) {
+        return (key || '').split(TAG_PATH_SEP).filter(Boolean);
+    }
+
+    function makePathKey(sec, cat, grp) {
+        const parts = [(sec || '').trim() || '(未分類)'];
+        const c = (cat || '').trim();
+        const g = (grp || '').trim();
+        if (c) {
+            parts.push(c);
+            if (g) parts.push(g);
+        }
+        return parts.join(TAG_PATH_SEP);
+    }
+
+    function buildTagPathCountsFromEntries(entries, legacyCounts) {
+        const map = {};
+        (entries || []).forEach((entry) => {
+            const key = makePathKey(entry.section, entry.category, entry.group);
+            if (key) map[key] = Number(entry.count) || 0;
+        });
+        if (Object.keys(map).length === 0 && legacyCounts) {
+            return legacyCounts;
+        }
+        return map;
+    }
+
+    function encodePathKey(key) {
+        if (!key) return '';
+        try {
+            return btoa(unescape(encodeURIComponent(key)))
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=+$/, '');
+        } catch (_) {
+            return '';
+        }
+    }
+
+    function decodePathKey(encoded) {
+        const raw = (encoded || '').trim();
+        if (!raw) return '';
+        if (raw.includes(TAG_PATH_SEP)) return raw;
+        try {
+            let b64 = raw.replace(/-/g, '+').replace(/_/g, '/');
+            while (b64.length % 4) b64 += '=';
+            return decodeURIComponent(escape(atob(b64)));
+        } catch (_) {
+            return raw;
+        }
+    }
+
+    function readPathKeyAttr(el, attr) {
+        if (!el) return '';
+        return decodePathKey(el.getAttribute(attr) || '');
+    }
+
+    function updatePathCountBadge(key, count) {
+        if (!tagPathTreeHost || !key) return;
+        tagPathCounts[key] = count;
+        const encoded = encodePathKey(key);
+        tagPathTreeHost.querySelectorAll('[data-tag-select]').forEach((btn) => {
+            const attr = btn.getAttribute('data-tag-select') || '';
+            if (attr !== encoded && decodePathKey(attr) !== key) return;
+            const badge = btn.querySelector('.pc-wc-count-mini');
+            if (badge) badge.textContent = String(count);
+        });
+    }
 
     function getTagPreviewObserver(root) {
         const key = root || document.documentElement;
@@ -120,9 +223,38 @@
         setupSearch();
         hideTagsListContainer();
         reorderTagDictionaryLayout();
-        loadWildcards('');
+        renderWildcardsHint();
         loadPathsAndInitialTags();
         console.log('[Prompt Composer] Tag dictionary initialized');
+    }
+
+    function renderWildcardsHint() {
+        const wcHost = document.getElementById('pc_wildcards_container');
+        if (!wcHost) return;
+        wcHost.classList.add('pc-wc-container');
+        wcHost.innerHTML = `
+            <div class="pc-wc-header">🪄 Wildcards</div>
+            <div class="pc-wc-more">ワイルドカード検索欄にキーワードを入力すると読み込みます（例: pose, hair, nsfw）。</div>
+        `;
+    }
+
+    function sectionNameFromPathKey(key) {
+        const parts = splitTagPathKey(key);
+        if (!parts.length) return '';
+        return parts[0] === '(未分類)' ? '' : parts[0];
+    }
+
+    async function preloadTagSection(sectionName) {
+        const name = (sectionName || '').trim();
+        if (!name) return;
+        try {
+            await fetch(
+                '/prompt-composer/api/tags/sections/load?section=' + encodeURIComponent(name),
+                { method: 'POST' }
+            );
+        } catch (err) {
+            console.warn('[Prompt Composer] Section preload failed:', name, err);
+        }
     }
 
     async function loadPathsAndInitialTags() {
@@ -130,44 +262,48 @@
             const resp = await fetch('/prompt-composer/api/tag-paths');
             if (resp.ok) {
                 const data = await resp.json();
-                setupPathSelector(data.paths || [], data.counts || {});
+                setupPathSelector(data.paths || [], data.counts || {}, data.pathCounts || [], data.sections || []);
             }
         } catch (err) {
             console.warn('[Prompt Composer] Failed to load tag paths:', err);
         }
     }
 
-    async function fetchTagItems(query, sec, cat, grp, limit) {
+    async function fetchTagItems(query, sec, cat, grp, limit, offset) {
         const params = new URLSearchParams();
         if (query) params.set('q', query);
         if (sec) params.set('section', sec);
         if (cat) params.set('category', cat);
         if (grp) params.set('group', grp);
-        params.set('limit', String(limit || 500));
+        params.set('limit', String(limit || TAG_PAGE_SIZE));
+        params.set('offset', String(offset || 0));
         const resp = await fetch('/prompt-composer/api/tags?' + params.toString());
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
         const data = await resp.json();
-        return (data.items || []).slice().sort((a, b) => {
-            const aKey = (a.tag || '').toLowerCase();
-            const bKey = (b.tag || '').toLowerCase();
-            if (aKey < bKey) return -1;
-            if (aKey > bKey) return 1;
-            return 0;
-        });
+        const items = (data.items || []).slice();
+        return {
+            items,
+            total: Number(data.total) || items.length,
+            hasMore: !!data.hasMore,
+        };
     }
 
     async function loadTags(query) {
         const q = (query || '').trim();
         try {
             if (q) {
-                currentItems = await fetchTagItems(q, null, null, null, 500);
+                const result = await fetchTagItems(q, null, null, null, 500, 0);
+                currentItems = result.items;
                 renderSearchResults(currentItems);
                 return;
             }
             hideSearchResults();
             if (selectedPathKey) {
                 tagLeavesCache.delete(selectedPathKey);
-                await ensureNodeTagsLoaded(selectedPathKey, true);
+                tagPageState.delete(selectedPathKey);
+                const host = findLeavesHost(selectedPathKey);
+                if (host) host.dataset.loaded = '';
+                await ensureNodeTagsLoaded(selectedPathKey, true, false);
             }
         } catch (err) {
             console.warn('[Prompt Composer] Failed to load tags:', err);
@@ -175,15 +311,21 @@
     }
 
     async function loadWildcards(query) {
+        const q = (query || '').trim();
+        if (!q && !wildcardsLoaded) {
+            renderWildcardsHint();
+            return;
+        }
         try {
             const params = new URLSearchParams();
             if (query) params.set('q', query);
-            params.set('limit', '2000');
+            params.set('limit', '5000');
             const resp = await fetch('/prompt-composer/api/wildcards?' + params.toString());
             if (!resp.ok) throw new Error('HTTP ' + resp.status);
             const data = await resp.json();
             wildcardItems = data.items || [];
             wildcardSources = data.sources || [];
+            wildcardsLoaded = true;
             renderWildcards(query || '');
         } catch (err) {
             wildcardItems = [];
@@ -289,9 +431,13 @@
             const srcText = (wildcardSources && wildcardSources.length)
                 ? wildcardSources.map(s => escapeHtml(`${s.source}: ${s.dir}`)).join('<br>')
                 : '';
+            const q = (query || '').trim();
+            const hint = q
+                ? '一致するワイルドカードがありません。'
+                : 'ワイルドカード検索欄にキーワードを入力してください（例: pose, hair, nsfw）。';
             wcHost.innerHTML = `
-                <div class="pc-wc-header">🪄 Wildcards <span class="pc-wc-count">(0)</span></div>
-                <div class="pc-wc-more">wildcards（.txt）が見つかりませんでした。</div>
+                <div class="pc-wc-header">🪄 Wildcards</div>
+                <div class="pc-wc-more">${hint}</div>
                 ${srcText ? `<div class="pc-wc-sources">${srcText}</div>` : ''}
             `;
             return;
@@ -353,7 +499,7 @@
     function insertTagFromRow(btn) {
         const tag = btn.dataset.tag;
         if (!tag || !window.PromptComposer) return;
-        const jp = (btn.dataset.jp || '').trim();
+        const jp = displayJpLabel({ jp: btn.dataset.jp || '' });
         const blocks = (window.PromptComposer.blocks || []).concat(window.PromptComposer.negativeBlocks || []);
         let target = null;
         const activeId = window.PromptComposerActiveBlockId;
@@ -370,7 +516,7 @@
 
     function renderTagCard(item) {
         const tag = escapeHtml(item.tag);
-        const jp = escapeHtml(item.jp || '');
+        const jp = escapeHtml(displayJpLabel(item));
         const previewUrl = normalizePreviewUrl(item.previewUrl || '');
         const previewAttr = previewUrl ? ` data-preview-url="${escapeHtml(previewUrl)}"` : '';
         const hasPreview = Boolean(previewUrl);
@@ -410,11 +556,27 @@
         return tagPreviewFloatEl;
     }
 
-    function positionTagPreviewFloat(artEl) {
+    function positionTagPreviewFloat(artEl, naturalW, naturalH) {
         const floatEl = ensureTagPreviewFloat();
         const rect = artEl.getBoundingClientRect();
-        const floatW = Math.min(240, Math.max(180, rect.width * 2.1));
-        const floatH = floatW * (4 / 3);
+        const maxW = Math.min(window.innerWidth - 16, Math.max(260, rect.width * 2.6));
+        const maxH = Math.min(window.innerHeight - 16, window.innerHeight * 0.78);
+
+        let floatW;
+        let floatH;
+        if (naturalW > 0 && naturalH > 0) {
+            const aspect = naturalW / naturalH;
+            floatW = maxW;
+            floatH = floatW / aspect;
+            if (floatH > maxH) {
+                floatH = maxH;
+                floatW = floatH * aspect;
+            }
+        } else {
+            floatW = Math.min(240, Math.max(180, rect.width * 2.1));
+            floatH = floatW * (4 / 3);
+        }
+
         let left = rect.left + rect.width / 2 - floatW / 2;
         let top = rect.top - floatH - 10;
         if (top < 8) top = rect.bottom + 10;
@@ -446,9 +608,23 @@
             if (!img || !previewUrl) return;
             loadTagPreviewImage(img);
             activeArt = art;
+            const showFloat = () => {
+                if (activeArt !== art) return;
+                positionTagPreviewFloat(
+                    art,
+                    floatImg.naturalWidth,
+                    floatImg.naturalHeight
+                );
+                floatEl.classList.add('is-visible');
+            };
+            floatImg.onload = showFloat;
             floatImg.src = img.src || previewUrl;
-            positionTagPreviewFloat(art);
-            floatEl.classList.add('is-visible');
+            if (floatImg.complete && floatImg.naturalWidth > 0) {
+                showFloat();
+            } else {
+                positionTagPreviewFloat(art);
+                floatEl.classList.add('is-visible');
+            }
         });
 
         host.addEventListener('mouseout', (e) => {
@@ -464,9 +640,10 @@
 
     function findLeavesHost(key) {
         if (!tagPathTreeHost || !key) return null;
-        const nodes = tagPathTreeHost.querySelectorAll('[data-tag-leaves]');
-        for (const el of nodes) {
-            if (el.getAttribute('data-tag-leaves') === key) return el;
+        const encoded = encodePathKey(key);
+        for (const el of tagPathTreeHost.querySelectorAll('[data-tag-leaves]')) {
+            const raw = el.getAttribute('data-tag-leaves') || '';
+            if (raw === encoded || decodePathKey(raw) === key) return el;
         }
         return null;
     }
@@ -498,10 +675,10 @@
 
     function expandAncestors(key) {
         if (!key) return;
-        const parts = key.split('/').filter(Boolean);
+        const parts = splitTagPathKey(key);
         let acc = '';
         parts.forEach(p => {
-            acc = acc ? `${acc}/${p}` : p;
+            acc = acc ? `${acc}${TAG_PATH_SEP}${p}` : p;
             tagExpanded.add(acc);
         });
     }
@@ -509,18 +686,18 @@
     function syncTreeExpandState() {
         if (!tagPathTreeHost) return;
         tagPathTreeHost.querySelectorAll('[data-tag-toggle]').forEach(btn => {
-            const key = btn.getAttribute('data-tag-toggle');
+            const key = readPathKeyAttr(btn, 'data-tag-toggle');
             if (!key) return;
             const open = tagExpanded.has(key);
             const caret = btn.querySelector('.pc-wc-caret');
             if (caret) caret.textContent = open ? '▾' : '▸';
         });
         tagPathTreeHost.querySelectorAll('[data-tag-children]').forEach(el => {
-            const key = el.getAttribute('data-tag-children');
+            const key = readPathKeyAttr(el, 'data-tag-children');
             el.style.display = tagExpanded.has(key) ? 'block' : 'none';
         });
         tagPathTreeHost.querySelectorAll('[data-tag-leaves]').forEach(el => {
-            const key = el.getAttribute('data-tag-leaves');
+            const key = readPathKeyAttr(el, 'data-tag-leaves');
             el.style.display = tagExpanded.has(key) ? 'block' : 'none';
         });
     }
@@ -529,13 +706,14 @@
         if (!tagPathTreeHost) return;
         tagPathTreeHost.querySelectorAll('.pc-tag-path-row').forEach(row => {
             const select = row.querySelector('[data-tag-select]');
-            const key = select ? select.getAttribute('data-tag-select') : '';
+            const key = readPathKeyAttr(select, 'data-tag-select');
             row.classList.toggle('is-selected', key === selectedPathKey);
         });
     }
 
     function collapseAllTagPaths() {
         tagExpanded.clear();
+        tagChildrenRendered.clear();
         selectedPathKey = '';
         currentSection = null;
         currentCategory = null;
@@ -559,24 +737,87 @@
         }
     }
 
-    async function ensureNodeTagsLoaded(key, force) {
+    function findChildrenHost(key) {
+        if (!tagPathTreeHost || !key) return null;
+        const encoded = encodePathKey(key);
+        for (const el of tagPathTreeHost.querySelectorAll('[data-tag-children]')) {
+            const raw = el.getAttribute('data-tag-children') || '';
+            if (raw === encoded || decodePathKey(raw) === key) return el;
+        }
+        return null;
+    }
+
+    function findTreeNode(key) {
+        if (!tagPathTreeRoot || !key) return null;
+        const parts = splitTagPathKey(key);
+        let node = tagPathTreeRoot;
+        for (const part of parts) {
+            if (!node || !node.children.has(part)) return null;
+            node = node.children.get(part);
+        }
+        return node;
+    }
+
+    function ensureNodeChildrenRendered(key) {
+        if (!key || tagChildrenRendered.has(key)) return;
+        const node = findTreeNode(key);
+        const host = findChildrenHost(key);
+        if (!node || !host || !node.children.size) return;
+        const qInput = document.querySelector('#pc_tag_search input, #pc_tag_search textarea');
+        const qLower = (qInput ? (qInput.value || '') : '').trim().toLowerCase();
+        host.innerHTML = renderTagPathLevel(node, qLower);
+        tagChildrenRendered.add(key);
+        syncTreeExpandState();
+        updateTreeSelectionStyles();
+        if (tagExpanded.has(key) && !hasChildFoldersInDom(key)) {
+            ensureNodeTagsLoaded(key, false, false);
+        }
+    }
+
+    function renderTagLeavesPanel(key, items, total, hasMore) {
+        let html = renderTagLeavesHtml(items);
+        if (hasMore) {
+            html += `<button type="button" class="pc-tag-load-more" data-tag-load-more="${encodePathKey(key)}">さらに表示 (${items.length}/${total})</button>`;
+        }
+        return `<div class="pc-tag-path-leaves-inner">${html}</div>`;
+    }
+
+    async function ensureNodeTagsLoaded(key, force, append) {
         if (!key || !tagPathTreeHost) return;
         const host = findLeavesHost(key);
         if (!host) return;
-        if (!force && host.dataset.loaded === '1') return;
+        if (!append && !force && host.dataset.loaded === '1') return;
 
-        host.innerHTML = '<div class="pc-tag-path-loading">読込中…</div>';
-        host.style.display = tagExpanded.has(key) ? 'block' : 'none';
+        if (!append) {
+            host.innerHTML = '<div class="pc-tag-path-loading">読込中…</div>';
+            host.style.display = tagExpanded.has(key) ? 'block' : 'none';
+        } else {
+            const btn = host.querySelector('[data-tag-load-more]');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '読込中…';
+            }
+        }
 
         const f = filtersFromPathKey(key);
         const qInput = document.querySelector('#pc_tag_search input, #pc_tag_search textarea');
         const q = (qInput ? qInput.value : '').trim();
+        const prev = tagPageState.get(key) || { items: [], total: 0, hasMore: false };
+        const offset = append ? prev.items.length : 0;
 
         try {
-            const items = await fetchTagItems(q, f.sec, f.cat, f.grp, 500);
+            if (f.sec) await preloadTagSection(f.sec);
+            const result = await fetchTagItems(q, f.sec, f.cat, f.grp, TAG_PAGE_SIZE, offset);
+            const items = append ? prev.items.concat(result.items) : result.items;
+            tagPageState.set(key, {
+                items,
+                total: result.total,
+                hasMore: result.hasMore,
+            });
             tagLeavesCache.set(key, items);
-            host.innerHTML = `<div class="pc-tag-path-leaves-inner">${renderTagLeavesHtml(items)}</div>`;
+            host.innerHTML = renderTagLeavesPanel(key, items, result.total, result.hasMore);
             host.dataset.loaded = '1';
+            updatePathCountBadge(key, result.total);
             scheduleTagPreviewObserve(host);
         } catch (err) {
             host.innerHTML = '<div class="pc-empty">読込に失敗しました</div>';
@@ -587,7 +828,8 @@
     function hasChildFoldersInDom(key) {
         if (!tagPathTreeHost || !key) return false;
         for (const el of tagPathTreeHost.querySelectorAll('[data-tag-children]')) {
-            if (el.getAttribute('data-tag-children') === key) return true;
+            const attrKey = readPathKeyAttr(el, 'data-tag-children');
+            if (attrKey === key) return true;
         }
         return false;
     }
@@ -597,9 +839,14 @@
         if (tagExpanded.has(key)) tagExpanded.delete(key);
         else tagExpanded.add(key);
         syncTreeExpandState();
-        // 子フォルダがある場合は展開のみ（タグは末端フォルダで表示）
-        if (tagExpanded.has(key) && !hasChildFoldersInDom(key)) {
-            ensureNodeTagsLoaded(key, false);
+        if (tagExpanded.has(key)) {
+            ensureNodeChildrenRendered(key);
+            if (splitTagPathKey(key).length === 1) {
+                preloadTagSection(sectionNameFromPathKey(key));
+            }
+            if (!hasChildFoldersInDom(key)) {
+                ensureNodeTagsLoaded(key, false, false);
+            }
         }
     }
 
@@ -608,15 +855,24 @@
         tagPathTreeHost.dataset.bound = '1';
         bindTagCardPreviewHover(tagPathTreeHost);
         tagPathTreeHost.addEventListener('click', (e) => {
+            const loadMore = e.target.closest('[data-tag-load-more]');
+            if (loadMore) {
+                e.preventDefault();
+                e.stopPropagation();
+                ensureNodeTagsLoaded(readPathKeyAttr(loadMore, 'data-tag-load-more'), false, true);
+                return;
+            }
             const toggle = e.target.closest('[data-tag-toggle]');
             if (toggle) {
                 e.preventDefault();
                 e.stopPropagation();
-                toggleTagPathNode(toggle.getAttribute('data-tag-toggle') || '');
+                toggleTagPathNode(readPathKeyAttr(toggle, 'data-tag-toggle'));
                 return;
             }
             const tagBtn = e.target.closest('.pc-tag-card, .pc-tag-row');
             if (tagBtn) {
+                e.preventDefault();
+                e.stopPropagation();
                 hideTagPreviewFloat();
                 insertTagFromRow(tagBtn);
                 return;
@@ -628,8 +884,7 @@
             }
             const select = e.target.closest('[data-tag-select]');
             if (select) {
-                const key = select.getAttribute('data-tag-select') || '';
-                applyTagPathKey(key);
+                applyTagPathKey(readPathKeyAttr(select, 'data-tag-select'));
             }
         });
     }
@@ -642,20 +897,16 @@
         // Tag search: filters tags + also updates wildcards to keep behavior consistent.
         if (tagRoot) {
             const tagInput = tagRoot.querySelector('input') || tagRoot.querySelector('textarea');
-            if (tagInput) {
+            if (tagInput && tagInput.dataset.pcSearchBound !== '1') {
+                tagInput.dataset.pcSearchBound = '1';
                 ensureQuickInsertBar(tagRoot);
                 tagInput.addEventListener('input', (e) => {
                     clearTimeout(debounceTimer);
                     const value = e.target.value;
                     debounceTimer = setTimeout(() => {
-                        loadTags(value.trim());
-                        loadWildcards(value.trim());
-                        if (tagPathTreeHost && value.trim()) {
-                            const scrollEl = tagPathTreeHost.querySelector('.pc-tag-path-tree');
-                            const st = scrollEl ? scrollEl.scrollTop : 0;
-                            renderTagPathTreeUI(true);
-                            if (scrollEl) scrollEl.scrollTop = st;
-                        }
+                        const q = value.trim();
+                        loadTags(q);
+                        if (q) loadWildcards(q);
                     }, 250);
                 });
             }
@@ -664,7 +915,8 @@
         // Wildcard search: only filters wildcards.
         if (wcRoot) {
             const wcInput = wcRoot.querySelector('input') || wcRoot.querySelector('textarea');
-            if (wcInput) {
+            if (wcInput && wcInput.dataset.pcSearchBound !== '1') {
+                wcInput.dataset.pcSearchBound = '1';
                 wcInput.addEventListener('input', (e) => {
                     clearTimeout(wildcardDebounceTimer);
                     const value = e.target.value;
@@ -751,7 +1003,7 @@
             for (let i = 0; i < parts.length; i++) {
                 const part = parts[i];
                 const isLast = i === parts.length - 1;
-                key = key ? `${key}/${part}` : part;
+                key = key ? `${key}${TAG_PATH_SEP}${part}` : part;
                 if (!node.children.has(part)) {
                     node.children.set(part, {
                         name: part,
@@ -793,7 +1045,7 @@
 
     function filtersFromPathKey(key) {
         if (!key) return { sec: null, cat: null, grp: null };
-        const parts = key.split('/').filter(Boolean);
+        const parts = splitTagPathKey(key);
         const decode = (s) => (s === '(未分類)' ? '' : s);
         const sec = parts[0] ? decode(parts[0]) : '';
         const cat = parts[1] ? decode(parts[1]) : '';
@@ -805,8 +1057,35 @@
         };
     }
 
-    function renderTagPathTreeNode(node, qLower) {
-        const children = Array.from(node.children.keys()).sort((a, b) => a.localeCompare(b, 'ja'));
+    function sectionOrderIndex(sectionName) {
+        const name = (sectionName || '').trim();
+        if (!name) return 99999;
+        if (sectionOrderByName.has(name)) return sectionOrderByName.get(name);
+        return 99999;
+    }
+
+    function orderedTagPathChildKeys(node) {
+        const keys = Array.from(node.children.keys());
+        if (!node.path) {
+            return keys.sort((a, b) => sectionOrderIndex(a) - sectionOrderIndex(b));
+        }
+        return keys;
+    }
+
+    function buildSectionOrderMap(sections) {
+        sectionOrderByName = new Map();
+        (sections || []).forEach((entry, idx) => {
+            const name = (entry && entry.name ? String(entry.name) : '').trim();
+            if (!name) return;
+            const file = (entry && entry.file ? String(entry.file) : '').trim();
+            const match = file.match(/sections\/(\d+)_/);
+            const order = match ? parseInt(match[1], 10) : idx;
+            sectionOrderByName.set(name, order);
+        });
+    }
+
+    function renderTagPathLevel(node, qLower) {
+        const children = orderedTagPathChildKeys(node);
         let html = '';
 
         children.forEach(name => {
@@ -814,31 +1093,31 @@
             if (qLower && !nodeMatchesQuery(child, qLower)) return;
 
             const key = child.path;
+            const pathAttr = encodePathKey(key);
             const hasChildren = child.children.size > 0;
             const isOpen = qLower ? true : tagExpanded.has(key);
             const caret = isOpen ? '▾' : '▸';
             const count = getTagPathCount(key);
             const isSelected = selectedPathKey === key;
+            const displayName = tagPathDisplayLabel(name, key);
 
             html += '<div class="pc-wc-node">';
             html += `<div class="pc-tag-path-row${isSelected ? ' is-selected' : ''}">`;
             html += `
-                <button type="button" class="pc-wc-toggle pc-tag-path-toggle" data-tag-toggle="${escapeHtmlAttr(key)}" title="展開 / 折りたたみ">
+                <button type="button" class="pc-wc-toggle pc-tag-path-toggle" data-tag-toggle="${pathAttr}" title="展開 / 折りたたみ">
                     <span class="pc-wc-caret">${caret}</span>
                 </button>`;
             html += `
-                <button type="button" class="pc-tag-path-select" data-tag-select="${escapeHtmlAttr(key)}" title="${escapeHtmlAttr(key)}">
-                    <span class="pc-wc-folder">${escapeHtml(name)}</span>
+                <button type="button" class="pc-tag-path-select" data-tag-select="${pathAttr}" title="${escapeHtml(displayName)}">
+                    <span class="pc-wc-folder">${escapeHtml(displayName)}</span>
                     <span class="pc-wc-count-mini">${count}</span>
                 </button>
             `;
             html += '</div>';
             if (hasChildren) {
-                html += `<div class="pc-wc-children" data-tag-children="${escapeHtmlAttr(key)}" style="display:${isOpen ? 'block' : 'none'}">`;
-                html += renderTagPathTreeNode(child, qLower);
-                html += '</div>';
+                html += `<div class="pc-wc-children" data-tag-children="${pathAttr}" style="display:${isOpen ? 'block' : 'none'}"></div>`;
             } else {
-                html += `<div class="pc-tag-path-leaves" data-tag-leaves="${escapeHtmlAttr(key)}" style="display:${isOpen ? 'block' : 'none'}"></div>`;
+                html += `<div class="pc-tag-path-leaves" data-tag-leaves="${pathAttr}" style="display:${isOpen ? 'block' : 'none'}"></div>`;
             }
             html += '</div>';
         });
@@ -855,6 +1134,11 @@
         if (pathKey) {
             expandAncestors(pathKey);
             tagExpanded.add(pathKey);
+            let acc = '';
+            splitTagPathKey(pathKey).forEach((part) => {
+                acc = acc ? `${acc}${TAG_PATH_SEP}${part}` : part;
+                ensureNodeChildrenRendered(acc);
+            });
         }
 
         updateTreeSelectionStyles();
@@ -865,7 +1149,8 @@
         if (q) {
             loadTags(q);
         } else if (pathKey) {
-            ensureNodeTagsLoaded(pathKey, false);
+            ensureNodeChildrenRendered(pathKey);
+            ensureNodeTagsLoaded(pathKey, true, false);
         }
     }
 
@@ -891,9 +1176,9 @@
 
         const qInput = document.querySelector('#pc_tag_search input, #pc_tag_search textarea');
         const qLower = (qInput ? (qInput.value || '') : '').trim().toLowerCase();
-        const tree = buildTagPathTree(allPaths);
+        tagPathTreeRoot = buildTagPathTree(allPaths);
         let total = 0;
-        tree.children.forEach(child => { total += getTagPathCount(child.path); });
+        tagPathTreeRoot.children.forEach(child => { total += getTagPathCount(child.path); });
 
         let html = `
             <div class="pc-tag-path-tree-head">
@@ -904,22 +1189,24 @@
                 </button>
             </div>
             <div class="pc-tag-path-search-results" style="display:none"></div>
-            <div class="pc-wc-tree pc-tag-path-tree">${renderTagPathTreeNode(tree, qLower)}</div>
+            <div class="pc-wc-tree pc-tag-path-tree">${renderTagPathLevel(tagPathTreeRoot, qLower)}</div>
             <div class="pc-wc-more">▸で展開 — フォルダ内にタグが表示されます</div>
         `;
         tagPathTreeHost.innerHTML = html;
-        tagPathTreeHost.dataset.bound = '';
         tagPathTreeScrollEl = tagPathTreeHost.querySelector('.pc-tag-path-tree');
+        tagChildrenRendered = new Set();
 
         bindTagPathTreeEvents();
         syncTreeExpandState();
         updateTreeSelectionStyles();
 
         tagExpanded.forEach(key => {
+            ensureNodeChildrenRendered(key);
             const cached = tagLeavesCache.get(key);
             const host = findLeavesHost(key);
             if (host && cached) {
-                host.innerHTML = `<div class="pc-tag-path-leaves-inner">${renderTagLeavesHtml(cached)}</div>`;
+                const state = tagPageState.get(key) || { total: cached.length, hasMore: false };
+                host.innerHTML = renderTagLeavesPanel(key, cached, state.total, state.hasMore);
                 host.dataset.loaded = '1';
                 scheduleTagPreviewObserve(host);
             }
@@ -932,14 +1219,17 @@
         }
     }
 
-    function setupPathSelector(paths, counts) {
+    function setupPathSelector(paths, counts, pathCounts, sections) {
         const labelEl = document.getElementById('pc_tag_path_label');
         if (!labelEl) return;
 
+        buildSectionOrderMap(sections);
         allPaths = (paths || []).slice();
-        tagPathCounts = counts || {};
+        tagPathCounts = buildTagPathCountsFromEntries(pathCounts, counts || {});
         tagExpanded = new Set();
         tagLeavesCache = new Map();
+        tagPageState = new Map();
+        tagChildrenRendered = new Set();
         selectedPathKey = '';
 
         labelEl.innerHTML = '';
@@ -947,10 +1237,6 @@
         tagPathTreeHost.className = 'pc-tag-path-tree-host';
         tagPathTreeHost.dataset.bound = '';
         labelEl.appendChild(tagPathTreeHost);
-
-        buildTagPathTree(allPaths).children.forEach((_child, name) => {
-            tagExpanded.add(name);
-        });
 
         renderTagPathTreeUI(false);
         hideTagsListContainer();

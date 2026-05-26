@@ -1,0 +1,3592 @@
+- name: 視覚効果
+  categories:
+  - name: 色・色彩
+    groups:
+    - name: 基本色
+      color: rgba(153, 102, 255, 1)
+      tags:
+        antiquewhite: antiquewhite
+        azure: 空色
+        bisque: ビスク色
+        black: 黒色
+        blanchedalmond: ブランチドアーモンド色
+        blonde: 金髪の
+        blue: 青色
+        blueviolet: ブルーバイオレット色
+        brown: 茶色
+        burlywood: バーリーウッド色
+        cadetblue: カデットブルー色
+        chartreuse: シャルトリューズ色
+        cornflowerblue: コーンフラワーブルー色
+        cornsilk: コーンシルク色
+        crimson: 深紅色
+        cyan: シアン色
+        dark_pink: 濃いピンク色
+        darkblue: 濃い青色
+        darkcyan: 濃いシアン色
+        darkgoldenrod: 濃いゴールデンロッド色
+        darkgray: 濃い灰色
+        darkgreen: 濃い緑色
+        darkkhaki: 濃いカーキ色
+        darkmagenta: 濃いマゼンタ色
+        darkolivegreen: 濃いオリーブグリーン色
+        darkorange: 濃いオレンジ色
+        darkorchid: 濃いオーキッド色
+        darkred: 濃い赤色
+        darksalmon: 濃いサーモン色
+        darkseagreen: 濃い緑松石色
+        darkslateblue: 濃いスレートブルー色
+        darkslategray: 濃いスレートグレー色
+        darkturquoise: 濃い青緑色
+        darkviolet: 濃い紫罗兰色
+        deeppink: 濃いピンク色
+        dodgerblue: ドッジャーブルー色
+        firebrick: ファイアブリック色
+        floralwhite: フローラルホワイト色
+        forestgreen: 森林緑色
+        gainsboro: ゲインズボロ色
+        ghostwhite: ゴーストホワイト色
+        goldenrod: ゴールデンロッド色
+        gray: 灰色
+        green: 緑色
+        greenyellow: グリーンイエロー色
+        honeydew: ハニーデュー色
+        hotpink: ホットピンク色
+        indianred: インディアンレッド色
+        indigo: インディゴ色
+        ivory: アイボリー色
+        khaki: カーキ色
+        lavender: ラベンダー色
+        lavenderblush: ラベンダーブラッシュ色
+        lawngreen: 芝生の緑色
+        lemonchiffon: レモンシフォン色
+        light_brown: 明るい茶色
+        lightblue: 明るい青色
+        lightcoral: 明るいコーラル色
+        lightcyan: 明るいシアン色
+        lightgoldenrodyellow: 明るいゴールデンロッドイエロー色
+        lightgray: 明るい灰色
+        lightgreen: 明るい緑色
+        lightpink: 明るいピンク色
+        lightsalmon: 明るいサーモン色
+        lightseagreen: 明るいシーグリーン色
+        lightslategray: 明るいスレートグレー色
+        lightsteelblue: 明るい鋼色
+        lightyellow: 明るい黄色
+        lime: ライム色
+        limegreen: ライムグリーン色
+        linen: 亜麻色
+        magenta: マゼンタ色
+        maroon: マルーン色
+        mediumaquamarine: 中間のアクアマリン色
+        mediumblue: 中間の青色
+        mediumorchid: 中間のオーキッド色
+        mediumpurple: 中間の紫色
+        mediumseagreen: 中間の海緑色
+        mediumslateblue: 中間のスレートブルー色
+        mediumspringgreen: 中間の春の緑色
+        mediumturquoise: 中間のターコイズ色
+        mediumvioletred: 中間の紫罗兰赤色
+        midnightblue: 真夜中の青色
+        mintcream: ミントクリーム色
+        mistyrose: ミスティローズ色
+        moccasin: モカシン色
+        navajowhite: ナバホホワイト色
+        oldlace: オールドレース色
+        olivedrab: オリーブドラブ色
+        orange: オレンジ色
+        orangered: オレンジレッド色
+        palegoldenrod: 淡いゴールデンロッド色
+        palegreen: 淡い緑色
+        paleturquoise: ペイルターコイズ色
+        palevioletred: 淡い紫罗兰赤色
+        papayawhip: パパイヤホイップ色
+        peachpuff: ピーチパフ色
+        peru: ペルー色
+        pink: ピンク色
+        powderblue: パウダーブルー色
+        purple: 紫色
+        red: 赤色
+        rosybrown: ロージーブラウン色
+        royalblue: ロイヤルブルー色
+        saddlebrown: サドルブラウン色
+        sandybrown: 砂色
+        seagreen: 海緑色
+        sienna: シエナ色
+        silver: 銀色
+        skyblue: 空色
+        slateblue: スレートブルー色
+        slategray: スレートグレー色
+        springgreen: 春の緑色
+        steelblue: 鋼色
+        teal: ティール色
+        turquoise: ターコイズ色
+        violet: 紫色
+        whitesmoke: ホワイトスモーク色
+        yellow: 黄色
+        yellowgreen: 黄緑色
+        acid_green_color: アシッドグリーン
+        alice_blue_color: アリスブルー
+        almond_color: アーモンド色
+        Amber_color: 琥珀色
+        amethyst_color: アメジスト
+        amethyst_smoke_color: アメジストスモーク
+        amour_color: アムール
+        apple_green_color: アップルグリーン
+        Apricot_amber_color: プリコット・アンバー
+        Apricot_blush_color: アプリコットブラッシュ
+        Apricot_color: アプリコット
+        Apricot_cream_color: アプリコットクリーム色
+        Apricot_light_color: アプリコットライト
+        Apricot_orange_color: アプリコットオレンジ
+        Apricot_pale_color: アプリコット・ペール
+        Apricot_pink_color: アプリコットピンク
+        Apricot_rose_color: アプリコット・ローズ
+        aqua_color: アクア
+        aquamarine_color: アクアマリンカラー
+        ashen_color: アッシュ
+        atomic_tangerine_color: アトミックタンジェリン
+        auburn_color: オーバーン
+        avocado_color: アボカド色
+        avocado_green_color: アボカドグリーン
+        azure_color: 紺碧
+        baby_blue_color: ベビーブルー
+        baby_pink_blue_color: ベビーピンクブルー
+        basil_color: バジル色
+        beau_blue_color: ボーブルー
+        beige_color: ベージュ
+        berry_color: ベリー
+        bice_blue_color: バイスブルー
+        bisque_color: ビスク
+        Bittersweet_color: ビタースイート
+        blush_color: チーク
+        bondi_blue_color: ボンディブルー
+        bone_color: ボーン
+        bottle_green_color: ボトルグリーン
+        brandeis_blue_color: ブランディスブルー
+        brandy_color: ブランデー
+        brick_color: ブライトマロン
+        bright_green_color: ブライトグリーン
+        bright_lavender_color: ブライト・ラベンダー
+        bright_lavender_indigo_color: ブライト・ラベンダー・インディゴ
+        bright_maroon_color: レンガ色
+        bright_ube_color: ブライト・ウベ
+        burgundy_color: ワインレッド
+        Burnt_orange_color: バーントオレンジ
+        Butterscotch_color: バタースコッチ色
+        cadet_blue_color: カデットブルー
+        cambridge_blue_color: ケンブリッジブルー
+        camel_color: キャメル色
+        candy_apple_color: キャンディーアップル
+        Cantaloupe_color: カンタロープ
+        Cantaloupe_light_color: カンタロープライト
+        Cantaloupe_pink_color: カンタロープピンク
+        Caramel_color: キャラメル色
+        cardinal_color: カーディナル
+        carmine_color: カーマイン
+        carolina_blue_color: カロライナブルー
+        Carrot_color: キャロット色
+        celadon_color: 青磁色
+        celadon_green_color: 青磁色
+        celestial_blue_color: 天空の青
+        cerise_color: セリーズ
+        cerulean_color: セルリアンブルー
+        champagne_color: シャンパン
+        charcoal_color: チャコール
+        chartreuse_color: シャルトルーズ
+        chartreuse_green_color: シャルトルーズグリーン
+        cherry_color: チェリー色
+        cherry_red_color: チェリーレッド
+        chili_pepper_color: チリペッパー
+        chive_color: チャイブ
+        Chocolate_color: チョコレート色
+        Cinnamon_color: シナモン色
+        citron_color: シトロン
+        claret_color: クラレット
+        Clay_color: クレイ
+        cloud_color: クラウド
+        clover_color: クローバー
+        cobalt_blue_color: コバルトブルー
+        color_amber: アンバー
+        color_apricot: アプリコット
+        color_aureolin: オーレオリン
+        color_banana: バナナ
+        color_beige: ベージュ
+        color_bisque: ビスク
+        color_blond: ブロンド
+        color_buff: バフ
+        color_butter: バター
+        color_canary: カナリア
+        color_caramel: キャラメル
+        color_champagne: シャンパン
+        color_chartreuse: シャルトルーズ
+        color_citrine: シトリン
+        color_cream: クリーム
+        color_daffodil: ダフォディル
+        color_dark_gold: ダークゴールド
+        color_ecru: エクリュ
+        color_flaxen: 亜麻色
+        color_gamboge: ガンボージ
+        color_gold: ゴールド
+        color_goldenrod: ゴールデンロッド
+        color_harvest: ハーベスト
+        color_honey: ハニー
+        color_ivory: アイボリー
+        color_jonquil: ジョンキル
+        color_lemon: レモン
+        color_maize: メイズ
+        color_marigold: マリーゴールド
+        color_mellow_yellow: メロウ・イエロー
+        color_mustard: マスタード
+        color_Naples_yellow: ナポリ・イエロー
+        color_Navajo_white: ナバホ・ホワイト
+        color_ochre: オーカー
+        color_old_gold: オールドゴールド
+        color_olive: オリーブ
+        color_pale_gold: ペールゴールド
+        color_peach: ピーチ
+        color_pear: ペア
+        color_primrose: プリムローズ
+        color_saffron: サフラン
+        color_sunglow: サングロー
+        color_tangerine: タンジェリン
+        color_taupe: トープ
+        color_topaz: トパーズ
+        color_tuscan_sun: トスカーナ・サン
+        color_vanilla: バニラ
+        color_wheat: ウィート
+        color_yellow: イエロー
+        color_yellow-green: イエローグリーン
+        color_yellow-orange: イエローオレンジ
+        color_yellow_rose: イエローローズ
+        color_zest: ゼスト
+        color_zinnwaldite: ジンウォルダイト
+        color_zinnwaldite_brown: ジンワルダイト・ブラウン
+        color_zomp: ゾンプ
+        columbia_blue_color: コロンビアブルー
+        coquelicot_color: コクリコ
+        Coral_amber_color: コーラル・アンバー
+        Coral_color: 珊瑚色
+        Coral_light_color: コーラルライト
+        Coral_pink_color: コーラルピンク
+        Coral_rose_color: コーラル・ローズ
+        cornell_blue_color: コーネルブルー
+        cornflower_blue_color: コーンフラワーブルー
+        cranberry_color: クランベリー
+        cream_color: クリーム色
+        crimson_color: クリムゾン
+        crocodile_green_color: クロコダイルグリーン
+        currant_color: スグリ色
+        cyan_color: シアンカラー
+        cypress_color: ヒノキ
+        dark_candy_apple_red_color: ダーク・キャンディー・アップル・レッド
+        Dark_coral_color: ダークコーラル
+        dark_lavender_color: ダークラベンダー
+        dark_magenta_color: ダークマゼンタ
+        dark_olive_color: ダークオリーブ
+        Dark_orange_color: ダークオレンジ
+        dark_orchid_color: ダークオーキッド
+        dark_pastel_purple_color: ダークパステルパープル
+        dark_powder_blue_color: ダークパウダーブルー
+        dark_purple_color: 暗い紫色
+        dark_red_color: ダークレッド
+        Dark_salmon_color: ダークサーモン
+        dark_violet_color: 濃い紫色
+        deep_carmine_color: ディープカーミン
+        deep_fuchsia_color: 濃いフクシア色
+        deep_green_color: ディープグリーン
+        deep_lavender_color: 濃いラベンダー色
+        deep_magenta_color: ディープマゼンタ
+        deep_mulberry_color: 深い桑色
+        deep_violet_color: ディープバイオレットカラー
+        denim_color: デニム
+        dodger_blue_color: ドジャーブルー
+        dove_color: ダヴ
+        duke_blue_color: デュークブルー
+        dusty_rose_color: ダスティローズ
+        ecru_color: エクリュ
+        eggplant_color: ナス色
+        eggshell_color: エッグシェル
+        egyptian_blue_color: エジプトブルー
+        electric_blue_color: エレクトリックブルー
+        electric_green_color: エレクトリックグリーン
+        electric_purple_color: エレクトリックパープル
+        emerald_color: エメラルド
+        emerald_green_color: エメラルドグリーン
+        fandango_color: ファンダンゴ色
+        fawn_color: フォーン
+        federal_blue_color: フェデラルブルー
+        fern_color: シダ色
+        fern_green_color: シダグリーン
+        ferrari_red_color: フェラーリレッド
+        fire_engine_red_color: 消防車レッド
+        firebrick_color: 耐火レンガ色
+        firebrick_red_color: 耐火レンガ赤
+        Flame_color: フレームカラー
+        fog_color: フォグ
+        french_blue_color: フレンチブルー
+        frost_color: フロスト
+        fuchsia_color: フクシア色
+        gainsboro_color: ゲインズボロ色
+        garnet_color: ガーネット色
+        gentle_blue_color: グレー
+        Ginger_color: ジンジャー
+        glacier_blue_color: グレイシャー・ブルー
+        glaucous_color: 瑠璃
+        Goldenrod_color: ゴールデンロッド
+        grape_color: グレープカラー
+        grape_leaf_color: ブドウの葉の色
+        grape_purple_color: グレープパープル
+        grass_green_color: グラスグリーンカラー
+        gray_color: ジェントルブルー
+        green-yellow_color: グリーンイエロー
+        green_apple_color: 青リンゴ色
+        green_tea_color: 緑茶色
+        greige_color: グレージュ
+        heather_color: ヘザー色
+        heliotrope_color: ヘリオトロープ色
+        Henna_color: ヘナ
+        hollywood_cerise_color: ハリウッドセリーズ
+        Honey_color: ハニー
+        hunter_green_color: ハンターグリーン
+        imperial_red_color: インペリアル・レッド
+        Indian_red_color: インディアンレッド
+        indigo_color: 藍
+        international_klein_blue_color: インターナショナル・クライン・ブルー
+        iris_color: アイリス
+        ivory_color: アイボリー
+        ivy_color: アイビー色
+        jade_color: 翡翠色
+        jade_green_color: ジェードグリーン
+        japanese_violet_color: ジャパニーズバイオレットカラー
+        jasper_color: ジャスパー色
+        jungle_green_color: ジャングルグリーン
+        kelly_green_color: ケリーグリーン
+        keppel_color: ケッペルカラー
+        khaki_color: カーキ色
+        kiwi_color: キウイ色
+        lapis_color: ラピス
+        laurel_color: ローレルカラー
+        lavender_blue_color: ラベンダーブルー
+        lavender_blush_color: ラベンダーチーク
+        lavender_color: ラベンダー色
+        lavender_floral_color: ラベンダーフローラルカラー
+        lavender_gray_color: ラベンダーグレー
+        lavender_indigo_color: ラベンダー藍色
+        lavender_magenta_color: ラベンダーマゼンタ
+        leaf_green_color: リーフグリーン
+        lemon-lime_color: レモンライム色
+        lemon_color: レモン色
+        leprechaun_color: レプラコーン色
+        liberty_color: リバティ
+        lichen_green_color: 地衣グリーン
+        light_blue_color: ライトブルー
+        light_carmine_color: ライトカーミン
+        Light_coral_color: ライトコーラル
+        light_cyan_color: ライトシアン
+        light_green_color: ライトグリーン
+        Light_salmon_color: ライト・サーモン・カラー
+        light_steel_blue_color: ライトスチールブルー
+        light_thistle_color: ライトアザミ
+        lilac_color: ライラック色
+        lime_green_color: ライムグリーン
+        linden_green_color: リンデングリーン
+        linen_color: リネン
+        lust_color: ラスト
+        magenta_color: マゼンタ色
+        mahogany_color: マホガニー色
+        majorelle_blue_color: マジョレルブルー
+        malachite_green_color: マラカイトグリーン
+        Mandarin_color: マンダリン
+        Mango_color: マンゴー色
+        mantis_color: カマキリ色
+        mantis_green_color: カマキリグリーン
+        Maple_color: メープル色
+        marbled_green_color: マーブルグリーン
+        Marigold_color: マリーゴールド色
+        maroon_color: マルーン
+        mauve_color: モーブ色
+        mauve_taupe_color: モーヴトープ
+        mayan_blue_color: マヤブルー
+        medium_aquamarine_color: ミディアムアクアマリン
+        medium_blue_color: ミディアムブルー
+        medium_lavender_magenta_color: ミディアム・ラベンダー・マゼンタ
+        medium_orchid_color: ミディアムオーキッド
+        medium_purple_color: ミディアムパープル
+        medium_purple_navy_color: ミディアムパープル・ネイビー
+        medium_purple_taupe_color: ミディアムパープル・トープ
+        medium_slate_blue_color: ミディアムスレートブルー
+        medium_violet-red_color: ミディアムバイオレットレッド
+        medium_violet_color: ミディアムバイオレット
+        Melon_color: メロン色
+        midnight_blue_color: ミッドナイトブルー
+        military_green_color: ミリタリーグリーン
+        mink_color: ミンク色
+        mint_color: ミントカラー
+        mint_green_color: ミントグリーン
+        moss_green_color: モスグリーン
+        mossy_color: モスカラー
+        mulberry_color: 桑色
+        munsell_color: マンセルカラー
+        myrtle_green_color: マートルグリーン
+        Navajo_white_color: ナバホホワイト
+        navy_blue_color: ネイビーブルー
+        neon_blue_color: ネオンブルー
+        neon_green_color: ネオングリーン
+        oatmeal_color: オートミール
+        ocean_color: オーシャンカラー
+        old_rose_color: オールドローズ
+        olive_drab_color: オリーブドラブ色
+        olive_drab_green_color: オリーブドラブグリーン
+        olive_green_color: オリーブグリーン
+        olympic_blue_color: オリンピックブルー
+        opal_color: オパール
+        opal_green_color: オパールグリーン
+        Orange_brown_color: オレンジブラウン
+        Orange_red_color: オレンジレッド
+        orchid_color: オーキッド色
+        pale_blue_color: ペールブルー
+        pale_cerise_color: ペールセリーズカラー
+        pale_green_color: ペールグリーン
+        pale_lavender_blush_color: ペールラベンダー
+        pale_lavender_color: ペールラベンダー
+        pale_magenta_color: ペールマゼンタカラー
+        pale_olive_color: ペールオリーブ色
+        pale_pink-purple_color: ペールピンクパープル
+        pale_pink_color: ペールピンク
+        pale_plum_color: ペールプラム
+        pale_purple_color: ペールパープル
+        pale_turquoise_color: ペール・ターコイズ
+        pale_violet-red_color: ペールバイオレットレッド
+        Papaya_color: パパイヤ色
+        parakeet_color: インコ色
+        parrot_green_color: インコグリーン
+        pastel_blue_color: パステルブルー
+        pastel_purple_color: パステルパープル
+        pea_green_color: エンドウグリーン
+        pea_soup_green_color: ピー・スープ・グリーン
+        Peach_amber_color: ピーチアンバー
+        peach_color: ピーチ
+        Peach_cream_color: ピーチクリーム
+        Peach_light_color: ピーチライト
+        Peach_orange_color: ピーチオレンジ
+        Peach_pink_color: ピーチピンク
+        Peach_puff_color: ピーチパフ
+        Peach_rose_color: ピーチローズ
+        Peach_sherbet_color: ピーチシャーベット
+        Peach_yellow_color: ピーチイエロー
+        peacock_blue_color: ピーコックブルー
+        pear_green_color: ペアグリーン
+        pearl_color: パール
+        periwinkle_color: ペリウィンクル
+        persian_pink_color: ペルシャピンク
+        persian_plum_color: ペルシアンプラム
+        persian_red_color: パーシアン・レッド
+        Persimmon_color: 柿色
+        pickle_green_color: ピックルグリーン
+        pine_green_color: パイングリーン
+        pink_color: ピンク
+        pink_lavender_color: ピンクラベンダー
+        pistachio_color: ピスタチオカラー
+        pistachio_green_color: ピスタチオグリーン
+        plum_color: プラム
+        poinsettia_color: ポインセチア色
+        pomegranate_color: ザクロ色
+        powder_blue_color: パウダーブルー
+        prussian_blue_color: プルシアンブルー
+        puce_green_color: ピュースグリーン
+        Pumpkin_color: パンプキンカラー
+        purple_mountain_majesty_color: パープルマウンテン・マジェスティ
+        purple_navy_color: パープルネイビー
+        purple_pizzazz_color: パープル・ピザッツ
+        purple_taupe_color: パープル・トープ
+        putty_color: パテ色
+        radish_color: ラディッシュカラー
+        raspberry_color: ラズベリー色
+        raspberry_red_color: ラズベリーレッド
+        razzmatazz_color: ラズマッツカラー
+        red-orange_color: レッドオレンジ
+        red_color: レッドカラー
+        reddish_purple_color: 赤紫色
+        redwood_color: レッドウッド
+        reseda_color: レセダカラー
+        rhodochrosite_color: ロードクロサイト
+        rich_lavender_color: リッチラベンダー
+        robin_egg_blue_color: ロビンエッグブルー
+        rose_color: ローズカラー
+        rosewood_color: ローズウッド色
+        rosy_color: バラ色
+        royal_blue_color: ロイヤルブルー
+        ruby_color: ルビー色
+        Russet_color: ラセット色
+        Rust_color: サビ色
+        rusty_red_color: 錆赤色
+        Saddle_brown_color: サドルブラウン
+        Saffron_color: サフラン色
+        sage_color: セージ色
+        sage_green_color: セージグリーン
+        salmon_color: サーモン
+        Salmon_pink_color: サーモンピンク
+        sangria_color: サングリア色
+        sap_green_color: サップグリーン
+        sapphire_color: サファイア
+        scarlet_color: 緋色
+        scarlet_red_color: スカーレットレッド
+        sea_green_color: シーグリーン
+        seafoam_green_color: シーフォームグリーン
+        seashell_color: 貝殻色
+        seaweed_green_color: シーウィードグリーン
+        sepia_color: セピア色
+        shamrock_color: シャムロックカラー
+        Sienna_color: シエナ色
+        silver_color: シルバー
+        sinopia_color: シノピアカラー
+        slate_blue_color: スレートブルー
+        slate_color: スレート色
+        smoke_color: スモーク色
+        soft_pink_color: ソフトピンク
+        spanish_carmine_color: スパニッシュカーミン
+        spanish_violet_color: スパニッシュバイオレット
+        Spice_color: スパイス
+        spring_green_color: スプリンググリーン
+        spruce_color: スプルース色
+        steel_blue_color: スチールブルー
+        Sunrise_color: サンライズ
+        Sunset_color: サンセット
+        swamp_green_color: スワンプグリーン
+        Tangerine_color: タンジェリン
+        Tangerine_light_color: タンジェリン・ライト
+        taupe_color: トープ色
+        tea_green_color: ティーグリーン
+        teal_color: ティールブルー
+        teal_green_color: ティールグリーン
+        terra_cotta_color: テラコッタ色
+        Terracotta_color: テラコッタ
+        thistle_color: アザミ色
+        thyme_color: タイムカラー
+        tiffany_blue_color: ティファニーブルー
+        titanium_color: チタン
+        Tomato_color: トマト色
+        true_blue_color: トゥルーブルー
+        true_green_color: トゥルーグリーン
+        turquoise_blue_color: ターコイズブルー
+        turquoise_color: ターコイズブルー
+        turtle_green_color: タートルグリーン
+        tuscan_red_color: トスカーナレッド
+        upsdell_red_color: アップスデルレッド
+        vanilla_color: バニラ色
+        venetian_red_color: ベネチアンレッド
+        verdant_color: ベルデ色
+        verdant_green_color: バーダントグリーン
+        verdigris_color: バーディグリスカラー
+        vermilion_color: 朱色
+        vibrant_green_color: 鮮やかな緑色
+        violet-blue_color: バイオレットブルー
+        violet_blue_color: バイオレットブルー
+        violet_color: バイオレット
+        virid_green_color: ビリッドグリーン
+        viridian_color: ビリジアンカラー
+        vivid_violet_color: ビビッドバイオレット
+        watermelon_color: スイカ色
+        wheat_color: 小麦色
+        whisper_color: ウィスパー
+        white_color: ホワイト
+        willow_color: 柳色
+        willow_green_color: ウィローグリーン
+        wine_color: ワインカラー
+        wisteria_color: 藤色
+        xanadu_purple_color: ザナドゥ・パープル
+        yale_blue_color: エールブルー
+        zinnwaldite_purple_color: ジンワルダイト・パープル
+        grey: グレー
+        japanese_pattern: 和柄
+        '[color]_silhouette_girl': カラーシルエットの少女
+        blue_silhouette_girl: 青色シルエットの少女
+        chill_atmosphere: 穏やか
+        cinematic_atmosphere: 映画的
+        dark_and_gritty_atmosphere: 荒廃的
+        dramatic_atmosphere: ドラマチック
+        gritty_atmosphere: 荒々しい
+        gritty_space_atmosphere: 無骨
+        hazy_atmosphere: 霞んだ雰囲気
+        light_atmosphere: ハイキー
+        monochrome_atmosphere: モノクロ
+        muted_atmosphere: 低彩度
+        noir_atmosphere: ノワール感
+        pastel_atmosphere: パステル調
+        reflective_atmosphere: 内省的
+        vintage_atmosphere: ビンテージ
+        ethereal: 幻想的
+        ethereal_princess: 幻想的なプリンセス
+        magnificent.ethereal_female_air_elemental: 壮大。エーテル女性エアエレメンタル
+        blue_atmosphere: 青基調
+        blue_tint: 寒色系
+        blue_tones: 青基調
+        cobalt: 青基調
+        cold_atmosphere: 寒色系
+        cool_tones: 寒色系
+        eye-catching: 彩度高め
+        gentle_palette: パステルカラー
+        green_tones: 緑基調
+        high_saturation: 彩度高め
+        light_tones: パステルカラー
+        lush: 緑基調
+        old_photo: セピア
+        orange_tones: オレンジ基調
+        punchy_colors: 彩度高め
+        purple_tones: 紫基調
+        red_tones: 赤基調
+        scarlet_atmosphere: 赤基調
+        subdued_palette: 彩度低め
+        verdant: 緑基調
+        warm_color_palette: 暖色系
+        warm_glow: オレンジ基調
+  - name: アングル・構図
+    groups:
+    - name: 視線
+      color: rgba(0, 191, 255, 1)
+      tags:
+        adjusting_eyewear: アイウェアの調整
+        facing_away: 向きを変える
+        facing_viewer: 対面視聴者
+        looking_afar: 遠くを探しています
+        looking_at_another: 別の物を見てる
+        looking_at_hand: 手を見ています
+        looking_at_hands: 手を見ています
+        looking_at_mirror: 鏡を見ています
+        looking_at_phone: 電話を見ています
+        looking_at_screen: 画面を見ています
+        looking_away: 目をそらしている
+        looking_below: うつむく
+        looking_down_at_viewer: カメラを見下ろす構図
+        looking_outside: 外を見る
+        looking_over_eyewear: アイウェアを見ています
+        looking_through_legs: 足を通して見ています
+        looking_up_at_viewer: カメラを見上げる構図
+        stare: 凝視
+        looking_at_the_viewer: 視聴者を見ている
+        looking_through_own_legs: looking_through_own_legs
+        looking_around: looking_around
+        looking_at_ass: お尻を見ています
+        looking_at_bulge: looking_at_bulge
+        looking_at_creature: looking_at_creature
+        looking_at_reflection: looking_at_reflection
+        looking_at_self: looking_at_self
+        looking_at_watch: 時計を見ています
+        looking_for_glasses: メガネを探しています
+        looking_through_scope: looking_through_scope
+        coy_look: 流し目
+        direct_gaze: カメラ目線
+        eyes_shut: 伏し目
+        flirtatious_gaze: 流し目
+        gazing_away: 遠くを見る
+        looking_into_distance: 遠くを見る
+        lowered_gaze: 下を見る
+        over_shoulder_gaze: 振り返り目線
+        peaceful_expression: 伏し目
+        puppy_eyes: 上目遣い
+        relaxed_gaze: 半目
+        sidelong_glance: 流し目
+        sky_gazing: 上を見る
+        upward_gaze: 上を見る
+    - name: 視点・角度
+      color: rgba(106, 90, 205, 1)
+      tags:
+        aerial: 空中
+        aerial_view: 空撮
+        back_view: 背面図
+        cinematic_angle: 映画的アングル
+        cropped_arms: トリミングされた腕
+        cropped_head: クロップドヘッド
+        cropped_shoulders: 肩を切り取った
+        cropped_torso: トリミングされた胴体
+        dutch_angle: オランダの角度
+        dynamic_angle: ダイナミックアングル
+        establishing_shot: 設定ショット
+        extreme_close-up: 非常に特写
+        extreme_long_shot: 非常に長いショット
+        extreme_perspective: 非常に遠近感
+        face: 顔
+        face_only: 顔のみ
+        fisheye: 魚眼
+        from_back: 背後から
+        from_behind: 後ろ姿
+        from_ground: 地面から
+        front_view: 正面図
+        full_body: 全身
+        head_out_of_frame: フレームから出てください
+        intense_angle: 強烈なアングル
+        low_angle: ローアングル
+        lower_body: 下半身
+        medium_shot: 中景
+        over-the-shoulder_shot: 肩越しショット
+        panorama: パノラマ
+        perspective: 視点
+        portrait: 肖像画
+        profile: プロフィール
+        rotational_symmetry: 回転対称性
+        scenery: 景色
+        scenic_view: 景観
+        side_view: 横向き面図
+        straight-on: まっすぐに
+        symmetrical: 対称
+        three-quarter_view: 3/4
+        turnaround: 振り向く
+        upper_body: 上半身
+        upside-down: 逆さまに
+        vanishing_point: 消失点
+        wide_shot: ワイドショット
+        isometric: アイソメトリック
+        ass_focus/hip_focus: お尻が強調される構図
+        close_to_viewer: 被写体がアップになりやすい
+        facing_at_viewer: カメラに顔を向けてくれる
+        in_the_distance: 遠景を指示するときに
+        point_at_viewer: こちらに指をさす
+        single_focus, couple_focus: メインに描かれるキャラの数
+        upside-down_face: 顔部分が上下逆になる構図のときに
+        back_viewing: 後ろ姿
+        pov_feet, barefoot: '{{{sole}}}, {{{looking down at viewer}}}, 足裏見せて見下げてる'
+        air_bed: エアーベッド
+        bed_room: ベッド
+        face_up: 顔アップ
+        ftont_view: 正面
+        high_angle_full_body_shot: ハイアングル全身
+        high_position: ハイポジション
+        low_angle_full_body_shot: ローアングル全身
+        low_position: ローポジション
+        night_pool: ナイトプール
+        zentangle: ゼンタングル
+        Keyshot: イラスト調
+        night_view: 夜景
+        bent_over, view_from_behind: 屈み込み (Bent over)
+        bird's-eye_view, from_way_above: 俯瞰 (Bird's-eye View)
+        crawling_towards_viewer: 這い寄り (Crawling)
+        dutch_angle, tilted_frame: ダッチアングル (Tilted)
+        focus_on_buttocks, from_behind: お尻フォーカス (Ass Focus)
+        focus_on_cleavage, close-up: 胸元フォーカス (Cleavage Focus)
+        focus_on_crotch, close-up: 股間フォーカス (Crotch Focus)
+        focus_on_thighs, close-up: 太ももフォーカス (Thighs Focus)
+        high_angle, from_above: ハイアングル (High Angle)
+        looking_at_viewer, from_behind: 後ろから振り返り (Looking back)
+        low_angle, from_below: ローアングル (Low Angle)
+        lying_on_back, legs_spread, legs_up: 仰向け開脚 (Lying on back)
+        on_all_fours, provocative_pose: 四つん這い (All Fours)
+        side_view, profile: 横顔 (Side View / Profile)
+        view_from_between_legs: 足の間からの視点 (Between Legs)
+        worm's-eye_view, from_way_below: 煽り (Extreme Low Angle)
+        ? '{_(back_view:1.3)_|_from_behind_ass_focus_|_back_view_standing_|_back_view_sitting_|_back_view_looking_back_|_back_view_cinematic_|_back_view_street_|_back_view_indoor_|_back_view_shadow_|_back_view_lighting_|_back_view_detailed_|_back_view_dynamic_|_back_view_seductive_|_back_view_from_side_|_back_view_low_angle_}'
+        : 【アングル】真後ろ視点
+        ? '{_(dutch_angle:1.3)_|_tilted_frame_dynamic_|_tilted_camera_motion_|_dutch_angle_unstable_|_dutch_angle_cinematic_|_dutch_angle_street_|_dutch_angle_indoor_|_dutch_angle_artsy_|_dutch_angle_dramatic_|_dutch_angle_looking_back_|_dutch_angle_perspective_|_dutch_angle_wide_|_dutch_angle_close-up_|_dutch_angle_action_|_dutch_angle_mystery_}'
+        : 【アングル】ダッチアングル
+        ? '{_(fisheye_lens:1.3)_|_distorted_perspective_|_wide_angle_dynamic_|_fisheye_playful_|_fisheye_face_focus_|_wide_angle_wide_shot_|_wide_angle_cinematic_|_wide_angle_street_|_wide_angle_indoor_|_wide_angle_perspective_|_wide_angle_looking_up_|_wide_angle_from_above_|_wide_angle_distorted_|_wide_angle_extreme_|_wide_angle_art_}'
+        : 【アングル】魚眼・広角
+        ? '{_(high_angle:1.4)_|_(extreme_high_angle:1.5)_|_from_above_looking_up_|_vulnerable_gaze_|_bird''s_eye_view_|_from_the_ceiling_|_high_angle_street_|_high_angle_cinematic_|_looking_up_at_camera_|_high_angle_from_front_|_high_angle_from_side_|_high_angle_looking_down_|_high_angle_dramatic_|_high_angle_urban_|_high_angle_soft_}'
+        : 【アングル】支配的な俯瞰
+        ? '{_(low_angle:1.4)_|_(extreme_low_angle:1.5)_|_from_below_looking_down_|_dominant_perspective_|_worm''s_eye_view_|_from_the_ground_|_extreme_low_angle_street_|_extreme_low_angle_cinematic_|_looking_down_on_camera_|_low_angle_from_front_|_low_angle_from_side_|_low_angle_looking_up_|_low_angle_dramatic_|_low_angle_urban_|_low_angle_powerful_}'
+        : 【アングル】極限の煽り
+        ? '{_(top_down_view:1.4)_|_perfectly_vertical_|_from_above_vertical_|_vertical_perspective_|_top_down_street_|_top_down_room_|_top_down_bed_|_top_down_floor_|_top_down_desk_|_top_down_urban_|_top_down_nature_|_top_down_cinematic_|_top_down_dramatic_|_top_down_art_|_top_down_looking_up_}'
+        : 【アングル】垂直俯瞰
+        ? '{_close-up_angle_face_|_eye_level_face_focus_|_face_focus_narrow_|_close-up_angle_eyes_|_close-up_angle_lips_|_close-up_angle_profile_|_close-up_angle_cinematic_|_close-up_angle_lighting_|_close-up_angle_shadow_|_close-up_angle_detailed_|_close-up_angle_bokeh_|_close-up_angle_looking_at_viewer_|_close-up_angle_winking_|_close-up_angle_smile_|_close-up_angle_seductive_}'
+        : 【アングル】クローズアップアン
+        ? '{_eye_level_straight_|_front_view_standing_|_front_view_eye_level_|_looking_at_camera_|_eye_level_portrait_|_eye_level_street_|_eye_level_indoor_|_eye_level_cinematic_|_eye_level_natural_|_eye_level_detailed_|_eye_level_bokeh_|_eye_level_profile_|_eye_level_sitting_|_eye_level_looking_back_|_eye_level_casual_}'
+        : 【アングル】アイレベル
+        ? '{_from_behind_low_angle_|_back_view_from_below_|_low_angle_ass_focus_|_back_view_low_perspective_|_from_behind_low_cinematic_|_back_view_low_street_|_back_view_low_indoor_|_from_behind_low_dynamic_|_back_view_low_shadow_|_from_behind_low_lighting_|_back_view_low_detailed_|_from_behind_low_seductive_|_back_view_low_urban_|_back_view_low_nature_|_back_view_low_art_}'
+        : 【アングル】背後・ローアングル
+        ? '{_from_behind_side_angle_|_diagonal_back_view_|_looking_over_shoulder_back_|_back_view_45_degree_|_from_behind_side_cinematic_|_back_view_side_street_|_back_view_side_indoor_|_from_behind_side_dynamic_|_back_view_side_shadow_|_from_behind_side_lighting_|_back_view_side_detailed_|_from_behind_side_seductive_|_back_view_side_urban_|_back_view_side_nature_|_back_view_side_art_}'
+        : 【アングル】斜め後ろ
+        ? '{_giantess_perspective_|_worm''s_eye_view_small_|_extreme_scale_difference_|_perspective_from_ground_|_perspective_from_sky_|_giantess_looking_down_|_small_girl_looking_up_|_extreme_low_angle_giant_|_extreme_high_angle_tiny_|_scale_focus_cinematic_|_scale_focus_street_|_scale_focus_indoor_|_scale_focus_art_|_scale_focus_dynamic_|_scale_focus_detailed_}'
+        : 【アングル】巨女・小人パース
+        ? '{_ground_level_shot_|_from_the_floor_looking_up_|_extreme_low_angle_ground_|_ground_view_street_|_ground_view_cinematic_|_ground_view_perspective_|_ground_view_dynamic_|_ground_view_art_|_ground_view_indoor_|_ground_view_outdoor_|_ground_view_nature_|_ground_view_standing_feet_|_ground_view_sitting_|_ground_view_lying_|_ground_view_detailed_}'
+        : 【アングル】地面スレスレ
+        ? '{_side_angle_45_degree_|_diagonal_view_standing_|_45_degree_profile_|_45_degree_looking_at_viewer_|_45_degree_cinematic_|_45_degree_street_|_45_degree_indoor_|_45_degree_lighting_|_45_degree_shadow_|_45_degree_detailed_|_45_degree_dynamic_|_45_degree_seductive_|_45_degree_close-up_|_45_degree_bust_up_|_45_degree_full_body_}'
+        : 【アングル】斜め45度
+        ? '{_side_view_profile_|_profile_standing_|_profile_sitting_|_profile_looking_away_|_profile_sharp_jawline_|_profile_body_curves_|_profile_cinematic_|_profile_street_|_profile_indoor_|_profile_lighting_|_profile_shadow_|_profile_detailed_|_profile_dynamic_|_profile_seductive_|_profile_close-up_}'
+        : 【アングル】真横・プロファイル
+        ? '{_wide_angle_looking_up_|_wide_angle_from_below_|_wide_angle_extreme_|_wide_angle_perspective_|_wide_angle_cinematic_|_wide_angle_street_|_wide_angle_indoor_|_wide_angle_dynamic_|_wide_angle_dramatic_|_wide_angle_urban_|_wide_angle_nature_|_wide_angle_art_|_wide_angle_vertical_|_wide_angle_horizontal_|_wide_angle_panoramic_}'
+        : 【アングル】広角・ダイナミック
+        fed_by_viewer, pov_hand: viewerから食べさせられる
+        feeding_viewer: viewerに食べさせる
+        hand_towards_viewer: 手だけviewer側に伸ばす
+        hypnotizing_viewer, holding_pendulum: viewerを催眠にかけてる
+        incoming_hug: viewerに向かって抱きつこうとする
+        incoming_punch: viewerに向かってパンチする
+        kabedon_on_viewer: viewerを壁ドン
+        lap_pillow_invitation: 膝枕に誘う
+        leaning_towards_viewer: viewerに身を乗り出してくる
+        looking_past_viewer: viewerの横・向こうを見る
+        proposing_to_viewer: viewerにプロポーズ
+        reaching_towards_viewer: 手をviewerに向かって伸ばす
+        running_towards_viewer: viewerに向かって走ってくる
+        viewer_holding_leash, collar: viewerからリードで繋がれる
+        viewer_on_leash: viewerにリードをつける
+        walking_towards_viewer: viewerに向かって歩いてくる
+        winking_at_viewer: viewerにウィンク
+        yukadon_on_viewer, ceiling: viewerを床ドン
+        ass_blush: 赤くなったお尻
+        ass_freckles: お尻のそばかす
+        butt_cleavage: お尻の割れ目
+        butt_expansion: お尻の膨らみ
+        dimples_of_venus: 腰の上の小さな2つのくぼみ
+        flat_butt: ペタンコ尻
+        gigantic_butt: 超巨大尻
+        huge_butt: デカ尻
+        large_butt: 大きめのお尻
+        medium_butt: 普通サイズの尻
+        small_butt: 小尻
+        dutch_angle, tilted_angle: ダッチアングル （斜めのアングル）
+        eye-level_shot: アイレベル
+        high_angle_shot: ハイアングル
+        level_angle, horizon_straight: 水平アングル
+        profile_view: 横からのアングル
+        profile_view, side_angle: 横からのアングル
+        facing_away, back: （補強用）後ろ姿・背中
+        dynamic_angle, dramatic_perspective: ダイナミックアングル
+        POV_shot, point_of_view: POVショット（一人称視点）
+        from_above, bird’s_eye_view, aerial_view: 鳥瞰図 （極端に高い位置からのカメラアングル）
+        wide_shot, landscape: 構図を広くしたい場合
+        zoom_layer_eyes_out_of_frame, zoom_layer_upper_body_close-up_no_head: 顔から下のズームレイヤー
+        zoom_layer_from_behind_lower_body_close-up, zoom_layer_back_view_thighs_and_back: 後ろ姿のズームレイヤー
+        zoom_layer_legs_and_feet_close-up: 足元のズームレイヤー
+        zoom_layer_lower_body_close-up: 下半身のズームレイヤー
+        zoom_layer_with_halftone_dot: ハーフトーンのズームレイヤー
+        from_ceilling_view, from_above, high_angle: 天井から見下ろす視点
+        cafe, detailed_cream_ceiling, ceiling_light, high_ceiling, ceiling_fan, light_bulbs: カフェの天井
+        ceiling: 天井
+        ceiling_fan: シーリングファン
+        classroom, detailed_ceiling, ceiling_light, curtain, wall-mounted_air_conditioner, tube_fluorescent_lamps: 教室の天井
+        detailed_ceiling, ceiling_light, fluorescent_lamp, curtain: 天井セット一式
+        high_ceiling: 高い天井
+        infirmary, tile_ceiling, detailed_cream_ceiling, ceiling_light, curtain, wall-mounted_air_conditioner: 保健室の天井
+        my_room, detailed_cream_ceiling, ceiling_light, curtain, wall-mounted_air_conditioner: たとえば、自分の部屋の天井を再現したいときは、こんな感じで記述します。
+        school_gym, detailed_ceiling, ceiling_light, ceiling_lamps_high_ceiling, structural_beam: 体育館の天井
+        through_ceiling, open_ceiling: 吹き抜けの天井
+        vaulted_ceiling: アーチ型の天井
+        wall-mounted_air_conditioner: エアコン
+        wooden_ceiling: まずは、天井を使ったAIイラストを作るときに必要な、基本のプロンプトとその組み方を紹介していきます。
+        female_pov: 女性POV視点
+        from_below, pov_across_bed, lying_on_back: 天井を見上げる視点
+        from_below, pov_across_bed, lying_on_back, detailed_cream_ceiling, my_room: 続いて、天井を見上げるアングルを再現するために使いやすい、おすすめのプロンプトを紹介します。
+        male_pov: 男性POV視点
+        pov_across_bed: ベッド越しの視点
+        pov_across_chairs: 椅子越しのPOV視点
+        pov_breasts: 胸越しの視点で天井を見上げるプロンプト
+        pov_breasts, pov_cleavage, downblouse: 胸の谷間越しの視点
+        pov_foot: 足越しの視点
+        pov_legs: 脚越しの視点
+        pov, perspective, from_below, worm’s_eye_view, under_shot, crotch_focus, crotch_seam: POV視点（一人称視点）のプロンプトを加えることで、見ている人が、キャラクターを見上げている雰囲気を強めることができます。
+        ceiling_fan_/_contrail: 上方向の要素を追加
+        crotch_focus, crotch_seam_/_foot_focus, shoe_soles_/_sky: 見える要素を指定
+        from_below, worm’s_eye_view_/_under_shot: 下からの視点を指定
+        looking_down_/_looking_at_viewer: 視線を指定する
+        pov, perspective: 視点を強める
+        spread_legs_/_squatting: 構図を調整する
+        mtu_virus, zoom_layer, multiple_views: 真下からのアングルが背景レイヤーに描かれる
+        from_below, worm’s_eye_view: プロンプト：from below, worm's eye viewにて生成したローアングルのAIイラスト作例
+        under_shot: プロンプト：under shotにて生成したローアングルのAIイラスト作例
+        crotch_focus: 股間にフォーカスする・主題構図として指定する
+        crotch_seam: 股下の縫い目、ジーンズ、パンティーなどの縫い目を強調する
+        girl, looking_down, crotch_focus, crotch_seam, under_shot, black_t-shirt, black_pants, white_belt: まずは一つ、真下からのアングルを再現した作例とともに紹介します。
+        from_below, worm’s_eye_view, under_shot, crotch_focus, crotch_seam: 今回は、前章で紹介した「crotch focus, crotch seam（股間にフォーカス・股下の縫い目）」の組み合わせをそのまま加えていきます。
+        butt_crack: お尻の割れ目
+        contrail: 飛行機雲
+        extended_upskirt, navel: スカートの中とおへそまでが見える構図になる
+        foot_focus, shoe_soles: 足の裏
+        skirt, lining: スカートの裏地
+        underboob: 下乳が真下から見える構図になる
+        looking_at_viewer, looking_down: キャラクターを見て見下ろす
+        extreme_close-up_back: 背中を極端にクローズアップする
+        CCTV_security_camera_mounted_high_on_utility_pole: 防犯カメラ（電柱や店舗に設置）
+        compact_security_lamp_fixed_beneath_street-light_arm: 街灯についた防犯灯
+        small_convex_mirror_mounted_in_narrow_alleyway: 小さな反射ミラー（路地）
+        wall-mounted_red_fire-extinguisher_box: 消火器ケース（壁付赤ボックス）
+        high_up: 高所
+        worm's_eye_view: 虫の視点
+        lower body: 下半身
+        haunting_cinematic_gaze: 忘れられない映画のような視線
+        bad_perspective: 悪い視点
+        official_alternate_color: official_alternate_color
+        partially_underwater_shot: 部分的に水中ショット
+        pectoral_focus: 胸の焦点
+        portrait_(object): ポートレート（オブジェクト）
+        symmetry: 対称
+        very_wide_shot: 非常にワイドショット
+        clothes_focus: clothes_focus
+        creature_focus: creature_focus
+        cropped_arm: cropped_arm
+        dollhouse_view: ドールハウスビュー
+        ear_focus: 耳の焦点
+        family_portrait: 家族写真
+        fed_by_viewer: 視聴者によって供給されます
+        firing_at_viewer: 視聴者の発射
+        footwear_focus: footwear_focus
+        hair_focus: ヘアフォーカス
+        hero_shot_(splatoon_1): hero_shot_(splatoon_1)
+        kanji_focus: kanji_focus
+        leg_focus: leg_focus
+        neck_focus: neck_focus
+        octo_shot_(splatoon): octo_shot_(splatoon)
+        plant_focus: plant_focus
+        pokemon_focus: pokemon_focus
+        directly_above: 真上から
+        dramatic_angle: あおり
+        eye_level: アイレベル
+        flat_lay_with_person: 真上から
+        looking_up_at: 下から（強め）
+        looking_up_at_subject: あおり
+        low_angle_shot: あおり
+        natural_angle: アイレベル
+        overhead: 上から（強め）
+        rear_view: 後ろ姿
+        slight_angle: 斜め45度
+        slightly_from_above: 上から（軽め）
+        slightly_from_below: 下から（軽め）
+        straight_on: アイレベル
+        top-down_view: 真上から
+        face_in_profile: 横顔
+        face_seen_from_the_side: 横から見た顔
+        full_body_shot_from_behind: 後ろからの全身ショット
+        shot_from_behind: 後ろからのショット
+        side_shot: サイドショット
+        waist-up: 上半身
+        three-point_perspective: 3点透視
+        upshot: あおり
+        fish-eye_lens: 魚眼レンズ
+        multiple_characters: 複数人
+        off-center: 片側配置
+        overlapping: 重ねる
+        side_by_side: 横並び
+        fixed-point_camera: 定点カメラ
+        looking_at_viewer, pleading_eyes, begging_eyes: 上目遣い
+    - name: フォーカス
+      color: rgba(220, 20, 60, 1)
+      tags:
+        animal_focus: 動物強調
+        armpit_focus: 脇の下強調
+        back_focus: バックフォーカス
+        breast_focus: 大大胸筋筋強調
+        character_focus: キャラクター
+        couple_focus: カップルフォーカス
+        eye_focus: 目強調
+        groin_focus: 鼠径部フォーカス
+        hand_focus: ハンドフォーカス
+        male_focus: 男の子
+        mecha_focus: メカフォーカス
+        navel_focus: おへそ強調
+        object_focus: 物体フォーカス
+        other_focus: その他の焦点
+        pussy_focus: マンコフォーカス
+        reflection_focus: 反射フォーカス
+        single_focus: 1人
+        solo_focus: 一人だけ強調
+        text_focus: 文字強調
+        thigh_focus: 太ももの焦点
+        cinematic: シネマティック
+        glowing: 輝く
+        limited_palette: 限られたパレット
+        color_grading: グレーディング
+        soft_reflections: 柔らかい反射
+        an_epic_dreamy_atmosphere: 壮大な夢のような雰囲気
+        intriguing_atmosphere: 興味深い雰囲気
+        3d_render: 3Dレンダー
+        dramatic_lights: 劇的なライト
+        intricate_linework_with_expressive_contrasts: 表情豊かなコントラストを備えた複雑な線画
+        mysterious_glow: 神秘的な輝き
+        mystical_glow: 神秘的な輝き
+        vibrant_glow: 鮮やかな輝き
+        professional_photography: プロの写真撮影
+        a_cinematic: 映画的な
+        a_photorealistic: 写実的な
+        atmospheric_diffusion: 大気拡散
+        bloom_effects: ブルームエフェクト
+        but_render_it_darker: しかし、それをより暗くレンダリングします
+        cinematic_concept_art: 映画のようなコンセプトアート
+        cinematic_motion_frozen_in_time: 時間の中で止まった映画のような動き
+        dramatic: 劇的
+        dreamlike_asian_fantasy_atmosphere: 夢のようなアジアンファンタジーの雰囲気
+        dreamlike_atmosphere: 夢のような雰囲気
+        dreamworks-inspired_cinematic_style: ドリームワークスにインスピレーションを得た映画のようなスタイル
+        dreamy_fine_art_photography: 夢のような芸術写真
+        eerie_yet_beautiful_atmosphere: 不気味でありながらも美しい雰囲気
+        ethereal_glow: 神秘的な輝き
+        faint_filmic_haze: かすかな映画のようなヘイズ
+        glowing_blue: 青く光る
+        glowing_fireflies_embedded_inside_the_blue_pigments: 青い顔料の中に埋め込まれた光るホタル
+        glowing_gold_accents: 輝くゴールドのアクセント
+        high_dynamic_range: ハイダイナミックレンジ
+        low_contrast: 低コントラスト
+        luminous_highlight_rolloff: 明るいハイライトのロールオフ
+        monochrome_palette: モノクロパレット
+        no_overbright_glow: 過度の明るさがない
+        octane_render: オクタンレンダリング
+        otherworldly_cinematic_atmosphere.: 異世界の映画のような雰囲気。
+        photorealism: フォトリアリズム
+        photorealistic_mixed_with_surreal_fantasy_art.: フォトリアリスティックとシュールなファンタジーアートが融合。
+        photorealistic_rendering: 写実的なレンダリング
+        refined_highlight_rolloff: 洗練されたハイライトロールオフ
+        reflections: 反射
+        restrained_analog_imperfection: 抑制されたアナログの不完全さ
+        soft_atmospheric_diffusion: ソフトな大気拡散
+        soft_atmospheric_haze: 柔らかい大気のもや
+        softened_micro-contrast: ソフトなマイクロコントラスト
+        subdued_highlights: 落ち着いたハイライト
+        subtle_reflected_highlights_on_wet_pigments: 濡れた顔料に微妙に反射したハイライト
+        super_model_facial_photography: スーパーモデルの顔写真撮影
+        surreal_botanical_fantasy_atmosphere: 超現実的な植物のファンタジーの雰囲気
+        teal_highlights.the_color_palette_is_dominated_by_reds: ティールのハイライト。カラーパレットは赤が大半を占めています
+        unreal_engine_render: アンリアル エンジン レンダリング
+        wings_filled_with_blooming_flowers: 翼は咲き誇る花でいっぱい
+        with_a_subtle_glow_that_complements_her_serene: 彼女の穏やかさを引き立てる繊細な輝きを持っています
+        with_soft_chiaroscuro: ソフトキアロスクーロ付き
+        bust_shot: バストアップ
+        close_up_face: 顔アップ
+        distant_view: 遠景
+        ECU: 超アップ
+        extreme_close_up: 超アップ
+        eyes_only: 超アップ
+        face_portrait: 顔アップ
+        full_body_with_space: 全身＋余白
+        head_shot: 顔アップ
+        knee_shot: 膝上
+        thigh_up: 膝上
+        waist_up: ウエストアップ
+    - name: ライティング
+      color: rgba(30, 144, 255, 1)
+      tags:
+        ambient_lighting: 環境照明
+        ambient_occlusion: 環境遮蔽
+        atmospheric: 大気
+        aurora_glow: オーロラのような光
+        backlighting: 逆光
+        beautiful_lighting: 美しい照明
+        bioluminescence: 生物発光
+        bloom: 咲く
+        brilliant_rays: 輝く光
+        candle_light: キャンドルライト
+        caustics: 苛性
+        cinematic_lighting: 映画的照明
+        cinematic_shadows: 映画のような影
+        deep_shadows: 深い影
+        direct_lighting: 直接照明
+        dreamy_blur: 夢幻的なブラー
+        dynamic_lighting: 動的照明
+        faint_light: 弱い光
+        fire: 火
+        flashlight: 懐中電灯
+        golden_hour: 黄金時間
+        indirect_illumination: 間接照明
+        lamppost: 街灯柱
+        lens_flare: レンズフレア
+        light_leaks: 光漏れ
+        light_particles: 光粒子
+        light_rays: 光線
+        light_sparkles: 光のスパーク
+        moon: 月
+        moonlight: 月光
+        neon: ネオン
+        neon_lights: ネオンライト
+        polarized_light: 偏光
+        prismatic_reflection: 虹色の反射
+        radiant_flares: 輝く光
+        reflection: 反射
+        shaded: 影
+        shadows: 影
+        sidelighting: サイドライト
+        smoky_effect: 煙のような効果
+        sparkling_glitter: 輝くグラデーション
+        specular_lighting: スペキュラーライティング
+        spot_light: スポットライト
+        stage_lights: ステージライト
+        strobe_effect: ストロボ効果
+        strong_light: 強い光
+        strong_light_coming_in: 強い光が入っている
+        sun: 太陽
+        sun_rays: 太陽光
+        sunbeams: 太陽光
+        sunlight: 日光
+        surreal_vortex: 不思議な渦巻き
+        torch: 松明
+        aurora_lighting: オーロラ
+        beauty_lighting, soft_face_lighting: ビューティーライト
+        blind_shadow: ブラインドの影
+        bloom_lighting: ブルーム
+        bright_daylight: 昼の明るい光
+        caustic_lighting, water_reflections: 水面反射
+        cinematic_lighting, golden_hour: 夕暮れ
+        club_lighting, colorful_lights: クラブ照明
+        colorful_lighting: カラフル照明
+        cyberpunk_lighting: サイバーパンク
+        dappled_sunlight, tree_shadow: 木漏れ日
+        deep_shadow: 深い影
+        dimly_lit: 暗がり
+        divine_lighting: 神々しい
+        dramatic_shadows: ドラマチックな影
+        edge_lighting: 輪郭光
+        ethereal_lighting: 幻想的
+        fairy_lights, ethereal_glow: 妖精の光
+        fashion_photography_lighting: ファッション撮影
+        fill_light: フィルライト
+        god_rays, volumetric_light: 光芒
+        half_shadow_on_face: 半分だけ影
+        hard_lighting: ハードライト
+        harsh_shadows: 鋭い影
+        high_contrast_shadows: コントラスト強
+        high_key_lighting: ハイキー照明
+        holographic_lighting: ホログラム光
+        key_light: キーライト
+        lantern_light: ランタン
+        long_shadow: 長い影
+        low_key_lighting: ローキー照明
+        magical_glow, fantasy_lighting: 魔法の光
+        neon_lighting: ネオン
+        overcast_lighting, soft_daylight: 曇り空の光
+        purple_lighting: パープルライト
+        rainy_lighting, wet_reflections: 雨模様
+        ring_light: リングライト
+        shadow_on_face: 顔に影
+        side_lighting: サイドライト
+        signage_glow, neon_signs: 看板の光
+        snow_light, soft_cold_lighting: 雪明かり
+        soft_lighting: ソフトライト
+        stage_lighting, spotlights: ステージライト
+        starlight, night_lighting: 星明かり
+        streetlight, night_lighting: 街灯
+        sunrise_lighting, warm_light: 朝焼け
+        sunset_backlighting: 夕焼け逆光
+        top_lighting: トップライト
+        tree_shadow: 木の影
+        underwater_lighting: 水中の光
+        window_light, natural_lighting: 窓からの自然光
+        highlights_in_hair: ハイライト入りの髪
+        inner_color_hair: インナーカラー髪
+        lowlights_in_hair: ローライト入りの髪
+        split_dye_hair: スプリットダイヘア
+        '{color1}_hair_with_{color2}_highlights': '{color1}の髪に{color2}のハイライト 例 : black hair with red highlights (黒髪に赤いハイライト)'
+        '{color1}_hair_with_{color2}_streaks': '{color1}の髪に{color2}のメッシュ 例 : brown hair with blonde streaks (茶髪に金色のメッシュ)'
+        backlighting, bright_lighting, light_leak: ハイキーにするプロンプト組み合わせ
+        heavy_chromatic_aberration: girl, black short hair, blue eyes, earbuds, wind, profile, dutch angle, backlighting,
+          sidelighting, blurry background, bright lighting, light leak
+        scan_artifacts: スキャン線
+        vhs_artifacts: VHS風のノイズ
+        cool_colored: クール系の色調
+        dappled_sunlight: 木漏れ日
+        diffused_light: 柔らかい光
+        dramatic_lighting: ドラマチックな光
+        sun_halation: ハレーション
+        sunbeam: 太陽の光
+        vignetting: 周辺減光
+        window_shadow: 窓枠の形の影
+        bare_tree, winter: 冬の枯れ木
+        cityscape, blue_sky: 都市の景観と青空
+        classroom, looking_outside, sunset: 放課後の教室
+        contrail, blue_sky, power_lines, rural: 飛行機雲と送電線
+        cumulonimbus_cloud, riding, bicycle, hair_blowing: cumulonimbus cloud, riding, bicycle, hair blowing
+        dusk, winter: 冬の夕暮れ
+        empty_room, sitting_in_corner: 空っぽの部屋の四隅
+        falling_petals, cherry_blossoms: 桜と舞い散る花びら
+        fireworks, yukata, night_sky: 花火と浴衣
+        floating_autumn_leaves, autumn: 風で舞う紅葉
+        hair_flowing_over, wind: 髪が風で流れる
+        heavy_rain, raincoat: 大雨とレインコート
+        hydrangea, rain, umbrella: 紫陽花と雨と傘
+        milky_way, night: 天の川銀河
+        obscured_eyes: obscured eyes
+        on_railroad_tracks, vanishing_point: どこまでも続く線路
+        railroad_crossing, ocean: 踏切と海
+        reflection, standing_on_liquid: リフレクション
+        rice_field, autumn, sunset, floating_light_particles: 秋の稲穂畑
+        rooftop, green_fence, city_below: 屋上と眼下の街並み
+        silhouette_girl, faceless, silhouette_clothes: シルエットの少女
+        dawn, sunset, night: 相性の良い組み合わせ（時間帯）
+        dramatic_shadows, cinematic_shadows: ドラマチックな影
+        overhead_lights: 上から当たる光
+        underlighting: 下から当たる光
+        girl, light_yellow_hair, twintails, tareme, clothes, blue_sky, cumulonimbus_cloud, ominous_shadow: これも抽象的な言葉のプロンプトですが、便利なので紹介します。
+        ominous_shadow: 不吉な影・不穏な影
+        filtered_light_through_leaves, shaded_face, sunlight_through_trees, warm_natural_lighting: 光の効果の補強プロンプト
+        grass, sitting_against_tree, reclining: 木に寄りかかって座る
+        side_window: （相性のいいプロンプト）横にある窓
+        dim_lighting, hugging_own_legs, looking_down, partially_shaded_face, from_outside: 落ち込む演出（作例左）
+        dim_lighting, squinting, crazy_grin, partially_shaded_face, fisheye: 狂気の演出（作例右）
+        partially_shaded_face: 顔半分に影が入る
+        Carnaby_Street, London: カーナビー・ストリート
+        Carnaby_Street_London, colorful_shopfronts, pedestrian_street, retro_signs: カーナビー・ストリート イギリス・ロンドン
+        Champs-Élysées, Paris: シャンゼリゼ通り
+        Champs-Élysées_Paris, tree-lined_boulevard, luxury_boutiques, wide_avenue: シャンゼリゼ通り フランス・パリ
+        King's_Road_Chelsea_London, classic_townhouse_facades, brick_pavement, boutique_shops: キングス・ロード（チェルシー） イギリス・ロンドン
+        King’s_Road, Chelsea: キングス・ロード
+        Montmartre_Hill: モンマルトルの丘
+        Montmartre_Hill_Paris, steep_cobblestone_street, outdoor_cafes, artistic_atmosphere: モンマルトルの丘 フランス・パリ
+        Ponte_Vecchio, Florence: ヴェッキオ橋
+        Ponte_Vecchio_Florence, medieval_stone_bridge, riverside_view, shop_stalls_on_bridge: ヴェッキオ橋 イタリア・フィレンツェ
+        Strøget, Copenhagen: ストロイエ
+        Strøget_Copenhagen, pedestrian_shopping_street, historic_buildings, cobblestone_pavement: ストロイエ デンマーク・コペンハーゲン
+        The_Shambles, York: シャムブルズ通り
+        The_Shambles_York, medieval_timber-framed_buildings, narrow_street: シャンブルズ通り イギリス・ヨーク
+        Unter_den_Linden, Berlin: ウンター・デン・リンデン
+        Unter_den_Linden_Berlin, historic_stone_avenue, linden_trees_lining, grand_facades: ウンターデンリンデン通り ドイツ・ベルリン
+        Via_Veneto, Rome: ヴィア・ヴェネト
+        Via_Veneto_Rome, vintage_cars, classic_hotel_facades, 1920s_elegance: ヴィア・ヴェネト イタリア・ローマ
+        chiaroscuro: 陰影の強い光
+        dim_lighting: 薄暗い照明
+        low_light: 薄暗い光
+        tenebrism: 暗い光
+        dispersion_(optics): 光の分散
+        ultraviolet_light: 紫外線
+        visible_through_clothes, backlighting: 光で服が透ける
+        headlight_beam: ヘッドライト
+        lighting_forward: 正面からの光
+        overlighting: 上からの光
+        ceiling_light: 天井灯
+        chandelier: シャンデリア
+        desk_lamp: 机上ランプ
+        floodlights: 投光器
+        fluorescent_lamp: 蛍光灯
+        glowstick: 発光スティック
+        headlamp_on_helmet: ヘッドライト
+        holding_flashlight: 懐中電灯
+        lava_lamp: 溶岩ランプ
+        oil_lamp: 油ランプ
+        paper_lantern: 紙ランタン
+        turkish_lamp: トルコランプ
+        wall_lamp: 壁掛けランプ
+        embers: 残り火
+        firefly: 蛍の光
+        muzzle_flash: マズルフラッシュ
+        pillar_of_light: 光の柱
+        blinding_light: まばゆい光
+        blue_light: 青色の照明
+        blue_lighting: 青色の照明
+        bright_lighting: 明るい照明
+        cool_lighting: 寒色系の光
+        foglight: 幻想的な光
+        green_lighting: 緑色の照明
+        grimlight: 不気味な照明
+        pink_lighting: ピンクの照明
+        red_lighting: 赤色の照明
+        shadowlight: 陰影の表現
+        yellow_lighting: 黄色の照明
+        fading, lying, glowing_particles, dissolving_into_light, transforming_into_light, ethereal_gown: 光に包まれて消えるような気絶を再現したAIイラスト
+        in_the_afternoon, soft_warm_sunlight_from_the_west, gentle_backlight, visible_air, floating_small_dust, lens_flare: 午後
+        long_soft_shadow: 長く柔らかな影
+        at_dawn: 夜明け
+        at_night: 夜
+        at_noon_/_midday: 真昼
+        at_sunset_/_twilight_/_dusk: 夕方
+        in_the_afternoon: 午後
+        in_the_morning: 朝
+        midday: 真昼
+        midnight: 深夜
+        strong_contrast_shadows, dramatic_long_shadow: 長くドラマチックな影
+        at_night, dark_blue_sky, strong_contrast, cinematic_atmosphere, sidelighting, vignetting: 夜
+        at_dawn, faint_purple_and_blue_gradient_sky, soft_early_sunlight, low_saturation: 夜明け
+        long_blurry_shadow: 長く淡い影
+        sunrise: 日の出
+        at_dawn, faint_purple_and_blue_gradient_sky, soft_early_sunlight, low_saturation, sunrise, long_blurry_shadow: 夜明け
+        at_night, dark_blue_sky, strong_contrast, cinematic_atmosphere, sidelighting, vignetting, neon_lights: 夜
+        blue_hour, indigo_blue_and_purple_ombre_sky, faint_afterglow, calm_and_dreamy_mood, dark, low_saturation: マジックアワー（ブルーアワー）
+        in_the_morning, cool_white_sunlight, crisp_air, refreshing_atmosphere, visible_air, long_clear_shadows: 朝
+        in_the_morning, cool_white_sunlight, crisp_air, refreshing_atmosphere, visible_air: 朝
+        long_clear_shadows: 長いが明瞭な影
+        at_noon, bright_neutral_daylight, strong_overhead_sunlight, clear_sky, sunbeam, high_contrast, vivid_colors: 真昼
+        dark_sharp_shadow: 短く強い影
+        circuit_print_design: 回路プリントが施されたSF服
+        fiber_optic_accents: 光ファイバー装飾のあるSF服
+        nanoscale_patterns: ナノスケール模様のSF服
+        LED_studs: LEDリベットのあるSF服
+        blue_hour_atmosphere: 青の刻
+        candlelit_atmosphere: 蝋燭
+        dawn_atmosphere: 夜明け
+        dusk_atmosphere: 夕暮
+        foggy_atmosphere: 濃霧
+        golden_hour_atmosphere: 黄金刻
+        lantern-lit_atmosphere: 灯籠
+        misty_atmosphere: 薄霧
+        moonlit_atmosphere: 月光
+        overcast_atmosphere: 曇天
+        rainy_atmosphere: 雨
+        snowy_atmosphere: 雪景
+        starlit_atmosphere: 星明かり
+        stormy_atmosphere: 嵐
+        sunset_atmosphere: 夕日
+        twilight_atmosphere: 薄明
+        incredibly_beautiful_light_and_shadow: 信じられないほど美しい光と影
+        natural_shadow: 自然な影
+        soft_anime_lighting: 柔らかいアニメ照明
+        soft_shadows: 柔らかい影
+        atmospheric_lighting: 雰囲気の照明
+        shadow: 影
+        cozy_ambient_lighting: 居心地の良い環境照明
+        soft_lighting_with_dynamic_highlights: ダイナミックなハイライトを備えたソフトな照明
+        analog_lighting: アナログ照明
+        dark_atmospheric_lighting: 暗い雰囲気の照明
+        global_illumination: グローバルイルミネーション
+        reflective_plastic_strips_gleaming_in_the_sunlight: 太陽光で輝く反射性プラスチックストリップ
+        rim_lighting: リム照明
+        soft_blending_of_light_and_shadow: 光と影の柔らかな融合
+        soft_cinematic_studio_lighting: 柔らかい映画のようなスタジオ照明
+        volumetric_glow: ボリュームグロー
+        red_eyeshadow: 赤いアイシャドウ
+        colored_shadow: 色付きの影
+        green_eyeshadow: 緑のアイシャドウ
+        pink_eyeshadow: ピンクのアイシャドウ
+        purple_eyeshadow: 紫のアイシャドウ
+        aqua_eyeshadow: アクアアイシャドウ
+        brown_eyeshadow: 茶色のアイシャドウ
+        different_shadow: 別の影
+        dog_shadow_puppet: 犬の影の人形
+        eyes_in_shadow: 影の目
+        face_in_shadow: face_in_shadow
+        grey_eyeshadow: 灰色のアイシャドウ
+        newtype_flash: NewTypeフラッシュ
+        orange_eyeshadow: オレンジ色のアイシャドウ
+        shadow_(persona): 影（ペルソナ）
+        shadow_(shadows_house): シャドウ（シャドウズハウス）
+        shadow_puppet: 影の操り人形
+        torso_flash: 胴体フラッシュ
+        yellow_eyeshadow: 黄色のアイシャドウ
+        direct_sunlight: 昼の光
+        forest_light: 木漏れ日
+        indoor_natural_light: 窓からの光
+        light_through_leaves: 木漏れ日
+        morning_light: 朝の光
+        soft_diffused_light: 曇りの光
+        soft_light: 自然光
+        soft_warm_light: 朝の光
+        warm_sunset_light: 夕方の光
+        bedside_lamp: ランプの光
+        circular_catchlight: リングライト
+        cold_light: 蛍光灯
+        colored_LED: LED
+        colorful_neon: ネオン
+        direct_flash: ストロボ
+        even_lighting: リングライト
+        flash_photography: ストロボ
+        flickering: キャンドル
+        fluorescent_light: 蛍光灯
+        harsh_light: ストロボ
+        intimate: キャンドル
+        lamp_light: ランプの光
+        LED_light: LED
+        modern: LED
+        neon_glow: ネオン
+        office_lighting: 蛍光灯
+        RGB_lighting: LED
+        single_light_source: スポットライト
+        softbox: スタジオ照明
+        warm_dim_light: キャンドル
+        warm_yellow_light: ランプの光
+        airy: ハイキー
+        butterfly_lighting: バタフライ
+        flat_lighting: 順光
+        front_lighting: 順光
+        god_rays: ゴッドレイ
+        half_shadow: サイドライト
+        light_beams: ゴッドレイ
+        light_from_below: 下からの光
+        light_streak: レンズフレア
+        overexposed_slightly: ハイキー
+        overhead_light: トップライト
+        paramount_lighting: バタフライ
+        shadow_under_nose: バタフライ
+        split_lighting: サイドライト
+        sun_flare: レンズフレア
+        triangle_shadow_on_cheek: レンブラント
+        underlight: 下からの光
+        volumetric_light: ゴッドレイ
+        zenithal_light: トップライト
+        bottom_lighting: 下光
+        harsh_lighting: 硬い光
+        starlight: 星光
+        underlit: アンダーライト
+        golden_tone: 金色調
+        low_saturation: 低彩度
+        pink_tone: ピンク調
+        purple_tone: 紫調
+        sunset_colors: サンセット
+    - name: レンズ・効果
+      color: rgba(70, 130, 180, 1)
+      tags:
+        contour_deepening: 等高線強調
+        double_exposure: 二重曝露
+        fisheye_lens: フィッシュアイレンズ
+        full_shot: 全身像
+        landscape: 風景
+        long_exposure: 長時間露光
+        macro_shot: マクロ撮影
+        mid_shot: 中景
+        motion_blur: モーションブラー
+        motion_lines: モーションライン
+        overexposure: 露出曝露
+        sharp_focus: 鋭い焦点
+        soft_focus: ソフトフォーカス
+        speed_lines: スピードライン
+        glitch_effect: デジタルノイズ
+        cinematic_focus: シネマティック
+        panoramic: パノラマ
+        rule_of_thirds: 三分割法
+        no_lineart: 輪郭線自体がないイラストスタイルを指定する
+        sfumato: 輪郭をぼかし、ソフトなグラデーション効果を加える、ただし絵画技法のような再現はできない
+        soft_shading: 影が柔らかい、滑らかなグラデーションにする
+        shallow_depth_of_field: 被写界深度が浅い
+        anamorphic_lens: アナモフィックレンズ
+        of_double_exposure_effect: 二重露光効果の
+        halation: ハレーション
+        shallow_depth_of_field.: 被写界深度が浅い。
+        bokeh_effects: ボケ効果
+        falling_bokeh_shimmer.cinematic: 落ちるボケの輝き。映画的な
+        50mm_lens: 50mmレンズ
+        analog_film_grain: アナログフィルムグレイン
+        and_more_cohesive_with_lowered_exposure: 露出を下げるとより一体感が増します
+        cinematic_depth_of_field: 映画のような被写界深度
+        falling_bokeh_shimmer: 落ちるボケのシマー
+        fine_film_grain: 細かいフィルムグレイン
+        gentle_lens_diffusion: 穏やかなレンズ拡散
+        gentle_lens_softness: 優しいレンズの柔らかさ
+        macro_photography: マクロ撮影
+        macro-detail_realism: マクロディテールのリアリズム
+        professional_photography.bokeh_effects: プロの写真撮影。ボケ効果
+        soft_halation: ソフトハレーション
+        analog_feel: ノイズ・グレイン
+        bright_highlights: ハイコントラスト
+        center_focus: ヴィネット
+        color_fringing: クロマティックアベレーション
+        dark_edges: ヴィネット
+        diffusion: ソフトフォーカス
+        flat: ローコントラスト
+        light_orbs: 玉ボケ
+        noise: ノイズ・グレイン
+        RGB_shift: クロマティックアベレーション
+        sparkling_background: 玉ボケ
+        vignette: ヴィネット
+    - name: 特殊な構図
+      color: rgba(100, 149, 237, 1)
+      tags:
+        caught: つかまった
+        eyes_out_of_frame: フレーム外目
+        inset: 挿入図
+        knees_out_of_frame: フレームから膝
+        midriff_peek: ミッドリフピーク
+        mirror_selfie: 鏡の自撮り
+        out-of-frame_censoring: フレーム外の検閲
+        panty_peek: パンティーピーク
+        panty_shot: パンティショット
+        pussy_peek: 猫のピーク
+        turn_one_back: 背を向ける
+        upskirt: アップスカート
+        x-ray: X線
+        back_shot, focus_on_ass, from_behind: バックショット (Back Shot)
+        centered, simple_composition: 中央配置 (Centered)
+        crotch_shot, intimate_framing: 股間ショット (Crotch Shot)
+        diagonal_composition: 対角線構図 (Diagonal)
+        dynamic_composition, action_framing: ダイナミック構図 (Dynamic)
+        extreme_close-up_on_breasts: 胸元クローズアップ (Chest Focus)
+        focus_on_underwear, detailed_lace: 下着フォーカス (Lingerie Focus)
+        holding_legs_up, showing_crotch: 足上げポーズ (Legs Up)
+        m-pose, legs_spread_wide: M字開脚 (M-pose)
+        pov, looking_down_at_breasts: 見下ろし俯瞰POV (Looking down)
+        rule_of_thirds, balanced_composition: 三分割法 (Rule of Thirds)
+        s-curve_composition: S字構図 (S-curve)
+        waist_shot: ウエストショット (Waist Shot)
+        ? '{dynamic_angle, dutch_angle, full_body|low_angle, standing, dramatic_perspective|from_above, sitting, looking_up|wide_angle,
+          walking, motion|close-up, hand_reaching_toward_viewer|three-quarter_view, dynamic_pose, hair_sway}'
+        : ギャル ダイナミック構図
+        ? '{from_front|from_side|from_behind, looking_back|from_above|from_below|dutch_angle|three-quarter_view|profile|wide_angle|low_angle}'
+        : ギャル アングルガチャ
+        ? '{full_body, standing, centered_composition, shoes_visible|full_body, from_front, arms_at_sides, outfit_focus|full_body,
+          three-quarter_view, accessory_visible|full_body, walking, shoes_visible|full_body, from_behind, back_view|full_body,
+          side_view, profile}'
+        : ギャル 全身チェック
+        ? '{full_body|cowboy_shot|upper_body|portrait|close-up|wide_shot|knees_up|feet_out_of_frame|full_body, shoes_visible|upper_body,
+          face_focus}'
+        : ギャル 距離ガチャ
+        ? '{upper_body, face_focus, looking_at_viewer|portrait, detailed_eyes, hand_near_face|close-up, hair_ornament_focus,
+          smile|cowboy_shot, head_tilt, eye_contact|upper_body, soft_light|portrait, from_above, looking_up}'
+        : ギャル 顔寄せ構図
+        ? '{wide_shot, full_body, background_visible|medium_shot, environment_visible, centered|full_body, diagonal_composition,
+          background_visible|cowboy_shot, background_bokeh|full_body, foreground_object, depth_of_field|wide_shot, rule_of_thirds,
+          background_focus}'
+        : ギャル 背景込み構図
+        ? '{dynamic_angle, dutch_angle, full_body, dress, elegant_fashion|low_angle, standing, dramatic_perspective, dress,
+          elegant_fashion|from_above, sitting, looking_up, dress, elegant_fashion|wide_angle, walking, motion, dress, elegant_fashion|close-up,
+          hand_reaching_toward_viewer, dress, elegant_fashion|three-quarter_view, dynamic_pose, hair_sway, dress, elegant_fashion}'
+        : ドレス ダイナミック構図
+        ? '{from_front, dress, elegant_fashion|from_side, dress, elegant_fashion|from_behind, looking_back, dress, elegant_fashion|from_above,
+          dress, elegant_fashion|from_below, dress, elegant_fashion|dutch_angle, dress, elegant_fashion|three-quarter_view,
+          dress, elegant_fashion|profile, dress, elegant_fashion|wide_angle, dress, elegant_fashion|low_angle, dress, elegant_fashion}'
+        : ドレス アングルガチャ
+        ? '{full_body, dress, elegant_fashion|cowboy_shot, dress, elegant_fashion|upper_body, dress, elegant_fashion|portrait,
+          dress, elegant_fashion|close-up, dress, elegant_fashion|wide_shot, dress, elegant_fashion|knees_up, dress, elegant_fashion|feet_out_of_frame,
+          dress, elegant_fashion|full_body, shoes_visible, dress, elegant_fashion|upper_body, face_focus, dress, elegant_fashion}'
+        : ドレス 距離ガチャ
+        ? '{full_body, standing, centered_composition, shoes_visible, dress, elegant_fashion|full_body, from_front, arms_at_sides,
+          outfit_focus, dress, elegant_fashion|full_body, three-quarter_view, accessory_visible, dress, elegant_fashion|full_body,
+          walking, shoes_visible, dress, elegant_fashion|full_body, from_behind, back_view, dress, elegant_fashion|full_body,
+          side_view, profile, dress, elegant_fashion}'
+        : ドレス 全身チェック
+        ? '{upper_body, face_focus, looking_at_viewer, dress, elegant_fashion|portrait, detailed_eyes, hand_near_face, dress,
+          elegant_fashion|close-up, hair_ornament_focus, smile, dress, elegant_fashion|cowboy_shot, head_tilt, eye_contact,
+          dress, elegant_fashion|upper_body, soft_light, dress, elegant_fashion|portrait, from_above, looking_up, dress, elegant_fashion}'
+        : ドレス 顔寄せ構図
+        ? '{wide_shot, full_body, background_visible, dress, elegant_fashion|medium_shot, environment_visible, centered, dress,
+          elegant_fashion|full_body, diagonal_composition, background_visible, dress, elegant_fashion|cowboy_shot, background_bokeh,
+          dress, elegant_fashion|full_body, foreground_object, depth_of_field, dress, elegant_fashion|wide_shot, rule_of_thirds,
+          background_focus, dress, elegant_fashion}'
+        : ドレス 背景込み構図
+        ? '{dynamic_angle, dutch_angle, full_body, lace|low_angle, standing, dramatic_perspective, lace|from_above, sitting,
+          looking_up, lace|wide_angle, walking, motion, lace|close-up, hand_reaching_toward_viewer, lace|three-quarter_view,
+          dynamic_pose, hair_sway, lace}'
+        : ゴスロリ ダイナミック構図
+        ? '{from_front, lace|from_side, lace|from_behind, looking_back, lace|from_above, lace|from_below, lace|dutch_angle,
+          lace|three-quarter_view, lace|profile, lace|wide_angle, lace|low_angle, lace}'
+        : ゴスロリ アングルガチャ
+        ? '{full_body, lace|cowboy_shot, lace|upper_body, lace|portrait, lace|close-up, lace|wide_shot, lace|knees_up, lace|feet_out_of_frame,
+          lace|full_body, shoes_visible, lace|upper_body, face_focus, lace}'
+        : ゴスロリ 距離ガチャ
+        ? '{full_body, standing, centered_composition, shoes_visible, lace|full_body, from_front, arms_at_sides, outfit_focus,
+          lace|full_body, three-quarter_view, accessory_visible, lace|full_body, walking, shoes_visible, lace|full_body, from_behind,
+          back_view, lace|full_body, side_view, profile, lace}'
+        : ゴスロリ 全身チェック
+        ? '{upper_body, face_focus, looking_at_viewer, lace|portrait, detailed_eyes, hand_near_face, lace|close-up, hair_ornament_focus,
+          smile, lace|cowboy_shot, head_tilt, eye_contact, lace|upper_body, soft_light, lace|portrait, from_above, looking_up,
+          lace}'
+        : ゴスロリ 顔寄せ構図
+        ? '{wide_shot, full_body, background_visible, lace|medium_shot, environment_visible, centered, lace|full_body, diagonal_composition,
+          background_visible, lace|cowboy_shot, background_bokeh, lace|full_body, foreground_object, depth_of_field, lace|wide_shot,
+          rule_of_thirds, background_focus, lace}'
+        : ゴスロリ 背景込み構図
+        ? '{dynamic_angle, dutch_angle, full_body, japanese_clothes|low_angle, standing, dramatic_perspective, japanese_clothes|from_above,
+          sitting, looking_up, japanese_clothes|wide_angle, walking, motion, japanese_clothes|close-up, hand_reaching_toward_viewer,
+          japanese_clothes|three-quarter_view, dynamic_pose, hair_sway, japanese_clothes}'
+        : 和服 ダイナミック構図
+        ? '{from_front, japanese_clothes|from_side, japanese_clothes|from_behind, looking_back, japanese_clothes|from_above,
+          japanese_clothes|from_below, japanese_clothes|dutch_angle, japanese_clothes|three-quarter_view, japanese_clothes|profile,
+          japanese_clothes|wide_angle, japanese_clothes|low_angle, japanese_clothes}'
+        : 和服 アングルガチャ
+        ? '{full_body, japanese_clothes|cowboy_shot, japanese_clothes|upper_body, japanese_clothes|portrait, japanese_clothes|close-up,
+          japanese_clothes|wide_shot, japanese_clothes|knees_up, japanese_clothes|feet_out_of_frame, japanese_clothes|full_body,
+          shoes_visible, japanese_clothes|upper_body, face_focus, japanese_clothes}'
+        : 和服 距離ガチャ
+        ? '{full_body, standing, centered_composition, shoes_visible, japanese_clothes|full_body, from_front, arms_at_sides,
+          outfit_focus, japanese_clothes|full_body, three-quarter_view, accessory_visible, japanese_clothes|full_body, walking,
+          shoes_visible, japanese_clothes|full_body, from_behind, back_view, japanese_clothes|full_body, side_view, profile,
+          japanese_clothes}'
+        : 和服 全身チェック
+        ? '{upper_body, face_focus, looking_at_viewer, japanese_clothes|portrait, detailed_eyes, hand_near_face, japanese_clothes|close-up,
+          hair_ornament_focus, smile, japanese_clothes|cowboy_shot, head_tilt, eye_contact, japanese_clothes|upper_body, soft_light,
+          japanese_clothes|portrait, from_above, looking_up, japanese_clothes}'
+        : 和服 顔寄せ構図
+        ? '{wide_shot, full_body, background_visible, japanese_clothes|medium_shot, environment_visible, centered, japanese_clothes|full_body,
+          diagonal_composition, background_visible, japanese_clothes|cowboy_shot, background_bokeh, japanese_clothes|full_body,
+          foreground_object, depth_of_field, japanese_clothes|wide_shot, rule_of_thirds, background_focus, japanese_clothes}'
+        : 和服 背景込み構図
+        ? '{dynamic_angle, dutch_angle, full_body, stage_outfit|low_angle, standing, dramatic_perspective, stage_outfit|from_above,
+          sitting, looking_up, stage_outfit|wide_angle, walking, motion, stage_outfit|close-up, hand_reaching_toward_viewer,
+          stage_outfit|three-quarter_view, dynamic_pose, hair_sway, stage_outfit}'
+        : アイドル衣装 ダイナミック構図
+        ? '{from_front, stage_outfit|from_side, stage_outfit|from_behind, looking_back, stage_outfit|from_above, stage_outfit|from_below,
+          stage_outfit|dutch_angle, stage_outfit|three-quarter_view, stage_outfit|profile, stage_outfit|wide_angle, stage_outfit|low_angle,
+          stage_outfit}'
+        : アイドル衣装 アングルガチャ
+        ? '{full_body, stage_outfit|cowboy_shot, stage_outfit|upper_body, stage_outfit|portrait, stage_outfit|close-up, stage_outfit|wide_shot,
+          stage_outfit|knees_up, stage_outfit|feet_out_of_frame, stage_outfit|full_body, shoes_visible, stage_outfit|upper_body,
+          face_focus, stage_outfit}'
+        : アイドル衣装 距離ガチャ
+        ? '{full_body, standing, centered_composition, shoes_visible, stage_outfit|full_body, from_front, arms_at_sides, outfit_focus,
+          stage_outfit|full_body, three-quarter_view, accessory_visible, stage_outfit|full_body, walking, shoes_visible, stage_outfit|full_body,
+          from_behind, back_view, stage_outfit|full_body, side_view, profile, stage_outfit}'
+        : アイドル衣装 全身チェック
+        ? '{upper_body, face_focus, looking_at_viewer, stage_outfit|portrait, detailed_eyes, hand_near_face, stage_outfit|close-up,
+          hair_ornament_focus, smile, stage_outfit|cowboy_shot, head_tilt, eye_contact, stage_outfit|upper_body, soft_light,
+          stage_outfit|portrait, from_above, looking_up, stage_outfit}'
+        : アイドル衣装 顔寄せ構図
+        ? '{wide_shot, full_body, background_visible, stage_outfit|medium_shot, environment_visible, centered, stage_outfit|full_body,
+          diagonal_composition, background_visible, stage_outfit|cowboy_shot, background_bokeh, stage_outfit|full_body, foreground_object,
+          depth_of_field, stage_outfit|wide_shot, rule_of_thirds, background_focus, stage_outfit}'
+        : アイドル衣装 背景込み構図
+        ? '{dynamic_angle, dutch_angle, full_body, casual_clothes|low_angle, standing, dramatic_perspective, casual_clothes|from_above,
+          sitting, looking_up, casual_clothes|wide_angle, walking, motion, casual_clothes|close-up, hand_reaching_toward_viewer,
+          casual_clothes|three-quarter_view, dynamic_pose, hair_sway, casual_clothes}'
+        : カジュアル ダイナミック構図
+        ? '{from_front, casual_clothes|from_side, casual_clothes|from_behind, looking_back, casual_clothes|from_above, casual_clothes|from_below,
+          casual_clothes|dutch_angle, casual_clothes|three-quarter_view, casual_clothes|profile, casual_clothes|wide_angle,
+          casual_clothes|low_angle, casual_clothes}'
+        : カジュアル アングルガチャ
+        ? '{full_body, casual_clothes|cowboy_shot, casual_clothes|upper_body, casual_clothes|portrait, casual_clothes|close-up,
+          casual_clothes|wide_shot, casual_clothes|knees_up, casual_clothes|feet_out_of_frame, casual_clothes|full_body, shoes_visible,
+          casual_clothes|upper_body, face_focus, casual_clothes}'
+        : カジュアル 距離ガチャ
+        ? '{full_body, standing, centered_composition, shoes_visible, casual_clothes|full_body, from_front, arms_at_sides,
+          outfit_focus, casual_clothes|full_body, three-quarter_view, accessory_visible, casual_clothes|full_body, walking,
+          shoes_visible, casual_clothes|full_body, from_behind, back_view, casual_clothes|full_body, side_view, profile, casual_clothes}'
+        : カジュアル 全身チェック
+        ? '{upper_body, face_focus, looking_at_viewer, casual_clothes|portrait, detailed_eyes, hand_near_face, casual_clothes|close-up,
+          hair_ornament_focus, smile, casual_clothes|cowboy_shot, head_tilt, eye_contact, casual_clothes|upper_body, soft_light,
+          casual_clothes|portrait, from_above, looking_up, casual_clothes}'
+        : カジュアル 顔寄せ構図
+        ? '{wide_shot, full_body, background_visible, casual_clothes|medium_shot, environment_visible, centered, casual_clothes|full_body,
+          diagonal_composition, background_visible, casual_clothes|cowboy_shot, background_bokeh, casual_clothes|full_body,
+          foreground_object, depth_of_field, casual_clothes|wide_shot, rule_of_thirds, background_focus, casual_clothes}'
+        : カジュアル 背景込み構図
+        ? '{from_above, sitting_on_bed, blanket_visible|dynamic_angle, walking_in_bedroom|low_angle, standing_near_bed, soft_backlight}'
+        : パジャマ 生活感構図
+        '{from_front|from_side|from_behind, looking_back|from_above|low_angle|three-quarter_view}': パジャマ アングルガチャ
+        ? '{full_body, standing, centered_composition, slippers_visible|full_body, from_front, arms_at_sides, outfit_focus|full_body,
+          sitting_on_bed, roomwear_visible}'
+        : パジャマ 正面全身
+        '{full_body|cowboy_shot|upper_body|portrait|close-up|wide_shot}': パジャマ 距離ガチャ
+        ? '{upper_body, face_focus, soft_eyes|portrait, pillow_visible, sleepy_expression|close-up, gentle_smile, soft_bedroom_lighting}'
+        : パジャマ 顔寄り
+        '{wide_shot, bedroom_visible, full_body|medium_shot, bed_and_window_visible|full_body, cozy_room_background, soft_lighting}': パジャマ
+          背景込み
+        ? '{dynamic_angle, dutch_angle, full_body, fashion_outfit|low_angle, standing, dramatic_perspective, fashion_outfit|from_above,
+          sitting, looking_up, fashion_outfit|wide_angle, walking, motion, fashion_outfit|close-up, hand_reaching_toward_viewer,
+          fashion_outfit|three-quarter_view, dynamic_pose, hair_sway, fashion_outfit}'
+        : 共通 ダイナミック構図
+        ? '{from_front, fashion_outfit|from_side, fashion_outfit|from_behind, looking_back, fashion_outfit|from_above, fashion_outfit|from_below,
+          fashion_outfit|dutch_angle, fashion_outfit|three-quarter_view, fashion_outfit|profile, fashion_outfit|wide_angle,
+          fashion_outfit|low_angle, fashion_outfit}'
+        : 共通 アングルガチャ
+        ? '{full_body, fashion_outfit|cowboy_shot, fashion_outfit|upper_body, fashion_outfit|portrait, fashion_outfit|close-up,
+          fashion_outfit|wide_shot, fashion_outfit|knees_up, fashion_outfit|feet_out_of_frame, fashion_outfit|full_body, shoes_visible,
+          fashion_outfit|upper_body, face_focus, fashion_outfit}'
+        : 共通 距離ガチャ
+        ? '{full_body, standing, centered_composition, shoes_visible, fashion_outfit|full_body, from_front, arms_at_sides,
+          outfit_focus, fashion_outfit|full_body, three-quarter_view, accessory_visible, fashion_outfit|full_body, walking,
+          shoes_visible, fashion_outfit|full_body, from_behind, back_view, fashion_outfit|full_body, side_view, profile, fashion_outfit}'
+        : 共通 全身チェック
+        ? '{upper_body, face_focus, looking_at_viewer, fashion_outfit|portrait, detailed_eyes, hand_near_face, fashion_outfit|close-up,
+          hair_ornament_focus, smile, fashion_outfit|cowboy_shot, head_tilt, eye_contact, fashion_outfit|upper_body, soft_light,
+          fashion_outfit|portrait, from_above, looking_up, fashion_outfit}'
+        : 共通 顔寄せ構図
+        ? '{wide_shot, full_body, background_visible, fashion_outfit|medium_shot, environment_visible, centered, fashion_outfit|full_body,
+          diagonal_composition, background_visible, fashion_outfit|cowboy_shot, background_bokeh, fashion_outfit|full_body,
+          foreground_object, depth_of_field, fashion_outfit|wide_shot, rule_of_thirds, background_focus, fashion_outfit}'
+        : 共通 背景込み構図
+        ? '{_(ass_focus:1.3)_|_(breast_focus:1.3)_|_(leg_focus:1.3)_|_(feet_focus:1.3)_|_(thigh_focus:1.4)_|_(navel_focus:1.2)_|_(neck_focus:1.1)_|_(shoulder_focus:1.1)_|_(hand_focus:1.2)_|_(back_focus:1.3)_|_(armpit_focus:1.4)_|_(waist_focus:1.3)_|_(eye_focus:1.3)_|_(lip_focus:1.3)_|_(hair_focus:1.2)_}'
+        : 【構図】部位特化・フェチ
+        ? '{_bust_up_|_upper_body_close-up_|_chest_focus_shot_|_bust_up_looking_at_viewer_|_bust_up_profile_|_bust_up_from_below_|_bust_up_from_above_|_bust_up_cinematic_|_bust_up_soft_lighting_|_bust_up_detailed_skin_|_bust_up_bokeh_|_bust_up_street_shot_|_bust_up_studio_|_bust_up_dynamic_|_bust_up_rule_of_thirds_}'
+        : 【構図】バストアップ
+        ? '{_cinematic_composition_|_rule_of_thirds_dynamic_|_dramatic_lighting_shot_|_cinematic_shadows_|_lens_flare_composition_|_depth_of_field_cinematic_|_wide_cinematic_view_|_cinematic_street_shot_|_cinematic_indoor_shot_|_cinematic_mystery_look_|_cinematic_epic_scale_|_cinematic_mood_focus_|_cinematic_color_grading_|_cinematic_vertical_shot_|_cinematic_wide_shot_}'
+        : 【構図】シネマティック構図
+        ? '{_cowboy_shot_|_upper_body_thigh_focus_|_cowboy_shot_from_knees_up_|_medium_full_shot_|_knees_to_head_shot_|_cowboy_shot_centered_|_cowboy_shot_from_side_|_cowboy_shot_looking_back_|_cowboy_shot_dynamic_|_cowboy_shot_low_angle_|_cowboy_shot_outdoor_|_cowboy_shot_indoor_|_cowboy_shot_cinematic_|_cowboy_shot_detailed_|_cowboy_shot_rule_of_thirds_}'
+        : 【構図】カウボーイショット
+        ? '{_diagonal_composition_|_dynamic_angle_shot_|_tilted_frame_dynamic_|_leading_lines_diagonal_|_diagonal_standing_pose_|_dynamic_action_diagonal_|_diagonal_perspective_|_diagonal_street_shot_|_diagonal_urban_shot_|_diagonal_cinematic_|_diagonal_looking_back_|_diagonal_wide_view_|_diagonal_close-up_|_diagonal_movement_focus_|_diagonal_artsy_shot_}'
+        : 【構図】ダイナミック対角線
+        ? '{_extreme_close-up_face_|_face_focus_macro_|_extreme_close-up_eyes_|_extreme_close-up_lips_|_face_only_shot_|_extreme_close-up_profile_|_face_focus_bokeh_|_extreme_close-up_detailed_|_face_only_close-up_|_extreme_close-up_looking_at_viewer_|_extreme_close-up_winking_|_extreme_close-up_expressions_|_extreme_close-up_wet_skin_|_extreme_close-up_dramatic_|_extreme_close-up_noir_}'
+        : 【構図】極限クローズアップ
+        ? '{_framing_through_window_|_looking_through_hole_|_framing_with_arms_|_door_frame_composition_|_through_foliage_framing_|_framing_with_archway_|_mirror_reflection_framing_|_framing_with_shadows_|_window_view_framing_|_indoor_framing_|_outdoor_framing_|_dramatic_framing_|_framing_with_curtains_|_framing_with_hands_|_framing_silhouette_}'
+        : 【構図】額縁・窓越し
+        ? '{_full_body_|_wide_shot_|_head_to_toe_|_standing_full_body_|_long_shot_|_panoramic_full_body_|_vertical_full_body_|_centered_full_body_|_full_body_from_side_|_full_body_back_view_|_wide_view_standing_|_full_body_looking_up_|_full_body_in_landscape_|_full_body_street_shot_|_full_body_studio_shot_}'
+        : 【構図】フルボディ
+        ? '{_ground_level_shot_|_low_angle_view_|_worm''s_eye_view_|_looking_up_from_floor_|_low_angle_street_|_low_angle_cinematic_|_low_angle_perspective_|_low_angle_focus_|_low_angle_dynamic_|_low_angle_standing_|_low_angle_sitting_|_low_angle_looking_down_|_low_angle_dramatic_|_low_angle_urban_|_low_angle_nature_}'
+        : 【構図】ローアングル構図
+        ? '{_rule_of_thirds_composition_|_horizontal_split_view_|_vertical_split_view_|_three-part_composition_|_divided_frame_|_symmetrical_split_|_asymmetrical_balance_|_grid_composition_|_cinematic_split_|_rule_of_thirds_portrait_|_rule_of_thirds_standing_|_rule_of_thirds_sitting_|_rule_of_thirds_action_|_rule_of_thirds_detailed_|_rule_of_thirds_lighting_}'
+        : 【構図】二分割・三分割
+        ? '{_subject_in_corner_|_vast_background_view_|_rule_of_thirds_scenery_|_environmental_portrait_|_integrated_into_scenery_|_subject_small_in_space_|_background_focus_|_cinematic_environment_|_outdoor_scenery_focus_|_urban_environment_|_nature_integrated_|_wide_room_view_|_street_depth_focus_|_subject_far_away_|_scenic_composition_}'
+        : 【構図】空間強調・背景入り
+        ? '{_symmetrical_composition_|_perfectly_centered_shot_|_front_view_centered_|_balanced_composition_|_centered_portrait_|_symmetrical_architecture_|_centered_standing_pose_|_centered_sitting_pose_|_symmetrical_beauty_|_centered_focus_shot_|_perfectly_balanced_|_symmetrical_reflection_|_centered_looking_at_viewer_|_centered_dynamic_|_centered_minimalistic_}'
+        : 【構図】対称・センター
+        ? '{_waist_shot_|_medium_shot_standing_|_waist_up_portrait_|_torso_focus_shot_|_waist_shot_from_front_|_waist_shot_from_side_|_waist_shot_looking_back_|_waist_shot_leaning_|_waist_shot_street_|_waist_shot_bokeh_|_waist_shot_cinematic_|_waist_shot_lighting_focus_|_waist_shot_detailed_|_waist_shot_rule_of_thirds_|_waist_shot_centered_}'
+        : 【構図】ウエストショット
+        ? '{_wide_angle_shot_panorama_|_vast_landscape_subject_|_panoramic_view_wide_|_ultra_wide_shot_|_cinematic_wide_panorama_|_wide_angle_perspective_|_panoramic_urban_|_panoramic_nature_|_wide_angle_standing_|_wide_angle_sitting_|_wide_angle_looking_up_|_wide_angle_from_above_|_wide_angle_dynamic_|_wide_angle_epic_|_wide_angle_detailed_}'
+        : 【構図】ワイドパノラマ
+        lying_on_person, straddling: 他キャラを押し倒す
+        yukadon: 床ドン
+        cinematic_close-up, dramatic_lighting: 光と影で演出されたドラマチックなクローズアップ
+        cinematic_depth_/_foreground_blur: 前景・中景・背景の三層で奥行きを演出する構図
+        cinematic_leading_lines: 光や線で視線が自然に主役へ向かう構図
+        cinematic_low-angle_with_backlight: 見上げ構図、逆光で空や光を背景に
+        cinematic_wide_shot_/_landscape_framing: 広い風景の中に小さく人物を配置したワイドショット
+        film_frame_ratio, cinematic_tones: 映画風の色調・16:9構図比率でフィルム調に仕上げる
+        shallow_depth_of_field_/_cinematic_bokeh: 背景を大きくぼかし、主役を浮き立たせる構図
+        bust_shot_/_upper_body_shot: 胸から上の構図
+        dutch_angle_/_tilted_angle: カメラを傾けて不安定さを表現
+        eye-level_angle: 視線と同じ高さで自然な構図
+        front_view_/_straight-on_angle: キャラや物体を正面から見る構図
+        full_body_/_long_shot: 全身が入る遠目の構図
+        low-angle_view_/_worm’s-eye_view: キャラを下から見上げる構図
+        selfie_/_self-portrait_angle: キャラが自分でカメラを持って撮っている構図
+        side_view_/_profile_view: 真横から見た構図
+        three-quarter_view_/_3/4_angle: 斜め45度の構図、よく使われる
+        top-down_view_/_bird’s-eye_view: キャラや風景を上から見る
+        chiaroscuro_/_dramatic_contrast: 光と影で空間を分割しドラマを演出する構図
+        dramatic_slow-motion_angle: 一瞬を切り取ったようなドラマチック構図
+        minimal_symmetry_composition: 空間を広く使い、主役を中央に配置したシンプル構図
+        overhead_angle: 少し離れた頭上からの視点構図
+        POV_shot_/_from_character’s_eyes: キャラの目線から見た視点構図
+        reaction_shot: 対象に反応するキャラのリアクションにフォーカスした構図
+        air_bubbles: 気泡
+        dappled_light: 木漏れ日の斑点
+        floating_particles: 浮遊する微粒子
+        light_shafts: 水中の空間に差し込む光
+        refraction: 光の屈折
+        volumetric_god_rays: 差し込む光の筋
+        water_ripples: 水面の波紋
+        mtu_virus: MtUウィルス（立ち絵と極端なローアングル）
+        kneeling, all_fours, wariza, yokozuwari: 組み合わせると安定しやすいプロンプト
+        2girls, sitting_across_the_table, face-to-face: テーブル越しに向かい合う
+        cheek_press_on_table, lying_face-down, invisible_hands, head_tilt, sleepy, half-closed_eyes: 顔からテーブルに突っ伏す
+        head_on_table, head_rest_on_arms_/_head_on_table, head_on_arm, outstretched_arm_forward: テーブルに突っ伏す（手の上に頭）
+        hiding_under_table, sitting: テーブルの下に隠れる
+        palms_on_the_table, with_palms_flat_on_the_surface, standing, leaning_forward, outstretched_arms: 手をテーブルにつく
+        sitting_across_table, pov_across_table: テーブル越しに座る
+        sitting_on_table, butt_on_table: テーブルの上に座る
+        wiping_table: テーブルを拭く
+        audience, three_quarter_view, wide_shot, from_above, looking_afar, red_carpet: 斜め上からのアングル
+        blurry_foreground, audience, from_side, profile, feet_out_of_frame: 前ボケ入りの横アングル
+        character_on_the_left_side_of_the_image, vanishing_point: 余白を作って遠近感を強調
+        straight-on, vanishing_point, perspective: 真正面・奥行きのある構図
+        can’t_show_this_(meme): Can’t Show This
+        cicada_block_(meme): Cicada Block
+        colombia_pose_(meme): Colombia Pose
+        draw_me_like_one_of_your_french_girls_(meme): Draw Me Like One of Your French Girls
+        how_to_hold_x_(meme): How to Hold X
+        how_to_make_sushi_(meme): How to Make Sushi
+        kiss_meme_chart_(meme): Kiss Meme Chart
+        next_time_you’re_getting_this_(meme): Next Time You’re Getting This
+        pajamas_challenge_(meme): Pajamas Challenge
+        pixiv_bottle_(meme): Pixiv Bottle
+        pov_cheek_grabbing_(meme): POV Cheek Grabbing
+        pov_cheek_warming_(meme): POV Cheek Warming
+        side_profile: 完全な横顔
+        side_profile, face_in_full_side_view, only_one_eye_visible, clear_nose_bridge: 完全な横顔 （side profile）
+        side_profile, three_quarter_back_view, face_slightly_turned_away, visible_ear, partial_cheek_hidden: やや斜め （3/4 back）
+        side_profile, three_quarter_front_view, face_slightly_turned_toward_viewer, clear_eyelashes, sharp_nose_line: やや前向き
+          （3/4 front）
+        three_quarter_back_view: やや斜め後ろからの横顔
+        three_quarter_front_view: やや前向きの横顔
+        about_to_fall: 転びそうになる
+        brushing_away_with_hand: 手を振り払う
+        brushing_hair_back_with_hand: 髪をかきあげる
+        flipping_skirt_(while_walking/spinning): スカートを翻す
+        holding_down_skirt: スカートを押さえる
+        hopping_or_bouncing: 飛び跳ねる
+        jumping_pose: ジャンプする
+        reaching_out_with_hand: 手を伸ばす（何かを取る）
+        running_pose: 走る
+        skipping_lightly: 軽くスキップする
+        spinning_around: スピン（回転）する
+        sprinting: ダッシュする
+        starting_to_run: 走り出す瞬間
+        stepping_back: 後ずさる
+        stopping_and_turning_back: 立ち止まって振り向く
+        tying_up_hair: 髪を束ねる動作
+        walking_and_looking_back: 歩きながら振り返る
+        walking_pose: 歩く
+        twitching, lying_in_fetal_position: 横たわった状態で痙攣する
+        circle_formation: 円形に広がる
+        midair, wide_shot, full_body: 宙に浮いていると分かる全身構図のプロンプト
+        composed_with_space_around_the_subject: キャラの周囲に空間があり、フレーム内で圧迫感がない
+        framed_from_a_slight_distance: 少し引いた視点から撮影し、人物全体が自然に映る構図にする
+        head_and_feet_centered_with_margin_above_and_below: 頭と足がフレームの上下にバランスよく配置されている
+        shot_with_room_to_breathe: 被写体の上下左右に余白を持たせ、構図に余裕を与える
+        zettai_ryouiki, thigh, sitting, arms_between_legs, head_tilt, from_above, feet_out_of_frame: 見下ろし構図で見える絶対領域
+        under_table: 机の下にキャラクターを配置するプロンプト
+        hands_on_another’s_head: 他キャラの頭に手を置く
+        hands_on_another’s_waist: 両手で相手の腰を掴んでいる
+        licking_another’s_~: 舐める部位を決定する
+        cheerleader, sneakers: チアリーダーのAIイラスト
+        facing_away, head: 後ろ向きの別キャラ
+        girl, convenient_censoring, outdoors: ↓
+        girl, smile, squatting, convenient_censoring, straight-on, wind, floating_leaves, outdoors: ↓
+        wind, floating_leaves: 葉っぱが舞う
+        convenient_censoring: 見えそうで見えない
+        convenient_skirt_/_convenient_leg_/_convenient_arm_/_convenient_hair: 仕草で隠す
+        convenient_uncensoring: 粗い隠れ方
+        implied_nudity: 完全に裸っぽいけど、隠し方で露出を避けている暗示的なヌードを再現する
+        art_tool_censor: 絵筆やペイントツールなどで隠す
+        novelty_censor: スタンプでちょうど隠れる
+        novelty_censor_/_character_censor: スタンプやキャラクターなどでプライベートな部分がちょうど隠れる
+        slime_censor: スライムでプライベートな部分がちょうど隠れる
+        soap_censor: 泡でプライベートな部分がちょうど隠れる
+        water_censor: 水でプライベートな部分がちょうど隠れる
+        wing_censor: 翼で隠れる
+        clothes_in_front: 服を前に持って隠す、nude, toplessなどと併用で使用したほうが安定しやすい
+        covering_privates: 秘部を隠す、自分のプライベートパーツ（胸、下半身、股間）などを自分で隠す仕草をする
+        girl, closed_eyes, swimming, ocean, cumulonimbus_cloud, sunset, backlighting, implied_nudity: 海に浮かぶ美女のAIイラスト
+        peeking_out, hiding, behind_door: キャラ動作
+        pov_across_door: ドア越しにみた視点 （一人称視点）
+        pov_peeking: 覗き見視点の構図 、画面内に遮蔽物が前ボケとして描写される
+        pov_peephole: 覗き穴から見る視点
+        blurry_edges: 覗き穴の輪郭をぼやけさせる
+        behind_door: キャラクターがドアの後ろにいる状態
+        peeking_out, hiding: 隠れて顔をのぞかせる、ちらっと覗いている状態を再現する
+        looking_at_smartphone: キャラがスマホを見ている
+        straddling, facing_away, from_behind: 背面跨り
+        straddling, horseback_riding: 馬乗りになって跨る
+        straddling, sitting, face-to-face: 背を向けて座って跨る
+        straddling, sitting_on_lap, front-to-back: 座っている相手に後ろ向きで跨る
+        straddling, sitting_on_person: 座っている相手に跨る
+        wrestling, mounting: レスリングマウント
+        c1:_wrestling, mounting_c2:_lying_on_back: 仰向けの相手に跨る
+        c1:_wrestling, mounting_c2:_on_stomach: うつ伏せの相手に跨る
+        wrestling, mounting_lying_on_back: 仰向けの相手に跨る
+        wrestling, mounting_on_stomach: うつ伏せの相手に跨る
+        jumping, from_below: ジャンプする（ローアングル構図）
+        face_out_of_frame, 1girl, light_green_hair, short_hair, cowboy_shot, T-shirt, pleated_mini_skirt: 次に紹介するのは、画角を工夫して顔そのものをフレームに入れない方法です。
+        perspective, vanishing_point: 消失点を作って遠近感を出す
+        action_shot: アクションショット
+        amazing_composition: 素晴らしい構成
+        cinematic_composition: 映画的な構成
+        close_up: 顔を強調
+        dynamic_composition: ダイナミックな構図
+        epic_composition: 壮大な構成
+        focused_subject: 焦点を当てた主題
+        high_angle: 上から（写真的）（looking upと一緒に使うと効果的。地面が描かれる）
+        silhouette_crowd: シルエットの群衆
+        imbued_with_a_perfect_composition: 完璧な構成が染み込んだ
+        perfect_composition: 完璧な構成
+        2/3_rule_composition: 2/3ルール構成
+        focus_on_the_girl: 女の子に焦点を当てる
+        full_view: 全景
+        masterful_composition: 見事な構成
+        silhouette_art: シルエットアート
+        superb_composition: 素晴らしい構成
+        ultra_sharp_focus_photo: 超シャープなフォーカスの写真
+        and_texture_buildup.composition_is_graphic_and_editorial: そしてテクスチャーの蓄積。構成はグラフィックおよび編集的である
+        and_touches_of_amber.the_composition_follows_the_2/3_rule: そして琥珀の感触。構成は2/3ルールに従っています
+        asymmetrical_artistic_framing: 非対称の芸術的なフレーム
+        centered_close-up_composition: 中央にクローズアップした構図
+        centered_composition: 中央構図
+        centered_portrait_framing: ポートレートを中央に配置したフレーム
+        cinematic_framing: 映画のようなフレーミング
+        clean_composition: クリーンな構成
+        dynamic_perspective: ダイナミックな視点
+        editorial_vogue-style_composition: 編集上のヴォーグスタイルの構成
+        portrait_format: ポートレート形式
+        preserving_the_original_vertical_composition: 元の垂直方向の構図を維持する
+        rendered_with_soft_yet_tack-sharp_focus: ソフトでありながら鋭いフォーカスでレンダリング
+        silhouette_of_a_hummingbird: ハチドリのシルエット
+        silhouette_woman: シルエットの女性
+        strictly_preserving_the_composition: 構成を厳密に守る
+        symmetrical_design: 対称的なデザイン
+        ultra-sharp_focus: 超シャープなフォーカス
+        animated: アニメーション
+        cosplay_photo: コスプレ写真
+        key_visual: キービジュアル
+        novel_illustration: 斬新なイラスト
+        official_wallpaper: 公式の壁紙
+        promotional_art: プロモーションアート
+        screenshot_redraw: screenshot_redraw
+        tall_image: 背の高い画像
+        ugoira: ウゴイラ
+        video: ビデオ
+        wide_image: 広い画像
+        animated_png: アニメーションPNG
+        game_screenshot: ゲームスクリーンショット
+        music_video: ミュージックビデオ
+        screenshot: スクリーンショット
+        self-portrait: 自画像
+        ugoira_conversion: ウゴイラ変換
+        archway_frame: 額縁構図
+        arm_extended: 自撮り風
+        backlit: シルエット
+        bathroom_mirror: 鏡越し
+        depth: 前ボケ
+        foreground_blur: 前ボケ
+        framed_by_arch: フレームイン
+        framed_by_doorway: フレームイン
+        glass_reflection: ガラス越し
+        half_hidden: ドア越し
+        looking_through_glass: 窓越し
+        natural_frame: フレームイン
+        off-center_composition: 三分割構図
+        outline_only: シルエット
+        overhead_shot: ベッドの上から
+        partially_hidden: 隙間から覗く
+        peeking_through_door: ドア越し
+        peering_through: 隙間から覗く
+        puddle_reflection: 水面の反射
+        rainy_window: ガラス越し
+        reflected_in_mirror: 鏡越し
+        reflection_in_water: 水面の反射
+        shooting_through_objects: 前ボケ
+        through_glass: ガラス越し
+        tilted: 対角線構図
+        tree_frame: 額縁構図
+  - name: 画面
+    groups:
+    - name: 画質
+      color: rgba(0, 255, 255, .4)
+      tags:
+        absurdres: 非現実的な高解像度
+        colorful: カラフルな
+        huge_filesize: 超高解像度/巨大なファイルサイズ
+        incredibly_absurdres: 非現実的に高い解像度
+        pixel_art: ピクセルアート
+        wallpaper: 壁紙
+        3d_effect: 3D効果
+        vibrant_colors: 鮮やかな色
+    - name: 芸術スタイル
+      color: rgba(0, 255, 255, .4)
+      tags:
+        ((dieselpunk)): ディーゼルパンク
+        (faux_traditional_media): 模擬伝統的なメディアのスタイル
+        (illustration), (paper_figure), (lococo), ((impasto)), (shiny_skin): ロココ
+        (lineart): 線画
+        1980s_anime: 1980年代のアニメ
+        4koma: 4コマ漫画
+        80s_movie: 1980年代の映画
+        8_Bit_Game: 8ビットゲーム
+        album: アルバム
+        album_cover: アルバムのカバー
+        animated_gif: アニメーションGIF
+        artbook: アートブック
+        azur_lane: アズールレーン
+        back: 背後の画像
+        bubble_bobble: バブルボブル
+        bust: バストアップ
+        chainsaw_man: チェンソーマン
+        chemigram: ケミグラム
+        column_lineup: 列ごとの小さな画像で構成された大きな画像
+        comic: コミック
+        cosplay: コスプレ
+        cover: カバー
+        crossover: クロスオーバー
+        dakimakura: 抱き枕
+        dark: ダークな
+        disney_movie: ディズニー映画
+        dreamlike: 夢のような
+        everyone: 作品の主要なキャラクターが集まったもの
+        fine_art_parody: 名画のパロディ
+        game_cg: ゲームCG
+        genshin_impact: 原神
+        goth: ゴスロック
+        gradient_background: グラデーションの背景
+        guro: グロ
+        Kaleidoscope_Photography: カレイドスコープ写真
+        kantai_collection: 艦隊これくしょん
+        landscape/scenery: 風景
+        light: 明るい
+        magazine_scan: 雑誌のスキャン
+        Magic_Vortex: 魔法の渦巻き
+        opal_render: オパールレンダリング
+        optical_illusion: 視覚の錯覚
+        original: オリジナル
+        personification: 擬人化
+        photo: 写真
+        Polaroid_art: ポラロイドアート
+        real: 真実の
+        rebecca_(cyberpunk): レベッカ（サイバーパンク）
+        sample: 文字入りの画像
+        science_fiction: 科学技術の幻想
+        silhouette: シルエット
+        simple_background: シンプルな背景
+        sketch: スケッチ
+        Studio_Ghibli: スタジオジブリのスタイル
+        style_of_Pixar: ピクサーのスタイル
+        synthwave: シンセウェーブ
+        traditional_media: 伝統的なメディア（手描き）
+        transparent_background: 透明な背景
+        watercolor_(medium): 水彩画
+        zoom_layer: 背景が前景の拡大版
+        artistic_portrait: 芸術的な肖像
+        clay_animation_style: クレイアニメ風
+        clay_render: 3DCGをクレイアニメ風に
+        coloring_book: 塗り絵
+        dreamy_watercolor: 夢のような水彩画
+        line_art: 線画
+        scattered_painting: スプラッシュペイント
+        silhouette_style: シルエット画
+        sketch_style: スケッチ画
+        animated_painting: アニメ塗り
+        anime_colored: アニメ塗り
+        cartoon: 海外のアニメ風
+        cel_anime: 日本のアニメ風
+        graffiti: 落書き
+        manga_style: 漫画風
+        oekaki: お絵かき風
+        retro_style: レトロスタイル
+        dieselpunk: ディーゼルパンク
+        illustration), (paper_figure), (lococo), ((impasto)), (shiny_skin: ロココ
+        story/manga: 複数コマの漫画調に
+        art_cg: 軽い厚塗り風
+        (makeup_lipstick_eyeliner_mascara_eyeshadow:1.1)_glamor_medium_breasts_blonde_hair: 白ギャル
+        1980s: 1980年代の絵柄
+        1990s: 1990年代の絵柄
+        color_pastel_yellow: パステル・イエロー
+        light_pastel_blue: ライトパステルブルー
+        light_pastel_green: ライトパステルグリーン
+        light_pastel_purple: ライトパステルパープル
+        light_pastel_yellow: ライト・パステル・イエロー
+        manga, text: 同人CG集風
+        side_part_slick_back: サイドパートスリックバック
+        side_part_with_hard_part: ハードパートサイドパート
+        photographic_skin: リアルな質感の肌
+        heart_hands_trio: 上記の三人バージョン
+        manga: 漫画が描かれる
+        movie_poster_style: 映画ポスター風
+        spoken_◯◯: 吹き出し
+        3d_anime_render: 3Dアニメレンダー
+        90s_anime_style: レトロアニメ
+        anime_screencap: スクリーンショット風
+        anime_style: アニメ調
+        cel_shading: アニメ塗り
+        clean_lineart: クリーン線画
+        comic_style: コミック風
+        cyberpunk_style: サイバーパンク
+        dark_fantasy_art: ダークファンタジー
+        fantasy_illustration: ファンタジーアート
+        inked_illustration: インク画
+        mobile_game_illustration: ソーシャルゲーム立ち絵
+        monochrome_manga: モノクロ漫画
+        painterly_anime: 厚塗り
+        ray_tracing: レイトレーシング
+        romance_illustration: ロマンス系挿絵
+        trading_card_illustration: カードイラスト風
+        unreal_engine_5: アンリアルエンジン
+        visual_novel_cg: 美少女ゲームCG
+        webtoon_style: WEBTOON風
+        disintegrating_silhouette: 崩壊していくシルエット
+        fragmented_outline: 断片化した輪郭
+        melting_outline: 溶けて崩れる輪郭
+        scattered_particles_from_edge: 境界から粒子が飛び散る
+        shattered_outline: 砕けた境界
+        silhouette_with_fragmented_outline: 断片化した輪郭
+        silhouette_with_melting_outline: 溶けて崩れる輪郭
+        silhouette_with_scattered_many_little_particles_from_edge, disintegrating_silhouette: 境界から粒子が飛び散る
+        silhouette_with_shattered_outline: 砕けた境界
+        silhouette_with_smoke-like_edges: 煙のように崩れる輪郭
+        smoke-like_edges: 煙のように崩れる輪郭
+        black_girl_silhouette_with_blue_sky_pattern: シルエットの中に空模様
+        double_exposure_art: ダブルエクスポージャーシルエット
+        urban_city_inside_own_body: シルエットの中に都市の街並み
+        calm_lake_surface, reflection, reflected_world, horizon: 湖の鏡面反射の背景
+        black_silhouette_girl: シルエットの少女
+        faceless: シルエット補強用
+        silhouette_dress: シルエット姿のドレス
+        arm_warmers: アームウォーマー
+        arm_warmers, y2k_fashion, multicolored_clothes: アームウォーマー。
+        bell-bottoms, y2k_fashion, multicolored_clothes: ベルボトム。フレアシルエットでレトロフューチャー感UP。
+        belt, y2k_fashion, multicolored_clothes: ベルト。
+        butterfly_hair_ornament, y2k_fashion, multicolored_clothes: バタフライヘアアクセ。
+        butterfly_print, y2k_fashion, multicolored_clothes: バタフライモチーフ。蝶々はy2kのアイコン的な存在。
+        cargo_pants, y2k_fashion, multicolored_clothes: カーゴパンツ。オーバーサイズでストリート感をプラス。oversized cargo pantsにしてもよい（ダボダボにする）。
+        crop_top, y2k_fashion, multicolored_clothes: へそ出しクロップトップ。y2kの定番。
+        cyber_fashion: サイバーファッション
+        cyber_fashion, y2k_fashion, multicolored_clothes: サイバーファッション混ぜ。Y2Kと相性がいいです。
+        fur-trimmed_boots, y2k_fashion, multicolored_clothes: ファートリムブーツ。冬っぽいY2Kの定番シューズ。
+        fur_trim, y2k_fashion, multicolored_clothes: ファートリム。ジャケットやブーツにふわふわ感を追加。
+        gyaru, y2k_fashion, multicolored_clothes: ギャル要素混ぜ。
+        heart_(symbol): ハートモチーフ
+        heart_(symbol), y2k_fashion, multicolored_clothes: ハートモチーフ。
+        leg_warmers, y2k_fashion, multicolored_clothes: レッグウォーマー。
+        leopard_print, y2k_fashion, multicolored_clothes: レオパードプリント。アニマル柄で大胆なY2Kらしさ。
+        low-rise_pants: ローライズパンツ
+        low-rise_pants, y2k_fashion, multicolored_clothes: ローライズパンツ。低腰で脚長効果と2000年代らしさがでる。
+        midriff, y2k_fashion, multicolored_clothes: へそ出し強調。
+        miniskirt, y2k_fashion, multicolored_clothes: ミニスカート。明るい色でポップに。
+        platform_shoes, y2k_fashion, multicolored_clothes: 厚底シューズ。足元のボリュームUPが狙える。
+        rhinestone: ラインストーン装飾
+        rhinestone, y2k_fashion, multicolored_clothes: ラインストーン装飾。
+        scrunchie, y2k_fashion, multicolored_clothes: シュシュ。
+        shiny_clothes, y2k_fashion, multicolored_clothes: 光沢のある服。
+        star_(symbol), y2k_fashion, multicolored_clothes: スターモチーフ。
+        sunglasses, y2k_fashion, multicolored_clothes: サングラス。クールなY2Kアイコン。
+        tube_top, y2k_fashion, multicolored_clothes: チューブトップ。肩出しでY2Kらしい軽やかな肌見せ。
+        cropped_or_crop_top: 腹部が見える短丈。アクティブ・軽装感を出せる
+        moe-sode: 萌え袖。袖をぎゅっと握るなどの仕草で、あどけなさや愛らしさが強調される。
+        tight-fitting: 体にぴったりした構造。スタイルを強調できる
+        tucked-in: トップスをスカートやパンツにインした状態。制服や私服でよく使われる定番表現
+        air_current: 空気の流れ
+        bishie_sparkle: 美少女キャラの登場演出
+        distortion: 歪み
+        dithering: ディザリング
+        drop_shadow: 落影
+        dust_cloud: 土埃
+        fog_/_mist: 霧
+        glitch: グリッチ
+        ground_shatter: 地面が激しく割れて砕け散る
+        hue_shifting: 色相シフト
+        scanlines: スキャンライン
+        screentones: スクリーントーン
+        sparkle: キラキラエフェクト
+        sparkling_aura: キラキラのオーラ
+        sparks: 火花
+        comedic_sweatdrop: 冷や汗
+        full-face_blush: 赤面による線
+        heart_floating_above_hand: 手の上にハート
+        loving_aura: loving aura
+        musical_note: 音符エフェクト
+        overlapping_speech_bubbles: 重なり合う吹き出し
+        speech_bubble: 吹き出し
+        spoken_heart: 吹き出しにハート
+        spoken_sound_effect: 吹き出し付きのサウンドエフェクト
+        thought_bubble: 思考の吹き出し
+        afterimage: 残像
+        attack_trail: 攻撃の軌跡
+        aura: 体の周りのオーラ
+        emphasis_lines: emphasis lines
+        fiery_aura: 炎のオーラ
+        glowing_lines: 光の線
+        glowing_streaks: 光の軌跡
+        rainbow_aura: 虹色のオーラ
+        rotated: 画面を回す（90度回転）
+        shockwave: 衝撃波
+        transformation: 変身エフェクト（予兆）
+        against_curtains: カーテンを背にして立つ
+        behind_curtains: カーテンの後ろにいる
+        black_silhouette: 黒いシルエット
+        curtain_grab: カーテンを掴む
+        girl, light_green_hair, short_hair, green_eyes, cowboy_shot, curtain_grab, against_curtains, summer, outdoors: カーテン越しにキャラクターが少し隠れる状態を再現できます。
+        large_curtain_over_torso: カーテンが上半身を覆う
+        body_curve_black_silhouette: 体のカーヴのシルエット
+        see-through_curtains: カーテンが透けいている
+        baggy_shorts: ダボっとしているショートパンツのプロンプト紹介
+        low-rise_shorts: ローライズのショートパンツのプロンプト紹介
+        wide-leg_shorts: 裾がゆったりのショートパンツのプロンプト紹介
+        wide-leg_shorts, loose_thigh_shorts: 裾がゆったり
+        asymmetrical_pants: 左右非対称のズボン
+        baggy_pants: バギーパンツ
+        flared_pants: フレアパンツ
+        high-waist_pants: ハイウエストパンツ
+        loose_pants: ルーズパンツ
+        palazzo_pants: パラッツォパンツ
+        skinny_pants: スキニーパンツ
+        absolute_cinema_(meme): Absolute Cinema
+        ankha_zone_(meme): Ankha Zone
+        anya’s_heh_face_(meme): Anya Heh Face
+        atsuko’s_grin_(meme): Atsuko Grin
+        crying_aqua_(meme): Crying Aqua
+        crying_kasumi_(blue_archive)_(meme): Crying Kasumi
+        frieren_stuck_in_a_mimic_(meme): Frieren Stuck in a Mimic
+        genshin_impact_sticker_redraw_(meme): Genshin Impact Sticker Redraw
+        goku_and_vegeta_in_the_rain_(meme): Goku and Vegeta in the Rain
+        gununu_(meme): Gununu
+        hololive_shadow_puppet_(meme): Hololive Shadow Puppet
+        just_as_planned_(meme): Just As Planned
+        kagurabachi_pose_(meme): Kagurabachi Pose
+        kimoi_girls_(meme): Kimoi Girls
+        lycoris_challenge_(meme): Lycoris Challenge
+        miku_miku_beaaam!!_(meme): Miku Miku Beaaam!!
+        oh?_you’re_approaching_me?_(meme): Oh? You’re Approaching Me?
+        sailor_moon_redraw_challenge_(meme): Sailor Moon Redraw
+        sazae-san_food_gag_(meme): Sazae-san Food Gag
+        seyana_(meme): Seyana
+        shinji_in_a_chair_(meme): Shinji in a Chair
+        side-tail_miku_noodle_stopper_(meme): Side-tail Miku Noodle Stoppe
+        veil_scene_14_redraw_(meme): Veil Scene 14 Redraw
+        yamcha_pose_(meme): Yamcha Pose
+        ai_drawing_anime_characters_eating_ramen_(meme): AI Ramen Anime
+        boobs_in_book_(meme): Boobs in Book
+        broly_culo_(meme): Broly Culo
+        daijoubu?_oppai_momu?_(meme): 大丈夫？おっぱい揉む？
+        ehho_ehho_(meme): Ehho Ehho
+        guilty_challenge_(meme): Guilty Challenge
+        iced_latte_with_breast_milk_(meme): Iced Latte with Breast Milk
+        japan-korea_yuri_(meme): Japan–Korea Yuri
+        lesbians_doing_makeup_(meme): Lesbians Doing Makeup
+        longcat_(meme): Longcat
+        mayu-tan_no_kung_fu_(meme): Mayu-tan no Kung Fu
+        one_finger_selfie_challenge_(meme): One Finger Selfie Challenge
+        barbie_mugshot_(meme): Barbie Mugshot
+        deal_with_it_(meme): Deal With It
+        distracted_boyfriend_(meme): Distracted Boyfriend
+        drakeposting_(meme): Drakeposting
+        drakeposting_(meme), multiple_views: Drakeposting
+        fan_screaming_at_madison_beer_(meme): Fan Screaming at Madison Beer
+        fried_rice_prank_(meme): Fried Rice Prank
+        girl_staring_at_guy’s_chest_(meme): Girl Staring at Guy’s Chest
+        hasn’t_kissed_anyone_ever_vs_expecting_a_kiss_with_tongue_(meme): Hasn’t Kissed Anyone Ever vs Expecting a Kiss with
+          Tongue
+        he_wants_to_order_(meme): He Wants to Order
+        high_school_girls_posing_for_google_street_view_(meme): Google Street View Pose
+        lauren_phillips_lifting_alice_merchesi_(meme): Lauren Phillips Lifting Alice Merchesi
+        prattkeeping_(meme): Prattkeeping
+        salt_bae_(meme): Salt Bae
+        two_soyjaks_pointing_(meme): Two Soyjaks Pointing
+        why_dis_ninja_look_so_mad_(meme): Why Dis Ninja Look So Mad
+        will_smith_slapping_chris_rock_(meme): Will Smith Slapping Chris Rock
+        year_1_&_year_2_(squid_game)_(meme): Year 1 & Year 2 (Squid Game)
+        yusuf_dikec_(meme): Yusuf Dikec
+        frilled_A-line_one-piece_dress: フリルを足す
+        maxi_A-line_one-piece_dress: 丈を長くする
+        mini_A-line_one-piece_dress: 丈を短くする
+        off-shoulder_A-line_one-piece_dress: 肩を見せる
+        athletic_one-piece_dress, tennis-style, pleated_skirt: 部活系ワンピース
+        battle-style_one-piece_dress, armor_elements, asymmetrical_design: 戦闘系ワンピース
+        idol-style_one-piece_dress, stage_costume, shiny_frills: アイドル風ワンピース
+        magical_girl_one-piece_dress, sparkly_ribbons, cute_layered_skirt: 魔法少女風ワンピース
+        school_uniform_one-piece_dress, blazer_style_or_jumper_skirt: 制服系ワンピース
+        A-line_one-piece_dress: Aラインワンピース
+        balloon_one-piece_dress, puffy_hem: バルーンワンピース
+        fit_and_flare_dress, tight_bodice_+_flared_skirt: フィット＆フレア
+        flared_one-piece_dress, swirling_skirt: フレアワンピース
+        mermaid_one-piece_dress, flared_hem: マーメイドワンピース
+        sack_dress, straight-cut_one-piece: サックワンピース
+        tent-line_one-piece_dress, wide_from_shoulder: テントライン
+        tight_one-piece_dress, body-hugging_fit: タイトワンピース
+        backless_one-piece_dress, open_back: 背中開きワンピース
+        camisole_one-piece_dress, spaghetti_straps: キャミソールワンピース
+        jumper_skirt, sleeveless, worn_over_blouse: ジャンパースカート（ジャンスカ）
+        one-piece_dress_with_side_slit, high_slit: サイドスリットワンピース
+        puff-sleeved_one-piece_dress, voluminous_sleeves: パフスリーブ付きワンピース
+        sailor_one-piece_dress, large_sailor_collar: セーラーワンピース
+        shirt_one-piece_dress, collared, button-down: シャツワンピース
+        sleeveless_one-piece_dress: ノースリーブワンピース
+        tiered_one-piece_dress, layered_skirt: ティアードワンピース
+        knee-length_one-piece_dress: ひざ丈ワンピース
+        maxi_one-piece_dress, ankle-length, flowing: マキシ丈ワンピース
+        midi_one-piece_dress, mid-calf_length: ミモレ丈ワンピース
+        mini_one-piece_dress, above-thigh_length: ミニ丈ワンピース
+        ao_dai-style_one-piece_dress, long_slits, flowing_fabric: アオザイ風ワンピース
+        cheongsam-style_one-piece_dress, side_slit, high_collar: チャイナ風ワンピース
+        fantasy-style_one-piece_dress, layered_fabric, magical_ornaments: ファンタジーワンピース
+        lolita_one-piece_dress, frilly_lace, puff_sleeves, ribbon_accents: ロリータワンピース
+        maid-style_one-piece_dress, apron, frilly_cuffs: メイド風ワンピース
+        exquisite_kimono, tiered_skirt: 精密なデザインを施した着物
+        kimono, miniskirt: ミニスカスタイル
+        kimono, pants: パンツスタイル
+        kimono, short_shorts: ショーパンスタイル
+        electric_sparks: 感電エフェクト
+        pain, squinting, open_mouth: 感電して苦しい表情
+        paralyzed_body, electrocution, electrostimulation: 感電して麻痺している
+        torn_clothes, dirty_clothes: 破れて汚れた服
+        hair_standing_up: 髪の毛が逆立つ
+        skeletal_body, x-ray_effect, glowing_bones: 骨透けのエフェクト
+        smoke_from_head: 頭から煙
+        huge_explosion: 巨大な爆発
+        perspective_lines: 遠近法による集中線
+        building_windows_reflecting_clouds, mirror-like_office_glass_reflecting_pedestrians: 建物の窓（外壁側）
+        polished_armor_reflecting_fire, mirror-like_sword_reflecting_opponent: 金属の兜・鎧・武器
+        reflection_in_iridescent_bubble, reflecting_tiny_galaxy_and_microscopic_city: シャボン玉
+        reflection_in_polished_mirror, reflecting_distorted_crying_face_and_swirling_mist: 鏡
+        reflection_in_puddle, reflecting_girl’s_legs_and_skirt, wet_surface: 水たまり＋足元
+        reflection_in_pupil, mirror-like_pupil, reflecting_sunset_skyline: 瞳
+        reflection_in_sacred_water, reflecting_sky_and_divine_figure: 水鏡・神殿の泉
+        reflection_in_sunglasses, reflecting_a_mysterious_figure, mirror-like_lens: サングラス／眼鏡のレンズ
+        reflection_in_teacup, mirror-like_silver_tray, reflecting_girl’s_hand: ティーカップや銀食器
+        reflection_of_boy_in_girl’s_pupil, mirror-like_eyes_reflecting_another_person: キャラの目に他人が映る
+        reflection_on_car_window, mirror-like_car_surface, reflecting_neon_city_lights: 車のボディ／窓
+        reflection_on_glass_screen, reflecting_social-media_notifications_and_cityscape: スマートフォン画面
+        reflection_on_turned-off_TV, mirror-like_monitor_screen: テレビ・モニター画面
+        reflection_on_water_surface, mirror-like_water, reflecting_mountain_range_and_sky: 水面（湖・川）
+        reflection_on_window_glass, reflecting_girl’s_face: 窓ガラス（室内側）
+        storefront_glass_reflecting_passersby, reflection_on_display_window: ショーウィンドウ／店舗のガラス
+        wet_pavement_reflecting_street_lights, mirror-like_stone_tiles_reflecting_silhouettes: 濡れたアスファルト／石畳
+        cinematic_lighting, ray_tracing, global_illumination: ライティング
+        glass_surface, calm_water_surface, smooth_pupil, wet_pavement: 面の質感
+        no_distorted_reflection, no_duplicate_limbs, no_ghosting: ネガティブ例
+        reflection, reflections, mirror-like, reflecting: 映り込み指定
+        showing, mirroring: 反射内容
+        on_the_left_side_of_the_frame: 人物を左に配置（右に空間を空ける）
+        on_the_right_side_of_the_frame: 人物を右に配置（左に空間を空ける）
+        close-up_legs: 足のクローズアップ
+        extreme_close-up_face, leaning_towards_viewer, arms_behind_back: 顔を近づける
+        extreme_foreshortening, exaggerated_perspective: 極端な遠近法
+        one_hand_reaching_towards_viewer_with_palm_visible: 手のひらを近づける
+        foreshortening, from_above: 上から見下ろす遠近法
+        foreshortening, from_below: 下から見上げる遠近法
+        solo_focus, close-up_solo: 1人にフォーカスする
+        vanishing_point, perspective: 消失点を強調
+        '[…]_focus, close-up_[…]': 誇張したい箇所をクローズアップする
+        hand_focus, close-up_hand: 手にクローズアップ
+        brooding_atmosphere: 重苦しい
+        dark_atmosphere: 暗黒
+        eerie_atmosphere: 不気味
+        gothic_atmosphere: 荘厳
+        grim_atmosphere: 厳酷
+        haunting_atmosphere: 怪奇
+        melancholic_atmosphere: 憂鬱
+        moody_atmosphere: 情緒的
+        mysterious_atmosphere: 謎めき
+        ominous_atmosphere: 不吉
+        shadowy_atmosphere: 影の存在感
+        somber_atmosphere: 厳粛
+        cyberpunk_atmosphere: 近未来退廃
+        dark_fantasy_atmosphere: ダークファンタジー
+        dieselpunk_atmosphere: ディーゼルパンク
+        dystopian_atmosphere: ディストピア
+        fantasy_atmosphere: 神話/童話的
+        folk_art_atmosphere: 素朴感
+        futuristic_atmosphere: 近未来的
+        retrowave_atmosphere: レトロウェーブ
+        steampunk_atmosphere: レトロSF
+        synthwave_atmosphere: シンセウェーブ
+        trillwave: トリルウェーブ
+        vaporwave_atmosphere: ヴェイパーウェーブ
+        dreamy_atmosphere: 夢幻
+        ethereal_atmosphere: 透明感
+        magical_atmosphere: 魔法
+        mystical_atmosphere: 神秘
+        otherworldly_atmosphere: 異世界
+        cathedral_atmosphere: 大聖堂
+        coastal_atmosphere: 海岸
+        desert_atmosphere: 砂漠
+        enchanted_forest_atmosphere: 魔法の森
+        forest_atmosphere: 森林・木漏れ日感
+        neon-lit_atmosphere: ネオン発光
+        night_city_atmosphere: 夜の街
+        ruins_atmosphere: 廃墟感
+        seaside_atmosphere: 海辺
+        underwater_atmosphere: 水中
+        urban_atmosphere: 都市感
+        bittersweet_atmosphere: 切ない
+        calm_atmosphere: 穏やか
+        cozy_atmosphere: 居心地よい
+        hopeful_atmosphere: 希望
+        intimate_atmosphere: 親密
+        intimate_mood: 密やか
+        lonely_atmosphere: 孤独
+        nostalgic_atmosphere: 懐かしい
+        peaceful_atmosphere: 安らぎ
+        poignant_atmosphere: 感傷的
+        quiet_atmosphere: 静寂
+        romantic_atmosphere: ロマンチック
+        serene_atmosphere: 静謐
+        tender_atmosphere: 優しい
+        uplifting_atmosphere: 高揚
+        beams_ray_from_hand: レーザービーム
+        casting_spell, glowing_magic_circle: 魔法陣
+        casting_spell, glowing_orb_of_light: オーブ型の魔法
+        casting_spell, green_magical_particles, floating_sparkles, aura_glow, spread_fingers, open_hand, arms_at_sides: 魔法の粒子
+        glowing_magic_circle: 魔法陣
+        glowing_orb_of_light: オーブ型の魔法
+        magical_particles: 魔法の粒子
+        dark_energy, shadow_aura, black_mist: 闇（Darkness / Shadow）
+        fire_magic, flame_aura, burning_energy: 炎（Fire）
+        frost_magic, ice_shards, freezing_aura: 氷（Ice）
+        holy_light, radiant_aura, beam_of_light: 光（Light）
+        lightning_magic, electric_sparks, thunder_beam: 雷（Lightning）
+        see_through_green_wind_magic, gust_of_air, swirling_vortex: 風（Wind）
+        space_distortion, temporal_magic, portal_ring: 時空（Time/Space） ※ランダム要素強め
+        stone_magic, ground_energy, dust_swirl, floating_stone, floating_dust: 大地（Earth）
+        water_magic, liquid_wave, droplet_aura, floating_water_drops: 水（Water）
+        electric_eyes: 目に電撃エフェクト
+        atmospheric_reentry: 大気圏突入
+        twinkle_in_the_sky: 誰かが飛ばされて星になる
+        3d_model: 3dモデル
+        contour_drawing: コンター画（輪郭画）
+        digital_painting: デジタルペインティング
+        thick_paint: 厚塗りのペイント
+        vector_art: ベクターアート
+        a_girl_wearing_wizard_hat_is_elemental_in_Deck, upper_body, small_head: プロンプト
+        anime_coloring: アニメの着色
+        fading_border: フェージングボーダー
+        surreal: 超現実的
+        high_detail: 高精細
+        irregular_border: 不規則な境界線
+        very_awa: very awa（美的評価トークン）
+        aged_up: 老化
+        black_claws: 黒い爪
+        black_sclera: 黒硬化
+        blending: ブレンド
+        energy: エネルギー
+        geometry: ジオメトリ
+        impasto: インパスト
+        leaf: 葉
+        retro_artstyle: レトロアートスタイル
+        shout_lines: 叫ぶライン
+        yellow_sclera: 黄色硬化
+        anime_screenshot: アニメのスクリーンショット
+        30-year-old_woman: 30歳女性
+        absolutely_eye-catching: 絶対に目を引く
+        anime: アニメ
+        beautiful: 美しい
+        brown_ear_tips: 茶色のイヤーチップ
+        crisp_edges: 鮮明なエッジ
+        delicate: 繊細
+        dreamy: 夢幻的
+        dynamic: ダイナミック
+        flat_colors: フラットカラー
+        flat_vector: フラットベクトル
+        flat_vector_illustration: フラットのベクトル図
+        fox_snout: キツネの鼻
+        good_legs: 良い脚
+        good_shading: 良いシェーディング
+        horror: ホラー
+        lineless: 線なし
+        masterwork: 傑作
+        moody: ムーディ
+        no_outline: 輪郭なし
+        raytracing: レイトレーシング
+        refined_details: 洗練されたディテール
+        retro_art: レトロアート
+        sci-fi: SF（サイファイ）
+        semifrealism: セミフリーリズム
+        sharp_shading: シャープなシェーディング
+        smooth_shading: スムーズシェーディング
+        soft_and_gentle_colors: 柔らかくて優しい色
+        soft_pastel_colors: 柔らかいパステルカラー
+        thick_black_outline: 太い黒い輪郭
+        watercolor: 水彩画
+        xuer_guangying: シュエル・グアンイン
+        year_1995: 1995年スタイル
+        award_winning: 受賞歴
+        bright_colours: 明るい色
+        epic: すごい
+        fantasy_realism: ファンタジーリアリズム
+        highly_stylized: 高度に様式化された
+        ink_illustration: インクイラスト
+        will-o'-the-wisp: ウィル・オ・ザ・ウィスプ
+        delicate_features: 繊細な特徴
+        elaborate_details: 精緻な詳細
+        intricate_lines: 複雑な線
+        romantic: ロマンチック
+        vantablack: バンタブラック
+        brush_stroke: ブラシストローク
+        henna: ヘンナ
+        a_amsterpiece: アムスターピース
+        amazing_visuals: 素晴らしいビジュアル
+        anime_digital_art: アニメデジタルアート
+        atmospheric_depth.: 大気の深さ。
+        award-winning: 受賞歴のある
+        brush_strokes: ブラシストローク
+        captivating: 魅力的
+        cool: クール
+        dark_fantasy: ダークファンタジー
+        energetic: エネルギッシュ
+        expressive_anime_art: 表現力豊かなアニメアート
+        fantastic: 幻想的
+        fantastic_unreal_architecture_that_amazes_the_imagination: 想像力を驚かせる素晴らしい非現実的な建築
+        fantastical: 幻想的
+        fantasy_art: ファンタジーアート
+        finest_details: 細部まで
+        gorgeous: ゴージャス
+        harmony: 調和
+        liquid_shimmer: 液体シマー
+        lovely: 可愛らしい
+        made_of_smoke: made_of_smoke（Civitaiトークン）
+        magical: 魔法の
+        magnificent: 壮大
+        majestic: 威厳ある
+        mirage_split: ミラージュスプリット
+        peaceful_magic: 平和な魔法
+        professional: プロフェッショナル
+        refracted_double_vision: 屈折複視
+        renaissance_mood: ルネッサンス気分
+        renaissance_oil_painting: ルネッサンスの油絵
+        rich_deep: 豊かで深い
+        romance: ロマンス
+        serenity: 静けさ
+        sharp_magnificent_details: シャープで素晴らしいディテール
+        special_ink-drawing_mode: 特殊インク描画モード
+        studio_anime: スタジオアニメ
+        studio_ghibli_dark_fairytale: スタジオジブリの暗いおとぎ話
+        surreal_dreamscape: 超現実的な夢の風景
+        tranquility: 穏やかさ
+        transcendent_breathtaking_beauty: 超越的な息を呑む美しさ
+        ultra_realist_style: ウルトラリアリストスタイル
+        vibrant_color: 鮮やかな色
+        visible_brushstrokes: 目に見えるブラシストローク
+        almost_sculptural.free: ほとんど彫刻的。無料
+        almost_sculptural.the_style_is_abstract: ほとんど彫刻的。スタイルは抽象的です
+        hauntingly_eerie: 忘れられないほど不気味な
+        no_readable_text: 読めるテキストがない
+        pointy_ear: 尖った耳
+        stunning_visuals: 見事なビジュアル
+        with_brushstrokes_and_traces_of_paint_visible: 筆跡や絵の具の跡が見える
+        '...': 三点リーダー
+        dust: ほこり
+        illusion: 幻想
+        ink: インク
+        inverted_colors: 逆色
+        minimalism: ミニマリズム
+        ornate: 華やか
+        rust: さび
+        scratches: 傷
+        white_theme: 白いテーマ
+        a_axolotl: ウーパールーパー
+        a_heavy: 重い
+        a_humorous: ユーモラスな
+        a_jawa: ジャワ
+        a_surreal: 超現実的な
+        a_wide: 広い
+        amazing_details: 驚くべき詳細
+        and_a_dim: そして薄暗い
+        and_gold_accents: そしてゴールドのアクセントが
+        and_metallic_tones: そしてメタリックな音色
+        and_natural_debris: そして自然の残骸
+        and_slight_misregistration.surfaces_feel_worn_and_imperfect: そして微妙な位置ずれ。表面が磨耗して不完全な感じがする
+        and_wonderfully_cohesive.: そして見事な結束力。
+        art: 美術
+        art_work: 芸術作品
+        artistic_canvas_texture_with_visible_impasto_brush_strokes: 厚塗りブラシ ストロークが目に見える芸術的なキャンバス テクスチャ
+        atmospheric_translucency_in_the_blue_paint_layers: 青いペイント層の大気半透明
+        bark_fragments: 樹皮の破片
+        blending_white_color: 白い色が混ざり合う
+        broken_open_at_the_front_to_reveal_a_deep: 前面が壊れて深い部分が現れます
+        burnt_orange: バーントオレンジ（焦げたような暗く渋いオレンジ色）
+        carved_wood_textures: 彫刻された木のテクスチャー
+        chaotic_layered_textures: 混沌としたレイヤードテクスチャ
+        cheeks_and_temples: 頬とこめかみ
+        chromatic_aberration_on_all_hard_edges: すべてのハードエッジでの色収差
+        colorful_skies: カラフルな空
+        comedic_charm: コミカルな魅力
+        crimson_accent_splashes: 深紅のアクセントの水しぶき
+        crimson_roses: 深紅のバラ
+        dappled_light_with_flared_borders: フレア状の境界線を持つまだらな光
+        deep_cobalt_blue: 深いコバルトブルー
+        deep_greens: 深い緑
+        deeper_blacks: より深い黒人
+        delicate_bioluminescent_details: 繊細な生物発光のディテール
+        delicate_brush_streaks_fading_into_white_paper_texture: 繊細なブラシの縞が白い紙のテクスチャーに消えていく
+        diagonal_sweeping_motion_across_the_canvas: キャンバス上で斜めにスイープする動き
+        dreamy_optical_softness: 夢のような光学的柔らかさ
+        dynamic_feel: ダイナミックな感触
+        dynamic_paint_splatter_textures: ダイナミックなペイント スプラッタ テクスチャ
+        each_crow_individually_drawn: それぞれのカラスが個別に描かれています
+        eerie: 不気味
+        elegant_calligraphy-inspired_brushwork: カリグラフィーからインスピレーションを得たエレガントな筆致
+        elegant_japanese_abstract_art: エレガントな日本の抽象芸術
+        elegant_minimal_fantasy_art: エレガントなミニマルファンタジーアート
+        elegant_outlines: エレガントな輪郭
+        emotional_anime_scenery: 感動的なアニメの風景
+        emotional_elegance_mixed_with_subtle_dark_fantasy_undertones: 繊細なダークファンタジーの雰囲気と混ざり合った感情的なエレガンス
+        emotional_ink_fantasy_illustration: 感情的なインクファンタジーイラスト
+        ethereal_watercolor: 幻想的な水彩画
+        evoking_a_gritty: ざらついたものを呼び起こす
+        expressive_brushstrokes_of_grey_and_gold: グレーとゴールドの表現力豊かなブラシストローク
+        expressive_characters: 表情豊かなキャラクター
+        expressive_ink_splash_art: 表現力豊かなインクスプラッシュアート
+        expressive_paint_motion: 表現力豊かなペイントモーション
+        faint_ancient_calligraphy_dissolving_into_the_splash: 飛沫に溶けるかすかな古代の書道
+        featuring_smooth_android_plating: 滑らかなアンドロイドメッキを採用
+        fluid_ink_drips: 液体インクの滴下
+        frozen_underwater_landscapes: 凍った水中の風景
+        gentle_pastel_tones: 優しいパステルトーン
+        glossy_organic_surfaces: 光沢のある有機的な表面
+        gold_leaf_flecks_embedded_in_watercolor_strokes: 水彩ストロークに埋め込まれた金箔の斑点
+        grays: 灰色
+        halftone_dot_variation: 網点バリエーション
+        his_features_obscured_by_a_respirator_and_augmented_implants: 彼の特徴は人工呼吸器と強化されたインプラントによって隠されている
+        hollow_branch_structures: 中空枝構造
+        including_a_red_cape: 赤いマントも含めて
+        indicative_of_an_aging_male.he's_clad_in_a_flowing: 年老いた男性の象徴。彼は流れるようなものを着ている
+        indigo_ink: 藍インク
+        ink_bleed: インクのにじみ
+        ink_splash_on_image: 画像にインクが飛び散る
+        inking: 墨入れ
+        inspiring: 感動的な
+        intense: 激しい
+        intense_neon_pink_transitioning_into_rich_crimson_tones: 強烈なネオンピンクが豊かな深紅の色調に変化
+        intertwined_stems: 絡み合った茎
+        intricate_detail: 複雑な詳細
+        intricate_natural_detailing: 複雑な自然なディテール
+        isolation: 分離
+        layered_translucent_pigments: 層状の半透明顔料
+        lips_in_a_bold_glossy_style: 大胆な光沢のあるスタイルの唇
+        magical_light_bathes_the_scene: 魔法のような光が現場を包みます
+        magical_realism: マジカルリアリズム
+        marked_by_pipes: パイプでマークされた
+        matte_painterly_realism: マットな絵画的リアリズム
+        melancholic_wandering_warrior_energy: メランコリックな放浪の戦士のエネルギー
+        metal_structures: 金属構造物
+        metallic_gold_flecks: メタリックゴールドの斑点
+        minimalist_asian_illustration: ミニマリストのアジアのイラスト
+        minimalist_watercolor_samurai_illustration: シンプルな水彩武士のイラスト
+        mirmulnir.yes: ミルムルニル。はい
+        modern_watercolor_abstraction: 現代の水彩画の抽象化
+        moe: 萌える
+        moody_atmospheric_depth: 不機嫌そうな雰囲気の深さ
+        more_velvety: よりビロードのような
+        mysterious: 神秘的な
+        negative_color: ネガティブカラー
+        no_logos: ロゴなし
+        no_readable_text.: 読めるテキストはありません。
+        no_text: テキストなし
+        no_watermark: 透かしなし
+        no_watermark.: 透かしはありません。
+        not_realistic: 現実的ではない
+        otherwise_cream_ground: それ以外の場合はクリームグラウンド
+        pouring_into_a_large: 大きく注ぐ
+        premium_gallery-style_fantasy_concept_art: プレミアムギャラリースタイルのファンタジーコンセプトアート
+        professional_design: プロフェッショナルなデザイン
+        pure_and_luminous: 純粋で明るい
+        quiet_spiritual_intensity: 静かな精神的な強さ
+        realistic_subsurface_scattering: 現実的な表面下散乱
+        reds: 赤
+        rich_saturated_colors_with_teal: ティールの豊かな飽和色
+        rich_textures: 豊かなテクスチャ
+        romantic_oil_painting_depicting_a_serenade_scene_in_a_rainy: 雨の中でのセレナーデのシーンを描いたロマンチックな油絵
+        safe: 安全
+        semi_realism: 半写実主義
+        sharp_details: シャープなディテール
+        sharp_wood_splinters: 鋭い木の破片
+        shooted: 撃たれた
+        smooth_gradients: 滑らかなグラデーション
+        smooth_oak_wood_texture_with_realistic_grain: リアルな木目を持つ滑らかなオーク材の質感
+        soft_aqua_gradients: ソフトアクアグラデーション
+        soft_natural_blush: 柔らかく自然な頬紅
+        soft_natural_watercolor_luminosity: 柔らかな自然な水彩の明るさ
+        soft_whites: ソフトホワイト
+        softer: より柔らかい
+        splintered_wood_scraps: 割れた木くず
+        subject_matter: 主題
+        surreal_and_artistic: 超現実的で芸術的
+        textured_brushstrokes: テクスチャーのあるブラシストローク
+        the_figure's_posture_hunched_slightly_forward: 人物の姿勢はわずかに前かがみになっている
+        the_primary_subject: 主な主題
+        traditional_japanese_sumi-e_painting: 日本の伝統的な墨絵
+        turquoise_teal: ターコイズティール
+        twisting_vines: ねじれた蔓
+        ultra-realist_style: 超写実的なスタイル
+        using_bold_shapes: 大胆な図形を使用する
+        velvety_tonal_transitions: ビロードのような音の変化
+        vibrant_watercolor: 鮮やかな水彩画
+        warm_golds: 暖かい金色
+        which_creates_a_blend_of_sci-fi: SFの融合を生み出す
+        with_accurate_depictions_of_icebergs: 氷山の正確な描写付き
+        with_bright: 明るい
+        with_flames_and_smoke_billowing_from_it.: 炎と煙が吹き出している
+        with_light_grime: 軽い汚れあり
+        with_realistic_textures_and_colors_that_suggest_a_cold: 風邪を連想させるリアルな質感と色
+        with_subtle_suggestions_of_both_age_and_immense_power.: 年齢と強大な力の両方を微妙に示唆しています。
+        worn_and_crumpled.in_the_foreground: 着用され、しわくちゃになっています。前景にある
+        year_2025: 2025年スタイル
+        black_border: 黒い境界線
+        artistic: 水彩イラスト風
+        classical: 油絵風
+        clean_lines: ミニマルイラスト
+        detailed_brushstrokes: 油絵風
+        detailed_clouds: 新海誠風
+        detailed_effects: ufotable風
+        dramatic_sky: 新海誠風
+        gentle: ジブリ風
+        ghibli_style: ジブリ風
+        graphic_design: ミニマルイラスト
+        kyoto_animation_style: 京アニ風
+        makoto_shinkai_style: 新海誠風
+        minimalist: ミニマルイラスト
+        pastoral: ジブリ風
+        photorealistic_background: 新海誠風
+        retro_anime: 90年代アニメ風
+        simple_illustration: ミニマルイラスト
+        soft_edges: 水彩イラスト風
+        soft_watercolor: ジブリ風
+        transparent_colors: 水彩イラスト風
+        ufotable_style: ufotable風
+        2.35:1: シネマティック
+        70s_style: レトロ
+        anamorphic: シネマティック
+        cool_shadows: Fujifilm風
+        creepy: ホラー
+        crystal_clear: 透明感
+        film_look: Fujifilm風
+        Fujifilm_Superia: Fujifilm風
+        green_tint: Fujifilm風
+        hazy: ノスタルジック
+        hearts: ロマンチック
+        love: ロマンチック
+        low_key: ダーク
+        memory-like: ノスタルジック
+        movie_still: シネマティック
+        mystical: ファンタジー
+        old-fashioned: レトロ
+        otherworldly: ファンタジー
+        pink_tones: ロマンチック
+        pop_art: ポップ
+        skin_tones: Kodak Portra風
+        soft_glow: ロマンチック
+        soft_grain: Kodak Portra風
+        tech: 未来的
+        unsettling: ホラー
+        warm_film_tones: Kodak Portra風
+        breathable: コットン
+        casual_texture: デニム
+        deep_color: ベルベット
+        fishnet: メッシュ
+        flowing: シルク
+        genuine_leather: レザー
+        glossy_leather: レザー
+        intricate_pattern: レース
+        jean_fabric: デニム
+        knitted_fabric: ニット
+        lace_fabric: レース
+        luxurious: サテン
+        matte_leather: レザー
+        natural_fabric: コットン
+        net_fabric: メッシュ
+        rich_texture: ベルベット
+        silky_fabric: シルク
+        beautiful_artwork: 美しいイラスト
+        beautiful_girl/beautiful_woman: 美しい女の子・女性
+        detailed_skin/detailed_face: きめ細かな肌・顔・目
+        extremely_cute/very_cute: とってもかわいい
+        high_quality_illustrations: 超技巧なイラスト
+        super_fine_illustration/: 超技巧なイラスト
+        ultra-high-resolution_illustrations/: 超技巧なイラスト
+        mosaic_art: モザイクアート
+    - name: 芸術の種類
+      color: rgba(0, 255, 255, .4)
+      tags:
+        (((ink))), ((watercolor)): 水彩画
+        ((dyeing)), ((oil_painting)), ((impasto)): 油絵
+        ((wash_painting)), ((ink_s...)): 中国風
+        (monochrome), (gray_scale), (pencil_sketch_lines: 鉛筆スケッチ
+        (posing_sketch), (monochrome): モノクロのポーズスケッチ
+        (watercolor_pencil): 水彩鉛筆
+        Collage: コラージュアート
+        Dalle_de_verre: ガラスモザイク
+        Encaustic_painting: エンカウスティック絵画
+        illustration: イラスト
+        illustration, (((ukiyoe))), ((sketch)), ((japanese_art)): 浮世絵
+        Ink_wash_painting: 水墨画
+        Mezzotint: メゾチント
+        airbrush: エアブラシ画
+        ink_drawing: インク画
+        ink_painting: 水墨画、墨絵
+        paper_cutout_art: ペーパークラフト風
+        watercolor_painting: 水彩画
+        (ink))), ((watercolor: 水彩画
+        dyeing)), ((oil_painting)), ((impasto: 油絵
+        posing_sketch), (monochrome: モノクロのポーズスケッチ
+        wash_painting)), ((ink_s...: 中国風
+        shocking_pink_eyes: ピンクの目
+        dark_periwinkle: ダーク・ペリウィンクル
+        gijinka: 擬人化
+        light_hot_pink: ライト・ホットピンク
+        light_pink: ライトピンク
+        color_ink: (medium) カラーインク風になる
+        painterly: 画家
+        digital_art: デジタル画
+        flatline: フラットライン
+        mosaic: モザイク
+        semi-realistic: 半現実的
+        concept_art: コンセプトアート
+        a_whimsical_soft_digital_painting: 風変わりなソフトデジタルペインティング
+        hyper-realistic: 超現実的な
+        maximalist_style: マキシマリストスタイル
+        splash_art: スプラッシュアート
+        whimsical: 気まぐれな
+        lineart: 線画
+        a_hyper-realistic: 超現実的な
+        digital_illustration: デジタルイラスト
+        geometric_accents: 幾何学的なアクセント
+        hyper-realistic_cgi: 超リアルなCGI
+        hyperreal: 超現実的な
+        modern_art: 現代美術
+        neo-noir: ネオノワール
+        painterly_fluid_motion: 絵画のような滑らかな動き
+        painterly_style: 絵画的なスタイル
+        poetic: 詩的な
+        blender_(medium): ブレンダー（中）
+        clip_studio_paint_(medium): クリップスタジオペイント（ミディアム）
+        gimp_(medium): GIMP（中）
+        ibispaint_(medium): ibispaint（中）
+        live2d: Live2d
+        oil_painting_(medium): 油絵（中）
+        paint.net_(medium): paint.net（中）
+        painting_(medium): 絵画（媒体）
+        painttool_sai_(medium): PaintTool Sai（中）
+        pen_(medium): ペン（中）
+        photoshop_(medium): Photoshop（中）
+        procreate_(medium): Procreate（中）
+        autodesk_3ds_max_(medium): Autodesk 3DS Max（Medium）
+        brush_(medium): ブラシ（中）
+        calligraphy_brush_(medium): 書道ブラシ（中）
+        canvas_(medium): キャンバス（中）
+        color_ink_(medium): カラーインク（中）
+        crayon_(medium): クレヨン（中）
+        flipnote_studio_(medium): FlipNote Studio（中）
+        food_art_(medium): food_art_(medium)
+        gouache_(medium): ガッシュ（中）
+        koikatsu_(medium): 小川（中）
+        krita_(medium): クリタ（中）
+        lego_(medium): レゴ（中）
+        medibang_paint_(medium): メディバンペイント（中）
+        microsoft_paint_(medium): microsoft_paint_(medium)
+        mikumikudance_(medium): Mikumikudance（中）
+        model_kit_(medium): model_kit_(medium)
+        papercraft_(medium): ペーパークラフト（中程度）
+        pastel_(medium): パステル（中）
+        source_filmmaker_(medium): ソースフィルムメーカー（ミディアム）
+        spine_(medium): spine_(medium)
+        watercolor_pencil_(medium): 水彩ペンシル（中）
+        zbrush_(medium): Zbrush（中）
+        multiple_2koma: 連続2コマ
+        multiple_3koma: 連続3コマ
+        rectangular_6koma: 縦長6コマ
+    - name: 芸術派
+      color: rgba(0, 255, 255, .4)
+      tags:
+        ((abstract_art)): 抽象芸術
+        ((art_nouveau)): アール・ヌーヴォー
+        ((ASCII_art)): ASCIIアート
+        ((classicism)): 古典主義
+        ((Dadaism)): ダダイスム
+        ((futurism)): フューチャリズム
+        pointillism: 点描法
+        classicism: 古典主義
+        Dadaism: ダダイスム
+        futurism: フューチャリズム
+    - name: アーティストのスタイル
+      color: rgba(0, 255, 255, .4)
+      tags:
+        ((alphonse_mucha)): アルフォンス・ミュシャのスタイル
+        ((Monet_style)): モネのスタイル
+        alphonse_mucha: アルフォンス・ミュシャのスタイル
+        Monet_style: モネのスタイル
+        748cmstyle: 748cmstyle（Civitaiトークン）
+        in_the_style_of_cknc: CKNCのスタイルで
+        midjourneyv6.1: ミッドジャーニーv6.1
+        style_reminiscent_of_nihonga_and_ukiyo-e: 日本画や浮世絵を彷彿とさせるスタイル
+        trending_on_artstation: ArtStationで流行
+        db4rz_style_painting: db4rz スタイルの絵画
+        in_the_style_of_cksc: cksc のスタイルで
+        aidmamj6.1: エイドマムj6.1
+        amazing_artist: 素晴らしいアーティスト
+        anime_art_style: アニメのアートスタイル
+        del1cate_balance_style: del1cate_balance スタイル
+        in_the_style_of_ck-mgs: ck-mgsのスタイルで
+        in_the_style_of_rembrandt.fs: レンブラント風に。 fs
+        nistyle: nistyle（Civitaiトークン）
+        oil_painting_art_style_from_renaissance_period: ルネサンス時代の油絵の芸術スタイル
+        pingtu_style: 屏図スタイル
+        pinkfluxproultrafantasia: ピンクフラックスプロウルトラファンタジア
+        style_of_daniel_merriam: ダニエル・メリアムのスタイル
+        style_of_rembrandt: レンブラントのスタイル
+        vintage_fancha_style_secret_grotesque_fantasy: ビンテージ ファンチャ スタイル Secret_grotesque_fantasy
+        zidiusart: zidiusart（Civitaiトークン）
+        bradhamel_art_style: ブラダメルのアートスタイル
+        bradhamel_art_style.in_this_breathtaking_cinematic_frame: ブラッドダメルのアートスタイル。この息を呑むような映画のフレームの中で
+        silhouette_art_style: シルエットアートスタイル
+    - name: 照明
+      color: rgba(0, 255, 255, .4)
+      tags:
+        available_light: 天然光
+        background_light: 背景の光
+        glowing_neon_lights: 発光するネオンライト
+        metallic_luster: 金属の光沢
+        moody_lighting: ムーディな照明
+        rim_light: リムライト
+        Tyndall_effect: ティンダル効果
+        Volumetric_Lighting: ボリューメトリックライティング
+    - name: リアル
+      color: rgba(0, 255, 255, .4)
+      tags:
+        highres: 厚塗り（スタイル）
+        oil_painting: 油絵
+        photo_(medium): 写真風（スタイル）
+        polaroid: ポラロイド写真
+        reality: 現実
+        autochrome: 初期のカラー写真風
+        film_grain: フィルム写真
+        photograph: 写真
+        sepia: 茶色系の色調
+        snapshot: 写真
+        vintage_photograph: 昔のカメラ･フィルム
+    - name: スケッチ
+      color: rgba(0, 255, 255, .4)
+      tags:
+        flat_color: フラットカラー
+        greyscale: グレースケール
+        halftone: ハーフトーン
+        high_contrast: 高コントラスト
+        outline: アウトライン
+        partially_colored: 部分的に着色された
+        spot_color: スポットカラー
+        black_outline: 黒い輪郭線
+        flat_design: フラットデザイン
+        sharp_sketch: シャープなスケッチ
+        thick_outline: 太い輪郭線
+        monochromatic: 1色のみ
+        thick_lineart, bold_outlines, 1990s_anime_style, retro_anime_lineart, strong_lines, monochrome: 90〜2000年代アニメの太線画のプロンプト紹介
+        monochrome, thick_lineart, outline_with_lineart, no_shadow: まず一番オーソドックスなクリーンラインのプロンプトです。
+        gradient_shading, light_pink_to_white_gradient, airbrush_pale_pink, soft_pink_gradient_fill, dreamy_pink_fade: グラデーション塗りのプロンプト紹介
+        screentone, halftone_dots, light_pink_manga_tone, pale_pink_screentone_shading: スクリーントーン風のプロンプト紹介
+        flat_color, solid_light_pink_fill, pale_pink_flat_coloring, anime_flat_shading, no_shadows: フラット塗り（アニメ塗り）のプロンプト紹介
+        thick_paint, impasto, oil_painting, painterly, light_pink_palette, soft_pink_brush_strokes: 厚塗り風の着色のプロンプト紹介
+        partial_coloring, unfinished_light_pink_painting, some_areas_white, pale_pink_rough_coloring, white_highlights_remain: 塗り残し（白抜き）風のプロンプト紹介
+        detailed_sketch, hand-drawn_lineart, pencil_sketch_vibes, linear_hatching, rough_sketch, pencil_drawing, monochrome: 少しラフなアニメ線画のプロンプト紹介
+        very_fine_lineart, ultra_detailed_lineart, thin_lines, delicate_lines, detailed_hair, monochrome: 極細・繊細な美少女ゲーム風線画のプロンプト紹介
+        manga_lineart, ink_drawing, g-pen_lines, manga_pen_lines, screentones, traditional_manga_style: 漫画のペン入れ風線画のプロンプト紹介
+        pale_pink_monochrome, colored_lineart, light_pink_lineart, pale_pink_outlines, sakura_pink_contours, soft_pink_linework: 色トレス（線画に色をつける）のプロンプト紹介
+        colored_pencil, light_pink_colored_pencil_texture, pale_pink_prismacolor_style, crayon_texture_light_pink: 色鉛筆塗りのプロンプト紹介
+        4o_Image_Generation: ChatGPT（4o Image Generation）による美少女イラストの作例
+        DALL·E_3: DALL·E 3による美少女イラストの作例
+    - name: ペン
+      color: rgba(0, 255, 255, .4)
+      tags:
+        acrylic_paint_(medium): アクリル絵の具
+        ballpoint_pen_(medium): ボールペン
+        colored_pencil_(medium): カラーペンシル
+        copics: コピック
+        faux_traditional_media: 伝統的なメディアの模倣
+        graphite_(medium): グラファイト鉛筆
+        marker_(medium): マーカー
+        millipen_(medium): ミリペン
+        nib_pen_(medium): ニブペン
+        pastel_color: 淡い色彩
+        pencil_sketch_lines: 鉛筆スケッチ
+        acrylic_painting: アクリル画
+        chalk: チョーク
+        charcoal_drawing: 木炭画
+        colored_pencil: 色鉛筆
+        coupy_pencil: クーピー
+        crayon: クレヨン画
+        marker_style: マーカー風
+        millipen_style: ミリペン画
+        pastel_painting: パステル画
+        pencil_drawing: 鉛筆画
+        watercolor_pencil: 水彩色鉛筆
+        bath, open_door: お風呂のドア開けたら・・・
+        ballpoint_pen: (medium) ボールペン画風にはならず、ボールペンが描かれがち
+        millipen: (medium) ミリペン風というよりは、主線を細くしたアニメ塗り風になった
+        nib_pen: (medium) つけペン風にはならず、つけペンそのもの（ペン先）が出た
+        open: 〇〇 衣服の前を開いて見せている動作
+        copic_painting: コピック
+        ink_(medium): インク
+    - name: 色
+      color: rgba(0, 255, 255, .4)
+      tags:
+        aliceblue: アリスブルー色
+        aquamarine: アクアマリン色
+        beige: ベージュ色
+        chocolate: チョコレート色
+        coral: コーラル色
+        fuchsia: フクシャ色
+        gold: 金色
+        navy: 海軍色
+        olive: オリーブ色
+        orchid: オーキッド色
+        plum: プラム色
+        salmon: サーモン色
+        seashell: シーシェル色
+        snow: 雪色
+        thistle: シスル色
+        tomato: トマト色
+        wheat: 小麦色
+    - name: 背景
+      color: rgba(0, 255, 255, .4)
+      tags:
+        abstract_background: 抽象的な背景
+        argyle_background: アーガイル模様の背景
+        background_text: 背景テキスト
+        ban: 科学技術の幻想
+        beige_background: ベージュの背景
+        black_background: 黒い背景
+        blurry: ぼかし背景
+        blurry_foreground: ぼかし前景
+        border: 枠線
+        brown_background: 茶色の背景
+        bubble_background: 泡の背景
+        checkered_background: チェック柄の背景
+        city_lights: 都市の灯りの背景
+        cityscape: 都市の風景
+        clock_background: 時計の背景
+        crop_top_overhang: トップ部分がはみ出した作物
+        cyberpunk: サイバーパンク
+        depth_of_field: 被写界深度（描写法）
+        fantasy: ファンタジー風
+        flashback: フラッシュバックのシーン
+        floral_background: 花のデザインの背景
+        foral_background: 花柄の背景
+        grey_background: 灰色の背景
+        halftone_background: ハーフトーンの背景
+        heart_background: ハート模様の背景
+        honeycomb_background: ハチの巣模様の背景
+        multicolored_background: 多色の背景
+        outside_border: 一部が背景の枠外に描かれている
+        pillarboxed: 柱状の背景
+        plaid_background: プレイド模様の背景
+        rainbow_background: 虹の背景
+        rounded_corners: 角が丸い背景またはフレーム
+        sparkle_background: 輝く星の背景
+        starry_background: 星空の背景
+        striped_background: 縞模様の背景
+        tan_background: 褐色の背景
+        viewfinder: ビューファインダー
+        wall_of_text: テキストの背景
+        white_background: 白い背景
+        windowboxed: ウィンドウボックス（背景）
+  - name: レンズ
+    groups:
+    - name: レンズ
+      color: rgba(99, 201, 2, .4)
+      tags:
+        cowboy_shot: 上半身+太もも（カウボーイショット）
+        105mm_macro: Nikon
+        23mm_lens: Fujifilm スナップ
+        35mm_film: フィルム一眼
+        35mm_lens: Sony 広角
+        50mm_Summilux: Leica
+        56mm_lens: Fujifilm
+        85mm_f/1.4_GM: Sony ポートレート
+        85mm_lens: Canon ポートレート
+        analog_photography: フィルム一眼
+        circular_bokeh: 玉ボケ
+        classic: Leica
+        creamy_bokeh: 強いボケ
+        deep_depth_of_field: パンフォーカス
+        detailed_skin_texture: Nikon
+        environmental_portrait: Sony 広角
+        everything_in_focus: パンフォーカス
+        extremely_shallow_DOF: 強いボケ
+        f/1.2: 強いボケ
+        f/1.4: Canon ポートレート
+        f/2.0: Canon 標準
+        f/8: パンフォーカス
+        film_photography: Leica
+        film_simulation: Fujifilm
+        grain: フィルム一眼
+        instant_film: ポラロイド風
+        Kodak_Portra_400: フィルム一眼
+        light_orbs_in_background: 玉ボケ
+        miniature_effect: チルトシフト
+        selective_focus: チルトシフト
+        shot_on_Canon_EOS_R5: Canon ポートレート
+        shot_on_Canon_EOS_R6: Canon 標準
+        shot_on_Fujifilm_X-T5: Fujifilm
+        shot_on_Fujifilm_X100V: Fujifilm スナップ
+        shot_on_Leica_M11: Leica
+        shot_on_Nikon_Z8: Nikon
+        shot_on_Sony_A7IV: Sony ポートレート
+        street_photography: Fujifilm スナップ
+        tilt_shift: チルトシフト
+        wide_angle: 魚眼
+    - name: クローズアップ
+      color: rgba(99, 201, 2, .4)
+      tags:
+        armpit_peek: 脇見せ
+        ass_focus: 尻に焦点を当てる
+        between_fingers: 指の間（強調）
+        close-up: クローズアップ
+        cross-section: 断面図
+        eyes_focus: 目に焦点を当てる
+        face_focus: 顔に焦点を当てる
+        foot_focus: 足に焦点を当てる
+        hip_focus: 尻に焦点を当てる
+        pantyshot: パンチラ
+        peeking: 覗き込む
+        peeking_out: 覗き出す（の姿勢）
+        peeping: 覗き見る（視点を強調）
+        vehicle_focus: 車両に焦点を当てる
+        xx_focus: XXに焦点を当てる
+    - name: 他の構図
+      color: rgba(99, 201, 2, .4)
+      tags:
+        phone_screen: 携帯電話の画面
+        turn_one's_back: 背を向ける
+    - name: カメラの角度
+      color: rgba(99, 201, 2, .4)
+      tags:
+        foreshortening: 遠近法
+        from_above: 上から↘
+        from_below: 下から↗
+        from_outside: 外から内へ
+    - name: 主人公の動作
+      color: rgba(99, 201, 2, .4)
+      tags:
+        eye-contact: アイコンタクト
+        gradient: グラデーション
+        looking_ahead: 先を見る
+        looking_at_animal: 動物を見る
+        looking_at_food: 食べ物を見る
+        looking_at_viewer: 視聴者を見る
+        looking_back: 振り返る
+        looking_down: 下を見る↘
+        looking_to_the_side: 横を見る
+        looking_up: 上を見る↗
+        sideways_glance: 横目でちらっと見る
+        upshirt: シャツの下を覗く
+  - name: noplog · 【AIイラスト】Stable Diffusion 2400プロンプト完全網羅！
+    groups:
+    - name: ４-１．描写範囲
+      tags:
+        back_of_head: 後頭部（後ろを向く。範囲はもも上から頭先まで）
+        chest_up: 胸から上（範囲がもも上から顎下あたりまでになりがち）
+        close-up_of_eyes: 目のアップ（eye closeup shotより近い。目を閉じる）
+        close-up_shot: クローズアップ
+        distant_view: 遠景
+        enlarged: 拡大された
+        extreme_closeup_shot: クローズアップ（目のみとか）
+        extreme_wide_shot: 超広範囲撮影
+        eye_close-up: 目のクローズアップ
+        eye_closeup_shot: 目のアップ（顔のアップといっていい。半目）
+        face_close-up: 顔のクローズアップ
+        far_shot: 遠景
+        head-to-toe_shot: 全身（たまに頭が画角からはみ出る（サイズによる？）たまに座る）
+        Head_and_Shoulders: 頭部から肩（高確率で着てる服がオフショルダーになる）
+        headshot: 顔のアップ
+        intense_closeup_shot: クローズアップ（顔のみとか）
+        lips_close-up: 唇のクローズアップ
+        long_shot: 遠景撮影
+        macro_photo: マクロ写真のようなクローズアップ
+        medium_close-up: ミディアムクローズアップ
+        mouth_focus: 口もとに焦点（headshotと同じくらい）
+        panoramic_view: パノラマビュー（背景が描かれることがある）
+        thighs_up: 太ももから上（膝を立てて座る形になる）
+        vista: 遠景
+        wide_angle: 広角（斜めアングルになりがち）
+        zoomed_in: ズームイン
+        zoomed_out: ズームアウト
+    - name: ４-２．カメラアングル
+      tags:
+        back_shot: 背面から（写真的）
+        bird’s-eye_view: 鳥瞰図（鳥が描かれがち）
+        eye-level: 目の高さから
+        from_above_and_to_the_side: 斜め上から
+        from_below_and_to_the_side: 斜め下から
+        from_front: 正面から（具体的）
+        from_the_front_and_above: 正面上方から（指定しないと地面は描かれない）
+        from_the_front_and_below: 正面下方から（from belowと同じ）
+        from_the_left_side: 左側から（右側からだったり左側からだったり）
+        from_the_right_side: 右側から（右側からだったり左側からだったり）
+        high_angle: 上から（写真的）（looking upと一緒に使うと効果的。地面が描かれる）
+        low_angle_shot: 足元から（写真的）（from belowよりもローアングル）
+        overhead_shot: 真上から（looking upと一緒に使うと効果的。高さが比較的低め）
+        point-of-view_shot: 主観ショット（被写体を生成するときには使わないので、使い時がいまいちわからん）
+        POV_shot: 主観ショット（〃）
+        straight-on_shot: 正面からのショット
+        tilted_angle: 斜めアングル
+        worm’s-eye_view: 虫瞰図（low angle shotと同じレベル）
+    - name: ４-３．被写体目線
+      tags:
+        facing_forward: 正面
+        glancing_sideways: 横目でちらっと見る（成功率は低い）
+        head-on: 正面向き
+        look_up_at_the_sky: 空を見上げている（空が描かれる）
+        looking_at_a_book: 本を見ている
+        looking_at_a_phone: 自分のスマホを見ている
+        looking_into_the_distance: 遠くを見ている
+        looking_left: 左を見ている（leftなのに右を見ているときがある）
+        looking_right: 右を見ている
+        looking_to_the_left: 左向き（被写体にとって右側を見がち（モデルによる？））
+        looking_to_the_right: 右向き
+        looking_up_with_a_shy_expression: 恥ずかしそうな表情で上を見ている
+        turn_away: そっぽを向く（たまに正面を向く）
+    - name: ５-２．ライティング
+      tags:
+        afternoon_light: 午後の光
+        bright_light: 明るい光
+        candlelight: ろうそくの光
+        cool_light: 冷たい光
+        crepuscular_rays: 薄明光線、天使の梯子
+        direct_light: 直接光
+        evening_light: 夕方の光
+        firelight: 炎の光
+        fluorescent_light: 蛍光灯
+        god_rays: ゴッドレイ、光芒、光線が差す
+        golden_light: 金色の光
+        hard_shadows: 硬い影
+        incandescent_light: 白熱灯
+        long_shadows: 長い影
+        morning_light: 朝の光
+        neon_light: ネオンライト
+        sidelight: サイド光
+        soft_light: 柔らかい光
+        soft_shadows: 柔らかい影
+        street_light: 街灯
+        twilight: 薄明かり、夕暮れ
+        warm_light: 暖かい光
+  - name: noplog · 【AIイラスト】Stable Diffusion アングル別プロンプト(呪文)144選｜構図で…
+    groups:
+    - name: ハイアングル
+      tags:
+        (upper_body:1.1), full_body, from_above, (looking_up:1.1), from_the_left_side: 上半身×左側
+        (upper_body:1.1), full_body, from_above, (looking_up:1.1), from_the_right_side: (upper body:1.1), full body, from
+          above, (looking up:1.1), from the left side,
+        (upper_body:1.2), from_the_left_side, looking_up_at_viewer, from_above: 上半身×左側
+        (upper_body:1.2), from_the_right_side, looking_up_at_viewer, from_above: (upper body:1.2), from the left side, looking
+          up at viewer, from above,
+        (wide_shot:1.2), (full_body:1.2), (Head-to-toe_shot:1.2), (looking_up:1.2), (Look_up:1.2), from_behind, from_above: 全身×背面
+        (wide_shot:1.2), (full_body:1.2), (Head-to-toe_shot:1.2), (looking_up:1.2), (look_up:1.2), from_front: (wide shot:1.2),
+          (full body:1.2), (Head-to-toe shot:1.2), (looking up:1.2), (Look up:1.2), from behind, from above,
+        bust_shot, (from_above:1.2), (high_angle:1.2), (looking_up:1.2), from_the_left_side: 胸肩から上×左側
+        bust_shot, (from_above:1.2), (high_angle:1.2), (looking_up:1.2), from_the_right_side: bust shot, (from above:1.2),
+          (high angle:1.2), (looking up:1.2), from the left side,
+        bust_shot, (looking_up:1.2), from_behind, from_above: 胸肩から上×背面
+        full_body, (Head-to-toe_shot:1.4), full_body_shot, (from_above:1.4), from_the_left_side: 全身×左側
+        full_body, (Head-to-toe_shot:1.4), full_body_shot, (from_above:1.4), from_the_right_side: full body, (Head-to-toe
+          shot:1.4), full body shot, (from above:1.4), from the left side,
+        full_body, (Head-to-toe_shot:1.4), full_body_shot, from_behind, from_above: 全身×背面
+        full_body, (Head-to-toe_shot:1.4), full_body_shot, from_front, from_above: wide shot, full body, Head-to-toe shot,
+          from behind, from above, (looking up at viewer:1.2), (turn head:1.2),
+        headshot, (closeup_shot:1.2), (from_above:1.2), (high_angle:1.2), (looking_up:1.2), from_the_right_side: headshot,
+          closeup shot, (from above:1.2), (high angle:1.2), (looking up:1.2), from the left side,
+        headshot, (closeup_shot:1.2), from_behind, back_of_head, Whorl, high_angle, (looking_up:1.2), (look_up:1.2): 顔×背面
+        headshot, (closeup_shot:1.2), head_focus, (from_above:1.2), from_behind, Back_of_head: 顔×背面
+        headshot, (closeup_shot:1.2), head_focus, from_above, from_front: headshot, (closeup shot:1.2), head focus, (from
+          above:1.2), from behind, Back of head,
+        headshot, (eye_closeup_shot:1.2), from_the_left_side, (looking_up_at_viewer:1.1), (from_above:1.1): 顔×左側
+        headshot, (eye_closeup_shot:1.2), from_the_right_side, looking_up_at_viewer, (from_above:1.2): headshot, (eye closeup
+          shot:1.2), from the left side, (looking up at viewer:1.1), (from above:1.1),
+        headshot, (eye_closeup_shot:1.2), looking_back, looking_at_viewer, from_above: 顔×背面
+        headshot, closeup_shot, (from_above:1.2), (high_angle:1.2), (looking_up:1.2), from_the_left_side: 顔×左側
+        headshot, extreme_closeup_shot, from_front, high_angle, (looking_up:1.4), (look_up:1.2): headshot, (closeup shot:1.2),
+          from behind, back of head, Whorl, high angle, (looking up:1.2), (look up:1.2),
+        headshot, intense_closeup_shot, head_focus, (from_above:1.4), very_high_angle, from_the_left_side: 顔×左側
+        headshot, intense_closeup_shot, head_focus, (from_above:1.4), very_high_angle, from_the_right_side: headshot, intense
+          closeup shot, head focus, (from above:1.4), very high angle, from the left side,
+        medium_closeup_shot, portrait, from_the_left_side, looking_up_at_viewer, from_above: 胸肩から上×左側
+        medium_closeup_shot, portrait, from_the_right_side, looking_up_at_viewer, from_above: medium closeup shot, portrait,
+          from the left side, looking up at viewer, from above,
+        medium_closeup_shot, portrait, looking_back, looking_at_viewer, from_above: 胸肩から上×背面
+        medium_shot, bust_shot, (looking_up:1.3), from_front, from_above: bust shot, (looking up:1.2), from behind, from above,
+        portrait, (back_view:1.4), back_shot, from_above: 胸肩から上×背面
+        portrait, from_front, from_above: medium closeup shot, portrait, looking back, looking at viewer, from above,
+        portrait, from_the_left_side, (from_above:1.4): 胸肩から上×左側
+        portrait, from_the_right_side, (from_above:1.4): portrait, from the left side, (from above:1.4),
+        upper_body, (looking_up:1.2), from_behind, from_above: 上半身×背面
+        upper_body, from_behind, from_above: 上半身×背面
+        upper_body, from_front, from_above: upper body, looking back, looking up at viewer, from above,
+        upper_body, from_the_left_side, from_above: 上半身×左側
+        upper_body, from_the_right_side, from_above: upper body, from the left side, from above,
+        upper_body, looking_back, looking_up_at_viewer, from_above: 上半身×背面
+        wide_shot, full_body, Head-to-toe_shot, (from_above:1.2), from_the_left_side, (looking_up_at_viewer:1.2): 全身×左側
+        wide_shot, full_body, Head-to-toe_shot, from_behind, from_above, (looking_up_at_viewer:1.2), (turn_head:1.2): 全身×背面
+        wide_shot, upper_body, from_front, high_angle, (looking_up:1.2): upper body, (looking up:1.2), from behind, from above,
+    - name: ローアングル
+      tags:
+        (upper_body:1.2), full_body, (looking_up:1.3), back_view, from_below: 上半身×背面
+        (upper_body:1.2), full_body, (looking_up:1.3), from_front, from_below: (upper body:1.2), full body, (looking up:1.3),
+          back view, from below,
+        (upper_body:1.2), full_body, (looking_up:1.3), from_the_left_side, (from_below:1.2): 上半身×左側
+        (upper_body:1.2), full_body, (looking_up:1.3), from_the_right_side, (from_below:1.2): (upper body:1.2), full body,
+          (looking up:1.3), from the left side, (from below:1.2),
+        (upper_body:1.2), looking_back, looking_down_at_viewer, from_below: 上半身×背面
+        (wide_shot:1.2), (full_body:1.2), (Head-to-toe_shot:1.2), (looking_up:1.1), (look_up:1.1), from_behind, from_below: 全身×背面
+        (wide_shot:1.2), (full_body:1.4), (Head-to-toe_shot:1.4), (looking_up:1.1), (look_up:1.1), from_below, from_front: (wide
+          shot:1.2), (full body:1.2), (Head-to-toe shot:1.2), (looking up:1.1), (look up:1.1), from behind, from below,
+        (wide_shot:1.2), full_body, (Head-to-toe_shot:1.4), from_the_left_side, (looking_right_at_viewer:1.2), from_below: 全身×左側
+        bust_shot, (from_below:1.2), (low_angle_shot:1.2), (looking_up:1.2), from_the_right_side: bust shot, closeup shot,
+          (from below:1.2), (low angle shot:1.2), (looking up:1.4), from the left side,
+        bust_shot, (looking_up:1.2), from_front, from_below: portrait, head closeup shot, (from below:1.4), (low angle shot:1.2),
+          (looking up:1.2), back shot, from behind,
+        bust_shot, closeup_shot, (from_below:1.2), (low_angle_shot:1.2), (looking_up:1.4), from_the_left_side: 胸肩から上×左側
+        closeup_shot, headshot, (looking_up:1.4), (from_below:1.2), low_angle_shot, from_front: extreme closeup shot, (headshot:1.2),
+          (looking up:1.2), (from below:1.2), (low angle shot:1.2), from behind, back view, Back of head,
+        extreme_closeup_shot, (headshot:1.2), (looking_up:1.2), (from_below:1.2), (low_angle_shot:1.2), from_the_left_side: 顔×左側
+        extreme_closeup_shot, (headshot:1.2), (looking_up:1.2), (from_below:1.2), (low_angle_shot:1.2), from_the_right_side: extreme
+          closeup shot, (headshot:1.2), (looking up:1.2), (from below:1.2), (low angle shot:1.2), from the left side,
+        full_body, (Head-to-toe_shot:1.2), (looking_back:1.4), (looking_down_at_viewer:1.4), from_below: 全身×背面
+        full_body, (Head-to-toe_shot:1.4), full_body_shot, (from_below:1.2), back_shot: 全身×背面
+        full_body, (Head-to-toe_shot:1.4), full_body_shot, (from_below:1.2), from_the_left_side: 全身×左側
+        full_body, (Head-to-toe_shot:1.4), full_body_shot, (from_below:1.4), from_front: full body, (Head-to-toe shot:1.2),
+          (looking back:1.4), (looking down at viewer:1.4), from below,
+        full_body, (Head-to-toe_shot:1.4), full_body_shot, (from_below:1.4), from_the_right_side: full body, (Head-to-toe
+          shot:1.4), full body shot, (from below:1.2), from the left side,
+        headshot, (eye_closeup_shot:1.3), (from_the_left_side:1.2), looking_down_at_viewer, (from_below:1.2): 顔×左側
+        headshot, (eye_closeup_shot:1.4), from_the_right_side, looking_down_at_viewer, As_if_peering, (from_below:1.2): headshot,
+          (eye closeup shot:1.3), (from the left side:1.2), looking down at viewer, (from below:1.2),
+        headshot, (eye_closeup_shot:1.4), looking_back, from_behind, looking_down_at_viewer, (from_below:1.2): 顔×背面
+        headshot, (head_closeup_shot:1.2), (from_below:1.2), from_behind, Back_of_head: 顔×背面
+        headshot, (head_closeup_shot:1.2), (from_below:1.2), from_front: headshot, (eye closeup shot:1.4), looking back, from
+          behind, looking down at viewer, (from below:1.2),
+        headshot, closeup_shot, (from_below:1.2), from_the_left_side: 顔×左側
+        headshot, closeup_shot, (from_below:1.2), from_the_right_side: headshot, closeup shot, (from below:1.2), from the
+          left side,
+        medium_closeup_shot, portrait, from_the_left_side, (looking_down_at_viewer:1.2), As_if_peering, (from_below:1.2): 胸肩から上×左側
+        medium_closeup_shot, portrait, from_the_right_side, (looking_down_at_viewer:1.2), As_if_peering, (from_below:1.2): medium
+          closeup shot, portrait, from the left side, (looking down at viewer:1.2), As if peering, (from below:1.2),
+        medium_closeup_shot, portrait, looking_back, looking_down_at_viewer, from_below: 胸肩から上×背面
+        portrait, (back_view:1.2), back_shot, (from_below:1.4), Back_of_head: 胸肩から上×背面
+        portrait, from_front, from_below: medium closeup shot, portrait, looking back, looking down at viewer, from below,
+        portrait, from_the_left_side, (from_below:1.4): 胸肩から上×左側
+        portrait, from_the_right_side, (from_below:1.4): portrait, from the left side, (from below:1.4),
+        portrait, head_closeup_shot, (from_below:1.4), (low_angle_shot:1.2), (looking_up:1.2), back_shot, from_behind: 胸肩から上×背面
+        upper_body, back_shot, back_view, (from_below:1.2): 上半身×背面
+        upper_body, from_front, from_below: (upper body:1.2), looking back, looking down at viewer, from below,
+        upper_body, from_the_left_side, (from_below:1.2): 上半身×左側
+        upper_body, from_the_left_side, (looking_down_at_viewer:1.2), from_below: 上半身×左側
+        upper_body, from_the_right_side, (from_below:1.2): upper body, from the left side, (from below:1.2),
+        upper_body, from_the_right_side, (looking_down_at_viewer:1.2), from_below: upper body, from the left side, (looking
+          down at viewer:1.2), from below,
+        wide_shot, full_body, Head-to-toe_shot, from_the_right_side, facing_forward, looking_at_viewer, from_below: (wide
+          shot:1.2), full body, (Head-to-toe shot:1.4), from the left side, (looking right at viewer:1.2), from below,
+    - name: 水平アングル
+      tags:
+        (upper_body:1.2), from_the_left_side, looking_at_viewer: 上半身×左側
+        (wide_shot:1.2), (full_body:1.2), (Head-to-toe_shot:1.2), from_behind, looking_up, look_up: 全身×背面
+        (wide_shot:1.2), (full_body:1.2), (Head-to-toe_shot:1.2), from_front, looking_up, look_up: (wide shot:1.2), (full
+          body:1.2), (Head-to-toe shot:1.2), from behind, looking up, look up,
+        (wide_shot:1.2), (full_body:1.2), (Head-to-toe_shot:1.2), from_the_left_side, looking_up, look_up: 全身×左側
+        (wide_shot:1.2), (full_body:1.2), (Head-to-toe_shot:1.2), from_the_right_side, looking_up, look_up: (wide shot:1.2),
+          (full body:1.2), (Head-to-toe shot:1.2), from the left side, looking up, look up,
+        bust_shot, from_behind, back_view, (looking_up:1.2): 胸肩から上×背面
+        full_body, (Head-to-toe_shot:1.4), full_body_shot, from_behind: 全身×背面
+        full_body, (Head-to-toe_shot:1.4), full_body_shot, from_the_left_side: 全身×左側
+        full_body, (Head-to-toe_shot:1.4), full_body_shot, from_the_right_side: full body, (Head-to-toe shot:1.4), full body
+          shot, from the left side,
+        full_body, (upper_body:1.2), from_the_left_side, (looking_up:1.1): 上半身×左側
+        full_body, (upper_body:1.2), from_the_right_side, (looking_up:1.1): full body, (upper body:1.2), from the left side,
+          (looking up:1.1),
+        full_body, Head-to-toe_shot, full_body_shot, from_front: wide shot, full body, (Head-to-toe shot:1.2), from behind,
+          looking at viewer, looking back,
+        headshot, (eye_closeup_shot:1.2), from_the_left_side, looking_right_at_viewer: 顔×左側
+        headshot, (eye_closeup_shot:1.2), from_the_right_side, looking_at_viewer: headshot, (eye closeup shot:1.2), from the
+          left side, looking right at viewer,
+        headshot, (eye_closeup_shot:1.2), looking_back, looking_at_viewer: 顔×背面
+        headshot, closeup_shot, (looking_up:1.4), raise_one’s_gaze: headshot, intense closeup shot, (looking up:1.4), (look
+          up:1.2), (back of head:1.2), tilt one’s head back,
+        headshot, closeup_shot, profile, head_focus, from_the_left_side: 顔×左側
+        headshot, closeup_shot, profile, head_focus, from_the_right_side: headshot, closeup shot, profile, head focus, from
+          the left side,
+        headshot, eye_closeup_shot, from_behind, head_focus, Back_of_head: 顔×背面
+        headshot, eye_closeup_shot, from_front: headshot, eye closeup shot, from behind, head focus, Back of head,
+        headshot, intense_closeup_shot, (looking_up:1.4), (look_up:1.2), (back_of_head:1.2), tilt_one’s_head_back: 顔×背面
+        headshot, intense_closeup_shot, from_the_right_side, (looking_up:1.4), (look_up:1.2), tilt_one’s_head_back: headshot,
+          eye closeup shot, from the left side, (looking up:1.4), (look up:1.2), Right side of face, tilt one’s head back,
+        medium_shot, bust_shot, from_the_left_side, (looking_up:1.2): 胸肩から上×左側
+        medium_shot, bust_shot, from_the_right_side, (looking_up:1.2): medium shot, bust shot, from the left side, (looking
+          up:1.2),
+        medium_shot, portrait, from_the_left_side, looking_at_viewer: 胸肩から上×左側
+        medium_shot, portrait, from_the_right_side, looking_at_viewer: medium shot, portrait, from the left side, looking
+          at viewer,
+        medium_shot, portrait, looking_back: 胸肩から上×背面
+        medium_shot, upper_body, back_view, from_behind, (looking_up:1.1), (look_up:1.1): 上半身×背面
+        medium_shot, upper_body, from_front, (looking_up:1.1), (look_up:1.1): medium shot, upper body, back view, from behind,
+          (looking up:1.1), (look up:1.1),
+        portrait, (back_view:1.4), back_shot: 胸肩から上×背面
+        portrait, closeup_shot, from_front, looking_up: bust shot, from behind, back view, (looking up:1.2),
+        portrait, from_front: portrait, (back view:1.4), back shot,
+        portrait, from_the_left_side: 胸肩から上×左側
+        portrait, from_the_right_side: portrait, from the left side,
+        upper_body, from_front: upper body, looking back, looking at viewer,
+        upper_body, from_the_left_side: 上半身×左側
+        upper_body, from_the_right_side: upper body, from the left side,
+        upper_body, from_the_right_side, looking_at_viewer: (upper body:1.2), from the left side, looking at viewer,
+        upper_body, looking_back, looking_at_viewer: 上半身×背面
+        upper_body, rear_shot: 上半身×背面
+        wide_shot, full_body, (Head-to-toe_shot:1.2), from_behind, looking_at_viewer, looking_back: 全身×背面
+        wide_shot, full_body, Head-to-toe_shot, (looking_at_viewer:1.2), from_the_left_side, facing_forward: 全身×左側
+        wide_shot, full_body, Head-to-toe_shot, (looking_at_viewer:1.2), from_the_right_side, facing_forward: wide shot, full
+          body, Head-to-toe shot, (looking at viewer:1.2), from the left side, facing forward,
+  - name: noplog · 【AIイラスト】プロンプト(呪文)一覧（表現技法編）｜お手軽コピーツール設置｜直感でAIイラス…
+    groups:
+    - name: １．描写範囲
+      tags:
+        bust_shot: 肩から上の部分
+        closeup_shot: クローズアップ
+        reference_sheet: キャラ設定
+        waist_up: 腰から上
+    - name: ２．カメラアングル
+      tags:
+        dutch_angle_shot: 斜めアングル
+    - name: ３．被写体の目線
+      tags:
+        facing_left: 左向き
+        facing_right: 右向き
+  - name: noplog · 【画像生成AI】色彩プロンプト大全｜色・トーン・質感をコピペ再現
+    groups:
+    - name: スタイル別 / ジュエル・透明感
+      tags:
+        alexandrite: アレキサンドライト（光源で青緑から赤紫へ変わるような特殊な色）
+        citrine: シトリン（黄水晶・透明感のある明るい黄金色?淡黄色）
+        crystal_blue: クリスタルブルー（水晶のように透明感のある明るい青）
+        diamond_clear: ダイヤモンドクリア（ダイヤモンドのような無色透明と強い輝き）
+        garnet: ガーネット（柘榴石・深みのある暗い赤）
+        lapis_lazuli: ラピスラズリ（瑠璃色・金斑を持つ深い青）
+        moonstone: ムーンストーン（月光のような青白い光沢を持つ淡い色）
+        morganite: モルガナイト（透明感のある淡いピンク?ピーチ色）
+        opal: オパール（虹色に輝く遊色効果を持つ色）
+        peridot: ペリドット（透明感のある明るい黄緑色）
+        ruby_red: ルビーレッド（ルビーのような深く鮮やかな赤）
+        sapphire_blue: サファイアブルー（サファイアのような深く鮮やかな青）
+        spinel_pink: スピネルピンク（スピネルのような明るく鮮やかなピンク）
+        tanzanite: タンザナイト（透明感のある青紫色）
+        topaz_yellow: トパーズイエロー（トパーズのような透明感のある黄色）
+    - name: スタイル別 / ダーク・深色
+      tags:
+        bordeaux: ボルドー（茶みを帯びた暗く深い赤）
+        burnt_umber: バーントアンバー（焼いた土のような非常に濃い暗褐色）
+        dark_blue: ダークブルー（落ち着いた、品格のある標準的な濃い青）
+        dark_brown: ダークブラウン（濃く暗い茶色）
+        dark_green: ダークグリーン（標準的で落ち着きのある、明度の低い深い緑）
+        dark_navy: ダークネイビー（非常に濃い紺色）
+        dark_purple: ダークパープル（神秘的で重量感のある、落ち着いた濃い紫）
+        dark_teal: ダークティール（暗く深い青緑色）
+        deep_blue: ディープブルー（濃く深い青）
+        deep_green: ディープグリーン（濃く深い緑）
+        deep_red: ディープレッド（濃く深い赤）
+        ebony_black: エボニー（黒檀・わずかに茶みを感じる深い黒）
+        espresso_brown: エスプレッソブラウン（黒に近い非常に濃い茶色）
+        gunmetal_gray: ガンメタルグレー（暗く重厚なメタリックグレー）
+        hunter_green: ハンターグリーン（暗く落ち着いた深い緑）
+        ink_black: インクブラック（インクのような濃い黒）
+        mahogany: マホガニー（赤みを帯びた深い暗褐色）
+        midnight_blue: ミッドナイトブルー（真夜中のような非常に暗い青）
+        prussian_blue: プルシアンブルー（暗く深みのある青・紺青）
+        royal_purple: ロイヤルパープル（高貴で深みのある紫）
+        sepia_black: セピアブラック（セピア調の茶みがかった黒）
+        wine_red: ワインレッド（ワインのような深い赤紫）
+    - name: スタイル別 / パステル・淡色
+      tags:
+        alice_blue: アリスブルー（ごく淡い灰みがかった水色）
+        baby_blue: ベビーブルー（明るく淡い水色）
+        champagne: シャンパン（上品で淡い黄褐色）
+        ice_blue: アイスブルー（氷のように冷たく淡い青）
+        ice_pink: アイスピンク（氷のように冷たさを感じるごく淡いピンク）
+        lavender_blush: ラベンダーブラッシュ（ほんのり紫がかった淡い白ピンク）
+        lemon_chiffon: レモンシフォン（シフォンケーキのような淡い黄色）
+        light_coral: ライトコーラル（明るく淡い珊瑚色・ピンク系オレンジ）
+        milky_blue: ミルキーブルー（ミルクを混ぜたような白っぽい青）
+        milky_green: ミルキーグリーン（ミルクを混ぜたような白っぽい緑）
+        milky_pink: ミルキーピンク（ミルクを混ぜたような白っぽく甘いピンク）
+        pale_aqua: ペールアクア（ごく淡い水色・緑みを含む青）
+        pale_blue: ペールブルー（白っぽくごく淡い青）
+        pale_lavender: ペールラベンダー（ごく淡いラベンダー色）
+        pale_pink: ペールピンク（白っぽくごく淡いピンク）
+        pastel_beige: パステルベージュ（明るく柔らかいベージュ）
+        pastel_blue: パステルブルー（明るく柔らかい青）
+        pastel_green: パステルグリーン（明るく柔らかい緑）
+        pastel_lemon: パステルレモン（柔らかく淡いレモン色）
+        pastel_lilac: パステルライラック（柔らかく淡い薄紫色）
+        pastel_mint: パステルミント（柔らかく淡いミントグリーン）
+        pastel_orange: パステルオレンジ（明るく柔らかいオレンジ色）
+        pastel_pink: パステルピンク（明るく柔らかいピンク）
+        pastel_purple: パステルパープル（明るく柔らかい紫色）
+        pastel_yellow: パステルイエロー（明るく柔らかい黄色）
+        powder_blue: パウダーブルー（粉のように白っぽく淡い青）
+        shell_pink: シェルピンク（桜貝のような淡い黄みを含んだピンク）
+        soft_peach: ソフトピーチ（柔らかく淡い桃色・黄み寄りのピンクオレンジ）
+    - name: スタイル別 / ビビッド・原色
+      tags:
+        acid_green: アシッドグリーン（酸や薬品を思わせる強烈な黄緑色）
+        bright_orange: ブライトオレンジ（明るく鮮やかなオレンジ色）
+        electric_purple: エレクトリックパープル（強烈でネオンのような鮮やかな紫）
+        fluorescent_pink: フローレセントピンク（蛍光ピンク）
+        luminous_blue: ルミナスブルー（発光しているような明るい青）
+        neon_green: ネオングリーン（蛍光の緑）
+        neon_orange: ネオンオレンジ（蛍光のオレンジ色）
+        primary_blue: プライマリーブルー（原色の青・純青）
+        primary_red: プライマリーレッド（原色の赤・純赤）
+        primary_yellow: プライマリーイエロー（原色の黄色・純黄）
+        pure_orange: ピュアオレンジ（混じり気のない鮮やかなオレンジ色）
+        shocking_pink: ショッキングピンク（目が覚めるような鮮烈なピンク）
+        vivid_blue: ビビッドブルー（鮮烈で鮮やかな青）
+        vivid_green: ビビッドグリーン（鮮烈で鮮やかな緑）
+        vivid_red: ビビッドレッド（鮮烈で鮮やかな赤）
+        vivid_yellow: ビビッドイエロー（鮮烈で鮮やかな黄色）
+    - name: スタイル別 / メタリック・光沢
+      tags:
+        anodized_blue: アノダイズドブルー（アルマイト処理されたような金属的な青）
+        brass: ブラス（真鍮色・少し黄みや緑みを帯びた金属色）
+        chrome: クローム（クロムメッキのような鏡面反射と強い光沢を持つ銀色）
+        electric_silver: エレクトリックシルバー（稲妻のように強く輝く銀色）
+        glossy_black: グロッシーブラック（艶のあるエナメルのような黒）
+        gunmetal: ガンメタル（砲金色・暗く重厚な金属のグレー）
+        metallic_blue: メタリックブルー（金属的な光沢のある青）
+        metallic_gold: メタリックゴールド（金属的な光沢のある金色）
+        metallic_green: メタリックグリーン（金属的な光沢のある緑）
+        metallic_red: メタリックレッド（金属的な光沢のある赤）
+        metallic_silver: メタリックシルバー（金属的な光沢のある銀色）
+        pearly_white: パーリーホワイト（真珠のような光沢のある白）
+        platinum: プラチナ（白金・シルバーより白く輝く色）
+        steel: スチール（鋼鉄のような青みを感じる金属的なグレー）
+        titanium: チタン（硬質で暗めのメタリックグレー）
+    - name: 色相別 / 白・黒・灰色
+      tags:
+        alabaster: アラバスター（雪花石膏・なめらかで透明感のある白）
+        ash_gray: アッシュグレー（灰のような無彩色のグレー）
+        cloud_gray: クラウドグレー（曇り空のようなグレー）
+        dove_gray: ダヴグレー（鳩の羽のようなわずかに紫みを帯びた淡いグレー）
+        ecru_white: エクリュホワイト（生成り色・わずかに黄みがかった白）
+        ghost_white: ゴーストホワイト（わずかに青みや灰みのある淡い白）
+        greige: グレージュ（グレーとベージュを合わせた中間色）
+        jet_black: ジェットブラック（漆黒・艶のある深い黒）
+        milk_white: ミルクホワイト（牛乳のような柔らかな白）
+        obsidian: オブシディアン（黒曜石・艶のある黒）
+        pearl_white: パールホワイト（真珠色・光沢のある柔らかな白）
+        pitch_black: ピッチブラック（真っ暗闇のような深く濃い黒）
+        raven_black: レイヴンブラック（カラスの濡れ羽色・艶のある黒）
+        shadow_gray: シャドウグレー（影のような暗いグレー）
+        sheer_black: シアーブラック（透け感のある薄い黒）
+        silver_gray: シルバーグレー（光沢を感じる明るいグレー）
+        slate_gray: スレートグレー（粘板岩のような少し青みのある暗いグレー）
+        smoke_gray: スモークグレー（煙のような少し暗いグレー）
+        snow_white: スノーホワイト（雪のように明るい白）
+        steel_gray: スチールグレー（鋼鉄のような青みを感じる金属的なグレー）
+    - name: 色相別 / 紫・桃系統
+      tags:
+        carnation_pink: カーネーションピンク（標準的な明るいピンク）
+        cherry_blossom_pink: チェリーブロッサムピンク（桜のようなピンク）
+        cotton_candy_pink: わたあめ色（ふんわりとした甘く淡いピンク）
+        deep_pink: ディープピンク（濃く鮮やかなピンク）
+        deep_purple: ディープパープル（濃く深い紫色）
+        dusty_rose: ダスティローズ（くすんだ灰みがかったピンク）
+        eggplant: エッグプラント（茄子色・非常に暗い紫）
+        grape: グレープ（ぶどう色・深い紫色）
+        lavender_ash: ラベンダーアッシュ（灰色がかった淡い紫）
+        neon_pink: ネオンピンク（蛍光ピンク）
+        old_rose: オールドローズ（灰みがかった落ち着いたアンティークピンク）
+        peach_pink: ピーチピンク（桃のような柔らかいピンク）
+        sakura: 桜色（和風の淡いピンク）
+        ume_pink: 梅色（梅の花のような赤みのあるピンク）
+    - name: 色相別 / 緑・自然系統
+      tags:
+        army_green: アーミーグリーン（軍服のような暗いカーキ・オリーブ系）
+        celadon: セラドン（青磁色・灰みを帯びた淡い青緑色）
+        cyber_neon_green: サイバーネオングリーン（サイバーパンク風の機械的な緑）
+        evergreen: エバーグリーン（常緑樹のような深みのある暗い緑）
+        grass_green: グラスグリーン（草色・鮮やかで自然な緑）
+        jade_green: ジェイドグリーン（翡翠のような少し青みを帯びた淡い・深い緑）
+        kelly_green: ケリーグリーン（鮮やかで混じり気のない強い緑）
+        khaki_green: カーキグリーン（土埃がかったくすんだ暗い黄緑色）
+        moss_green: モスグリーン（苔色・くすんだ黄緑?暗緑色）
+        pale_green: ペールグリーン（ごく淡い緑）
+        pine_green: パイングリーン（松の葉のような深緑）
+        pistachio_green: ピスタチオグリーン（ピスタチオのような淡く柔らかな黄緑）
+        sage_green: セージグリーン（ハーブのセージのような灰みがかった淡い緑）
+        seafoam_green: シーフォームグリーン（海の泡のような淡く白っぽい青緑）
+        spring_green: スプリンググリーン（春の若葉のような明るい黄緑）
+        teal_green: ティール（鴨の羽色・暗い青緑色）
+        verdigris: 緑青（ろくしょう・銅の錆のような青みのあるくすんだ緑）
+        viridian: ビリジアン（透明感のある鮮やかな青緑）
+    - name: 色相別 / 茶・アースカラー
+      tags:
+        burnt_sienna: バーントシェンナ（焼いた土のような、赤みのある強く深い茶色）
+        camel: キャメル（ラクダのような黄みがかった茶色）
+        caramel: キャラメル（焦がし砂糖のような甘みのある黄褐色）
+        cinnamon: シナモン（シナモンのような黄赤褐色）
+        clay: クレイ（粘土のような灰み・赤みを含む土色）
+        cocoa: ココア（ココアのような柔らかい茶色）
+        copper_brown: コッパーブラウン（銅のような赤茶色）
+        espresso: エスプレッソ（非常に濃く黒に近い茶色）
+        ginger: ジンジャー（生姜のような赤みがかった黄褐色）
+        mocha: モカ（コーヒーとチョコレートを合わせたような茶色）
+        mushroom: マッシュルーム（キノコのような灰みがかったベージュ）
+        ochre: オーカー（黄土色）
+        taupe: トープ（モグラ色・灰みがかった茶色）
+        teak: チーク（チーク材のような黄みのある暗褐色）
+        walnut: ウォールナット（クルミの木のような深みのあるこげ茶）
+    - name: 色相別 / 赤・暖色系統
+      tags:
+        akane_red: 茜色（あかねいろ・少し暗みのある赤）
+        beni_red: 紅色（べにいろ・鮮やかな赤）
+        blood_red: ブラッドレッド（血のような濃く暗い赤）
+        brick_red: ブリックレッド（レンガのような茶色がかったくすんだ赤）
+        cardinal_red: カーディナルレッド（深みと鮮やかさを併せ持つ赤）
+        carmine: カーマイン（洋紅色・わずかに紫みを帯びた鮮やかな赤）
+        coral_red: コーラルレッド（珊瑚のような黄みやピンクみを含む赤）
+        ember_red: エンバーレッド（燃え刺しのようなオレンジがかった暗めの赤）
+        flame_red: フレームレッド（炎のような明るく強い赤）
+        garnet_red: ガーネットレッド（柘榴石のような深みのある暗い赤）
+        madder_red: マダーレッド（茜色・少し暗みのある赤）
+        peony_red: ピオニーレッド（牡丹のような鮮やかな紫がかった赤）
+        raspberry_red: ラズベリーレッド（ラズベリーのような紫みのある赤）
+        rose_red: ローズレッド（バラのような紫みを帯びた赤）
+        rust_red: ラストレッド（錆のような赤褐色）
+        sangria: サングリア（サングリア酒のような深い赤紫）
+        vermilion: バーミリオン（朱色・鮮やかな黄みの赤）
+    - name: 色相別 / 青・冷色系統
+      tags:
+        aqua_blue: アクア（明るい水色）
+        cerulean_blue: セルリアンブルー（少し緑みを帯びた鮮やかな青空の色）
+        cornflower_blue: コーンフラワーブルー（ヤグルマギクのような柔らかく鮮やかな青）
+        deep_sea_blue: ディープシーブルー（深海のような暗く深い青）
+        denim_blue: デニム（デニム生地のような青）
+        dodger_blue: ドジャーブルー（明るく鮮やかな青）
+        dusty_blue: ダスティブルー（くすんだ灰みがかった淡い青）
+        electric_blue: エレクトリックブルー（稲妻のように強烈で鮮やかな青）
+        glacial_blue: グレイシャルブルー（氷河のような冷たい青）
+        indigo_blue: インディゴブルー（藍色・深い青）
+        ocean_blue: オーシャンブルー（海のような深みのある青緑）
+        peacock_blue: ピーコックブルー（孔雀の羽のような鮮やかな青緑）
+        seafoam_blue: シーフォームブルー（海の泡のような淡く白っぽい青・水色）
+        slate_blue: スレートブルー（粘板岩のような灰みがかったくすんだ青）
+        steel_blue: スチールブルー（鋼鉄のような灰みがかった青）
+        ultramarine_blue: ウルトラマリンブルー（群青色・紫みを帯びた深く鮮やかな青）
+    - name: 色相別 / 黄・橙系統
+      tags:
+        burnt_orange: バーントオレンジ（焦げたような暗く渋いオレンジ色）
+        cadmium_yellow: カドミウムイエロー（発色の良い鮮やかな黄色）
+        canary_yellow: カナリアイエロー（明るく鮮やかな黄色）
+        honey: ハニー（はちみつ色・透明感のある黄褐色）
+        mellow_yellow: メロウイエロー（柔らかく落ち着いた黄色）
+        neon_yellow: ネオンイエロー（蛍光の黄色）
+        persimmon: パーシモン（柿色・渋みのある橙色）
+        sunflower_yellow: ひまわり色（温かみのある鮮やかな黄色）
+        sunset_orange: サンセットオレンジ（夕焼けのような鮮やかな赤橙色）
+        yellow_ochre: イエローオーカー（黄土色・くすんだ黄褐色）

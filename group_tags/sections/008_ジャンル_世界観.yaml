@@ -1,0 +1,963 @@
+- name: ジャンル・世界観
+  categories:
+  - name: ファンタジー
+    groups:
+    - name: 亜人・種族
+      color: rgba(0, 206, 209, 1)
+      tags:
+        antennae: アンテナ
+        basilisk: バジリスク
+        beholder: ビホルダー
+        chimera: キメラ
+        cyclops: サイクロプス
+        demon: 悪魔
+        demon_girl: 悪魔の女の子
+        draph: draph
+        dryad: ドライアド
+        dwarf: 小人
+        elin_girl: エリーン（TERA種族）
+        erune: エルネ
+        gargoyle: ガーゴイル
+        gnome: gnome
+        goblin: ゴブリン
+        griffin: グリフィン
+        halfling: ハーフリング
+        harpy: ハーピー
+        hobbit: ホビット
+        jiangshi: 江神
+        kobold: コボルト
+        kraken: Kraken
+        lamia: ラミア
+        leviathan: リヴァイアサン
+        manticore: マンティコア
+        medusa: メドゥーサ
+        mermaid: マーメイド
+        minotaur: ミノタウロス
+        monster_girl: モンスターガール
+        nymph: ニンフ
+        ogre: 鬼
+        owlbear: アウルベアー
+        pegasus: ペガサス
+        phoenix: フェニックス
+        pointy_ears_dark_skin: ダークエルフ
+        satyr: サテュロ
+        siren: サイレン
+        tiefling: ティーフリング
+        translucent_body_face_light_blue_slime: スライム娘
+        troll: トロール
+        unicorn: ユニコーン
+        wendigo: ウェンディゴ
+        yokai: 妖怪
+        yuan_ti: ユアンティ
+        zombie: ゾンビ
+        delft_blue_color: デルフトブルー
+        hug_self: 自分を抱きしめる
+        1girl, zombie, stitches, tattered_coat, skirt, uneven_gait, abandoned_street, drifting_papers, blank_stare: ゾンビ（傷跡や縫い目がある朽ちた体）
+        dullahan: デュラハン
+        dullahan, headless, carrying_head, knight_armor, cape, standing, misty_graveyard, lantern, composed_posture: デュラハン（首のない騎士の姿）
+        ghost: 幽霊
+        ghost, semi-transparent, long_hair, floating, night_corridor, paper_doors, faint_glow, distant_stare, expressionless: 幽霊（半透明で漂う儚げな姿）
+          ※再現のランダム性の幅がかなり広め
+        catgirl: 猫娘
+        rabbit_girl: 兎娘
+        1girl, aarakocra, avian_humanoid, spread_wings, sky_temple, wind_trails, heroic_stance: アーラコクラ（鳥の翼を持つ人型）
+        1girl, air_genasi, flowing_hair_like_wind, translucent_veil, swirling_leaves, cliff_edge, gust_effects: エア・ジェナシ（風をまとった半人半精霊の姿）
+          ※再現のランダム性の幅がかなり広め
+        1girl, dryad, bark_skin, leaf_hair, ancient_tree, sun_shafts, forest_glade, serene: ドリアード（木の精霊のような樹皮を持つ姿）
+        1girl, fire_genasi, flame_hair, ember_particles, charred_ground, dramatic_contrast: ファイア・ジェナシ（炎のような髪を持つ姿）
+        1girl, kenku, raven_features, feathers_cloak, dagger, nocturnal_city_rooftops, stealth, backlight: ケンクー（烏の頭と羽を持つ姿）
+        1girl, lizardfolk, vivid_scales, tribal_jewelry, trident, swamp_reeds, foggy_morning, wet_skin_highlights: リザードフォーク（鱗に覆われた爬虫類の姿）
+        1girl, medusa, living_snake_hair, marble_ruins, broken_statues, moonlit, intense_eye_contact: メデューサ（髪が生きた蛇となった女性）
+        1girl, naga, serpentine_lower_body, ornate_bangles, jungle_temple, waterfalls, humid_atmosphere: ナーガ（人間の上半身と蛇の下半身を持つ姿）
+        1girl, nymph, nature_spirit, streamside_rocks, soft_petals, morning_haze, gentle_smile: ニンフ（美しい自然の精霊の姿）
+        1girl, siren, ocean_cliffs, windblown_hair, musical_notes_motif, crashing_waves, alluring_eyes: セイレーン（海辺で歌う妖艶な存在）
+        1girl, sylph, airy_spirit, translucent_drapery, flower_meadow, soft_breeze_trails, ethereal_lighting: シルフ（風の精霊のような透き通った姿）
+        1girl, triton, blue_skin, gills, trident, underwater_ruins, caustic_light, floating_hair: トリトン（青い肌と鰓を持つ海の戦士）
+        1girl, water_genasi, wet_skin_sheen, floating_droplets, shoreline_mist, sea-blue_palette: ウォーター・ジェナシ（水のきらめきをまとう姿）
+          ※再現のランダム性の幅がかなり広め
+        aarakocra: アーラコクラ
+        air_genasi: エア・ジェナシ
+        earth_genasi: アース・ジェナシ
+        earth_genasi, stone-textured_skin, moss_accents, ruins, falling_dust, grounded_stance: アース・ジェナシ（石や苔をまとった大地の姿）
+        fire_genasi: ファイア・ジェナシ
+        kenku: ケンクー
+        lizardfolk: リザードフォーク
+        naga: ナーガ
+        sylph: シルフ
+        triton: トリトン
+        water_genasi: ウォーター・ジェナシ
+        1girl, alraune, flower_throne, vine_dress, leaf_ornament, seated, garden, morning_dew, calm_smile: アルラウネ（花を纏った植物の姿）
+        alraune: アルラウネ
+        arachne: アラクネ（蜘蛛女）
+        satyr_/_faun: サテュロス/ファウン
+        slime_girl: スライム娘
+        1girl, kappa, dish_on_head, beak_hint, riverside, lotus_leaves, humid_air, playful_pose: 河童（頭に皿を持つ水棲の妖怪）
+        1girl, nekomata, two_tails, cat_ears, shrine_torii, paper_lanterns, playful_wink: 猫又（分かれた二本の尾を持つ猫妖怪）
+        kappa: 河童
+        nekomata: 猫又
+        oni: 鬼
+        oni, oni_horns, kimono, tiger-stripe_obi, wrist_beads, standing, mountain_shrine, paper_lanterns, strong_gaze: 鬼（頭に角を持ち力強い姿）
+        tengu: 天狗
+        tengu, tengu_mask, crow_wings, yamabushi_outfit, staff, descending_steps, cedar_forest, mist, composed_look: 天狗（長い鼻や烏の翼を持つ山の妖怪）
+        yuki_onna: 雪女
+        yuki_onna, long_black_hair, white_kimono, sash, standing, snowfall, icy_mist, quiet_gaze: 雪女（白い着物を纏う氷のように冷たい美女）
+        1girl, aasimar, halo, white_wings, holy_light, ornate_silver_armor, cathedral_glow, soft_bloom: アアシマール（光を帯びた聖なる雰囲気の存在）
+        1girl, valkyrie, winged_warrior, braid, fur_cloak, battle_axe, stormy_sky, divine_glow: ワルキューレ（翼と戦装束を備えた戦乙女）
+        aasimar: アアシマール
+        fallen_angel: 堕天使
+        nephilim: ネフィリム
+        nephilim, towering_wings, holy_aura, gold-white_armor, clouds, sunrays, heroic_pose: ネフィリム（巨大な翼と荘厳な気配を放つ存在）
+        valkyrie: ワルキューレ
+        1girl, cambion, small_horns, faint_tail, dark_finery, gothic_hall, crimson_rimlight: カンビオン（角と尾を持つ人と悪魔の混血）
+        1girl, tiefling, curved_horns, spaded_tail, red_skin, leather_robes, infernal_sigils, ember_sparks: ティーフリング（赤い肌と大きな角を持つ人型魔族）
+        cambion: カンビオン
+        1girl, githyanki, gaunt_features, silver_greatsword, astral_sky, battle_stance, wind-blown_cloak: ギスヤンキ（痩せた異形の顔立ちを持つ戦闘種族）
+        1girl, thri-kreen, mantid_humanoid, chitin_sheen, desert_rocks, dual_wield, dynamic_leap: スリ＝クリーン（昆虫のような外骨格を持つ姿）
+        android: 人造人間（アンドロイド）
+        githyanki: ギスヤンキ
+        thri-kreen: スリ＝クリーン
+        battlefield_/_bamboo_forest_/_cherry_blossoms_/_full_moon: 背景
+        fighting_stance_/_holding_katana: ポーズ
+        kabuto_/_dou_/_kote_/_haori: 装備
+        katana_/_naginata_/_spear_/_unsheathing: 武器
+        samurai_/_ronin: 基本
+        ronin: 浪人
+        samurai, armor, katana: 戦国時代風の侍
+        samurai, haori, hakama, katana: 幕末の侍
+        jingasa: 陣笠
+        kabuto_(helmet): 兜（侍の兜）
+        ronin, poverty_outfit, torn_clothes: ぼろぼろの浪人の服
+        samurai, armor, gorget: 喉当て
+        samurai, armor, kote: 籠手（腕当て）
+        samurai, armored_boots: 脛当て
+        samurai, dou: 胸当て/胴体部分
+        samurai, full_armor: 侍の鎧フル装備セット
+        samurai, hakama_short_skirt, thighs: 袴ミニスカート
+        samurai, hakama_skirt: 袴スカート
+        samurai, haori: 羽織り
+        samurai, haori, tasuki: 襷（たすき）掛け
+        samurai, kimono: 着物
+        samurai, kusazuri: 草摺
+        samurai, layered_kimono: 着物の重ね着
+        samurai, sode: 肩当て/肩甲
+        sandogasa: 三度笠
+        shinsengumi: 新撰組の羽織り
+        tabi, waraji: 足袋と草鞋（わらじ）
+        taichou_haori: 隊長の羽織り
+        goddess_Durga: ドゥルガー
+        goddess_Durga, eight_arms, crimson_sari, riding_lion, divine_weapons: ドゥルガー インド神話 勇気と戦いの女神
+        goddess_Kali: カーリー
+        goddess_Kali, dark_skin, wild_hair, protruding_red_tongue, garland_of_severed_heads, skirt_of_arms, sword: カーリー インド神話
+          破壊と死の女神
+        goddess_Lakshmi: ラクシュミ
+        goddess_Lakshmi, four_arms, golden_sari, seated_on_pink_lotus, streams_of_gold_coins, elephants_spraying_water: ラクシュミ
+          インド神話 富と繁栄の女神
+        goddess_Parvati: パールヴァティー
+        goddess_Parvati, red_sari, crown, holding_lotus, gentle_smile: パールヴァティー インド神 力と母性の女神
+        goddess_Saraswati: サラスヴァティ
+        goddess_Saraswati, white_robes, seated_on_white_lotus, four_arms_playing_veena, manuscript, prayer_beads, swan: サラスヴァティ
+          インド神話 学問・芸術・音楽の女神
+        goddess_Sita: シーター
+        goddess_Sita, yellow_sari, holding_lotus, halo_of_purity, earth‑born: シーター インド神話 貞節と豊穣の女神
+        goddess_Bastet: バステト
+        goddess_Bastet, cat_head, striped_dress, shaking_sistrum, aegis_breastplate: バステト エジプト神話 家庭守護と音楽の女神
+        goddess_Hathor: ハトホル
+        goddess_Hathor, cow‑eared_sun‑disk_headdress, sistrum, menat_necklace, turquoise‑gold_jewellery: ハトホル エジプト神話 愛・音楽・美の女神
+        goddess_Isis: イシス
+        goddess_Isis, cow_horns_with_solar_disk_crown, tight_linen_gown, falcon_wings_outstretched, ankh: イシス エジプト神話 魔術と母性の女神
+        goddess_Sekhmet: セクメト
+        goddess_Sekhmet, lioness_head, solar_disk_with_uraeus, red_sheath_dress, papyrus_sceptre: セクメト エジプト神話 戦いと疫病の女神
+        goddess_Aphrodite: アフロディーテ
+        goddess_Aphrodite, sea‑foam_origin, scallop_shell, translucent_drapery, rose_crown, doves: アフロディーテ ギリシャ神話 愛と美の女神
+        goddess_Artemis: アルテミス
+        goddess_Artemis, silver_crescent_diadem, short_white_chiton, bow_and_quiver, stag_companion: アルテミス ギリシャ神話 月と狩猟の女神
+        goddess_Athena: アテナ
+        goddess_Athena, crested_helmet, bronze_cuirass, aegis_shield_with_Gorgon, spear, owl_companion, olive_branch: アテナ
+          ギリシャ神話 知恵と戦略の女神
+        goddess_Diana: ディアナ
+        goddess_Diana, full‑moon_brooch, short_tunic, bow_and_arrows, hunting_hound: ディアナ ローマ神話 月と狩猟の女神
+        goddess_Hera: ヘラ
+        goddess_Hera, jewelled_diadem, lotus_sceptre, purple‑white_robes, peacock_companion, ivory_throne: ヘラ ギリシャ神話 結婚と王権の女神
+        goddess_Venus: ウェヌス(ヴィーナス)
+        goddess_Venus, seashell_pedestal, crimson_sash, mirror, golden_apple, swans, roses: ウェヌス(ヴィーナス) ローマ神話 愛と美の女神
+        goddess_Aurora: アウローラ
+        goddess_Aurora, rosy‑fingered_dawn, flowing_sunrise_robes, scattering_petals, dawn_chariot: アウローラ ローマ神話 夜明けの女神
+        goddess_Juno: ユノ
+        goddess_Juno, jewelled_diadem, sceptre, peacock_companion, royal_veil: ユノ ローマ神話 結婚と国家守護の女神
+        goddess_Luna: ルナ
+        goddess_Luna, crescent_diadem, silver_chariot, white_horses, glowing_moon_orb: ルナ ローマ神話 月の女神
+        goddess_Minerva: ミネルウァ
+        goddess_Minerva, crested_helmet, aegis_cloak, owl_companion, spear: ミネルウァ ローマ神話 知恵と工芸の女神
+        goddess_Nike: ニケ
+        goddess_Nike, winged_maiden, laurel_wreath, palm_branch, raised_trophy: ニケ ギリシャ神話 勝利の女神
+        goddess_Benzaiten: 弁才天
+        goddess_Benzaiten, biwa_lute, flowing_white‑saffron_robes, water_ripple, dragon_accompaniment, jewel: 弁才天 日本神話 音楽と弁才の女神
+        goddess_Brigid: ブリギッド
+        goddess_Brigid, glowing_blacksmith_hammer, perpetual_flame, green_cloak, Brigid’s_cross: ブリギッド ケルト神話 炉・詩・春の女神
+        goddess_Epona: エポナ
+        goddess_Epona, white_mare, grain_bowl, horse‑guardian, foals: エポナ ケルト神話 馬の守護の女神
+        goddess_Ereshkigal: エレシュキガル
+        goddess_Ereshkigal, shadow_queen, obsidian_throne, underworld_keys, horned_crown: エレシュキガル メソポタミア神話 冥界の女神
+        goddess_Freyja: フレイヤ
+        goddess_Freyja, Brisingamen_necklace, falcon_cloak, chariot_drawn_by_cats, golden_hair: フレイヤ 北欧神話 愛・戦・魔術の女神
+        goddess_Frigg: フリッグ
+        goddess_Frigg, blue_mantle, distaff_and_spindle, golden_keys, foresight_queen: フリッグ 北欧神話 結婚と予知の女神
+        goddess_Inanna: イナンナ
+        goddess_Inanna, horned_star_crown, lion_mount, eight‑pointed_star, thunder_bow: イナンナ メソポタミア神話 愛・性・戦の女神
+        goddess_Ishtar: イシュタル
+        goddess_Ishtar, eight‑pointed_star_rosette, lion_companion, fringed_robe, bow_or_sword: イシュタル メソポタミア神話 愛と戦の女神
+        goddess_Morrigan: モリガン
+        goddess_Morrigan, raven_wings_cloak, spear, war_paint, battlefield_mist: モリガン ケルト神話 戦争と運命の女神
+        goddess_Oshun: オシュン
+        goddess_Oshun, golden_gown, mirror, fan, honey_pot, river_water_swirl, peacock_feathers: オシュン ヨルバ伝承 河川と愛の女神
+        goddess_Amaterasu: アマテラス
+        goddess_Amaterasu, radiant_sun_aureole, Yata‑no‑Kagami_mirror, magatama_jewels, white‑red_miko_robes: アマテラス 日本神話 太陽の女神
+        goddess_Chang’e: 嫦娥
+        goddess_Chang’e, flowing_Han_silk, jade_rabbit, cassia_tree, full_moon: 嫦娥 中国神話 月と不老の女神
+        goddess_Guanyin: 観音
+        goddess_Guanyin, white_flowing_robes, willow_branch, jade_vase, lotus_seat, compassion_halo: 観音 仏教 慈悲と救済の女神
+        goddess_Hina: ヒナ
+        goddess_Hina, Polynesian_moon_maiden, crescent_moon, tapa_cloth, gourd_mallet: ヒナ ポリネシア神話 月と創造の女神
+        goddess_Mazu: 媽祖
+        goddess_Mazu, dragon‑embroidered_crimson_robe, standing_on_waves, ceremonial_tablet, silk_ribbon: 媽祖 中国神話 航海安全と海の女神
+        goddess_Nuwa: 女媧
+        goddess_Nuwa, serpent‑lower_body, five‑coloured_stones, repairing_sky, coiled_tail: 女媧 中国神話 創造と天地修復の女神
+        goddess_Selene: セレネ
+        goddess_Selene, crescent_diadem, silver_chariot_with_white_horses, silvery_veil, moonlight: セレネ 月の女神
+        goddess_Xiwangmu: 西王母
+        goddess_Xiwangmu, phoenix‑peach_tiara, jade_terrace_throne, peaches_of_immortality, imperial_robes: 西王母 中国神話 仙女と不老の女神
+        goddess_Zhinu: 織女
+        goddess_Zhinu, celestial_weaver, starry_hanfu, jade_loom, silver_threads: 織女 中国神話 織女と愛の女神
+        goddess_Anahita: アナーヒータ
+        goddess_Anahita, aqua_robes, star_crown, pouring_water_from_silver_vessel, chariot_with_white_horses: アナーヒータ ペルシア神話
+          水と豊穣の女神
+        goddess_Demeter: デメテル
+        goddess_Demeter, wheat_sheaf, lit_torch, flower‑crowned_veil, green‑gold_chiton: デメテル ギリシャ神話 農耕と収穫の女神
+        goddess_Gaia: ガイア
+        goddess_Gaia, draped_in_green‑brown, cornucopia_of_fruits, animals_at_feet, emerging_from_earth: ガイア 自然と生命の女神
+        goddess_Konohanasakuya‑hime: コノハナサクヤヒメ
+        goddess_Lada: ラダ
+        goddess_Lada, spring_flower_wreath, golden_hair, nesting_birds, birch_meadow: ラダ スラヴ神話 春と愛の女神
+        goddess_Persephone: ペルセポネ
+        goddess_Persephone, dark‑to‑light_robes, split_pomegranate, flower_crown: ペルセポネ ギリシャ神話 冥界と春の女神
+        imp_girl: 小悪魔の擬人化
+        mecha_girl, heavily_armed_futuristic_war_machine_design: 兵器・メカの擬人化のAIイラスト
+        kemonomimi_mode: ケモ耳・尻尾を追加した擬人化モードを指定するプロンプト
+        bear_girl: 熊の擬人化
+        deer_girl: 鹿の擬人化
+        goat_girl: 山羊の擬人化
+        moose_girl: ヘラジカの擬人化
+        mouse_girl: ネズミの擬人化
+        panda_girl: パンダの擬人化
+        reindeer_girl: トナカイの擬人化
+        sheep_girl: 羊の擬人化
+        squirrel_girl: リスの擬人化
+        tiger_girl: 寅の擬人化
+        animal_ear_piercing: ピアス付きのケモノ耳
+        animal_tail: 動物の尻尾
+        claws: 爪
+        fluffy_tail: ふさふさの尻尾
+        mismatched_animal_ear_colors: 左右で色の違うケモノ耳
+        tail_around_another’s_leg: 尻尾が他人の足に絡みつく
+        tail_wrap: 尻尾が巻き付く
+        whiskers: 髭
+        blue_lining: 青色の裏地
+        clasp_/_brooch_/_toggles: 留め具
+        cloak_/_cape_/_sash_/_scapular: 組み合わせ
+        string_belt_/_chain_belt_/_o-ring_belt: ベルト
+        with_red_trim: 縁取り
+        wizard_robe: 魔法使いのローブ 、中世の修道士の服装をベースにしたデザイン、ハリーポッターに出てくるイメージのローブ
+        academic_robe: 卒業式ローブ
+        aqua_robe: アクア色
+        black_robe: 黒色
+        blue_robe: 青色
+        brown_robe: 茶色
+        buddhist_monk_robe: 僧衣
+        collared_robe: 襟付きのローブ
+        frilled_robe: フリル付きのローブ
+        fur-trimmed_robe: 毛皮トリム付きローブ
+        gray_robe: グレー
+        green_robe: 緑色
+        kesa: 仏教僧の袈裟
+        layered_robe: 重ね着ローブ
+        orange_robe: オレンジ色
+        pink_robe: ピンク色
+        purple_robe: 紫色
+        red_robe: 赤色
+        royal_robe: 王族風のローブ
+        sleeveless_robe: 袖なしローブ
+        two-tone_robe: 二色使いのローブ
+        white_robe: 白色
+        yellow_robe: 黄色
+        string_belt: 紐ベルト
+        black_wizard_robe_with_embroidered_trim: 刺繍された縁取りのローブ
+        black_wizard_robe_with_red_trim: 赤い縁取りのローブ
+        cassock, black_robe, hooded_robe, clerical_collar, priest, cross_necklace, detailed_clothes: 宗教・僧侶ローブ（カソック）のコーデ
+        royal_robe, fur_trimmed_robe, sash, gold_trim, crown, detailed_clothes: 王族風ローブのコーデ
+        adjusting_robe: ローブを整える
+        naked_robe: 裸にローブ
+        robe_lift: ローブをめくり上げる
+        robe_partially_removed: ローブを部分的に脱いだ状態のAIイラスト
+        Replicant: レプリカント
+        Automaton: オートマトン
+        Cloud_Elf: 雲のエルフ
+        Copper_Fairy: 銅の妖精
+        Gear_Golem: ギアゴーレム
+        Iron_Spirit: 鋼鉄精霊
+        Steam_Automaton: 蒸気自動人形
+        Steam_Dwarf: スチームドワーフ
+        Steam_Golem: スチームゴーレム
+        Radiation_Mutant: 放射線による突然変異体
+        Mutant_Organism: 異形の遺伝子改変生物
+        Dragonkin: ドラゴンキン
+        Fairy/Faerie: フェアリー
+        Ranger: 狩人
+        Spellsword: 魔法騎士
+        Banshee: バンシー
+        Ghoul: グール
+        Malevolent_Spirit: 悪霊
+        Phantom: ファントム
+        Poltergeist: 幽霊
+        Skinwalker: スキンウォーカー
+        Water_Nymph: 水の妖精
+        Witch/Warlock: 魔女
+        Witch/Wizard: 魔法使い
+        Elder_Vampire: 古代ヴァンパイア
+        Pureblood_Vampire: 純血種ヴァンパイア
+        Vampire_Hunter: ヴァンパイアハンター
+        Sea_Witch: 海の魔女
+        Spiritmancer: 心霊術師
+        Beast_Tamer: 獣使い
+        Spirit_Channeler: 精霊連携者
+        japanese_ahoge: 日本のアホ毛
+        source_furry: ケモノソース
+        dystopian_but_extremely_beautiful: ディストピアだが非常に美しい
+        aka-oni: 赤鬼
+        futuristic: 未来的な
+        highly_shareable_minimalist_samurai_art: 共有性の高いミニマリストサムライアート
+        timeless_wandering_ronin_mood: 時代を超越した放浪浪人気分
+        animal_hands: 動物の手
+        cat_boy: 猫の少年
+        cow_horns: 牛の角
+        fake_tail: 偽の尾
+        feathered_wings: 羽の羽
+        fish_tail: 魚の尾
+        mouse_tail: マウステール
+        raccoon_tail: アライグマの尾
+        red_horns: 赤い角
+        shark_tail: サメの尾
+        skin-covered_horns: 皮膚に覆われた角
+        tiger_tail: タイガーテール
+        white_wings: 白い翼
+        angel_and_devil: 天使と悪魔
+        animal_ear_headphones: 動物の耳ヘッドフォン
+        animal_ear_headwear: 動物の耳の帽子
+        animal_head: 動物の頭
+        animal_hug: 動物の抱擁
+        animal_on_arm: 腕に動物
+        animal_on_shoulder: 肩に動物
+        animal_skull: 動物の頭蓋骨
+        asymmetrical_horns: 非対称の角
+        bear_tail: 尾の尾
+        bird_ears: 鳥の耳
+        bird_girl: 鳥の女の子
+        bird_tail: 鳥の尾
+        black_tail: 黒い尾
+        blue_horns: 青い角
+        blue_tail: 青い尾
+        blue_wings: 青い翼
+        brown_horns: 茶色の角
+        brown_tail: 茶色の尾
+        brown_wings: 茶色の翼
+        cable_tail: ケーブルテール
+        centauroid: Centauroid
+        cetacean_tail: 子宮皮薬の尾
+        colored_inner_animal_ears: colored_inner_animal_ears
+        cone_horns: cone_horns
+        cow_tail: 牛の尾
+        crocodilian_tail: ワニの尾
+        deer_tail: 鹿の尾
+        demon_boy: 悪魔の少年
+        dog_boy: 犬の少年
+        dragon_boy: ドラゴンボーイ
+        drawn_ears: 耳を引きます
+        eastern_dragon_horns: eastern_dragon_horns
+        energy_wings: エネルギーの翼
+        fiery_horns: 燃えるような角
+        forked_tail: フォークされた尾
+        fox_boy: フォックスボーイ
+        ghost_tail: ゴーストテール
+        glowing_horns: 輝く角
+        gradient_horns: グラジエントホーン
+        gradient_wings: グラジエントウィング
+        green_horns: 緑の角
+        green_tail: 緑の尾
+        green_wings: 緑の翼
+        grey_horns: 灰色の角
+        grey_tail: 灰色の尾
+        grey_wings: 灰色の翼
+        hair_horns: ヘアホーン
+        heart_tail: ハートテール
+        hugging_tail: hugging_tail
+        jackal_ears: ジャッカルイヤー
+        jaguar_tail: ジャガーテール
+        large_ears: 大きな耳
+        large_tail: 大きな尾
+        leopard_ears: ヒョウの耳
+        leopard_tail: ヒョウの尾
+        lion_tail: ライオンテール
+        lizard_tail: トカゲの尾
+        long_tail: ロングテール
+        lop_rabbit_ears: lopウサギの耳
+        mechanical_ears: 機械的耳
+        mechanical_horns: 機械的ホーン
+        mechanical_tail: 機械的な尾
+        monkey_tail: モンキーテール
+        multicolored_horns: 多色ホーン
+        multicolored_tail: 多色の尾
+        multiple_horns: 複数の角
+        no_tail: 尾はありません
+        orange_tail: オレンジテール
+        otter_ears: カワウソの耳
+        owl_ears: フクロウの耳
+        panther_ears: パンサーの耳
+        pink_horns: ピンクの角
+        pink_tail: ピンクの尾
+        pink_wings: ピンクの翼
+        prehensile_tail: 脱毛前尾
+        purple_horns: 紫の角
+        purple_tail: 紫の尾
+        purple_wings: 紫色の翼
+        red_tail: 赤い尾
+        red_wings: 赤い翼
+        robot_animal: ロボット動物
+        shark_girl: サメの女の子
+        short_tail: 短い尾
+        slime_(creature): スライム（クリーチャー）
+        slime_(substance): スライム（物質）
+        small_horns: 小さな角
+        snake_tail: ヘビの尾
+        spiked_tail: スパイクされた尾
+        spread_wings: 翼を広げます
+        squirrel_tail: リスの尾
+        tapir_tail: タピールの尾
+        torn_wings: 引き裂かれた翼
+        transparent_wings: 透明な翼
+        uneven_horns: uneven_horns
+        weasel_ears: イタチの耳
+        white_horns: 白い角
+        white_tail: 白い尾
+        wolf_boy: ウルフボーイ
+        yellow_horns: 黄色の角
+        yellow_tail: 黄色の尾
+        yellow_wings: 黄色の翼
+        abdomen_tail: abdomen_tail
+        alpaca_tail: アルパカの尾
+        alternate_animal_ears: 代替動物の耳
+        alternate_ears: 代替耳
+        alternate_horns: 代替ホーン
+        alternate_tail: 代替尾
+        alternate_wings: 代替翼
+        angel_(evangelion): エンジェル（エヴァンゲリオン）
+        angel_mort: エンジェルモート
+        angel_statue: 天使の彫像
+        angelfish: エンゼルフィッシュ
+        angelic_angel: 天使の天使
+        animal_around_neck: 首の周りの動物
+        animal_background: 動物の背景
+        animal_balloon: 動物バルーン
+        animal_charm: animal_charm
+        animal_cutout: 動物の切り抜き
+        animal_earmuffs: 動物のイヤマフ
+        animal_legs: animal_legs
+        animal_name: animal_name
+        animal_on_back: 背中に動物
+        animal_on_chest: 胸の動物
+        animal_on_hand: 手元にある動物
+        animal_on_leg: 脚の動物
+        animal_sexualization: animal_sexualization
+        animal_skeleton: 動物の骨格
+        ankle_wings: 足首の翼
+        anteater_tail: アリタンテアの尾
+        antelope_horns: アンテロープホーン
+        aqua_horns: アクアホーン
+        aqua_tail: aqua_tail
+        aqua_wings: アクアウィング
+        armadillo_ears: アルマジロの耳
+        badger_ears: アナグマの耳
+        bandaged_tail: 包帯の尾
+        bat_tail: bat_tail
+        beaver_ears: ビーバーの耳
+        beaver_tail: ビーバーテール
+        bee_wings: bee_wings
+        biting_another's_tail: biting_another's_tail
+        biting_own_tail: biting_own_tail
+        black_ears: black_ears
+        bloody_wings: 血まみれの翼
+        boar_ears: イノシシ
+        braided_tail: 編組尾
+        brushing_tail: brushing_tail
+        bunny_ears_prank: バニーの耳のいたずら
+        camel_ears: ラクダの耳
+        cartoon_wings: cartoon_wings
+        chameleon_tail: カメレオンの尾
+        cheetah_ears: チーターの耳
+        cheetah_tail: チーターテール
+        chinchilla_ears: チンチラの耳
+        chinchilla_tail: チンチラの尾
+        chipmunk_ears: シマリスの耳
+        chipmunk_tail: シマリステール
+        covering_own_ears: covering_own_ears
+        crystal_horns: crystal_horns
+        crystal_tail: クリスタルテール
+        curled_tail: カールした尾
+        curved_horns: curved_horns
+        detached_ears: 孤立した耳
+        detached_horns: 孤立した角
+        dinosaur_tail: 恐竜の尾
+        donkey_ears: ロバの耳
+        dragon_(arms): ドラゴン（腕）
+        dragon_ball_(object): ドラゴンボール（オブジェクト）
+        dragon_boat_festival: dragon_boat_festival
+        dragon_bubble_(arknights): dragon_bubble_(arknights)
+        dragon_claw: ドラゴンクロー
+        dragon_radar: ドラゴンレーダー
+        dragonborn_(d&d): dragonborn_(d&d)
+        dragonfly_wings: dragonflyの翼
+        dragonslayer_(sword): Dragonslayer（剣）
+        dragonstone: ドラゴンストーン
+        drawn_horns: 描かれた角
+        drawn_tail: 尾を引く
+        drawn_wings: 描かれた翼
+        droopy_ears: droopy_ears
+        eastern_dragon_tail: eastern_dragon_tail
+        eevee_ears: Eevee Ears
+        eevee_tail: Eevee Tail
+        electric_plug_tail: electric_plug_tail
+        elephant_tail: 象の尾
+        expressive_tail: 表現力豊かな尾
+        fairy_(girls'_frontline): 妖精（女の子の最前線）
+        ferret_tail: フェレットテール
+        fiery_ears: 燃えるような耳
+        flapping_ears: 羽毛
+        forward_facing_horns: forward_facing_horns
+        fur-tipped_tail: 毛皮の先端
+        fuse_tail: ヒューズテール
+        gazelle_ears: ガゼルの耳
+        gazelle_horns: ガゼルホーン
+        gazelle_tail: ガゼルテール
+        giraffe_ears: キリンの耳
+        giraffe_horns: キリンホーン
+        giraffe_tail: キリンテール
+        glowing_tail: 輝く尾
+        gold_horns: ゴールドホーン
+        golden_wings: 黄金の翼
+        grabbing_another's_tail: grabbing_another's_tail
+        gradient_tail: gradient_tail
+        hair_between_horns: 角の間の髪
+        hamster_ears: ハムスターの耳
+        harpy_boy: ハーピーボーイ
+        hat_horns: hat_horns
+        heart_tail_duo: ハートテールデュオ
+        hippopotamus_ears: カバの耳
+        holding_another's_tail: 他の人の尾を持っています
+        holding_ears: 耳を保持します
+        holding_with_tail: 尾で持って保持します
+        huge_horns: 巨大な角
+        hugging_another's_tail: 他の人の尾を抱き締める
+        hugging_own_tail: 自分の尾を抱きしめます
+        hyena_ears: ハイエナの耳
+        hyena_tail: ハイエナテール
+        ice_horns: アイスホーン
+        implied_extra_ears: 暗黙の余分な耳
+        implied_tail_plug: 暗黙のテールプラグ
+        inconvenient_tail: 不便な尾
+        innertube_with_ears: 耳を持つInnerTube
+        jackal_tail: ジャッカルテール
+        komainu_ears: Komainu Ears
+        komainu_tail: komainu_tail
+        lamia_boy: lamia_boy
+        large_horns: large_horns
+        leaf_wings: leaf_wings
+        leg_wings: 脚の翼
+        lemur_ears: キツネザル
+        lifted_by_tail: 尾で持ち上げられます
+        long_horns: 長い角
+        low_horns: 低い角
+        meerkat_ears: Meerkat Ears
+        meerkat_tail: Meerkat Tail
+        metal_wings: 金属翼
+        mickey_mouse_ears: ミッキーマウスの耳
+        minnie_mouse_ears: ミニーマウスの耳
+        mismatched_horns: 不一致の角
+        mismatched_wings: 不一致の翼
+        moose_ears: ムースの耳
+        moose_tail: ムースの尾
+        moth_wings: 翼
+        multiple_animal_ears: multiple_animal_ears
+        no_animal_ears: 動物の耳はありません
+        no_horns: 角はありません
+        okapi_ears: okapi耳
+        okapi_tail: オカピの尾
+        orange_horns: オレンジホーン
+        orange_wings: オレンジ色の翼
+        orca: orca
+        orca_girl: オルカガール
+        orca_hair_ornament: Orca Hair Ornament
+        orca_hood: Orca Hood
+        orchestra: オーケストラ
+        otter_tail: カワウソの尾
+        ox_ears: 牛の耳
+        ox_horns: 牛の角
+        panda_tail: パンダテール
+        panther_tail: パンサーテール
+        pegasus_wings: ペガサスの翼
+        penguin_tail: ペンギンの尾
+        phone_with_ears: 耳のある電話
+        pig_tail: 豚の尾
+        pikachu_ears: ピカチュウの耳
+        pikachu_tail: ピカチュウの尾
+        plant_wings: 植物の翼
+        pokemon_tail: ポケモンテール
+        rainbow_wings: 虹の翼
+        red_panda_ears: 赤いパンダの耳
+        red_panda_tail: 赤いパンダの尾
+        rhinoceros_ears: サイの耳
+        robot_bird: robot_bird
+        robot_dog: ロボット犬
+        robot_dragon: robot_dragon
+        robotic_vacuum_cleaner: robotic_vacuum_cleaner
+        scar_on_tail: scar_on_tail
+        scorpion_tail: スコーピオンの尾
+        sea_slug_ears: sea_slug_ears
+        sharp_tail: sharp_tail
+        skeletal_tail: 骨格尾
+        skeletal_wings: 骨格翼
+        skunk_ears: スカンク耳
+        skunk_tail: スカンクテール
+        slime_boy: スライムボーイ
+        snake_head_tail: snake_head_tail
+        snow_leopard_ears: snow_leopard_ears
+        snow_leopard_tail: snow_leopard_tail
+        spiked_horns: スパイクホーン
+        spiked_wings: スパイクされた翼
+        spotted_tail: 斑点のある尾
+        stiff_tail: 硬い尾
+        tadpole_tail: オタマジャクシの尾
+        tamandua_ears: タマンドゥアの耳
+        tamandua_tail: Tamandua Tail
+        tapir_ears: タピール耳
+        tasmanian_devil_ears: タスマニアの悪魔の耳
+        tasmanian_devil_tail: タスマニアの悪魔の尾
+        thick_tail: thick_tail
+        tied_ears: 結び付けられた耳
+        translucent_horns: translucent_horns
+        tree_horns: tree_horns
+        trimmed_tail: trimmed_tail
+        two-tone_horns: two-tone_horns
+        two-tone_tail: ツートンテール
+        two-tone_wings: ツートン翼
+        very_long_ears: 非常に長い耳
+        very_long_tail: 非常に長い尾
+        visible_ears: 目に見える耳
+        weasel_tail: イタチの尾
+        wing_ears: 翼の耳
+        wrist_wings: 手首の翼
+        zebra_ears: ゼブラの耳
+        zebra_tail: ゼブラテール
+        wa_bunny: 和風バニー
+        '3': 猫口
+        maid_one-piece_swimsuit: メイド風水着
+        apron_grab: エプロンを掴む
+        crescent_wand: 三日月の杖
+        religion: 宗教
+        Split_tail: スプリットテール
+        shell_brooch: 貝殻のブローチ
+        shell_print: 貝殻柄
+        splash: 水しぶき
+        futa_with_newhalf: ふたなりとニューハーフ
+        beetle_girl: カブトムシ娘
+        caterpillar_girl: イモムシ娘
+        millipede_girl: ヤスデ娘
+        mosquito_girl: 蚊娘
+        decorating_christmas_tree: クリスマスの飾り
+        green_santa_costume: 緑サンタ衣装
+        orange_santa_costume: オレンジサンタ衣装
+        pink_santa_costume: ピンクサンタ衣装
+        purple_santa_costume: 紫サンタ衣装
+        white_santa_costume: 白サンタ衣装
+        yellow_santa_costume: 黄色サンタ衣装
+        warm_colored: 暖色系
+        beast_girl: 獣人
+        alien_world: 異星人
+        alternate_dimension: 異次元
+        another_world: 異世界
+        empire: 帝国
+        kingdom: 王国
+        magical_academy: 魔法学園
+        parallel_world: パラレルワールド
+        underground_world: 地下世界
+        cursed: 呪われた
+        demon_realm: 魔界
+        infernal: 地獄
+        noir: ノアール
+        vampiric: 吸血鬼系
+        big_city: ビッグシティ
+        futuristic_city: 未来都市
+        candy_land: キャンディランド
+        cute_style: かわいい系
+        dreamland: 夢の国
+        girly_aesthetic: ガーリー
+        ice_cream_aesthetic: アイスクリーム風
+        light_and_pale: 淡い
+        macaron_colors: マカロン色
+        rainbow_aesthetic: 虹色
+        soft_and_fluffy: ふんわり
+        sparkly: キラキラ
+        sweet_aesthetic: 甘い世界
+        ancient_egypt: 古代エジプト
+        ancient_greece: 古代ギリシャ
+        byzantine: ビザンチン
+        brothel: 遊郭
+        edo_period: 江戸時代
+        meiji_era: 明治時代
+        pleasure_quarter: 廓
+        red_light_district: 花街
+        sengoku_period: 戦国時代
+        taisho_era: 大正時代
+        taisho_romance: 大正浪漫
+        young_japanese_woman, kimono, traditional_town_girl: 町娘
+        armed: 武装
+        black_market: 裏稼業
+        criminal: クリミナル
+        criminal_underworld: 裏社会
+        dangerous_atmosphere: 危険な雰囲気
+        dark_street: ダーク街
+        neon_and_smoke: ネオンと煙
+        night_city_street_with_neon_lights, upscale_nightlife_district: 歓楽街
+        organized_crime: 暴力団
+        scarred_face: 疤顔
+    - name: ツノ・角
+      color: rgba(148, 0, 211, 1)
+      tags:
+        curled_horns: カールした角
+        demon_horns: 悪魔の角
+        dragon_horns: ドラゴンホーン
+        oni_horns: オニの角
+        sheep_horns: 羊の角
+    - name: 耳
+      color: rgba(255, 20, 147, 1)
+      tags:
+        anteater_ears: アリタンの耳
+        devil_ears: 悪魔
+        ear_ornament: 耳の飾り
+        ear_piercing: 耳にピアスの穴を開ける
+        ears_down: 耳を下ろします
+        ferret_ears: フェレットの耳
+        floppy_ears: フロッピー耳
+        long_pointy_ears: 長い先のとがった耳
+        monkey_ears: 猿の耳
+        rabbit_ears: うさみみ
+        tanuki_ears: 狸
+        gort_ears: ヤギの耳
+        squuirrel_ears: リスの耳
+        cat_ears, cat_tail: 猫耳
+        fox_ears, fox_tail: 狐耳
+        pointy_ears, dark_skin: ダークエルフ
+        wolf_ears, wolf_tail: 狼耳
+    - name: 尻尾
+      color: rgba(0, 191, 255, 1)
+      tags:
+        cat_tail: ねこしっぽ
+        demon_tail: 悪魔の尾
+        dog_tail: いぬしっぽ
+        dragon_tail: ドラゴンテール
+        fox_tail: キツネの尾
+        goat_tail: ヤギの尾
+        horse_tail: 馬の尾
+        multiple_tails: 複数の尾
+        multiple_tails_cat_tails: 猫又
+        multiple_tails_fox_tails: 九尾
+        rabbit_tail: ウサギの尾
+        sheep_tail: 羊の尾
+        tanuki_tail: 狸
+        wolf_tail: オオカミの尾
+        demon_girl, demon_horns, demon_tail, demon_wings: 小悪魔
+        banded_ponytail: バンドポニーテール
+        bouffant_ponytail: ブーファンポニーテール
+        bow_ponytail: リボンポニーテール
+        braid_ponytail_hair: 三つ編みポニーテール
+        braided_ponytail_hair: 編み込みポニーテールヘア
+        bubble_ponytail: バブルポニーテール
+        cascading_ponytail: カスケードポニーテール
+        cornrowed_ponytail: コーンローポニーテール
+        crimped_ponytail: クリンプポニーテール
+        curled_ponytail: カールポニーテール
+        Curly_Fishtail_Braid: カーリーフィッシュテール三つ編み
+        Curly_Ponytail: カーリーポニーテール
+        double_braided_ponytail: ダブル三つ編みポニーテール
+        double_ponytail: ダブルポニーテール
+        dutch_braid_ponytail: ダッチ三つ編みポニーテール
+        dutch_fishtail_braid: ダッチフィッシュテール
+        dutch_fishtail_bun: フィッシュテール
+        dutch_fishtail_crown_braid: ダッチ・フィッシュテール・クラウン・ブレイド
+        dutch_fishtail_side_ponytail: フィッシュテールサイドポニーテール
+        dutch_fishtail_updo: フィッシュテールアップ
+        fishtail_braid_hair: フィッシュテール
+        fishtail_braid_half-up_half-down: フィッシュテール
+        fishtail_braid_headband: フィッシュテール三つ編みカチューシャ
+        fishtail_braid_ponytail: フィッシュテール
+        fishtail_braided_chignon: フィッシュテールシニヨン
+        fishtail_bun: フィッシュテール
+        fishtail_crown_braid: フィッシュテール・クラウン・ブレイド
+        fishtail_halo_braid: フィッシュテールハローブレイド
+        fishtail_messy_bun: フィッシュテールメッシーバン
+        fishtail_ponytail: フィッシュテールポニーテール
+        fishtail_side_braid: フィッシュテールサイド三つ編み
+        fishtail_side_ponytail: フィッシュテールサイドポニーテール
+        french_braid_ponytail: フレンチ三つ編みポニーテール
+        french_fishtail_braid: フレンチフィッシュテール
+        french_fishtail_crown_braid: フレンチフィッシュテールクラウン三つ編み
+        french_fishtail_updo: フレンチフィッシュテールアップ
+        half-up_ponytail: ハーフアップポニーテール
+        half_up_ponytail_hair: ハーフアップポニーテール
+        high_ponytail_hair: ハイポニーテールヘア
+        knotted_ponytail: ノットポニーテール
+        layered_ponytail: レイヤーポニーテール
+        low_ponytail_hair: ローポニーテールヘア
+        messy_fishtail_braid: フィッシュテール三つ編み
+        pigtails_hair: おさげヘア
+        ribboned_ponytail: リボンポニーテール
+        side_fishtail_braid_hair: サイドフィッシュテール三つ編みヘア
+        side_ponytail_hair: サイドポニーテール
+        sleek_ponytail_hair: スリークポニーテール
+        slicked-back_ponytail_hair: バックポニーテールヘア
+        Straight_Braided_Ponytail: ストレート編み込みポニーテール
+        Straight_Fishtail_Braid: ストレートフィッシュテール
+        Straight_Fishtail_Braid_Bun: ストレートフィッシュテール三つ編みお団子
+        Straight_High_Ponytail: ストレートハイポニーテール
+        Straight_Low_Ponytail: ストレートローポニーテール
+        Straight_Ponytail: ストレートポニーテール
+        Straight_Ponytail_with_Fade: フェード付ストレートポニーテール
+        Straight_Sleek_High_Ponytail: ストレートハイポニーテール
+        Straight_Twisted_Ponytail: ストレート・ツイスト・ポニーテール
+        teased_ponytail: ティースドポニーテール
+        textured_ponytail: テクスチャーポニーテール
+        top_knot_ponytail: トップノットポニーテール
+        topsy_tail_chignon: トップシーテールシニヨン
+        twisted_ponytail: ツイストポニーテール
+        twisted_ponytail_hair: ツイスト・ポニーテール
+        voluminous_ponytail: ボリュームポニーテール
+        wavy_ponytail: ウェーブポニーテール
+        wrapped_ponytail: ラップポニーテール
+    - name: 手・足
+      color: rgba(106, 90, 205, 1)
+      tags:
+        cat_paw_gloves: 猫の手
+        dog_paw_gloves: 犬の手
+    - name: 翼
+      color: rgba(220, 20, 60, 1)
+      tags:
+        angel_wings: 天使の翼
+        angel_big_wings: 天使の大翼
+        bird_wings: 鳥の翼
+        crystal_wings: クリスタルの翼
+        devil_wings: 悪魔の翼
+        dragon_wings: ドラゴンの翼
+        eagle_wings: 鷲の翼
+        flaming_wings: 燃える翼
+        glowing_wings: 輝く翼
+        ice_wings: 氷の翼
+        mechanical_wings: 機械的な翼
+        mini_wings: 小さい翼
+        no_wings: 翼はない
+        raven_wings: カラスの翼
+        succubus_fangs_bat_wings: サキュバスの牙と蝙蝠の翼
+    - name: 牙・歯
+      color: rgba(30, 144, 255, 1)
+      tags:
+        succubus_tooth: サキュバスの牙
+        vampire_tooth: ドラキュラの牙
+    - name: 武器
+      color: rgba(70, 130, 180, 1)
+      tags:
+        bow_(weapon): 弓（武器）
+        huge_weapon: 巨大な武器
+        katana: カタナ
+        lance: ランス
+        robot_joints: ロボットジョイント
+        sorcerer_sutra_scroll: 魔術師の経典
+        stake: ステーク
+        thompson_submachine_gun: トンプソン・サブマシンガン
+        trident: トライデント
+        unsheathing: 解放されていない
+  - name: noplog · 【AIイラスト】Stable Diffusion 2400プロンプト完全網羅！
+    groups:
+    - name: ２-３．美術様式
+      tags:
+        abstraction_painting: 抽象絵画
+        Alphonse_Mucha_style: アルフォンス・ミュシャ
+        Andy_Warhol_style: アンディ・ウォーホル
+        art_deco: アール・デコ
+        art_nouveau: アール・ヌーヴォー
+        Baroque_Art: バロック美術
+        Claude_Monet_style: クロード・モネ
+        cubism: キュビズム
+        Edgar_Degas_style: エドガー・ドガ
+        Edvard_Munch_style: エドヴァルド・ムンク
+        Emil_Nolde_style: エミール・ノルデ
+        Eugene_Delacroix_style: ドラクロワ
+        Expressionism: 表現主義
+        Fauvism: フォーヴィスム
+        Fra_Angelico_style: フラ・アンジェリコ
+        Francisco_Goya_style: ゴヤ
+        Francois_Boucher_style: ブーシェ
+        Giotto_style: ジョット
+        Gustave_Courbet_style: ギュスターヴ・クールベ（realismを使うと写真のようになってしまうので注意）
+        Hasegawa_Tohaku_style: 長谷川等伯
+        Henri_Matisse_style: アンリ・マティス
+        Herge_style: エルジェ
+        Hiroshige_style: 歌川広重
+        Hokusai_style: 葛飾北斎
+        impressionism: 印象派
+        Jacques-Louis_David_style: ダヴィッド
+        Jean-Francois_Millet_style: ジャン＝フランソワ・ミレー（realismを使うと写真のようになってしまうので注意）
+        Jean-Honore_Fragonard_style: フラゴナール
+        Juan_Gris_style: フアン・グリス
+        Kano_Eitoku_style: 狩野永徳
+        Keith_Haring_style: キース・ヘリング
+        Leonardo_da_Vinci_style: レオナルド・ダ・ヴィンチ
+        ligne_claire: リーニュ・クレール
+        Michelangelo_style: ミケランジェロ
+        Neoclassicism: 新古典主義
+        nihonga: 日本画
+        op_art: オプ・アート
+        Pablo_Picasso_style: パブロ・ピカソ
+        Paul_Cezanne_style: ポール・セザンヌ
+        Paul_Gauguin_style: ポール・ゴーギャン
+        Peter_Paul_Rubens_style: ルーベンス
+        Pierre-Auguste_Renoir_style: ピエール＝オーギュスト・ルノワール
+        Piet_Mondrian_style: ピエト・モンドリアン
+        pop_art: ポップアート
+        Post-Impressionism: 後期印象派
+        Raphael_style: ラファエロ
+        Rembrandt_style: レンブラント
+        Renaissance_Art: ルネサンス美術
+        Rene_Magritte_style: ルネ・マグリット
+        Rococo_Art: ロココ美術
+        Romanticism: ロマン主義
+        Roy_Lichtenstein_style: ロイ・リキテンスタイン
+        Salvador_Dali_style: サルバドール・ダリ
+        Sandro_Botticelli_style: サンドロ・ボッティチェッリ
+        Sesshu_style: 雪舟
+        Sharaku_style: 東洲斎写楽
+        sumi-e: 墨絵
+        surrealism: シュルレアリスム
+        Taikan_Yokoyama_style: 横山大観
+        Tamara_de_Lempicka_style: タマラ・ド・レンピッカ
+        tempera_painting: テンペラ絵画
+        ukiyo-e: 浮世絵
+        Utamaro_style: 喜多川歌麿
+        Victor_Vasarely_style: ヴィクトル・ヴァザルリ
+        Vincent_van_Gogh_style: フィンセント・ファン・ゴッホ
+        Zen_style: 禅スタイル

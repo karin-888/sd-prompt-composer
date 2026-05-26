@@ -32,6 +32,35 @@ def tag_to_preview_basename(tag: str) -> str:
     return (tag or "").strip().translate(_TO_SAFE)
 
 
+def _normalize_clauses(tag: str) -> str:
+    """Collapse intra-clause spaces to '_' but keep ', ' between comma-separated clauses."""
+    parts = []
+    for clause in (tag or "").split(","):
+        c = clause.strip().strip("_").replace(" ", "_")
+        if c:
+            parts.append(c)
+    return ", ".join(parts)
+
+
+def preview_lookup_variants(tag: str) -> Tuple[str, ...]:
+    """Return tag spellings that may share the same preview file (space vs underscore)."""
+    tag = (tag or "").strip()
+    if not tag:
+        return ()
+    variants = [tag]
+    candidates = [
+        tag.replace(" ", "_"),
+        tag.replace("_", " "),
+        _normalize_clauses(tag),
+        _normalize_clauses(tag.replace("_", " ")),
+        _normalize_clauses(tag).replace(", ", ",_"),
+    ]
+    for candidate in candidates:
+        if candidate and candidate not in variants:
+            variants.append(candidate)
+    return tuple(variants)
+
+
 def preview_basename_to_tag(basename: str) -> str:
     return (basename or "").strip().translate(_FROM_SAFE)
 
@@ -212,6 +241,87 @@ def scan_previews(previews_dir: str) -> Dict[str, str]:
             tag = reconstruct_tag_from_legacy_path(previews_dir, path)
         else:
             tag = tag_from_preview_filename(os.path.basename(rel))
-        if tag and tag not in found:
-            found[tag] = path
+        if not tag:
+            continue
+        for variant in preview_lookup_variants(tag):
+            found.setdefault(variant, path)
     return found
+
+
+_JP_PREFIX_RE = None
+
+
+def _is_non_ascii(ch: str) -> bool:
+    return bool(ch) and ord(ch) > 0x007F
+
+
+def _looks_like_english_tag_string(text: str) -> bool:
+    if not text:
+        return False
+    ascii_chars = sum(1 for ch in text if ord(ch) < 0x80)
+    if ascii_chars / max(len(text), 1) < 0.85:
+        return False
+    return bool(text[0].isalpha() or text[0] in "([")
+
+
+def strip_jp_prefix_from_stem(stem: str) -> str:
+    """Drop a leading non-ASCII label only when the suffix looks like a clean English tag."""
+    if not stem or not _is_non_ascii(stem[0]):
+        return stem
+    idx = stem.find("_")
+    while idx != -1:
+        suffix = stem[idx + 1 :].lstrip("_").lstrip()
+        if _looks_like_english_tag_string(suffix):
+            return suffix
+        idx = stem.find("_", idx + 1)
+    return stem
+
+
+def migrate_space_preview_filenames(
+    previews_dir: str,
+    *,
+    dry_run: bool = False,
+) -> Dict[str, int]:
+    """Rename preview files: collapse intra-clause spaces and drop Japanese label prefixes."""
+    stats = {"scanned": 0, "renamed": 0, "skipped": 0, "errors": 0}
+    if not previews_dir or not os.path.isdir(previews_dir):
+        return stats
+
+    planned: Dict[str, str] = {}
+    for src in _iter_preview_files(previews_dir):
+        stats["scanned"] += 1
+        rel = os.path.relpath(src, previews_dir)
+        if os.sep in rel or "/" in rel:
+            stats["skipped"] += 1
+            continue
+        stem = os.path.splitext(os.path.basename(rel))[0]
+        stripped = strip_jp_prefix_from_stem(stem)
+        new_stem = _normalize_clauses(stripped)
+        if not new_stem or new_stem == stem:
+            stats["skipped"] += 1
+            continue
+        ext = os.path.splitext(src)[1]
+        dest = os.path.join(previews_dir, new_stem + ext)
+        if os.path.normpath(src) == os.path.normpath(dest):
+            stats["skipped"] += 1
+            continue
+        if os.path.isfile(dest):
+            stats["skipped"] += 1
+            continue
+        prev_src = planned.get(dest)
+        if prev_src and prev_src != src:
+            if os.path.getsize(src) <= os.path.getsize(prev_src):
+                stats["skipped"] += 1
+                continue
+        planned[dest] = src
+
+    for dest, src in planned.items():
+        try:
+            if not dry_run:
+                os.makedirs(os.path.dirname(dest), exist_ok=True)
+                shutil.move(src, dest)
+            stats["renamed"] += 1
+        except OSError:
+            stats["errors"] += 1
+
+    return stats

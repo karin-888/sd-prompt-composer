@@ -583,20 +583,21 @@ def register_api(app: FastAPI, extension_dir: str):
     @app.get("/prompt-composer/api/tags")
     async def api_search_tags(
         q: Optional[str] = None,
-        limit: int = 50,
+        limit: int = 120,
+        offset: int = 0,
         section: Optional[str] = None,
         category: Optional[str] = None,
         group: Optional[str] = None,
     ):
         """Search prompt tags from prompt-aio dictionary."""
-        items = tag_dictionary.search_tags(
+        return tag_dictionary.search_tags(
             query=q or "",
             limit=limit,
+            offset=offset,
             section=section,
             category=category,
             group=group,
         )
-        return {"items": items}
 
     @app.get("/prompt-composer/api/tags/preview")
     async def api_get_tag_preview(tag: str):
@@ -629,7 +630,29 @@ def register_api(app: FastAPI, extension_dir: str):
     async def api_get_tag_paths():
         """Get list of available (section/category/group) paths."""
         paths = tag_dictionary.list_paths()
-        return {"paths": paths, "counts": tag_dictionary.path_tag_counts()}
+        return {
+            "paths": paths,
+            "counts": tag_dictionary.path_tag_counts(),
+            "pathCounts": tag_dictionary.path_count_entries(),
+            "sections": tag_dictionary.list_sections(),
+            "lazy": tag_dictionary.lazy_mode(),
+        }
+
+    @app.post("/prompt-composer/api/tags/sections/load")
+    async def api_load_tag_section(section: str = ""):
+        """Load one tag-dictionary section YAML into memory."""
+        name = (section or "").strip()
+        if not name:
+            return JSONResponse(status_code=400, content={"error": "section is required"})
+        ok = tag_dictionary.load_section(name)
+        if not ok:
+            return JSONResponse(status_code=404, content={"error": f"section not found: {name}"})
+        return {
+            "ok": True,
+            "section": name,
+            "loaded": tag_dictionary.is_section_loaded(name),
+            "loadedSections": tag_dictionary.loaded_sections(),
+        }
 
     # --- IPS data (Infinite Prompt Studio dictionaries) ---
 
@@ -704,12 +727,13 @@ def register_api(app: FastAPI, extension_dir: str):
     # --- Wildcards endpoints ---
 
     @app.get("/prompt-composer/api/wildcards")
-    async def api_list_wildcards(force: bool = False, q: Optional[str] = None, limit: int = 2000):
+    @app.get("/prompt-composer/api/wildcards")
+    async def api_list_wildcards(force: bool = False, q: Optional[str] = None, limit: int = 5000):
         """
         List wildcard files for insertion. Returns tokens like '__folder/name__'.
         q filters by substring on path/token.
         """
-        items = wildcards.list_wildcards(force=force, limit=limit)
+        items = wildcards.list_wildcards(force=force, limit=0 if q and q.strip() else limit)
         sources = wildcards.list_sources()
         if q:
             qq = q.strip().lower()
@@ -718,6 +742,10 @@ def register_api(app: FastAPI, extension_dir: str):
                     it for it in items
                     if qq in (it.get("path", "").lower() + " " + it.get("token", "").lower())
                 ]
+                if limit and len(items) > limit:
+                    items = items[:limit]
+        elif limit and len(items) > limit:
+            items = items[:limit]
         return {"items": items, "sources": sources}
 
     # --- Tag autocomplete endpoints (Prompt Composer local) ---

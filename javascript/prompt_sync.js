@@ -428,6 +428,68 @@
         }, 150);
     }
 
+    function getInterruptEl(target) {
+        const root = appRoot();
+        return root.querySelector(`#${target}_interrupt button`)
+            || root.querySelector(`#${target}_interrupt`);
+    }
+
+    function triggerTxt2imgGenerateOnce() {
+        const prompt = getFinalPrompt();
+        const negative = getFinalNegative();
+        if (!prompt && !negative) return false;
+
+        applyToTarget('txt2img');
+
+        const preview = appRoot().getElementById('pc_generate_preview');
+        if (preview && !preview.querySelector('.pc-generate-preview-img, .pc-generate-preview-img-live')) {
+            preview.innerHTML = '<span class="pc-generate-preview-empty">生成を開始しています...</span>';
+            delete preview.dataset.pcPreviewSrc;
+        }
+
+        const genBtn = getGenerateButton('txt2img');
+        if (!genBtn) return false;
+        genBtn.click();
+        ensureGalleryObserver();
+        startPcProgressWatch('txt2img');
+        return true;
+    }
+
+    function isGenerateForeverActive() {
+        return !!window.generateOnRepeatInterval;
+    }
+
+    function notifyGenerateForeverChanged() {
+        try {
+            window.dispatchEvent(new CustomEvent('pc-generate-forever-changed'));
+        } catch (_) { /* ignore */ }
+    }
+
+    function cancelGenerateForeverTxt2img() {
+        clearInterval(window.generateOnRepeatInterval);
+        window.generateOnRepeatInterval = null;
+        notifyGenerateForeverChanged();
+    }
+
+    function generateForeverTxt2img() {
+        const genBtn = getGenerateButton('txt2img');
+        const interruptEl = getInterruptEl('txt2img');
+        if (!genBtn || !interruptEl) return false;
+
+        if (!interruptEl.offsetParent) {
+            if (!triggerTxt2imgGenerateOnce()) return false;
+        }
+
+        clearInterval(window.generateOnRepeatInterval);
+        window.generateOnRepeatInterval = setInterval(function () {
+            if (!interruptEl.offsetParent) {
+                triggerTxt2imgGenerateOnce();
+            }
+        }, 500);
+        notifyGenerateForeverChanged();
+        return true;
+    }
+
     /** Bind each button at most once per DOM node (Gradio re-creates nodes without our flag). */
     function setupButtons() {
         const bindOnce = (elemId, handler) => {
@@ -587,6 +649,9 @@
         applyToTarget,
         copyToClipboard,
         generateTxt2img,
+        generateForeverTxt2img,
+        cancelGenerateForeverTxt2img,
+        isGenerateForeverActive,
         syncGeneratePreview,
         startPcProgressWatch,
         stopPcProgressWatch,

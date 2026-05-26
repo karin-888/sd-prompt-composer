@@ -6,13 +6,21 @@
     'use strict';
 
     const CACHE = new Map(); // scopedKey -> { token_count, max_length, tokens }
-    let inflight = null; // scopedKey
+    const inflight = new Set(); // scopedKey
+
+    function appRoot() {
+        try {
+            if (typeof window.gradioApp === 'function') return window.gradioApp();
+        } catch (_) {}
+        return document;
+    }
 
     function init() {
-        const promptBox = document.getElementById('pc_final_prompt');
-        const negBox = document.getElementById('pc_final_negative');
-        const view = document.getElementById('pc_tokenizer_view');
-        const button = document.getElementById('pc_tokenizer_button');
+        const root = appRoot();
+        const promptBox = root.getElementById('pc_final_prompt');
+        const negBox = root.getElementById('pc_final_negative');
+        const view = root.getElementById('pc_tokenizer_view');
+        const button = root.getElementById('pc_tokenizer_button');
         if (!promptBox || !view) {
             setTimeout(init, 800);
             return;
@@ -68,7 +76,7 @@
     }
 
     function updateTokenizerPair(posText, negText) {
-        const view = document.getElementById('pc_tokenizer_view');
+        const view = appRoot().getElementById('pc_tokenizer_view');
         if (!view) return;
 
         const posHtml = renderOne('Positive', 'pos', posText);
@@ -110,11 +118,13 @@
         const scopedKey = normalizeKey(scope, text);
         const exact = CACHE.get(scopedKey);
 
+        const paneClass = scope === 'pos' ? 'pc-tokenizer-pane-pos' : 'pc-tokenizer-pane-neg';
+
         // Empty
         if (!tokens.length) {
             const exactPart = exact ? ` / exact: ${exact.token_count}` : '';
             return `
-                <div class="pc-tokenizer-pane">
+                <div class="pc-tokenizer-pane ${paneClass}">
                     <div class="pc-tokenizer-summary"><strong>${escapeHtml(title)}</strong> — トークンなし${escapeHtml(exactPart)}</div>
                 </div>
             `;
@@ -127,7 +137,7 @@
         const chunkTotal = segments.reduce((sum, seg) => sum + chunkStepsForSegment(seg.length), 0);
         const exactText = exact ? ` / exact: ${exact.token_count} (max ${exact.max_length})` : ' / exact: …';
 
-        let html = `<div class="pc-tokenizer-pane">`;
+        let html = `<div class="pc-tokenizer-pane ${paneClass}">`;
         html += `<div class="pc-tokenizer-summary"><strong>${escapeHtml(title)}</strong> — ` +
             `Approx: ${total} / BREAK区切り: ${segments.length}セグメント${breakCount ? ` (${breakCount} BREAK)` : ''} / 75換算chunks: ${chunkTotal}${exactText}` +
             `</div>`;
@@ -193,14 +203,12 @@
         if (!body) return;
         if (CACHE.has(scopedKey)) return;
 
-        // avoid spamming: keep only one inflight request; last-write wins
-        inflight = scopedKey;
+        inflight.add(scopedKey);
         try {
             const params = new URLSearchParams({ text: (text || '').slice(0, 2048) });
             const resp = await fetch('/prompt-composer/api/tokenize?' + params.toString());
             if (!resp.ok) return;
             const data = await resp.json();
-            if (inflight !== scopedKey) return;
             if (typeof data.token_count !== 'number') return;
 
             CACHE.set(scopedKey, {
@@ -210,8 +218,9 @@
             });
 
             // refresh view if still showing same text
-            const promptBox = document.getElementById('pc_final_prompt');
-            const negBox = document.getElementById('pc_final_negative');
+            const root = appRoot();
+            const promptBox = root.getElementById('pc_final_prompt');
+            const negBox = root.getElementById('pc_final_negative');
             const posTa = promptBox ? promptBox.querySelector('textarea') : null;
             const negTa = negBox ? negBox.querySelector('textarea') : null;
             if (posTa) {
@@ -219,6 +228,8 @@
             }
         } catch (e) {
             // ignore
+        } finally {
+            inflight.delete(scopedKey);
         }
     }
 

@@ -1,0 +1,581 @@
+- name: 画像品質・技術
+  categories:
+  - name: クオリティ
+    groups:
+    - name: 品質・解像度
+      color: rgba(255, 99, 132, 1)
+      tags:
+        16k: 16k
+        32k: 32k
+        3d: 3D
+        4k: 4K
+        8k: 8K
+        ai_assisted: AI絵を参照（XL）
+        ai_generated: AI生成画像（XL）
+        amazing_quality: 驚異的品質
+        best_quality: 最高品質
+        character_illustration: キャラ絵であることを強調
+        clear_picture: クリアな画像
+        detailed: 詳細
+        detailed_background: 背景の描き込み度が上がる
+        detailed_clothes: 詳細な衣装
+        detailed_eyes: 詳細な目
+        elaborately_designed_clothes: 緻密にデザインされた衣装
+        extremely_detailed: 超高精細
+        extremely_detailed_cg_unity_8k_wallpaper: 非常に詳細なCG 8K壁紙
+        f2_8_lens: f2.8レンズ
+        finely_detail: 精細なディテール
+        great_quality: 素晴らしい品質
+        hd: 4kと同様高精細化
+        hdr: ハイダイナミックレンジで撮影された画像
+        high_quality: 高品質
+        high_resolution: 高解像度イラスト（画質向上用）
+        hyper_detailed: 非常に詳細
+        insanely_detailed_and_intricate: エグいほど精緻、リアルより、雰囲気も暗い
+        intricate: 描き込みが増える,ややゴシック方向
+        intricate_details: さらに精巧に細部
+        masterpiece: 傑作（＝最高品質）
+        official_art: 公式アート
+        official_style: 公式スタイル
+        photorealistic: フォトリアリック
+        production_art: プロダクションアート
+        raw_photo: RAW写真
+        realistic: リアル
+        stunning: 素晴らしい、見事な
+        stylized: 様式化された
+        super_fine_illustration: 非常に精細なイラスト
+        uhd: 超高精細度（Ultra-High Definition）
+        ultra_hd: より高精細化
+        ultra_highres: 超高解像度
+        unity_8k_wallpaper: 8K壁紙
+        very_aesthetic: 非常に美しい
+        4k_resolution: 4K解像度
+        8k_High_Res: 8K高解像度
+        8k_resolution: 8K解像度
+        all_detailed: 全て詳細に
+        complex_details: 複雑な詳細
+        exquisite: この上なく素晴らしい
+        finely_detailed: 細かく詳細に
+        Full-HD: フルHD（たまに丸裸になる。。）
+        high_definition: 高精細
+        highly_realistic: 非常に現実的な
+        hyper_realistic: 超リアルな
+        premium_quality: 高品質
+        sharp_lines: シャープな線
+        super_detailed_skin: 肌質向上
+        ultra_detailed: 超詳細
+        ultra_high_res: 超高解像度
+        ultra_high_resolution: 超高解像度
+        ultra_quality: 超高品質
+        very_detailed_background: 背景を詳細に
+        high_definition_art: 高精細アート
+        hyperrealistic: 超リアルなタッチに
+        beautiful_detailed_eyes: 目の魅力アップ
+        extremely_detailed_CG: 超高精細なCG
+        high_resolusion: 背景の作り込みが多少アップする
+        low-res: リアル調のやつを作成する際に入れる
+        ultra_detailed_8k_art: ultra-detailed同様の効果
+        ultra_violet_color: ウルトラバイオレット
+        ultramarine_blue_color: ウルトラマリンブルー
+        ultramarine_color: 群青
+        3d:_3D: 3d 3D画像
+        f_2.8_lens: f2.8レンズ
+        hd:_HD: hd 4kなどと同様の高精細化効果
+        UHD:_4K: UHD 超高精細度（Ultra-High Definition）の意味
+        detailed_fingers: 詳細に描かれた指
+        8k_wallpaper: 8k壁紙
+        exquisite_detail: 傑出した細部
+        extremely_detailed_anime_style: 神作画
+        studio_quality: スタジオ品質
+        recent: 最近
+        rating:explicit: 成人向け
+        rating:general: 全年齢
+        rating:questionable: 微妙な内容
+        rating:sensitive: やや過激
+        bad quality: 低品質
+        great quality: 高い品質
+        normal quality: 普通の品質
+        very displeasing: 非常に不快な構図
+        worst quality: 最悪品質
+        year 2021: 2021 年スタイル
+        year 2022: 2022 年スタイル
+        year 2023: 2023 年スタイル
+        year 2024: 2024 年スタイル
+        newest: 最新スタイル
+        bw9t: bw9t（品質トークン）
+        good_quality: 高品質
+        lazypos: lazypos（品質強調トークン）
+        ultra-detailed: 超詳細
+        ultra-hd: ウルトラHD
+        usnr: usnr（品質トークン）
+        absurdly_detailed_composition: 途方もなく詳細な構成
+        aesthetic: 美的
+        detailed_illustration: 詳細図
+        detailed_textures: 詳細なテクスチャ
+        high_microcontrast: 高マイクロコントラスト
+        illusp0s: illusp0s（品質トークン）
+        ilxlpos: ilxlpos（品質トークン）
+        incredibly_detailed: 信じられないほど詳細な
+        score_7: 品質スコア7（Illustrious）
+        score_7_up: 品質スコア7以上（Illustrious）
+        score_8_up: 品質スコア8以上（Illustrious）
+        score_9: 品質スコア9（Illustrious）
+        segmented: セグメント化された
+        sfw: 全年齢向け
+        tack_sharp: 鋭い鋲
+        score_5_up: 品質スコア5以上（Pony）
+        score_6_up: 品質スコア6以上（Pony）
+        score_4_up: 品質スコア4以上（Pony）
+        a_masterpiece: 傑作
+        detailed_and_intricate: 詳細で複雑な
+        enhanceimage: 画像を強化する
+        highly_detailed_work_styled_by_greg_rutkowski.: グレッグ・ルトコウスキーによる非常に詳細な作品のスタイル。
+        hyperdetailed: 非常に詳細な
+        intricate_detailed: 複雑な
+        overalldetail: 全体的な詳細
+        high-resolution: 高解像度
+        hyper-detailed: 非常に詳細な
+        lazyup: lazyup（品質強調トークン）
+        smooth_quality: smooth_quality（Civitaiトークン）
+        very_detailed: 非常に詳しい
+        score_8: 品質スコア8
+        extremely_detailed.zidiusart: 非常に詳しい。ジディウサート
+        high-quality: 高品質
+        8k_uhd: 8k
+        8k_ultra_detailed: 8K超詳細
+        8k.: 8K解像度
+        cosmic_horror_aesthetic: コズミックホラーの美学
+        dark_fairytale_fashion_aesthetic: ダークなおとぎ話のファッション美学
+        detailed_reflections: 詳細な反省
+        dreamy_aesthetic: 夢のような美学
+        gallery-quality_watercolor_aesthetic: ギャラリー品質の水彩美学
+        high-end_vintage_comic_or_artbook_print_aesthetic.: ハイエンドのヴィンテージコミックやアートブックのプリントの美しさ。
+        high-quality_hd: 高品質のHD
+        high-quality.zidiusart: 高品質。ジディウサート
+        highly_detailed_fabric_folds: 非常に詳細な生地の折り目
+        highly_detailed_ink_splashes: 非常に詳細なインクの飛沫
+        hyper-realanime_aesthetic: ハイパーリアルアニメの美学
+        hyper-saturated_neon_pop-art_risograph_aesthetic: 過飽和ネオンのポップアート リソグラフの美学
+        luxury_fashion_editorial_aesthetic: ラグジュアリーファッションの編集美学
+        masterpiece_composition: 傑作の構成
+        masterpiece_quality: 傑作品質
+        masterpiece.: 傑作
+        museum-quality_digital_art.: 美術館品質のデジタルアート
+        oil_painting_aesthetic: 油絵の美学
+        richly_detailed_textures: 非常に詳細なテクスチャ
+        surreal_nature_fusion_aesthetic: 超現実的な自然の融合美学
+        theatrical_blockbuster_aesthetic: 劇場大作の美学
+        ultra_detailed_watercolor_textures: 超詳細な水彩テクスチャ
+        ultra-detailed_8k_cinematic_close-up_portrait: 超詳細な 8K 映画のようなクローズアップ ポートレート
+        ultra-detailed_surreal_eco-fantasy_portrait_of_a_young_woman: 若い女性の非常に詳細な超現実的なエコ ファンタジーのポートレート
+        ultra-detailed_textures: 超詳細なテクスチャ
+        ai-generated_art_(topic): ai-generated_art_(topic)
+        official_art_inset: 公式の芸術挿入図
+        quality: 品質
+        ai-assisted: aiアシスタント
+        ai-generated: ai生成
+        bad_link: 悪いリンク
+        bad_source: 悪いソース
+        commission: 手数料
+        commissioner_upload: コミッショナーのアップロード
+        corrupted_twitter_file: corrupted_twitter_file
+        downscaled: ダウンスケール
+        fanbox_reward: ファンボックスの報酬
+        hard-translated: hard-translated
+        has_bad_revision: 改訂が悪い
+        has_downscaled_revision: 改訂版がダウンしています
+        lossy-lossless: 損失のない
+        md5_mismatch: MD5ミスマッチ
+        partially_translated: 部分的に翻訳されています
+        patreon_reward: パトレオン報酬
+        photo-referenced: 写真参照
+        pixel-perfect_duplicate: ピクセルに最適な複製
+        pixiv_commission: pixiv_commission
+        pixiv_sample: pixivサンプル
+        resolution_mismatch: 解像度の不一致
+        skeb_commission: skeb委員会
+        translated: 翻訳
+        upscaled: Upscaled
+        aliasing: エイリアシング
+        bad_aspect_ratio: 悪いアスペクト比
+        color_banding: カラーバンド
+        corrupted_file: 破損したファイル
+        corrupted_metadata: 破損したメタデータ
+        hard-translated_(non-english): hard-translated_(non-english)
+        vgen_commission: vgen_commission
+        dpmpp_2m: sampler_name
+        karras: scheduler
+        Fun: ユーモラスな動きを加える。面白い動画を作りたいときに
+        Normal: 一般的な表現に留める。ビジネスや日常用途に最適
+        Mika: 革ジャン×グリーンヘアのクールな美女。サバサバした性格でAniちゃんとは真逆の雰囲気
+        Rudi: レッサーパンダ型のキャラ。礼儀正しい「Good Rudi」と毒舌な「Bad Rudi」の2パターンあり
+        Ani: ・金髪ツインテール・ゴスロリ風ドレス(フリルやリボン)・可愛らしい露出多めのファッション・22歳設定
+        botanical_print: ボタニカル柄
+        photo_realistic: 写真のようにリアルな
+        physically-based_rendering: 物理ベースのレンダリング
+        Grok: X統合で便利
+        Gemini: 最も厳格なAIのひとつ
+        ChatGPT_Plus: 約3,000円
+        ChatGPT_Pro: 約30,000円
+        DeepSeek: 比較的高い
+        perfect: 完璧
+        ultra_high_quality: 超高画質
+        3D_rendered: 3DCG
+  - name: ネガティブ
+    groups:
+    - name: 画像品質
+      color: rgba(100, 149, 237, 1)
+      tags:
+        2koma: 2コマ
+        3koma: 3コマ
+        abstract: 抽象的な
+        artistic_error: ミスがある画像
+        bad: 悪い画像
+        bad_proportions: 悪い割合
+        bad_quality: 品質が悪い
+        bokeh: ボケ
+        chromatic_aberration: 色収差
+        cross_section: R-18タグの断面図描写
+        dated: 日付付き
+        displeasing: 不快な画像
+        error: エラー
+        jpeg_artifacts: JPEGアーティファクト
+        logo: ロゴ
+        low_quality: 低品質
+        lowres: 低解像度
+        negative_space: ネガティブスペース
+        normal_quality: 通常品質
+        nsfw: 仕事に適していない
+        out_of_focus: ピント外れ
+        scan: スキャン
+        scan_artifact: 作画過程の低劣
+        signature: サイン付き
+        sketches: スケッチ
+        sound_effects: オノマトペ
+        speech_babble: フキダシ
+        text: AI文字
+        trembling: 震え
+        unfinished: 未完成
+        username: サイン入り
+        worst_quality: 最悪の品質
+        advertisement: 広告
+        artifacted: 劣化ノイズ
+        artist_name: 作者名
+        bad_art: 質の低いアート
+        barcode: バーコード
+        blood: 血
+        brand_name: ブランド名
+        caption: キャプション
+        color_bleed: 色にじみ
+        date: 日付
+        distorted: 歪んだ
+        disturbing: 不穏な
+        excessive_sharpness: 強すぎるシャープネス
+        fuzzy: ぼやけた
+        gore: 流血表現
+        grainy: 粒状感のある
+        graphic: 露骨な
+        label: ラベル
+        low_detail: 詳細度が低い
+        low_resolution: 低解像度
+        mature_content: 成人向けコンテンツ
+        naked: ヌード
+        noisy: ノイズが多い
+        offensive: 攻撃的な
+        out_of_frame: フレームアウト
+        over-processed: 過剰加工
+        pixelated: ピクセル化された
+        poor_quality: 品質が悪い
+        QR_code: QR コード
+        stamp: スタンプ
+        subtitle: 副題
+        title: 題名
+        violent: 暴力的
+        washed_out: 色が薄い
+        (fat: '1.2): 肥満'
+        extra_digit: 指の増殖を起こりにくくする
+        watermark/signature/username/artist_name: 学習元にあったサインや透かしが入ってしまうのを排除
+        worst_quality/low_quality/normal_quality/lowres: いずれも低画質排除＝画質向上
+        text, title, logo, signature, watermark: イラストに不要な文字やロゴが入るのを防ぐ
+        2koma, 3koma: コマ分けがされて漫画になってしまうときはcomicとともにこちらを指定すると良い
+        nipple/panty/pussy: 下着や性器など、全年齢向けイラストに映り込んでほしくないときにNPで指定する
+        (low_quality, crude_quality, substandard_quality:1.4): ネガティブ
+        jpeg artifacts: JPEGノイズ
+        low quality: 低品質
+        out of frame: 枠外
+        good_anatomy: 優れた解剖学
+        perfect_anatomy: 完璧な人体構造
+        clean_anatomy: きれいな解剖学
+        adversarial_noise: adversarial_noise
+        alpha_transparency: アルファ透明性
+        alt_text: altテキスト
+        alternate_language: 代替言語
+        annotated: 注釈
+        archived_source: アーカイブソース
+        artist_collaboration: artist_collaboration
+        audible_music: 可聴音楽
+        audible_speech: 可聴スピーチ
+        character_request: 文字リクエスト
+        check_artist: アーティストをチェックしてください
+        check_character: 文字を確認してください
+        check_commentary: 解説を確認してください
+        check_copyright: 著作権を確認してください
+        check_translation: 翻訳を確認してください
+        chinese_commentary: 中国の解説
+        clothing_request: 衣類のリクエスト
+        colorized: 色付き
+        commentary_typo: 解説タイプミス
+        copyright_request: 著作権リクエスト
+        dated_commentary: 日付の解説
+        decensored: ディレクレッド
+        derivative_work: 派生作業
+        detexted: 剥離しました
+        duplicate: 重複
+        end_card: エンドカード
+        english_audio: 英語の音声
+        engrish_commentary: 刻印解説
+        fantia_reward: ファンタの報酬
+        flash: 閃光
+        flower_request: フラワーリクエスト
+        food_request: フードリクエスト
+        gender_request: 性別リクエスト
+        gift_art: ギフトアート
+        has_censored_revision: 検閲された改訂があります
+        hashtag-only_commentary: hashtag-only_commentary
+        headwear_request: 帽子のリクエスト
+        image_sample: 画像サンプル
+        imageboard_desourced: イメージボードが脱却されました
+        inactive_account: 非アクティブアカウント
+        japanese_audio: japanese_audio
+        korean_commentary: 韓国の解説
+        large_variant_set: large_variant_set
+        looping_animation: ループアニメーション
+        making-of: の制作
+        making-of_available: 利用可能な製造
+        mixed-language_commentary: 混合言語解説
+        mixed_media: 混合メディア
+        non-web_source: 非ウェブソース
+        nude_filter: ヌードフィルター
+        off-topic: オフトピック
+        paid_reward: 有料の報酬
+        paid_reward_available: 有料の報酬が利用可能です
+        partial_commentary: 部分的な解説
+        protected_link: 保護されたリンク
+        redrawn: 再描画
+        resized: サイズ変更
+        revision: リビジョン
+        romaji_commentary: ロマジの解説
+        russian_commentary: ロシアの解説
+        second-party_source: セカンドパーティソース
+        self-upload: self-upload
+        sound: 音
+        source_larger: ソースが大きくなります
+        source_request: ソースリクエスト
+        source_smaller: ソースが小さくなります
+        spanish_commentary: スペイン語の解説
+        spoilers: ネタバレ
+        stitched: ステッチ
+        tagme: 私をタグして
+        textless_version: テキストのないバージョン
+        thai_commentary: タイの解説
+        third-party_source: サードパーティのソース
+        third-party_watermark: サードパーティの透かし
+        translation_request: 翻訳リクエスト
+        unconventional_media: 型破りなメディア
+        variant_set: variant_set
+        vector_trace: ベクトルトレース
+        weapon_request: 武器のリクエスト
+        60+fps: 60+fps
+        adoptable: adoptable
+        album_cover_redraw: アルバムカバーのredRaw
+        animal_ear_request: 動物の耳のリクエスト
+        animal_request: 動物のリクエスト
+        annotation_request: 注釈リクエスト
+        app_filter: app_filter
+        art_study: アート研究
+        art_trade: art_trade
+        artstation_sample: アートステーションサンプル
+        audible_internal_cumshot: 可聴内部累積
+        bilingual_commentary: bilingual_commentary
+        bird_request: 鳥のリクエスト
+        bleed_through: ブリードスルー
+        bmp-to-png_conversion: bmp-to-png_conversion
+        character_counter_request: 文字カウンターリクエスト
+        check_clothing: check_clothing
+        check_gender: check_gender
+        check_source: ソースを確認してください
+        cleaned: 掃除
+        collaboration_request: コラボレーションリクエスト
+        color_halftone: カラーハーフトーン
+        comic_panel_redraw: comic_panel_redraw
+        completion_time: 完了時間
+        cosplay_request: コスプレリクエスト
+        costume_request: コスチュームリクエスト
+        countdown_illustration: countdown_illustration
+        custom_maid_3d_2: カスタムメイド3d 2
+        deviantart_sample: DeviantArtサンプル
+        e-hentai_sample: e-Hentaiサンプル
+        emofuri: エモフリ
+        enty_reward: 魅力的な報酬
+        epilepsy_warning: てんかん警告
+        exif_rotation: exif回転
+        extraction: 抽出
+        eyecatch: アイキャッチ
+        figure_available: figure_available
+        fixed: 修理済み
+        flash_game: フラッシュゲーム
+        french_commentary: フランスの解説
+        game_model: ゲームモデル
+        german_commentary: ドイツの解説
+        gesture_request: ジェスチャーリクエスト
+        gif_artifacts: GIFアーティファクト
+        guest_art: ゲストアート
+        gumroad_reward: ガムロード報酬
+        hair_ornament_request: 髪の飾りリクエスト
+        hairstyle_request: ヘアスタイルのリクエスト
+        has_cropped_revision: 修正をトリミングしました
+        headshop: ヘッドショップ
+        indonesian_commentary: インドネシアの解説
+        italian_commentary: イタリアの解説
+        magazine_request: 雑誌のリクエスト
+        mecha_request: メカリクエスト
+        medium_request: 中程度のリクエスト
+        meme_request: meme_request
+        merchandise_available: merchandise_available
+        metadata_pun: metadata_pun
+        mojibake_commentary: mojibake_commentary
+        nai_diffusion: nai拡散
+        naver_sample: naver_sample
+        neckwear_request: ネックウェアのリクエスト
+        nicoseiga_sample: nicoseigaサンプル
+        non-repeating_animation: 非回復アニメーション
+        number-only_commentary: number-only_commentary
+        object_request: オブジェクトリクエスト
+        parody_request: パロディリクエスト
+        partially_annotated: 部分的に注釈が付けられました
+        pdf_available: PDF利用可能
+        plant_request: 植物のリクエスト
+        portuguese_commentary: ポルトガルの解説
+        pose_request: pose_request
+        psd_available: PSDが利用可能
+        recolored: 再び復活しました
+        reference_request: 参照リクエスト
+        reverse_translation: 逆翻訳
+        reversed: 逆
+        roulette_animation: ルーレットアニメーション
+        ruffle_compatible: 互換性のあるフリル
+        song_request: 歌のリクエスト
+        source_mismatch: ソースの不一致
+        style_request: スタイルリクエスト
+        tegaki_draw_and_tweet: テガキは描画とツイートを描きます
+        thumbnail_collage: thumbnail_collage
+        thumbnail_surprise: サムネイルの驚き
+        tumblr_sample: Tumblrサンプル
+        twitter_sample: Twitterサンプル
+        vehicle_request: 車両リクエスト
+        vietnamese_commentary: ベトナムの解説
+        volume_warning: volume_warning
+        waifu2x: waifu2x
+        yandere_sample: Yandereサンプル
+        zip_available: zipが利用可能
+        modern_living_room: 具体的に書く
+        sitting_on_white_sofa: 具体的に書く
+        pretty: 同じ意味の重複
+        bare_navel: へそ出し
+        exposed_chest: 露出した胸
+        exposed_skin: 露出した肌
+        covered_hips: 腰回りが隠れるのを防ぐ
+        covered_legs: 脚が隠れるのを防ぐ
+        skirt_overlay: スカートが重なるのを防ぐ
+        bad_anatomy, deformed, disfigured: 体の崩れを防ぐ
+        fully_transparent, completely_see-through: 透けすぎを抑えたい
+        nude, naked, explicit: 露出が過激になりすぎるのを防ぐ
+        no_arms: 腕なし
+        no_genitals: 性器なし
+        fine_art: ファインアート
+    - name: 人物の問題
+      color: rgba(65, 105, 225, 1)
+      tags:
+        (fat:1.2): 肥満
+        '@_@': '@_@'
+        acnes: ニキビ
+        bad_anatomy: 悪い解剖学
+        bad_ass: 悪い臀部
+        bad_body: 体の形が悪い
+        bad_face: 悪い顔
+        bad_feet: 悪い足
+        bad_hands: 悪い手
+        bad_leg: 悪い脚
+        bad_vulva: 悪い外陰
+        child: 子供
+        disconnected_limbs: 切断された肢体
+        disfigured: 変形した
+        extra: 余分な
+        extra_arms: 余分な腕
+        extra_digits: 余分な数字
+        extra_legs: 余分な脚
+        extra_limb: 追加の肢体
+        fewer: 四肢や指などが足りていない
+        floating_limbs: 浮遊した肢体
+        fused_fingers: 指が融合した
+        long_body: 体が長い
+        long_neck: 長い首
+        malformed_hands: 異常な形状の手
+        malformed_limbs: 異常な形状の肢体
+        missing: 四肢や指などが欠損している
+        missing_fingers: 指が欠損した
+        missing_limb: 手足がありません
+        multiple_people: 複数人
+        mutated: 突然変異した
+        mutated_hands: 突然変異した手
+        mutated_hands_and_fingers: 突然変異した手と指
+        mutation: 突然変異
+        poorly_drawn_face: 顔の描き方が下手な
+        poorly_drawn_hands: 手の描き方が下手な
+        skin_blemishes: 皮膚の欠点
+        skin_spots: 皮膚の斑点
+        too_many_fingers: 指が多すぎる
+        twins: 双子
+        ugly: 醜い
+        fewer_digits/missing_fingers: 指の欠けを起こりにくくする
+        young/loli: ロリ描写を排除するときに
+        bad anatomy: 解剖学的に変
+        bad fingers: 指の崩れ
+        bad hands: 手の崩れ
+        extra digits: 指が多い
+        extra fingers: 指が多い
+        extra limbs: 余分な手足
+        fewer digits: 指が少ない
+        long neck: 首が長すぎ
+        missing arms: 腕欠落
+        missing legs: 脚欠落
+        morbid: 病的
+        mutilated: 切断された
+  - name: ネガティブなプロンプト
+    groups:
+    - name: 画像
+      color: null
+      tags:
+        cropped: 切り抜かれた
+        grayscale: グレースケール
+        monochrome: モノクローム
+        watermark: ウォーターマーク
+        worstquality: 最悪の品質
+    - name: 人物
+      color: null
+      tags:
+        (AS-Adult-Neg:1.3): 若者を削除
+        (AS-YoungV2-Neg:1.3): 大人を削除
+        cross-eyed: 斜視
+        deformed: 変形した
+        (AS-YoungV2-Neg: '1.3): 大人を削除'
+    - name: Embeddings
+      color: null
+      tags:
+        AS-YoungV2-neg: null
+        BadDream: null
+        badhandv4: null
+        BadNegAnatomyV1-neg: null
+        EasyNegative: null
+        FastNegativeV2: null
+        (AS-Adult-Neg: '1.3): 若者を削除'

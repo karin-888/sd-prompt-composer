@@ -1,0 +1,1538 @@
+- name: note
+  categories:
+  - name: AIイラスト｜椅子に座るローアングルを魅力的に描くプロンプト解説
+    groups:
+    - name: ① 学校（教室の椅子×斜め構図）
+      tags:
+        ? 1girl, low-angle, sitting_on_a_chair, seductive_gaze, classroom, wooden_chair, school_uniform, looking_down_at_viewer,
+          hands_together_under_chin, morning_sunlight_from_window, from_side
+        : '① 学校（教室の椅子×斜め構図）: 1girl,low-angle,sitting on a chair,seductive gaze,classroom,wooden chair,school uniform,looking
+          down at viewer,hands together under chin,morning sunlight from window,from_side'
+    - name: ② オフィス（ビジネススーツ×腕組）
+      tags:
+        ? 1girl, low-angle, sitting_on_a_chair, seductive_gaze, office, office_chair, business_suit, arms_crossed, looking_at_viewer,
+          fluorescent_lighting, desk_background, medium_shot
+        : '② オフィス（ビジネススーツ×腕組）: 1girl,low-angle,sitting on a chair,seductive gaze,office,office chair,business suit,arms crossed,looking
+          at viewer,fluorescent lighting,desk background,medium shot'
+    - name: ③ バー（薄暗い光×大人っぽいシルエット）
+      tags:
+        ? 1girl, low-angle, sitting_on_a_chair, seductive_gaze, bar, bar_stool, dim_lighting, neon_lights, bokeh_background,
+          leaning_back, one_arm_draped_over_the_chair_back, looking_at_viewer
+        : '③ バー（薄暗い光×大人っぽいシルエット）: 1girl,low-angle,sitting on a chair,seductive gaze,bar,bar stool,dim lighting,neon lights,bokeh
+          background,leaning back,one arm draped over the chair back,looking at viewer'
+    - name: ④ ビーチ（砂浜×夏の空気感）
+      tags:
+        ? 1girl, low-angle, sitting_on_a_chair, seductive_gaze, beach, beach_chair, swimsuit, bright_summer_sunlight, looking_at_viewer,
+          full_body
+        : '④ ビーチ（砂浜×夏の空気感）: 1girl,low-angle,sitting on a chair,seductive gaze,beach,beach chair,swimsuit,bright summer sunlight,looking
+          at viewer,full body,'
+    - name: ⑤ 巨乳（バスト×色気）
+      tags:
+        ? 1girl, low-angle, sitting_on_a_chair, seductive_gaze, big_breasts, looking_at_viewer, half-lidded_eyes, soft_smile,
+          hands_on_the_chair_armrests, indoor_lighting, medium_shot
+        : '⑤ 巨乳（バスト×色気）: 1girl,low-angle,sitting on a chair,seductive gaze,big breasts,looking at viewer,half-lidded eyes,soft
+          smile,hands on the chair armrests,indoor lighting,medium shot'
+    - name: ◆ 基本プロンプト：低角度×椅子座りの定番
+      tags:
+        1girl, low-angle, sitting_on_a_chair, seductive_gaze: '◆ 基本プロンプト：低角度×椅子座りの定番: 1girl,low-angle,sitting on a chair,seductive
+          gaze,'
+        低角度×椅子座りの定番: ◆ 基本プロンプト
+    - name: ● 3. 手の動きを指定して“雰囲気”を変える
+      tags:
+        hands_together_under_chin: 甘さ・視線誘導） hands tucked under thighs（脚ライン強調・安定） arms crossed（クール・上半身が締まる
+  - name: AIパ界隈民族衣装部　活動記録　１
+    groups:
+    - name: '#AIパ界隈民族衣装部 活動記録'
+      tags:
+        没にした分: '#AIパ界隈民族衣装部 活動記録: 没にした分'
+    - name: 番外編ｗ 一回着てみたかってんｗ
+      tags:
+        投げキッスして観光客に迫るｗｗ: '番外編ｗ 一回着てみたかってんｗ: 投げキッスして観光客に迫るｗｗ'
+  - name: SDXL（Illustrious）におけるプロンプトの組み方
+    groups:
+    - name: 一覧
+      tags:
+        reduce_wrinkles_illstriousv0.1_ADDifT_2_in_1_v1.2はオススメのLoRA（瞼上の線の抑制をしてくれるため: reduce_wrinkles_illstriousv0.1_ADDifT_2_in_1_v1.2はオススメのLoRA（瞼上の線の抑制をしてくれるため
+        scanを押すことでDL済みのモデルのメタデータを取り込んでくれる: scanを押すことでDL済みのモデルのメタデータを取り込んでくれる
+        事前に設定をしておくことで指定の解像度を用意することが可能: 事前に設定をしておくことで指定の解像度を用意することが可能
+        例: 例
+        全身図、ダッチアングル、カメラ目線: 全身図、ダッチアングル、カメラ目線
+        半手袋、長袖、茶色のシャツ、タートルネック、青のショール、黒のズボン、ベルト、黒の靴: 半手袋、長袖、茶色のシャツ、タートルネック、青のショール、黒のズボン、ベルト、黒の靴
+        単語の頭の？をクリックすることで単語のDanbooruページに飛ぶことも可能: 単語の頭の？をクリックすることで単語のDanbooruページに飛ぶことも可能
+        変な服装になってしまった: 変な服装になってしまった
+        屋外、公園、街灯、低木、噴水、夕暮れ: 屋外、公園、街灯、低木、噴水、夕暮れ
+        引きつり笑い、困り眉、片目閉じ、波打つ口、開いた口: 引きつり笑い、困り眉、片目閉じ、波打つ口、開いた口
+        時間が溶けてくのです: 時間が溶けてくのです
+        普段の設定で変更されている点を画像で保存しておく_特にadetailerのinpaint_w/hを1536pxにしておくと顔の精細度が更に上がるのでオススメ（時間もその分掛かる: 普段の設定で変更されている点を画像で保存しておく
+          特にadetailerのinpaint w/hを1536pxにしておくと顔の精細度が更に上がるのでオススメ（時間もその分掛かる
+        立っている、モデル立ち、手を腰に当てている、ピースサインを目越しにしている: 立っている、モデル立ち、手を腰に当てている、ピースサインを目越しにしている
+        肌が色白すぎるのと手袋の似合わない服装である: 肌が色白すぎるのと手袋の似合わない服装である
+        青髪、ツインテール、赤目、三白眼、色白: 青髪、ツインテール、赤目、三白眼、色白
+  - name: Stable Diffusion 用 — 最高クオリティ プロンプト集 2026
+    groups:
+    - name: ✨ 活用のコツ（上級者向け）
+      tags:
+        low_quality, blurry, malformed, distorted_hands, extra_limbs, bad_anatomy, artifacts: '✨ 活用のコツ（上級者向け）: low quality,
+          blurry, malformed, distorted hands, extra limbs, bad anatomy, artifacts'
+  - name: Stable Diffusionで「座る」プロンプトまとめ！基本構文や使いやすいポーズなど！
+    groups:
+    - name: いすに座る（教室）
+      tags:
+        sititng_on_chair, classroom, wood_chair: 'いすに座る（教室）: sititng on chair, classroom, wood chair,'
+    - name: ソファに座る（リビング）
+      tags:
+        in_living, sitting_on_sofa, reclining: 'ソファに座る（リビング）: in living, sitting on sofa, reclining,'
+    - name: 体育座り：hugging knees, sitting on floor
+      tags:
+        hugging_knees, sitting_on_floor: 体育座り
+    - name: 座るポーズに影響しやすいネガティブプロンプト
+      tags:
+        bad_anatomy, bad_legs, bad_fingers, missing_fingers, extra_legs, missing_limb: '座るポーズに影響しやすいネガティブプロンプト: bad anatomy,
+          bad legs, bad fingers,missing fingers, extra legs, missing limb,'
+    - name: 玉座に座る（城）
+      tags:
+        sitting_on_chair, throne, castle, crossing_legs: '玉座に座る（城）: sitting on chair, throne, castle, crossing legs,'
+    - name: 砂浜に座る（ビーチ）
+      tags:
+        beach, sitting_on_floor, sand, indian_style: '砂浜に座る（ビーチ）: beach, sitting on floor,sand,indian style,'
+    - name: 足を組む：crossing legs
+      tags:
+        crossing_legs: 足を組む
+  - name: Stable Diffusionで世界の伝統衣装を探求！初心者でも簡単なプロンプト集～女性編
+    groups:
+    - name: 【コピペOK】世界の伝統衣装プロンプト集～アジア編～
+      tags:
+        ? masterpiece, best_quality, 1girl, beautiful_detailed_eyes, furisode, long_sleeves, gorgeous_floral_pattern, looking_back,
+          hair_ornament, in_Kyoto
+        : '【コピペOK】世界の伝統衣装プロンプト集～アジア編～: masterpiece, best quality, 1girl, beautiful detailed eyes, furisode, long sleeves,
+          gorgeous floral pattern, looking back, hair ornament, in Kyoto'
+        ? masterpiece, best_quality, 1girl, beautiful_detailed_eyes, smile, (red_kimono_with_cherry_blossom_pattern:1.2),
+          standing_in_Japanese_garden_with_lanterns
+        : '【コピペOK】世界の伝統衣装プロンプト集～アジア編～: masterpiece, best quality, 1girl, beautiful detailed eyes, smile, (red kimono with
+          cherry blossom pattern:1.2), standing in Japanese garden with lanterns'
+        ? masterpiece, best_quality, 1girl, beautiful_detailed_eyes, wearing_a_red_and_gold_Indian_saree, intricate_embroidery,
+          dancing_pose, palace_background_with_sunset
+        : '【コピペOK】世界の伝統衣装プロンプト集～アジア編～: masterpiece, best quality, 1girl, beautiful detailed eyes, wearing a red and gold Indian
+          saree, intricate embroidery, dancing pose, palace background with sunset'
+        ? masterpiece, best_quality, 1girl, beautiful_detailed_eyes, wearing_beautiful_pastel_color_hanbok, gentle_smile,
+          full_body, Gyeongbokgung_Palace_background
+        : '【コピペOK】世界の伝統衣装プロンプト集～アジア編～: masterpiece, best quality, 1girl, beautiful detailed eyes, wearing beautiful pastel
+          color hanbok, gentle smile, full body, Gyeongbokgung Palace background'
+        ? masterpiece, best_quality, 1girl, beautiful_detailed_eyes, wearing_elegant_black_cheongsam_with_dragon_embroidery,
+          high_side_slit, standing_in_a_Chinese_restaurant_at_night
+        : '【コピペOK】世界の伝統衣装プロンプト集～アジア編～: masterpiece, best quality, 1girl, beautiful detailed eyes, wearing elegant black cheongsam
+          with dragon embroidery, high side slit, standing in a Chinese restaurant at night'
+        ? masterpiece, best_quality, 1girl, beautiful_detailed_eyes, wearing_traditional_Chut_Thai_(Siwalai), gorgeous_gold_accessories_and_sabai,
+          ancient_temple_background
+        : '【コピペOK】世界の伝統衣装プロンプト集～アジア編～: masterpiece, best quality, 1girl, beautiful detailed eyes, wearing traditional Chut
+          Thai (Siwalai), gorgeous gold accessories and sabai, ancient temple background'
+        ? masterpiece, best_quality, 1girl, beautiful_detailed_eyes, wearing_white_silk_ao_dai, holding_a_conical_hat_(non_la),
+          standing_in_a_lotus_pond, gentle_breeze
+        : '【コピペOK】世界の伝統衣装プロンプト集～アジア編～: masterpiece, best quality, 1girl, beautiful detailed eyes, wearing white silk ao dai,
+          holding a conical hat (non la), standing in a lotus pond, gentle breeze'
+    - name: 【コピペOK】世界の伝統衣装プロンプト集～ヨーロッパ・その他地域編～
+      tags:
+        ? masterpiece, best_quality, 1girl, beautiful_detailed_eyes, wearing_a_colorful_muumuu_with_hibiscus_pattern, flower_lei,
+          long_wavy_hair, smiling_on_a_Hawaiian_beach_at_sunset
+        : '【コピペOK】世界の伝統衣装プロンプト集～ヨーロッパ・その他地域編～: masterpiece, best quality, 1girl, beautiful detailed eyes, wearing a colorful
+          muumuu with hibiscus pattern, flower lei, long wavy hair, smiling on a Hawaiian beach at sunset'
+        ? masterpiece, best_quality, 1girl, beautiful_detailed_eyes, wearing_a_Russian_sarafan_and_rubakha, intricate_red_embroidery,
+          kokoshnik_(headdress), in_a_snowy_landscape_with_birch_trees
+        : '【コピペOK】世界の伝統衣装プロンプト集～ヨーロッパ・その他地域編～: masterpiece, best quality, 1girl, beautiful detailed eyes, wearing a Russian
+          sarafan and rubakha, intricate red embroidery, kokoshnik (headdress), in a snowy landscape with birch trees'
+        ? masterpiece, best_quality, 1girl, beautiful_detailed_eyes, wearing_a_Scottish_kilt_skirt_(tartan_skirt), argyle_socks,
+          wool_sweater, standing_in_the_Scottish_Highlands_with_a_castle_in_the_background
+        : '【コピペOK】世界の伝統衣装プロンプト集～ヨーロッパ・その他地域編～: masterpiece, best quality, 1girl, beautiful detailed eyes, wearing a Scottish
+          kilt skirt (tartan skirt), argyle socks, wool sweater, standing in the Scottish Highlands with a castle in the background'
+        ? masterpiece, best_quality, 1girl, beautiful_detailed_eyes, wearing_a_traditional_German_dirndl, puff_sleeves, checkered_apron,
+          braided_hair, holding_a_beer_mug_in_a_German_town
+        : '【コピペOK】世界の伝統衣装プロンプト集～ヨーロッパ・その他地域編～: masterpiece, best quality, 1girl, beautiful detailed eyes, wearing a traditional
+          German dirndl, puff sleeves, checkered apron, braided hair, holding a beer mug in a German town'
+    - name: これだけは押さえたい！高品質な女性イラストを作る基本の型
+      tags:
+        masterpiece, best_quality, 1girl, solo: 'これだけは押さえたい！高品質な女性イラストを作る基本の型: masterpiece, best quality, 1girl, solo'
+    - name: まとめ：プロンプトを駆使して、あなただけのオリジナル作品を！
+      tags:
+        プロンプトを駆使して、あなただけのオリジナル作品を！: まとめ
+    - name: もっとクオリティを上げる！応用テクニック
+      tags:
+        ? (low_quality, worst_quality:1.4), (bad_hands, extra_fingers, mutated_hands, malformed_limbs:1.2), blurry, jpeg_artifacts,
+          text, watermark, signature, ugly, deformed
+        : 'もっとクオリティを上げる！応用テクニック: (low quality, worst quality:1.4), (bad hands, extra fingers, mutated hands, malformed limbs:1.2),
+          blurry, jpeg artifacts, text, watermark, signature, ugly, deformed'
+  - name: Stable Diffusion初心者必見！品質を上げるポジティブとネガティブプロンプト術
+    groups:
+    - name: 【スタイル別】魅力を引き出すプロンプト術：アニメ系編
+      tags:
+        アニメ系編: 【スタイル別】魅力を引き出すプロンプト術
+    - name: 【スタイル別】魅力を引き出すプロンプト術：実写系編
+      tags:
+        実写系編: 【スタイル別】魅力を引き出すプロンプト術
+    - name: もっと上を目指す君へ：プロンプトの応用テクニック
+      tags:
+        プロンプトの応用テクニック: もっと上を目指す君へ
+    - name: ネガティブプロンプト：失敗を回避するための盾
+      tags:
+        失敗を回避するための盾: ネガティブプロンプト
+    - name: プロンプトの基本：ポジティブとネガティブって何？
+      tags:
+        ポジティブとネガティブって何？: プロンプトの基本
+    - name: ポジティブプロンプト：理想を具体的に伝える呪文
+      tags:
+        理想を具体的に伝える呪文: ポジティブプロンプト
+  - name: Stable Diffusion初心者必見！顔のパーツを操るプロンプト大全
+    groups:
+    - name: この記事でわかること：顔のパーツ別プロンプト入門
+      tags:
+        顔のパーツ別プロンプト入門: この記事でわかること
+  - name: WAI-illustrious-SDXL v16 スカート系プロンプト検証
+    groups:
+    - name: ハーフスカート
+      tags:
+        half-skirt, black_skirt, miniskirt, bare_legs: 'ハーフスカート: half-skirt, black skirt, miniskirt, bare legs'
+        miniskirt, black_skirt, overskirt, half-skirt, white_skirt: 'ハーフスカート: miniskirt, black skirt, overskirt, half-skirt,
+          white skirt,'
+    - name: バブルスカート
+      tags:
+        bubble_skirt, pink_skirt, long_skirt: 'バブルスカート: bubble skirt, pink skirt, long skirt'
+        bubble_skirt, pink_skirt, medium_skirt: 'バブルスカート: bubble skirt, pink skirt, medium skirt'
+        bubble_skirt, pink_skirt, microskirt: 'バブルスカート: bubble skirt, pink skirt, microskirt'
+        bubble_skirt, pink_skirt, miniskirt: 'バブルスカート: bubble skirt, pink skirt, miniskirt'
+    - name: 試したけど効かなかったとか、出方が怪しい奴ら
+      tags:
+        cross-laced_skirt, microskirt: '試したけど効かなかったとか、出方が怪しい奴ら: cross-laced skirt, microskirt'
+  - name: 【Illustrious】ビキニのプロンプト（Danbooruタグ）
+    groups:
+    - name: ・プリント
+      tags:
+        argentinian_flag_bikini: 'プリント: argentinian flag bikini'
+        australian_flag_bikini: 'プリント: australian flag bikini'
+        bikini_print: 'プリント: bikini print'
+        brazilian_flag_bikini: 'プリント: brazilian flag bikini'
+        canadian_flag_bikini: 'プリント: canadian flag bikini'
+        chinese-styled_bikini: 'プリント: chinese-styled bikini'
+        confederate_flag_bikini: 'プリント: confederate flag bikini'
+        dutch_flag_bikini: 'プリント: dutch flag bikini'
+        finnish_flag_bikini: 'プリント: finnish flag bikini'
+        flag_print_bikini: 'プリント: flag print bikini'
+        floral_bikini: 'プリント: floral bikini'
+        flower_bikin: 'プリント: flower bikin'
+        french_flag_bikini: 'プリント: french flag bikini'
+        hammer_and_sickle_bikini: 'プリント: hammer and sickle bikini'
+        hungarian_flag_bikini: 'プリント: hungarian flag bikini'
+        indian_flag_bikini: 'プリント: indian flag bikini'
+        italian_flag_bikini: 'プリント: italian flag bikini'
+        jamaican_flag_bikini: 'プリント: jamaican flag bikini'
+        japanese_flag_bikini: 'プリント: japanese flag bikini'
+        mexican_flag_bikini: 'プリント: mexican flag bikini'
+        novelty_bikini: 'プリント: novelty bikini'
+        puerto_rican_flag_bikini: 'プリント: puerto rican flag bikini'
+        russian_flag_bikini: 'プリント: russian flag bikini'
+        skull_bikini: 'プリント: skull bikini'
+        south_korean_flag_bikini: 'プリント: south korean flag bikini'
+        star_print_bikini: 'プリント: star print bikini'
+        swedish_flag_bikini: 'プリント: swedish flag bikini'
+        swiss_flag_bikini: 'プリント: swiss flag bikini'
+        texas_flag_bikini: 'プリント: texas flag bikini'
+        union_jack_bikini_top: 'プリント: union jack bikini top'
+    - name: ・模様
+      tags:
+        argyle_bikini: '模様: argyle bikini'
+        asymmetrical_bikini: '模様: asymmetrical bikini'
+        camouflage_bikini_top: '模様: camouflage bikini top'
+        checkered_bikini_top: '模様: checkered bikini top'
+        diagonal-striped_bikini: '模様: diagonal-striped bikini'
+        gingham_bikini: '模様: gingham bikini'
+        pinstripe_bikini: '模様: pinstripe bikini'
+    - name: ・状態
+      tags:
+        backless_bikini_bottom: '状態: backless bikini bottom'
+        bikini_around_ankles: '状態: bikini around ankles'
+        bikini_bottom_on_head: '状態: bikini bottom on head'
+        bikini_bottom_only, covering_breasts, hair_over_breasts: '状態: bikini bottom only, covering breasts, hair over breasts'
+        bikini_top_on_head: '状態: bikini top on head'
+        bikini_under_clothes, see-through_clothes: '状態: bikini under clothes, see-through clothes'
+        hand_under_bikini: '状態: hand under bikini'
+        panties_under_bikini: '状態: panties under bikini'
+        removing_bikini_top: '状態: removing bikini top'
+        taut_bikini: '状態: taut bikini'
+        transparent_bikini: '状態: transparent bikini'
+        upside-down_bikini_top: '状態: upside-down bikini top'
+    - name: ・種類
+      tags:
+        bikini_bralette: '種類: bikini bralette'
+        bikini_girl_(gta_vi)_(cosplay): '種類: bikini girl (gta vi) (cosplay)'
+        bikini_jeans: '種類: bikini jeans'
+        bikini_under_skirt: '種類: bikini under skirt'
+        butterfly_bikini: '種類: butterfly bikini'
+        button_bikini: '種類: button bikini'
+        cat_ear_bikini: '種類: cat ear bikini'
+        chain_bikini: '種類: chain bikini'
+        collared_bikini: '種類: collared bikini'
+        denim_bikini: '種類: denim bikini'
+        divine_bikini: '種類: divine bikini'
+        flower-trimmed_bikini: '種類: flower-trimmed bikini'
+        fortune_bikini: '種類: fortune bikini'
+        front-tie_bikini_bottom: '種類: front-tie bikini bottom'
+        fur-trimmed_bikini_top: '種類: fur-trimmed bikini top'
+        high-waist_bikini: '種類: high-waist bikini'
+        linked_bikini: '種類: linked bikini'
+        mage_(bikini_warriors)_(cosplay): '種類: mage (bikini warriors) (cosplay)'
+        magic_bikini_(dq): '種類: magic bikini (dq)'
+        mask_bikini: '種類: mask bikini'
+        nipple_suspension_bikini: '種類: nipple suspension bikini'
+        o-ring_bikini_bottom: '種類: o-ring bikini bottom'
+        peekaboo_bikini: '種類: peekaboo bikini'
+        pom_pom_bikini: '種類: pom pom bikini'
+        reverse_bikini_armor: '種類: reverse bikini armor'
+        ruffle_bikini: '種類: ruffle bikini'
+        side-tie_bikini_top: '種類: side-tie bikini top'
+        spiked_bikini: '種類: spiked bikini'
+        star-shaped_bikini: '種類: star-shaped bikini'
+        studded_bikini: '種類: studded bikini'
+        tie_bikini_bottom: '種類: tie bikini bottom'
+        turtleneck_bikini_top: '種類: turtleneck bikini top'
+        tying_bikini: '種類: tying bikini'
+        vivid_bikini_(idolmaster): '種類: vivid bikini (idolmaster)'
+        wave_diver_bikini_(stellar_blade): '種類: wave diver bikini (stellar blade)'
+    - name: ・素材
+      tags:
+        chocolate_bikini: '素材: chocolate bikini'
+        fishnet_bikini: '素材: fishnet bikini'
+        knit_bikini: '素材: knit bikini'
+        lace_bikini: '素材: lace bikini'
+        pearl_bikini: '素材: pearl bikini'
+        satin_bikinii: '素材: satin bikinii'
+        shell_bikini, white_bikini: '素材: shell bikini, white bikini'
+  - name: 【Illustrious】服装のプロンプト（スカート）【NanoBanana】にも対応
+    groups:
+    - name: '① ストレートスカート: straight skirt'
+      tags:
+        straight_skirt: ① ストレートスカート
+    - name: '① 無地: plain skirt'
+      tags:
+        plain_skirt: ① 無地
+    - name: '② ブロードリースカート: broderie skirt'
+      tags:
+        broderie_skirt: ② ブロードリースカート
+    - name: '② メッシュ: mesh skirt'
+      tags:
+        mesh_skirt: ② メッシュ
+    - name: '② 横ストライプ: horizontal-striped skirt'
+      tags:
+        horizontal-striped_skirt: ② 横ストライプ
+    - name: '③ フリルその2: ruffles skirt'
+      tags:
+        ruffles_skirt: ③ フリルその2
+    - name: '④ ダブルフリル: double frill skirt'
+      tags:
+        double_frill_skirt: ④ ダブルフリル
+    - name: '④ プレーリースカート: prairie skirt'
+      tags:
+        prairie_skirt: ④ プレーリースカート
+    - name: '④ 斜めストライプ: diagonal stripesd skirt'
+      tags:
+        diagonal_stripesd_skirt: ④ 斜めストライプ
+    - name: '⑤ インバーテッドスカート: Inverted skir'
+      tags:
+        Inverted_skir: ⑤ インバーテッドスカート
+    - name: '⑤ ピンストライプ: pinstriped skirt'
+      tags:
+        pinstriped_skirt: ⑤ ピンストライプ
+    - name: '⑤ メタル: metal skirt, metallic skirt'
+      tags:
+        metal_skirt, metallic_skirt: ⑤ メタル
+    - name: '⑥ キャンディーストライプ: candy striped skirt'
+      tags:
+        candy_striped_skirt: ⑥ キャンディーストライプ
+    - name: '⑥ ヴァルキリースカート: valkyrie skirt'
+      tags:
+        valkyrie_skirt: ⑥ ヴァルキリースカート
+    - name: '⑦ シーススカート: sheath skirt'
+      tags:
+        sheath_skirt: ⑦ シーススカート
+    - name: '⑦ フロア: floor length skirt'
+      tags:
+        floor_length_skirt: ⑦ フロア
+    - name: '⑦ レーシングストライプ: racing stripes skirt'
+      tags:
+        racing_stripes_skirt: ⑦ レーシングストライプ
+    - name: '⑧ ドレープスカート: drape skirt'
+      tags:
+        drape_skirt: ⑧ ドレープスカート
+    - name: '⑧ ハザードストライプ: hazard stripes skirt'
+      tags:
+        hazard_stripes_skirt: ⑧ ハザードストライプ
+    - name: '⑨ ゴアードスカート: goard skirt'
+      tags:
+        goard_skirt: ⑨ ゴアードスカート
+    - name: '⑩ ハンカチーフスカート: handkerchief skirt'
+      tags:
+        handkerchief_skirt: ⑩ ハンカチーフスカート
+    - name: '⑩ 花の縁取り: flower-trimmed skirt'
+      tags:
+        flower-trimmed_skirt: ⑩ 花の縁取り
+    - name: '⑪ アラベスク（唐草模様）: arabesque pattern skirt'
+      tags:
+        arabesque_pattern_skirt: ⑪ アラベスク（唐草模様）
+    - name: '⑪ ラップキュロットスカート: wrap culottes skirt'
+      tags:
+        wrap_culottes_skirt: ⑪ ラップキュロットスカート
+    - name: '⑫ ジグザク: zig-zag skirt'
+      tags:
+        zig-zag_skirt: ⑫ ジグザク
+    - name: '⑫ 透明: transparent skirt'
+      tags:
+        transparent_skirt: ⑫ 透明
+    - name: '⑬ ジオメタリック（幾何学模様）: geometric skirt'
+      tags:
+        geometric_skirt: ⑬ ジオメタリック（幾何学模様）
+    - name: '⑬ ボールルームスカート: ballroom skirt'
+      tags:
+        ballroom_skirt: ⑬ ボールルームスカート
+    - name: '⑬ リボン: ribbon skirt, bow skirt'
+      tags:
+        ribbon_skirt, bow_skirt: ⑬ リボン
+    - name: '⑭ ルンギー: lungi'
+      tags:
+        lungi: ⑭ ルンギー
+    - name: '⑮ ギンガムチェック（縞模様）: gingham check skirt'
+      tags:
+        gingham_check_skirt: ⑮ ギンガムチェック（縞模様）
+    - name: '⑮ 刺繍入り: embroidered skirt'
+      tags:
+        embroidered_skirt: ⑮ 刺繍入り
+    - name: '⑯ ヘプラムスカート: peplum long skirt'
+      tags:
+        peplum_long_skirt: ⑯ ヘプラムスカート
+    - name: '⑰ バーバリーチェック: brown burberry check skirt'
+      tags:
+        brown_burberry_check_skirt: ⑰ バーバリーチェック
+    - name: '⑱ フレイドスカート: frayed skirt'
+      tags:
+        frayed_skirt: ⑱ フレイドスカート
+    - name: '⑱ ベイスリー: paisley skirt'
+      tags:
+        paisley_skirt: ⑱ ベイスリー
+    - name: '⑲ オーリング: o-ring skirt'
+      tags:
+        o-ring_skirt: ⑲ オーリング
+    - name: '⑳ ケルト模様: celtic pattern skirt'
+      tags:
+        celtic_pattern_skirt: ⑳ ケルト模様
+    - name: '⑳ スタッズスカート: studded skirt'
+      tags:
+        studded_skirt: ⑳ スタッズスカート
+    - name: '⑳ トランペットスカート: trumpet skirt'
+      tags:
+        trumpet_skirt: ⑳ トランペットスカート
+    - name: '⑳ ハートリング: heart ring skirt'
+      tags:
+        heart_ring_skirt: ⑳ ハートリング
+    - name: '㉑ グリッド: grid skirt'
+      tags:
+        grid_skirt: ㉑ グリッド
+    - name: '㉑ ハワイアンスカート: hawaiian skirt'
+      tags:
+        hawaiian_skirt: ㉑ ハワイアンスカート
+    - name: '㉒ キルトスカート: kilt skirtt'
+      tags:
+        kilt_skirtt: ㉒ キルトスカート
+    - name: '㉓ ピンドット: pin dot skirt'
+      tags:
+        pin_dot_skirt: ㉓ ピンドット
+    - name: '㉓ メカニカル: mechanical skirt'
+      tags:
+        mechanical_skirt: ㉓ メカニカル
+    - name: '㉔ ポケット: skirt pocket'
+      tags:
+        skirt_pocket: ㉔ ポケット
+    - name: '㉕ ディアンドルスカート: dirndl skirt'
+      tags:
+        dirndl_skirt: ㉕ ディアンドルスカート
+    - name: '㉖ ボタンダウンスカート: button down skirt'
+      tags:
+        button_down_skirt: ㉖ ボタンダウンスカート
+    - name: '㉗ トライバルスカート: tribal skirt'
+      tags:
+        tribal_skirt: ㉗ トライバルスカート
+    - name: '㉘ 植物柄: botanical print skirt'
+      tags:
+        botanical_print_skirt: ㉘ 植物柄
+    - name: '㉙ アメリカン国旗: american flag skirt'
+      tags:
+        american_flag_skirt: ㉙ アメリカン国旗
+    - name: '㉙ フラメンコスカート: flamenco hem very long skirt'
+      tags:
+        flamenco_hem_very_long_skirt: ㉙ フラメンコスカート
+    - name: '㉚ トロピカル柄: tropical print skirt'
+      tags:
+        tropical_print_skirt: ㉚ トロピカル柄
+    - name: '㉛ ゼブラストライプ: zebra striped skirt'
+      tags:
+        zebra_striped_skirt: ㉛ ゼブラストライプ
+    - name: '㉝ 牛柄: cow print skirt'
+      tags:
+        cow_print_skirt: ㉝ 牛柄
+  - name: 【Illustrious】服装のプロンプト（ズボン①）【NanoBanana】にも対応
+    groups:
+    - name: '① サテン: satin pants'
+      tags:
+        satin_pants: ① サテン
+    - name: '① マイクロ: micro pants'
+      tags:
+        micro_pants: ① マイクロ
+    - name: '② ミニ: mini pants'
+      tags:
+        mini_pants: ② ミニ
+    - name: '④ ミディ: midi pants'
+      tags:
+        midi_pants: ④ ミディ
+    - name: '⑤ ジムパンツ: gym pants'
+      tags:
+        gym_pants: ⑤ ジムパンツ
+    - name: '⑤ メタル: metal pants, metallic pants'
+      tags:
+        metal_pants, metallic_pants: ⑤ メタル
+    - name: '⑤ ロング: long pants'
+      tags:
+        long_pants: ⑤ ロング
+    - name: '⑥ マキシ: maxi pants'
+      tags:
+        maxi_pants: ⑥ マキシ
+    - name: '⑦ ニット: ribbed pants'
+      tags:
+        ribbed_pants: ⑦ ニット
+    - name: '⑩ キルティング: quilted pants'
+      tags:
+        quilted_pants: ⑩ キルティング
+    - name: '⑪ 葉っぱ: leaf pants'
+      tags:
+        leaf_pants: ⑪ 葉っぱ
+    - name: '⑫ 草: grass pants'
+      tags:
+        grass_pants: ⑫ 草
+    - name: '⑬ 羽: feather pants'
+      tags:
+        feather_pants: ⑬ 羽
+    - name: '⑮ アラジンパンツ: aladdin pants'
+      tags:
+        aladdin_pants: ⑮ アラジンパンツ
+    - name: ズボン
+      tags:
+        「pants」「shorts」: 'ズボン: 「pants」「shorts」'
+    - name: '㉔ サスペンダーパンツ: suspender pants'
+      tags:
+        suspender_pants: ㉔ サスペンダーパンツ
+    - name: '㉕ 高視認性パンツ: high-visibility pants'
+      tags:
+        high-visibility_pants: ㉕ 高視認性パンツ
+    - name: '㉖ パデッドパンツ: padded pants'
+      tags:
+        padded_pants: ㉖ パデッドパンツ
+    - name: '㉗ スタッズドパンツ: studded pants'
+      tags:
+        studded_pants: ㉗ スタッズドパンツ
+    - name: '㉘ スパイクドパンツ: spiked pants'
+      tags:
+        spiked_pants: ㉘ スパイクドパンツ
+    - name: '㉙ アンクルタイパンツ: ankle tie pants'
+      tags:
+        ankle_tie_pants: ㉙ アンクルタイパンツ
+  - name: 【Illustrious】服装のプロンプト（ズボン②）【NanoBanana】にも対応
+    groups:
+    - name: '① 無地: plain pants'
+      tags:
+        plain_pants: ① 無地
+    - name: '② 横ストライプ: horizontal-striped pants'
+      tags:
+        horizontal-striped_pants: ② 横ストライプ
+    - name: '③ フリルその2: ruffles pants'
+      tags:
+        ruffles_pants: ③ フリルその2
+    - name: '④ ダブルフリル: double frill pants'
+      tags:
+        double_frill_pants: ④ ダブルフリル
+    - name: '④ 斜めストライプ: diagonal stripesd pants'
+      tags:
+        diagonal_stripesd_pants: ④ 斜めストライプ
+    - name: '⑤ ピンストライプ: pinstriped pants'
+      tags:
+        pinstriped_pants: ⑤ ピンストライプ
+    - name: '⑤ レイヤード: layered pants'
+      tags:
+        layered_pants: ⑤ レイヤード
+    - name: '⑥ キャンディーストライプ: candy striped pants'
+      tags:
+        candy_striped_pants: ⑥ キャンディーストライプ
+    - name: '⑦ リボンの縁取り: ribbon-trimmed pants'
+      tags:
+        ribbon-trimmed_pants: ⑦ リボンの縁取り
+    - name: '⑦ レーシングストライプ: racing stripes pants'
+      tags:
+        racing_stripes_pants: ⑦ レーシングストライプ
+    - name: '⑧ ハザードストライプ: hazard stripes pants'
+      tags:
+        hazard_stripes_pants: ⑧ ハザードストライプ
+    - name: '⑨ 花の縁取り: flower-trimmed pants'
+      tags:
+        flower-trimmed_pants: ⑨ 花の縁取り
+    - name: '⑪ アラベスク（唐草模様）: arabesque pants'
+      tags:
+        arabesque_pants: ⑪ アラベスク（唐草模様）
+    - name: '⑪ 透明: transparent pants'
+      tags:
+        transparent_pants: ⑪ 透明
+    - name: '⑫ ジグザク: zig-zag pants'
+      tags:
+        zig-zag_pants: ⑫ ジグザク
+    - name: '⑬ ジオメタリック（幾何学模様）: geometric pants'
+      tags:
+        geometric_pants: ⑬ ジオメタリック（幾何学模様）
+    - name: '⑬ リボン: ribbon pants, bow pants'
+      tags:
+        ribbon_pants, bow_pants: ⑬ リボン
+    - name: '⑭ 横リボン: side-tie pants'
+      tags:
+        side-tie_pants: ⑭ 横リボン
+    - name: '⑮ ギンガムチェック（縞模様）: gingham check pants'
+      tags:
+        gingham_check_pants: ⑮ ギンガムチェック（縞模様）
+    - name: '⑮ 刺繍入り: embroidered pants'
+      tags:
+        embroidered_pants: ⑮ 刺繍入り
+    - name: '⑯ タータンチェック: tartan check pants'
+      tags:
+        tartan_check_pants: ⑯ タータンチェック
+    - name: '⑰ ジッパー: zipper pants'
+      tags:
+        zipper_pants: ⑰ ジッパー
+    - name: '⑰ バーバリーチェック: brown burberry check pants'
+      tags:
+        brown_burberry_check_pants: ⑰ バーバリーチェック
+    - name: '⑱ ベイスリー: paisley pants'
+      tags:
+        paisley_pants: ⑱ ベイスリー
+    - name: '⑱ ボタン: button up pants'
+      tags:
+        button_up_pants: ⑱ ボタン
+    - name: '⑲ オーリング: o-ring pants'
+      tags:
+        o-ring_pants: ⑲ オーリング
+    - name: '⑲ ハウンドトゥース: houndstooth pants'
+      tags:
+        houndstooth_pants: ⑲ ハウンドトゥース
+    - name: '⑳ ケルト模様: celtic pattern pants'
+      tags:
+        celtic_pattern_pants: ⑳ ケルト模様
+    - name: '⑳ ハートリング: heart ring pants'
+      tags:
+        heart_ring_pants: ⑳ ハートリング
+    - name: '㉑ グリッド: grid pants'
+      tags:
+        grid_pants: ㉑ グリッド
+    - name: '㉓ ピンドット: pin dot pants'
+      tags:
+        pin_dot_pants: ㉓ ピンドット
+    - name: '㉓ メカニカル: mechanical pants'
+      tags:
+        mechanical_pants: ㉓ メカニカル
+    - name: '㉔ スポッティッド: spotted pants'
+      tags:
+        spotted_pants: ㉔ スポッティッド
+    - name: '㉖ 虹柄: rainbow pants'
+      tags:
+        rainbow_pants: ㉖ 虹柄
+    - name: '㉗ 花柄: floral pants'
+      tags:
+        floral_pants: ㉗ 花柄
+    - name: '㉘ 植物柄: botanical print pants'
+      tags:
+        botanical_print_pants: ㉘ 植物柄
+    - name: '㉚ トロピカル柄: tropical print pants'
+      tags:
+        tropical_print_pants: ㉚ トロピカル柄
+    - name: '㉛ ゼブラストライプ: zebra striped pants'
+      tags:
+        zebra_striped_pants: ㉛ ゼブラストライプ
+    - name: '㉝ 牛柄: cow print pants'
+      tags:
+        cow_print_pants: ㉝ 牛柄
+  - name: 【Stable Diffusion- Illustrious】顔のプロンプト⑤（口・唇・歯・舌）
+    groups:
+    - name: '〇〇色の歯: colored teeth'
+      tags:
+        colored_teeth: 〇〇色の歯
+    - name: '並びが悪い歯: crooked teeth'
+      tags:
+        crooked_teeth: 並びが悪い歯
+    - name: '悪い歯: bad teeth'
+      tags:
+        bad_teeth: 悪い歯
+    - name: '猫の口: :3'
+      tags:
+        waiSHUFFLENOOB_vPred20: '猫の口: :3: waiSHUFFLENOOB_vPred20'
+  - name: 【Stable Diffusion- Illustrious】髪のプロンプト⑧（前髪・横髪・後髪）
+    groups:
+    - name: '姫カット: hime cut'
+      tags:
+        okappa: おかっぱ
+    - name: '髪の間から見える目: eyes visible through hair, choppy bangs'
+      tags:
+        eyes_visible_through_hair, choppy_bangs: 髪の間から見える目
+  - name: 【プロンプト辞典】前髪25種類ｘ長さ４種 (全100種)
+    groups:
+    - name: 2) アーチ型, フェザー状, ウェーブ, カール, 乱れた
+      tags:
+        ? (arched_bangs_/アーチ型の前髪), (feathered_bangs_/フェザー状の前髪), (wavy_bangs_/ウェーブのかかった前髪), (curly_bangs_/カールした前髪), (messy_bangs_/乱れた前髪)
+        : '2) アーチ型, フェザー状, ウェーブ, カール, 乱れた: (arched bangs /アーチ型の前髪), (feathered bangs /フェザー状の前髪), (wavy bangs /ウェーブのかかった前髪),
+          (curly bangs /カールした前髪), (messy bangs /乱れた前髪)'
+    - name: 3) なめらか, レトロ, エッジの効いた, 韓国風, 編み込み
+      tags:
+        ? (sleek_bangs_/なめらかな前髪), (retro_bangs_/レトロな前髪), (edgy_bangs_/エッジの効いた前髪), (Korean-style_bangs_/韓国風の前髪), (braided_bangs_/編み込み前髪)
+        : '3) なめらか, レトロ, エッジの効いた, 韓国風, 編み込み: (sleek bangs /なめらかな前髪), (retro bangs /レトロな前髪), (edgy bangs /エッジの効いた前髪), (Korean-style
+          bangs /韓国風の前髪), (braided bangs /編み込み前髪)'
+    - name: 4) 伸びた, ねじった, 交差, 片方の目に, 両目に
+      tags:
+        ? (grown-out_bangs/伸びた前髪), (twisted_bangs/ねじった前髪), (crossed_bangs/交差した前髪), (hair_over_one_eye/片方の目に髪がかかっている), (hair_over_eyes/両目に髪がかかっている)
+        : '4) 伸びた, ねじった, 交差, 片方の目に, 両目に: (grown-out bangs/伸びた前髪), (twisted bangs/ねじった前髪), (crossed bangs/交差した前髪), (hair over
+          one eye/片方の目に髪がかかっている), (hair over eyes/両目に髪がかかっている)'
+    - name: 5) ねじった前髪, おでこ, ピンで留め, 前髪だけをトップノットに結んだ＋額, 前髪だけを小さなトップノットに結んだ＋額
+      tags:
+        ? (hair_between_eyes/目の間の髪), (forehead/額), (pinned-back_bangs, forehead/ピンで留めた前髪、額), (only_the_bangs_tied_up_in_a_top_knot,
+          forehead/前髪だけをトップノットに結んだ、額), (only_the_bangs_tied_up_in_a_small_top_knot, forehead/前髪だけを小さなトップノットに結んだ、額)
+        : '5) ねじった前髪, おでこ, ピンで留め, 前髪だけをトップノットに結んだ＋額, 前髪だけを小さなトップノットに結んだ＋額: (hair between eyes/目の間の髪), (forehead/額), (pinned-back
+          bangs, forehead/ピンで留めた前髪、額), (only the bangs tied up in a top knot, forehead/前髪だけをトップノットに結んだ、額), (only the bangs
+          tied up in a small top knot, forehead/前髪だけを小さなトップノットに結んだ、額)'
+    - name: １) サイドに流した, 薄い, アシンメトリー, 極短い, 超短い
+      tags:
+        ? (side-swept_bangs_/サイドに流した前髪), (wispy_bangs_/薄い前髪), (asymmetrical_bangs_/アシンメトリーな前髪), (micro_bangs_/極短い前髪), (ultra-short_bangs_/超短い前髪)
+        : '１) サイドに流した, 薄い, アシンメトリー, 極短い, 超短い: (side-swept bangs /サイドに流した前髪), (wispy bangs /薄い前髪), (asymmetrical bangs /アシンメトリーな前髪),
+          (micro bangs /極短い前髪), (ultra-short bangs /超短い前髪)'
+  - name: 【完全版】 CrodyのIllustrious / NoobAI 画像生成ガイド
+    groups:
+    - name: 一覧
+      tags:
+        並べ替え後_衣装の整合性が向上、不要な毛並みのアーチファクトが消失、細部のコントロール性が改善: 並べ替え後 衣装の整合性が向上、不要な毛並みのアーチファクトが消失、細部のコントロール性が改善
+        使用モデル：Nova_Anime_XL_IL_v11.0: 使用モデル：Nova Anime XL IL v11.0
+        使用モデル：Nova_Furry_XL_Illustrious_v11.0（整理前）_今回はプロンプトの整理前と整理後で比較する: 使用モデル：Nova Furry XL Illustrious v11.0（整理前） 今回はプロンプトの整理前と整理後で比較する
+  - name: 【春の扉】軽やかでおしゃれに！ワイドパンツ春ファッションコーデプロンプト8選
+    groups:
+    - name: 💡 さいごに：自分だけの「春」をワイドパンツで描こう
+      tags:
+        自分だけの「春」をワイドパンツで描こう: 💡 さいごに
+  - name: 【異世界への扉】ファンタジーを彩る！異世界衣装プロンプト10選
+    groups:
+    - name: 🖋️ 異世界衣装プロンプト：基本の10選
+      tags:
+        基本の10選: 🖋️ 異世界衣装プロンプト
+  - name: 【目のエロ論】上目遣い・とろけ目・潤み目——3種の設計と違い（ちちぷい対応）
+    groups:
+    - name: 【とろけ目：限界を超えた目】
+      tags:
+        ? (glazed_eyes:1.3), (unfocused_eyes:1.3), half-lidded_drowsy_eyes, euphoric_expression, slightly_open_mouth, flushed_cheeks,
+          cowboy_shot
+        : '【とろけ目：限界を超えた目】: (glazed eyes:1.3), (unfocused eyes:1.3), half-lidded drowsy eyes, euphoric expression, slightly
+          open mouth, flushed cheeks, cowboy shot'
+        限界を超えた目】: 【とろけ目
+    - name: 【上目遣い：見上げる色気】
+      tags:
+        ? (upward_glance:1.3), (looking_up_at_viewer:1.3), half-lidded_eyes, slightly_open_mouth, flushed_cheeks, vulnerable_expression,
+          cowboy_shot, from_above_angle
+        : '【上目遣い：見上げる色気】: (upward glance:1.3), (looking up at viewer:1.3), half-lidded eyes, slightly open mouth, flushed
+          cheeks, vulnerable expression, cowboy shot, from above angle'
+        見上げる色気】: 【上目遣い
+    - name: 【潤み目：抑えている色気】
+      tags:
+        ? (moist_eyes:1.3), (dewy_eyes:1.3), glistening_pupils, glossy_eyes, vulnerable_soft_expression, slightly_blushing,
+          cowboy_shot
+        : '【潤み目：抑えている色気】: (moist eyes:1.3), (dewy eyes:1.3), glistening pupils, glossy eyes, vulnerable soft expression, slightly
+          blushing, cowboy shot'
+        抑えている色気】: 【潤み目
+  - name: 【背面エロ論】斜め後ろアングルが最強な理由と検証3種（ちちぷい対応）
+    groups:
+    - name: 補足：顔込みで安定させるコツ
+      tags:
+        looking_back_over_shoulder, face_visible, slight_smile: '補足：顔込みで安定させるコツ: looking back over shoulder, face visible,
+          slight smile'
+        顔込みで安定させるコツ: 補足
+  - name: 【色プロンプト辞典１】髪と目、全130色以上！×model 6種 (Illustrious 4種/Animagine XL 4.0/実写)
+    groups:
+    - name: 1) 赤系 10色
+      tags:
+        (red), (crimson), (scarlet), (ruby-red), (cherry-red), (burgundy), (maroon), (Smoky_Red), (carmine), (wine-red): '1)
+          赤系 10色: (red), (crimson), (scarlet), (ruby-red), (cherry-red), (burgundy), (maroon), (Smoky Red), (carmine), (wine-red)'
+    - name: 10) 濃い茶色系 10色
+      tags:
+        ? (Brown), (Dark_Brown), (Chocolate_Brown), (Coffee_Brown), (Bronze_Brown), (Mocha_Brown), (Mahogany_Brown), (Hazelnut_Brown),
+          (Cinnamon_Brown), (Caramel_Brown)
+        : '10) 濃い茶色系 10色: (Brown), (Dark Brown), (Chocolate Brown), (Coffee Brown), (Bronze Brown), (Mocha Brown), (Mahogany
+          Brown), (Hazelnut Brown), (Cinnamon Brown), (Caramel Brown)'
+    - name: 11) 茶～ベージュ系 10色
+      tags:
+        ? (Chestnut), (Tawny_Brown), (Walnut_Brown), (Sepia_Brown), (Sienna_Brown), (Beige), (Light_Brown), (Almond), (Light_Copper),
+          (Champagne)
+        : '11) 茶～ベージュ系 10色: (Chestnut), (Tawny Brown), (Walnut Brown), (Sepia Brown), (Sienna Brown), (Beige), (Light Brown),
+          (Almond), (Light Copper), (Champagne)'
+    - name: 12) 白、灰色系 11色
+      tags:
+        ? (cloud_white), (ash_white), (off_white), (silver_white), (lead_gray), (light_gray), (ash_gray), (cloud_gray), (deep_gray),
+          (dim_gray), (dark_gray)
+        : '12) 白、灰色系 11色: (cloud white), (ash white), (off white), (silver white), (lead gray), (light gray), (ash gray),
+          (cloud gray), (deep gray), (dim gray), (dark gray)'
+    - name: 13) 灰色、黒系 11色
+      tags:
+        ? (spider_black), (deep_space_black), (oil_black), (stormy_black), (phantom_black), (carbon_black), (coal_black),
+          (chartreuse), (deep_charcoal), (charcoal), (gray_black)
+        : '13) 灰色、黒系 11色: (spider black), (deep space black), (oil black), (stormy black), (phantom black), (carbon black),
+          (coal black), (chartreuse), (deep charcoal), (charcoal), (gray black)'
+        第一弾は以上です！: '13) 灰色、黒系 11色: 第一弾は以上です！'
+    - name: 2) ピンク系 10色
+      tags:
+        ? (Pink), (salmon-pink), (strawberry-pink), (coral-pink), (blush-pink), (hot_pink), (peach-pink), (raspberry), (magenta),
+          (deep_magenta)
+        : '2) ピンク系 10色: (Pink),(salmon-pink), (strawberry-pink), (coral-pink),(blush-pink),(hot pink), (peach-pink), (raspberry),
+          (magenta), (deep magenta)'
+    - name: 3) 紫系 10色
+      tags:
+        ? (purple), (plum-purple), (Royal_Purple), (amethyst-purple), (lilac), (lavender), (eggplant-purple), (violet), (indigo),
+          (Mauveine)
+        : '3) 紫系 10色: (purple), (plum-purple), (Royal Purple), (amethyst-purple), (lilac), (lavender), (eggplant-purple),
+          (violet), (indigo), (Mauveine)'
+    - name: 4) 青系 10色
+      tags:
+        ? (blue), (cobalt-blue), (ultramarine-blue), (deep_blue), (royal-blue), (seafoam-blue), (navy-blue), (steel-blue),
+          (cyan), (dark_blue)
+        : '4) 青系 10色: (blue), (cobalt-blue), (ultramarine-blue), (deep blue), (royal-blue), (seafoam-blue), (navy-blue), (steel-blue),
+          (cyan), (dark blue)'
+    - name: 5) 水色系 10色
+      tags:
+        ? (sky-blue), (powder-blue), (baby-blue), (light_blue), (pastel_blue), (mint-blue), (Lagoon_Blue), (aqua), (turquoise),
+          (teal)
+        : '5) 水色系 10色: (sky-blue), (powder-blue), (baby-blue), (light blue), (pastel blue), (mint-blue), (Lagoon Blue), (aqua),
+          (turquoise), (teal)'
+    - name: 6) 緑系 10色
+      tags:
+        ? (green), (dark_green), (jade_green), (deep_green), (emerald-green), (seafoam-green), (spring-green), (wasabi_green),
+          (mint_green), (pastel_green)
+        : '6) 緑系 10色: (green), (dark green), (jade green), (deep green), (emerald-green), (seafoam-green), (spring-green),
+          (wasabi green), (mint green), (pastel green)'
+    - name: 7) 黄緑系 10色
+      tags:
+        ? (Yellow_Green), (pure_green), (green_yellow), (lime_green), (acid_Green), (loyal_green), (kelly_green), (chartreuse_green),
+          (viridian_green), (olive_green)
+        : '7) 黄緑系 10色: (Yellow Green), (pure green), (green yellow), (lime green), (acid Green), (loyal green), (kelly green),
+          (chartreuse green), (viridian green), (olive green)'
+    - name: 8) 黄色系 10色
+      tags:
+        ? (Yellow), (canary-yellow), (lemon-yellow), (banana-yellow), (honey-yellow), (mustard-yellow), (goldenrod), (blond),
+          (platinum-yellow), (platinum-blond)
+        : '8) 黄色系 10色: (Yellow), (canary-yellow), (lemon-yellow), (banana-yellow), (honey-yellow), (mustard-yellow), (goldenrod),
+          (blond), (platinum-yellow), (platinum-blond)'
+    - name: 9) オレンジ系 10色
+      tags:
+        ? (orange), (amber_orange), (persimmon_orange), (sunset_orange), (pumpkin_orange), (tangerine_orange), (apricot_orange),
+          (orange_yellow), (Honey), (yellow_orage)
+        : '9) オレンジ系 10色: (orange), (amber orange), (persimmon orange), (sunset orange), (pumpkin orange), (tangerine orange),
+          (apricot orange), (orange yellow), (Honey), (yellow orage)'
+    - name: 使用model
+      tags:
+        SDXL: '使用model: SDXL'
+  - name: 【表情編】プロンプト(呪文)辞典 Stable Diffusion対応 AI画像生成 vol.1
+    groups:
+    - name: ふくれっ面
+      tags:
+        pout_/_puffed_cheeks: 'ふくれっ面: pout / puffed cheeks'
+    - name: クール
+      tags:
+        cool_beauty: 'クール: cool beauty'
+    - name: ドヤ顔
+      tags:
+        confident_grin: 'ドヤ顔: confident grin'
+    - name: 冷たい視線
+      tags:
+        cold_gaze: '冷たい視線: cold gaze'
+    - name: 叫ぶ
+      tags:
+        scream_/_yelling: '叫ぶ: scream / yelling'
+    - name: 拗ねる／ふてくされる
+      tags:
+        pouty: '拗ねる／ふてくされる: pouty'
+    - name: 放心
+      tags:
+        spaced-out: '放心: spaced-out'
+    - name: 泣き笑い
+      tags:
+        teary_smile: '泣き笑い: teary smile'
+    - name: 無表情
+      tags:
+        blank: '無表情: blank'
+    - name: 難しい顔
+      tags:
+        face_tightening: '難しい顔: face tightening'
+  - name: 【視線編】プロンプト(呪文)辞典 Stable Diffusion対応 AI画像生成 vol.2
+    groups:
+    - name: にらむ
+      tags:
+        glaring_at: 'にらむ: glaring at'
+    - name: まぶたが重い
+      tags:
+        heavy_eyelids: 'まぶたが重い: heavy eyelids'
+  - name: すぐに使えるAIイラストの衣装プロンプト①
+    groups:
+    - name: ■アイドル風チューブトップ衣装
+      tags:
+        ? (pastel_blue_bandeau_top)_with_butterfly_print_and_gold_trim, detached_puff_sleeves, gold_layered_necklace, (pastel_blue_flared_miniskirt)_with_purple_obi_ribbon_belt,
+          (mismatched_thigh-high_socks)_one_lilac_one_mint_green, gold_strappy_sandals
+        : '■アイドル風チューブトップ衣装: (pastel blue bandeau top) with butterfly print and gold trim, detached puff sleeves, gold layered
+          necklace, (pastel blue flared miniskirt) with purple obi ribbon belt, (mismatched thigh-high socks) one lilac one
+          mint green, gold strappy sandals,'
+    - name: ■パンク・ストリートゴシック系衣装
+      tags:
+        ? (black_crop_top, off-shoulder, )_with_checkered_trim, gray_denim_cutoff_shorts_with_belt, (leg_harness_with_chain)_on_thigh,
+          (gray_denim_leg_covers_with_buckle_straps), black_platform_boots
+        : '■パンク・ストリートゴシック系衣装: (black crop top,off-shoulder,) with checkered trim, gray denim cutoff shorts with belt, (leg
+          harness with chain) on thigh, (gray denim leg covers with buckle straps), black platform boots'
+    - name: ■ミニスカ衣装①
+      tags:
+        ? cream_short_puff_sleeve_blouse, (wine_red_vest_over_blouse), black_ribbon_bowtie, (dark_navy_pleated_miniskirt),
+          with_white_trim, (burgundy_knit_leg_warmers, white_leg_warmers), black_platform_loafers
+        : '■ミニスカ衣装①: cream short puff sleeve blouse, (wine red vest over blouse), black ribbon bowtie,(dark navy pleated miniskirt)
+          ,with white trim, (burgundy knit leg warmers,white leg warmers), black platform loafers,'
+    - name: ■ミニスカ衣装②
+      tags:
+        ? white_crop_polo_shirt_with_mint_green_embroidery, black_skinny_tie, (white_pleated_miniskirt)_with_mint_green_ribbon_waistband,
+          (cream_loose_socks), white_platform_mary_jane_shoes
+        : '■ミニスカ衣装②: white crop polo shirt with mint green embroidery, black skinny tie, (white pleated miniskirt) with mint
+          green ribbon waistband, (cream loose socks), white platform mary jane shoes,'
+    - name: ■ミニスカ衣装③
+      tags:
+        ? white_short_sleeve_dress_shirt, (brown_vest)_with_gold_buttons_and_crest_pin, dark_brown_necktie, (dark_brown_pleated_miniskirt),
+          black_ankle_socks, brown_leather_loafers
+        : '■ミニスカ衣装③: white short sleeve dress shirt, (brown vest) with gold buttons and crest pin, dark brown necktie, (dark
+          brown pleated miniskirt), black ankle socks, brown leather loafers,'
+    - name: ■ミニスカ衣装④
+      tags:
+        ? (gray_and_lavender_raglan_crop_top), side_lace-up_detail, black_crossbody_bag, (lavender_pleated_denim_miniskirt),
+          (lavender_knit_leg_warmers), white_platform_sneakers
+        : '■ミニスカ衣装④: (gray and lavender raglan crop top) , side lace-up detail, black crossbody bag, (lavender pleated denim
+          miniskirt), (lavender knit leg warmers), white platform sneakers,'
+    - name: ■ミニスカ衣装⑤
+      tags:
+        ? (navy_tube_top), (cream_cropped_hoodie_with_white_star_emblem), silver_chain_necklace, (navy_skater_skirt), white_platform_lace-up_boots
+        : '■ミニスカ衣装⑤: (navy tube top), (cream cropped hoodie with white star emblem), silver chain necklace, (navy skater skirt),
+          white platform lace-up boots,'
+    - name: ■ミニスカ衣装⑥
+      tags:
+        ? (purple_crop_t-shirt)_with_white_graphic_print, (purple_arm_warmers), (gray_gathered_miniskirt)_with_black_belt,
+          purple_and_gray_striped_socks, black_platform_shoes
+        : '■ミニスカ衣装⑥: (purple crop t-shirt) with white graphic print, (purple arm warmers), (gray gathered miniskirt) with
+          black belt, purple and gray striped socks, black platform shoes'
+    - name: ■ミリタリーアイドル系衣装
+      tags:
+        ? (black_military-style_jacket)_with_black_braided_trim, black_epaulettes, (bordeaux_flared_skirt)_with_red_stripe_hem,
+          (black_thigh-high_socks), black_platform_ankle_boots_with_silver_buckle
+        : '■ミリタリーアイドル系衣装: (black military-style jacket) with black braided trim, black epaulettes, (bordeaux flared skirt)
+          with red stripe hem, (black thigh-high socks), black platform ankle boots with silver buckle,'
+  - name: そのまま使える｜AIイラスト用ポーズプロンプト30選【コピペOK】
+    groups:
+    - name: ✍️ 記入例
+      tags:
+        short_blue_hair, aqua_eyes, sporty_hoodie, shorts, sneakers: '✍️ 記入例: short blue hair, aqua eyes, sporty hoodie, shorts,
+          sneakers'
+    - name: ほっぺタッチ
+      tags:
+        hands_touching_cheeks: 'ほっぺタッチ: hands touching cheeks'
+    - name: コントラポスト
+      tags:
+        standing_contrapposto, weight_on_one_leg, hips_tilted, shoulders_counter_tilted, one_knee_slightly_bent: 'コントラポスト:
+          standing contrapposto, weight on one leg, hips tilted, shoulders counter tilted, one knee slightly bent'
+    - name: ジャンプ
+      tags:
+        small_jumping_pose, arms_raised: 'ジャンプ: small jumping pose, arms raised'
+    - name: ダイナミックジャンプ
+      tags:
+        jumping_in_air, arms_spread: 'ダイナミックジャンプ: jumping in air, arms spread'
+    - name: ダブルピース
+      tags:
+        both_hands_making_peace_signs, cheerful_expression: 'ダブルピース: both hands making peace signs, cheerful expression'
+    - name: ハートポーズ
+      tags:
+        both_hands_forming_heart_shape: 'ハートポーズ: both hands forming heart shape'
+    - name: 両手上げ
+      tags:
+        both_arms_raised_high: '両手上げ: both arms raised high'
+    - name: 伏し目
+      tags:
+        chin_lowered, eyes_looking_down: '伏し目: chin lowered, eyes looking down'
+    - name: 体育座り
+      tags:
+        knees_hugged_to_chest: '体育座り: knees hugged to chest'
+    - name: 前傾姿勢
+      tags:
+        body_leaning_forward: '前傾姿勢: body leaning forward'
+    - name: 手を伸ばす
+      tags:
+        reaching_forward, body_leaning: '手を伸ばす: reaching forward, body leaning'
+    - name: 手を顔に添える
+      tags:
+        one_hand_touching_face, head_slightly_tilted: '手を顔に添える: one hand touching face, head slightly tilted'
+    - name: 指を唇
+      tags:
+        finger_near_lips: '指を唇: finger near lips'
+    - name: 振り向き
+      tags:
+        upper_body_twisted, looking_back_over_shoulder: '振り向き: upper body twisted, looking back over shoulder'
+    - name: 片手ピース
+      tags:
+        one_hand_peace_sign: '片手ピース: one hand peace sign'
+    - name: 片肩見せ
+      tags:
+        one_shoulder_exposed: '片肩見せ: one shoulder exposed'
+    - name: 片足つま先立ち
+      tags:
+        standing_on_one_foot, other_foot_slightly_lifted_(tiptoe), body_slightly_leaning, light_and_playful_posture, soft_smile: '片足つま先立ち:
+          standing on one foot, other foot slightly lifted (tiptoe), body slightly leaning, light and playful posture, soft
+          smile'
+    - name: 背筋ピン
+      tags:
+        standing_straight_posture: '背筋ピン: standing straight posture'
+    - name: 腰に手
+      tags:
+        one_hand_on_hip, other_arm_relaxed, slight_hip_tilt: '腰に手: one hand on hip, other arm relaxed, slight hip tilt'
+    - name: 腰ひねり
+      tags:
+        waist_twisted, one_hip_out: '腰ひねり: waist twisted, one hip out'
+    - name: 足クロス
+      tags:
+        standing_with_legs_crossed, weight_shifted: '足クロス: standing with legs crossed, weight shifted'
+    - name: 首かしげ
+      tags:
+        head_tilted_sideways: '首かしげ: head tilted sideways'
+    - name: 髪かき上げ
+      tags:
+        hand_brushing_hair_back: '髪かき上げ: hand brushing hair back'
+  - name: チェック編 模様・柄・パターン一覧
+    groups:
+    - name: black watch tartan
+      tags:
+        黒い時計…: 'black watch tartan: 黒い時計…'
+    - name: buffalo plaid
+      tags:
+        buffaloの角が生えました: 'buffalo plaid: buffaloの角が生えました'
+    - name: clan wallace Tartan
+      tags:
+        2枚目はなに: 'clan wallace Tartan: 2枚目はなに'
+    - name: prince of wales check
+      tags:
+        これはたぶんアズレン: 'prince of wales check: これはたぶんアズレン'
+    - name: shepherd check
+      tags:
+        絵柄が…何かのキャラ名に引っかかった？: 'shepherd check: 絵柄が…何かのキャラ名に引っかかった？'
+    - name: window pane plaid
+      tags:
+        windowが出ますよね: 'window pane plaid: windowが出ますよね'
+  - name: ネガティブプロンプトが効かないのはなぜ？消えない理由と解決策
+    groups:
+    - name: ③本質：Stable Diffusionは「単語」ではなく「概念」で描いている
+      tags:
+        Stable_Diffusionは「単語」ではなく「概念」で描いている: ③本質
+    - name: ■ 代表例：手はなぜ直らないのか
+      tags:
+        手はなぜ直らないのか: ■ 代表例
+    - name: 解決策⑥ 最終手段：inpaint
+      tags:
+        inpaint: 解決策⑥ 最終手段
+  - name: プロンプト エッチな顔 関係
+    groups:
+    - name: 一覧
+      tags:
+        ^_^, ^_^, embarrassed: ^_^,^_^,embarrassed,
+        angry, wavy_mouth, open_mouth, drooling: angry,wavy mouth, open mouth,drooling,
+        drunk_eyes, wavy_mouth, gloom, (saliva_trail:1.6: drunk eyes, wavy mouth, gloom, (saliva trail:1.6
+        embarrassed, disgust, salive: embarrassed, disgust, salive,
+        flustered, rolling_eye, saliva_trail: flustered, rolling eye, saliva trail,
+        full-face_blush, wavy_mouth, parted_lips, salive: full-face blush,wavy mouth, parted lips, salive,
+        gloom, crazy_eyes, (saliva_trail:1.6: gloom, crazy eyes, (saliva trail:1.6
+        gloom, wavy_mouth, saliva_trail: gloom, wavy mouth, saliva trail,
+        pout, rolling_eye: pout,rolling eye,
+        rolling_eye, gloom, nose_blush, tongue, upper_teeth_only, (saliva_trail:1.2: rolling eye, gloom, nose blush, tongue,
+          upper teeth only, (saliva trail:1.2
+        tears, v-shaped_eyebrows, tongue, upper_teeth_only, (saliva_trail:1.2: tears,v-shaped eyebrows,tongue,upper teeth
+          only,(saliva trail:1.2
+        troll_face, gloom, nose_blush, (saliva_trail:1.2: troll face, gloom, nose blush, (saliva trail:1.2
+  - name: プロンプトで使いやすい英語色名一覧,📝
+    groups:
+    - name: 🎨AIイラストの「色」🎨
+      tags:
+        ※茶色（ブラウン）はオレンジを暗くしたもの。ベージュやアジア系肌色は明るくしたものです。_※pastelを用いるとパステルカラーになります。: '🎨AIイラストの「色」🎨: ※茶色（ブラウン）はオレンジを暗くしたもの。ベージュやアジア系肌色は明るくしたものです。
+          ※pastelを用いるとパステルカラーになります。'
+  - name: 和柄編 模様・柄・パターン一覧
+    groups:
+    - name: asa no ha
+      tags:
+        ほぼ完璧: 'asa no ha: ほぼ完璧'
+    - name: egasumi
+      tags:
+        完璧…背景として…: 'egasumi: 完璧…背景として…'
+    - name: seigaiha
+      tags:
+        出ました: 'seigaiha: 出ました'
+    - name: yagasuri
+      tags:
+        それっぽい: 'yagasuri: それっぽい'
+  - name: 感情表現(目関連)
+    groups:
+    - name: ぐるぐる瞳孔
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (@_@:1.3): 'ぐるぐる瞳孔: (facing viewer:1.3), (straight-on:1.3), (@ @:1.3),'
+    - name: じと目
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (jitome:1.3): 'じと目: (facing viewer:1.3), (straight-on:1.3), (jitome:1.3),'
+    - name: たれ目
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (tareme:1.3): 'たれ目: (facing viewer:1.3), (straight-on:1.3), (tareme:1.3),'
+    - name: つり目
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (tsurime:1.3): 'つり目: (facing viewer:1.3), (straight-on:1.3), (tsurime:1.3),'
+    - name: ウィンク(片目を閉じる)
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (one_eye_closed:1.3): 'ウィンク(片目を閉じる): (facing viewer:1.3), (straight-on:1.3),
+          (one eye closed:1.3),'
+    - name: オッドアイ
+      tags:
+        (heterochromia:1.3), (odd_eyes:1.2), (left_eye_blue:1.2), (right_eye_red:1.2): 'オッドアイ: (heterochromia:1.3), (odd eyes:1.2),
+          (left eye blue:1.2), (right eye red:1.2)'
+    - name: ネコ目
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (slit_pupils1.3): 'ネコ目: (facing viewer:1.3), (straight-on:1.3), (slit pupils1.3),'
+    - name: ハート型
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (heart-shaped_pupils:1.3): 'ハート型: (facing viewer:1.3), (straight-on:1.3),
+          (heart-shaped pupils:1.3),'
+    - name: ヤンデレ(目を見開く)
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (with_crazy_eyes:1.3): 'ヤンデレ(目を見開く): (facing viewer:1.3), (straight-on:1.3),
+          (with crazy eyes:1.3),'
+    - name: 上を見る
+      tags:
+        (facing_viewer:1.3), (looking_up1.3): '上を見る: (facing viewer:1.3), (looking up1.3),'
+    - name: 下を見る
+      tags:
+        (facing_viewer:1.3), (looking_down1.3): '下を見る: (facing viewer:1.3), (looking down1.3),'
+    - name: 横を見る
+      tags:
+        (facing_viewer:1.3), (looking_to_the_side:1.3): '横を見る: (facing viewer:1.3), (looking to the side:1.3),'
+    - name: 横目で見る
+      tags:
+        (facing_viewer:1.3), (sideways_glance1.3): '横目で見る: (facing viewer:1.3), (sideways glance1.3),'
+    - name: 涙目
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (with_tears_in_eyes:1.3): '涙目: (facing viewer:1.3), (straight-on:1.3), (with
+          tears in eyes:1.3),'
+    - name: 目にかかる髪
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (hair_over_eyes:1.3): '目にかかる髪: (facing viewer:1.3), (straight-on:1.3), (hair
+          over eyes:1.3),'
+    - name: 目を半分閉じる
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (half-closed_eyes:1.3): '目を半分閉じる: (facing viewer:1.3), (straight-on:1.3),
+          (half-closed eyes:1.3),'
+    - name: 目を手で隠す
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (covering_own_eyes:1.5): '目を手で隠す: (facing viewer:1.3), (straight-on:1.3),
+          (covering own eyes:1.5),'
+    - name: 目を細める
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (narrowed_eyes:1.3): '目を細める: (facing viewer:1.3), (straight-on:1.3), (narrowed
+          eyes:1.3),'
+    - name: 目を閉じる
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (closed_eyes:1.3): '目を閉じる: (facing viewer:1.3), (straight-on:1.3), (closed
+          eyes:1.3),'
+    - name: 目を開く
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (wide-eyed1.3): '目を開く: (facing viewer:1.3), (straight-on:1.3), (wide-eyed1.3),'
+    - name: 真正面
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3): '真正面: (facing viewer:1.3), (straight-on:1.3),'
+    - name: 視線を外す
+      tags:
+        (facing_viewer:1.3), (looking_away:1.3): '視線を外す: (facing viewer:1.3), (looking away:1.3),'
+    - name: 視線を逸らす
+      tags:
+        (facing_viewer:1.3), (averting_eyes:1.3): '視線を逸らす: (facing viewer:1.3), (averting eyes:1.3),'
+    - name: 輪廻眼（リング状の瞳孔)
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (ringed_eyes:1.3): '輪廻眼（リング状の瞳孔): (facing viewer:1.3), (straight-on:1.3),
+          (ringed eyes:1.3),'
+    - name: 遠くを見つめる
+      tags:
+        (facing_viewer:1.3), (looking_afar:1.3): '遠くを見つめる: (facing viewer:1.3), (looking afar:1.3),'
+    - name: 髪で片目が隠れる
+      tags:
+        (facing_viewer:1.3), (straight-on:1.3), (hair_over_one_eye:1.3): '髪で片目が隠れる: (facing viewer:1.3), (straight-on:1.3),
+          (hair over one eye:1.3),'
+  - name: 戦闘シーンを強化するエフェクトのプロンプト一覧 │ Niji journey 7で検証
+    groups:
+    - name: なぜエフェクトを出すのか
+      tags:
+        なぜエフェクトを出すのか: 'なぜエフェクトを出すのか: なぜエフェクトを出すのか'
+    - name: エネルギー波のエフェクト
+      tags:
+        エネルギー波のエフェクト: 'エネルギー波のエフェクト: エネルギー波のエフェクト'
+    - name: サイコキネシスのエフェクト
+      tags:
+        サイコキネシスのエフェクト: 'サイコキネシスのエフェクト: サイコキネシスのエフェクト'
+    - name: バリアのエフェクト
+      tags:
+        バリアのエフェクト: 'バリアのエフェクト: バリアのエフェクト'
+    - name: 斬撃エフェクト
+      tags:
+        斬撃エフェクト: '斬撃エフェクト: 斬撃エフェクト'
+    - name: 氷属性のエフェクト
+      tags:
+        氷属性のエフェクト: '氷属性のエフェクト: 氷属性のエフェクト'
+    - name: 浮遊する武器
+      tags:
+        浮遊する武器: '浮遊する武器: 浮遊する武器'
+    - name: 炎属性のエフェクト
+      tags:
+        炎属性のエフェクト: '炎属性のエフェクト: 炎属性のエフェクト'
+    - name: 闇属性のエフェクト
+      tags:
+        闇属性のエフェクト: '闇属性のエフェクト: 闇属性のエフェクト'
+    - name: 電撃エフェクト
+      tags:
+        電撃エフェクト: '電撃エフェクト: 電撃エフェクト'
+    - name: 風属性のエフェクト
+      tags:
+        風属性のエフェクト: '風属性のエフェクト: 風属性のエフェクト'
+    - name: 魔法陣のエフェクト
+      tags:
+        魔法陣のエフェクト: '魔法陣のエフェクト: 魔法陣のエフェクト'
+  - name: 最近シェアした衣装プロンプトまとめ
+    groups:
+    - name: ・いちごコーデ
+      tags:
+        ? pink_cropped_jacket, white_blouse, center_frilled, strawberry_patterned_skirt, pink_flare_skirt, skirt_with_white_lace_hem,
+          green_beret, white_lace_tights, white_platform_boots, strawberry_shaped_bag_with_gold_chain
+        : 'いちごコーデ: pink cropped jacket, white blouse, center frilled, strawberry patterned skirt, pink flare skirt, skirt
+          with white lace hem, green beret, white lace tights, white platform boots, strawberry shaped bag with gold chain'
+    - name: ・いちご大福コーデ
+      tags:
+        ? white_kimono, furisode, strawberry_patterned, light_green_obi, obi_decorated_with_white_frills, flare_skirt, red_and_white_tiered_skirt,
+          skirt_decorated_with_white_frills, brown_tights, brown_lace-up_boots, Japanese_knot_hair_ornament
+        : 'いちご大福コーデ: white kimono, furisode, strawberry patterned, light green obi, obi decorated with white frills, flare
+          skirt, red and white tiered skirt, skirt decorated with white frills, brown tights, brown lace-up boots, Japanese
+          knot hair ornament'
+    - name: ・セーラー着物コーデ
+      tags:
+        ? navy_sailor_collar, white_kimono, red_tie, wide_sleeves, line-edged_sleeves, navy_pleats_hakama, knee-length_hakama,
+          black_tights, brown_loafers
+        : 'セーラー着物コーデ: navy sailor collar, white kimono, red tie, wide sleeves, line-edged sleeves, navy pleats hakama, knee-length
+          hakama, black tights, brown loafers'
+  - name: 槍のポーズ+アングルの組み合わせ20選【GPT-Image 2.0/Nano Banana Pro】
+    groups:
+    - name: 1.二人の対峙（背後から視点）
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_pale_mannequin-like_spear_fighter_in_the_left_foreground_seen_from_behind,
+          confronting_a_smaller_solid_black_silhouette_in_the_right_background, over-the-shoulder_combat_view, long_spear_crossing_diagonally_toward_the_opponent,
+          thin_black_pencil_lines, no_facial_features, plain_light_gray_background, monochrome, restrained_tension, clean_minimalist_combat_rendering.
+        : '1.二人の対峙（背後から視点）: Minimalist conceptual line drawing of a pale mannequin-like spear fighter in the left foreground
+          seen from behind, confronting a smaller solid black silhouette in the right background, over-the-shoulder combat
+          view, long spear crossing diagonally toward the opponent, thin black pencil lines, no facial features, plain light
+          gray background, monochrome, restrained tension, clean minimalist combat rendering.'
+    - name: 10.かすめそうな薙ぎ
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_pale_mannequin-like_spear_fighter_on_the_left_sweeping_a_long_spear_toward_a_larger_black_silhouette_on_the_right,
+          medium_shot, broad_curved_motion_arc_above_both_figures, spearhead_passing_near_the_opponent’s_head_and_neck_space,
+          thin_black_pencil_lines, plain_light_gray_background, monochrome, sharp_close-range_motion, clean_minimalist_combat_rendering.
+        : '10.かすめそうな薙ぎ: Minimalist conceptual line drawing of a pale mannequin-like spear fighter on the left sweeping a long
+          spear toward a larger black silhouette on the right, medium shot, broad curved motion arc above both figures, spearhead
+          passing near the opponent’s head and neck space, thin black pencil lines, plain light gray background, monochrome,
+          sharp close-range motion, clean minimalist combat rendering.'
+    - name: 11.槍をはじく
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_pale_mannequin-like_spear_fighter_on_the_left_performing_a_sweeping_strike_toward_a_larger_black_silhouette_on_the_right,
+          medium_shot, large_curved_motion_arc_above_the_figures, thin_black_pencil_lines, no_facial_features, plain_light_gray_background,
+          monochrome, dangerous_follow-through_energy, clean_minimalist_action_rendering.
+        : '11.槍をはじく: Minimalist conceptual line drawing of a pale mannequin-like spear fighter on the left performing a sweeping
+          strike toward a larger black silhouette on the right, medium shot, large curved motion arc above the figures, thin
+          black pencil lines, no facial features, plain light gray background, monochrome, dangerous follow-through energy,
+          clean minimalist action rendering.'
+    - name: 12.頭上の槍受け
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_two_faceless_mannequin-like_human_figures_in_a_close_overhead_spear_clash,
+          pale_spear_wielder_on_the_left_and_black_silhouette_opponent_on_the_right, medium_full_shot, one_weapon_raised_above_the_figures,
+          thin_black_pencil_lines, no_facial_features, plain_light_gray_background, monochrome, controlled_action_energy,
+          clean_minimalist_martial_rendering.
+        : '12.頭上の槍受け: Minimalist conceptual line drawing of two faceless mannequin-like human figures in a close overhead
+          spear clash, pale spear wielder on the left and black silhouette opponent on the right, medium full shot, one weapon
+          raised above the figures, thin black pencil lines, no facial features, plain light gray background, monochrome,
+          controlled action energy, clean minimalist martial rendering.'
+    - name: 13.頭上の回し槍
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_single_pale_faceless_human_figure_performing_an_overhead_circular_spear_flourish,
+          one_arm_raised_above_the_head, thin_black_pencil_lines, soft_grayscale_shading, no_facial_features, large_elliptical_motion_arc_wrapping_around_the_body,
+          plain_white_background, monochrome, clean_and_fluid_atmosphere, high_clarity, clean_minimalist_weapon-study_rendering.
+        : '13.頭上の回し槍: Minimalist conceptual line drawing of a single pale faceless human figure performing an overhead circular
+          spear flourish, one arm raised above the head, thin black pencil lines, soft grayscale shading, no facial features,
+          large elliptical motion arc wrapping around the body, plain white background, monochrome, clean and fluid atmosphere,
+          high clarity, clean minimalist weapon-study rendering.'
+    - name: 14.正面の槍突き
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_pale_mannequin-like_spear_fighter_on_the_left_delivering_a_straight_horizontal_thrust_toward_a_large_black_silhouette_on_the_right,
+          medium_shot, strong_impact_focus_at_center, thin_black_pencil_lines, no_facial_features, graphic_radial_motion_lines_behind_the_clash,
+          plain_pale_background, monochrome, high_clarity, clean_minimalist_action_rendering.
+        : '14.正面の槍突き: Minimalist conceptual line drawing of a pale mannequin-like spear fighter on the left delivering a straight
+          horizontal thrust toward a large black silhouette on the right, medium shot, strong impact focus at center, thin
+          black pencil lines, no facial features, graphic radial motion lines behind the clash, plain pale background, monochrome,
+          high clarity, clean minimalist action rendering.'
+    - name: 15.胴を崩す一撃
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_pale_mannequin-like_spear_fighter_on_the_left_driving_a_long_spear_across_the_lower_torso_of_a_large_black_silhouette_on_the_right,
+          medium_shot, close-range_body-line_strike, thin_black_pencil_lines, no_facial_features, plain_light_gray_background,
+          monochrome, destabilized_reaction_pose, clean_minimalist_martial_rendering.
+        : '15.胴を崩す一撃: Minimalist conceptual line drawing of a pale mannequin-like spear fighter on the left driving a long
+          spear across the lower torso of a large black silhouette on the right, medium shot, close-range body-line strike,
+          thin black pencil lines, no facial features, plain light gray background, monochrome, destabilized reaction pose,
+          clean minimalist martial rendering.'
+    - name: 16.懐に入る攻防
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_pale_mannequin-like_spear_fighter_on_the_left_being_crowded_at_close_range_by_a_large_black_silhouette_opponent_on_the_right,
+          the_opponent_jamming_the_spear_line_with_the_upper_arm_and_shoulder_area, medium_shot, thin_black_pencil_lines,
+          no_facial_features, plain_light_gray_background, monochrome, tight_inside-range_tension, clean_minimalist_combat_rendering.
+        : '16.懐に入る攻防: Minimalist conceptual line drawing of a pale mannequin-like spear fighter on the left being crowded
+          at close range by a large black silhouette opponent on the right, the opponent jamming the spear line with the upper
+          arm and shoulder area, medium shot, thin black pencil lines, no facial features, plain light gray background, monochrome,
+          tight inside-range tension, clean minimalist combat rendering.'
+    - name: 17.胸元の押し込み
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_two_faceless_human_figures_in_a_compressed_spear_jam, a_pale_fighter_on_the_left_pressing_a_long_shaft_into_a_dark_silhouette_on_the_right_at_chest_level,
+          thin_black_pencil_lines, soft_grayscale_tones, no_facial_features, close-range_tactical_posture, empty_white_background,
+          no_scenery, monochrome, restrained_and_technical_atmosphere, high_clarity, clean_minimalist_combat_rendering.
+        : '17.胸元の押し込み: Minimalist conceptual line drawing of two faceless human figures in a compressed spear jam, a pale
+          fighter on the left pressing a long shaft into a dark silhouette on the right at chest level, thin black pencil
+          lines, soft grayscale tones, no facial features, close-range tactical posture, empty white background, no scenery,
+          monochrome, restrained and technical atmosphere, high clarity, clean minimalist combat rendering.'
+    - name: 18.胴払い崩し
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_pale_mannequin-like_spear_user_in_the_left_background_striking_diagonally_into_the_side_of_a_larger_black_silhouette_in_the_right_foreground,
+          medium_full_shot, thin_black_pencil_lines, no_facial_features, plain_light_gray_background, slight_impact_marks_at_the_contact_point,
+          monochrome, strong_close-range_tension, clean_minimalist_combat_rendering.
+        : '18.胴払い崩し: Minimalist conceptual line drawing of a pale mannequin-like spear user in the left background striking
+          diagonally into the side of a larger black silhouette in the right foreground, medium full shot, thin black pencil
+          lines, no facial features, plain light gray background, slight impact marks at the contact point, monochrome, strong
+          close-range tension, clean minimalist combat rendering.'
+    - name: 19.低い潜行姿勢
+      tags:
+        ? Minimalist_conceptual_silhouette_drawing_of_a_single_black_human_figure_in_a_low_crouching_launch-ready_pose, one_hand_touching_the_ground,
+          one_arm_bent_behind_the_body, deeply_folded_legs, no_facial_features, plain_light_gray_background, extreme_negative_space,
+          monochrome, stealthy_and_athletic_tension, clean_minimalist_action_reference_rendering.
+        : '19.低い潜行姿勢: Minimalist conceptual silhouette drawing of a single black human figure in a low crouching launch-ready
+          pose, one hand touching the ground, one arm bent behind the body, deeply folded legs, no facial features, plain
+          light gray background, extreme negative space, monochrome, stealthy and athletic tension, clean minimalist action
+          reference rendering.'
+    - name: 2.中段の槍構え
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_single_pale_mannequin-like_human_figure_seen_from_a_rear_three-quarter_view,
+          holding_a_long_spear_across_the_shoulders_and_forward_line, medium_shot, thin_black_pencil_lines, no_facial_features,
+          simple_training_garments, plain_light_gray_background, no_props, monochrome, quiet_instructional_mood, clean_minimalist_martial_reference_rendering.
+        : '2.中段の槍構え: Minimalist conceptual line drawing of a single pale mannequin-like human figure seen from a rear three-quarter
+          view, holding a long spear across the shoulders and forward line, medium shot, thin black pencil lines, no facial
+          features, simple training garments, plain light gray background, no props, monochrome, quiet instructional mood,
+          clean minimalist martial reference rendering.'
+    - name: 20.槍の薙ぎ
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_single_pale_mannequin-like_human_figure_performing_a_broad_sweeping_spear_motion,
+          three-quarter_upper-body_view, large_curved_motion_arc_on_the_right, thin_black_pencil_lines, no_facial_features,
+          simple_training_clothing, plain_light_gray_background, monochrome, technical_and_quiet, clean_minimalist_weapon-study_rendering.
+        : '20.槍の薙ぎ: Minimalist conceptual line drawing of a single pale mannequin-like human figure performing a broad sweeping
+          spear motion, three-quarter upper-body view, large curved motion arc on the right, thin black pencil lines, no facial
+          features, simple training clothing, plain light gray background, monochrome, technical and quiet, clean minimalist
+          weapon-study rendering.'
+    - name: 3.間合いのにらみ合い
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_two_faceless_human_figures_standing_apart_in_a_spear_standoff, pale_spear_fighter_on_the_left_and_black_silhouette_opponent_on_the_right,
+          side_view, full-body_composition, long_spear_held_across_the_upper_body, thin_black_pencil_lines, plain_light_gray_background_with_subtle_dramatic_framing_lines,
+          monochrome, spacious_and_tense, clean_minimalist_duel_rendering.
+        : '3.間合いのにらみ合い: Minimalist conceptual line drawing of two faceless human figures standing apart in a spear standoff,
+          pale spear fighter on the left and black silhouette opponent on the right, side view, full-body composition, long
+          spear held across the upper body, thin black pencil lines, plain light gray background with subtle dramatic framing
+          lines, monochrome, spacious and tense, clean minimalist duel rendering.'
+    - name: 4.走り込みの槍
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_single_pale_mannequin-like_spear_fighter_charging_low_and_fast_toward_the_right,
+          body_compressed_in_a_running_thrust_posture, long_spear_extended_forward, medium_full_shot, thin_black_pencil_lines,
+          no_facial_features, plain_light_gray_background_with_dense_speed_lines_on_the_right, monochrome, high_directional_energy,
+          clean_minimalist_combat_rendering.
+        : '4.走り込みの槍: Minimalist conceptual line drawing of a single pale mannequin-like spear fighter charging low and fast
+          toward the right, body compressed in a running thrust posture, long spear extended forward, medium full shot, thin
+          black pencil lines, no facial features, plain light gray background with dense speed lines on the right, monochrome,
+          high directional energy, clean minimalist combat rendering.'
+    - name: 5.遠間の突進
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_large_pale_mannequin-like_spear_fighter_in_the_left_foreground_lunging_aggressively_toward_a_small_distant_black_silhouette_on_the_far_right,
+          full-body_long_shot, extended_spear_thrust, thin_black_pencil_lines, no_facial_features, dramatic_radial_speed_lines_across_a_pale_background,
+          monochrome, long-range_attack_energy, clean_minimalist_action_rendering.
+        : '5.遠間の突進: Minimalist conceptual line drawing of a large pale mannequin-like spear fighter in the left foreground
+          lunging aggressively toward a small distant black silhouette on the far right, full-body long shot, extended spear
+          thrust, thin black pencil lines, no facial features, dramatic radial speed lines across a pale background, monochrome,
+          long-range attack energy, clean minimalist action rendering.'
+    - name: 6.穂先止め
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_pale_mannequin-like_spear_fighter_on_the_left_having_the_spear_shaft_trapped_near_the_tip_by_a_black_silhouette_opponent_on_the_right,
+          close_combat_view, medium_shot, thin_black_pencil_lines, no_facial_features, plain_light_gray_background, monochrome,
+          compressed_weapon-control_tension, clean_minimalist_martial_rendering.
+        : '6.穂先止め: Minimalist conceptual line drawing of a pale mannequin-like spear fighter on the left having the spear
+          shaft trapped near the tip by a black silhouette opponent on the right, close combat view, medium shot, thin black
+          pencil lines, no facial features, plain light gray background, monochrome, compressed weapon-control tension, clean
+          minimalist martial rendering.'
+    - name: 7.槍の組み付き
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_two_mannequin-like_human_figures_locked_in_a_very_close_spear_bind, a_pale_fighter_on_the_left_pressing_inward_and_a_black_silhouette_on_the_right_gripping_the_shaft_in_resistance,
+          thin_black_pencil_lines, no_facial_features, tight_overlapping_forms, plain_white_background, monochrome, tense_and_technical_atmosphere,
+          high_clarity, clean_minimalist_martial_rendering.
+        : '7.槍の組み付き: Minimalist conceptual line drawing of two mannequin-like human figures locked in a very close spear bind,
+          a pale fighter on the left pressing inward and a black silhouette on the right gripping the shaft in resistance,
+          thin black pencil lines, no facial features, tight overlapping forms, plain white background, monochrome, tense
+          and technical atmosphere, high clarity, clean minimalist martial rendering.'
+    - name: 8.槍を振りほどこうとする
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_a_pale_mannequin-like_spear_fighter_seen_from_a_rear_three-quarter_angle,
+          driving_a_descending_diagonal_spear_bind_against_a_black_silhouette_opponent, thin_black_pencil_lines, no_facial_features,
+          broad_overhead_motion_arc, plain_white_background, monochrome, dynamic_but_controlled_atmosphere, high_clarity,
+          clean_minimalist_martial_rendering.
+        : '8.槍を振りほどこうとする: Minimalist conceptual line drawing of a pale mannequin-like spear fighter seen from a rear three-quarter
+          angle, driving a descending diagonal spear bind against a black silhouette opponent, thin black pencil lines, no
+          facial features, broad overhead motion arc, plain white background, monochrome, dynamic but controlled atmosphere,
+          high clarity, clean minimalist martial rendering.'
+    - name: 9.逆端の薙ぎ
+      tags:
+        ? Minimalist_conceptual_line_drawing_of_two_mannequin-like_human_figures_in_close_combat, a_pale_faceless_fighter_on_the_left_using_the_reverse_end_of_a_long_spear_against_a_black_silhouette_on_the_right,
+          thin_black_pencil_lines, soft_grayscale_shading, no_facial_features, compact_short-range_motion, plain_white_background,
+          subtle_impact_emphasis_only, monochrome, clean_and_tense_atmosphere, high_clarity, clean_minimalist_martial_rendering.
+        : '9.逆端の薙ぎ: Minimalist conceptual line drawing of two mannequin-like human figures in close combat, a pale faceless
+          fighter on the left using the reverse end of a long spear against a black silhouette on the right, thin black pencil
+          lines, soft grayscale shading, no facial features, compact short-range motion, plain white background, subtle impact
+          emphasis only, monochrome, clean and tense atmosphere, high clarity, clean minimalist martial rendering.'
+    - name: キャラクターを変えたいとき
+      tags:
+        ? mannequin-like_human_figures_humanoid_mannequins_faceless_no_facial_features_no_clothing_identity-less_clean_anatomical_forms
+        : 'キャラクターを変えたいとき: mannequin-like human figures humanoid mannequins faceless no facial features no clothing identity-less
+          clean anatomical forms'
+  - name: 第八回【キャラ編】Stable Diffusionでイメージ通りのキャラを作り出す！人物指定プロンプト10選
+    groups:
+    - name: 🖼 生成例とポイント
+      tags:
+        elf_ears, fantasy, elegant, graceful: 日傘・リボン・ワンピースを追加。背景は庭園やテラスがおすすめ。 ⑨ エルフ
+        glasses, shy_smile, intelligent: 頬をほんのり赤らめ、顔の角度をつけると“照れ”が自然に見えます。 ⑤ メガネっ子
+        gyaru, flashy_makeup, playful_smile: メガネの反射を活かすと知的さUP。控えめな笑顔がポイントです。 ⑥ ギャル系
+        little_sister, innocent, bright_smile: 柔らかな光と微笑みを意識。髪を長めに設定すると“包容力”が伝わります。 ② 妹系
+        mature_woman, gentle_smile, calm_expression: 共通で下記プロンプト入れています , (masterpiece, best quality, ultra-detailed, 8k, beautiful
+          lighting, anime style), ① お姉さん系
+        princess, elegant_dress, parasol, refined_smile: 金髪碧眼＋明るい笑顔。手を振るポーズなども自然で可愛いです。 ⑧ お嬢様
+        short_hair, cool, confident, tomboy: 目を大きく、笑顔を明るめに。背景をカフェや公園にすると親しみやすくなります。 ③ ボーイッシュ
+        tsundere, blush, slightly_angry: ショートヘア＋軽装で動きのある印象に。スポーティなポーズと好相性です。 ④ ツンデレ
+        ショートヘア＋軽装で動きのある印象に。スポーティなポーズと好相性です。: '🖼 生成例とポイント: ショートヘア＋軽装で動きのある印象に。スポーティなポーズと好相性です。'
+        メガネの反射を活かすと知的さUP。控えめな笑顔がポイントです。: '🖼 生成例とポイント: メガネの反射を活かすと知的さUP。控えめな笑顔がポイントです。'
+        共通で下記プロンプト入れています, (masterpiece, best_quality, ultra-detailed, 8k, beautiful_lighting, anime_style): '🖼 生成例とポイント: 共通で下記プロンプト入れています
+          , (masterpiece, best quality, ultra-detailed, 8k, beautiful lighting, anime style),'
+        日傘・リボン・ワンピースを追加。背景は庭園やテラスがおすすめ。: '🖼 生成例とポイント: 日傘・リボン・ワンピースを追加。背景は庭園やテラスがおすすめ。'
+        柔らかな光と微笑みを意識。髪を長めに設定すると“包容力”が伝わります。: '🖼 生成例とポイント: 柔らかな光と微笑みを意識。髪を長めに設定すると“包容力”が伝わります。'
+        目を大きく、笑顔を明るめに。背景をカフェや公園にすると親しみやすくなります。: '🖼 生成例とポイント: 目を大きく、笑顔を明るめに。背景をカフェや公園にすると親しみやすくなります。'
+        耳をしっかり見せる構図が重要。幻想的な背景（森や湖）と好相性です。: '🖼 生成例とポイント: 耳をしっかり見せる構図が重要。幻想的な背景（森や湖）と好相性です。'
+        金髪碧眼＋明るい笑顔。手を振るポーズなども自然で可愛いです。: '🖼 生成例とポイント: 金髪碧眼＋明るい笑顔。手を振るポーズなども自然で可愛いです。'
+        頬をほんのり赤らめ、顔の角度をつけると“照れ”が自然に見えます。: '🖼 生成例とポイント: 頬をほんのり赤らめ、顔の角度をつけると“照れ”が自然に見えます。'
+        鮮やかな髪色とメイクで華やかに。背景は街やネオンがよく映えます。: '🖼 生成例とポイント: 鮮やかな髪色とメイクで華やかに。背景は街やネオンがよく映えます。'
+  - name: 第十四回【照明編】Stable Diffusionで光を制する！画像の印象を劇的に変えるライティングパターン10選
+    groups:
+    - name: ☀️ 1. Soft light（柔らかい光）
+      tags:
+        例："soft_lighting", "natural_diffuse_light": '☀️ 1. Soft light（柔らかい光）: 例："soft lighting", "natural diffuse light"'
+    - name: 🌇 3. Sunset lighting（夕暮れの光）
+      tags:
+        例："sunset_glow", "warm_orange_light": '🌇 3. Sunset lighting（夕暮れの光）: 例："sunset glow", "warm orange light"'
+    - name: 🌈 10. Dramatic lighting（劇的な光）
+      tags:
+        例："dramatic_light", "cinematic_shadow_contrast": '🌈 10. Dramatic lighting（劇的な光）: 例："dramatic light", "cinematic shadow
+          contrast"'
+    - name: 🌌 9. Studio lighting（スタジオ撮影風）
+      tags:
+        例："studio_portrait_lighting", "professional_photo_setup": '🌌 9. Studio lighting（スタジオ撮影風）: 例："studio portrait lighting",
+          "professional photo setup"'
+    - name: 🌙 4. Moonlight（月明かり）
+      tags:
+        例："under_the_moonlight", "blue_night_lighting": '🌙 4. Moonlight（月明かり）: 例："under the moonlight", "blue night lighting"'
+    - name: 🌤 2. Bright sunlight（強い日差し）
+      tags:
+        例："bright_sunlight", "strong_shadows": '🌤 2. Bright sunlight（強い日差し）: 例："bright sunlight", "strong shadows"'
+    - name: 🎇 7. Neon light（ネオン・人工光）
+      tags:
+        例："neon_lighting", "cyberpunk_city_lights": '🎇 7. Neon light（ネオン・人工光）: 例："neon lighting", "cyberpunk city lights"'
+    - name: 💡 6. Backlight（逆光）
+      tags:
+        例："backlight_rim_glow", "cinematic_backlight": '💡 6. Backlight（逆光）: 例："backlight rim glow", "cinematic backlight"'
+    - name: 🔥 5. Candlelight（キャンドルライト）
+      tags:
+        例："candlelight_glow", "romantic_lighting": '🔥 5. Candlelight（キャンドルライト）: 例："candlelight glow", "romantic lighting"'
+    - name: 🪟 8. Window light（窓からの光）
+      tags:
+        例："light_through_window", "morning_light": '🪟 8. Window light（窓からの光）: 例："light through window", "morning light"'
+  - name: 🎨生成イラスト研究（髪型編）①
+    groups:
+    - name: １．外ハネショートボブ
+      tags:
+        外ハネショートボブ: '１．外ハネショートボブ: 外ハネショートボブ'
+    - name: １．王道ストレートミドル
+      tags:
+        王道ミドルヘア: '１．王道ストレートミドル: 王道ミドルヘア'
+    - name: １．高めツインテール（短め）
+      tags:
+        高めツインテール（短め: '１．高めツインテール（短め）: 高めツインテール（短め'
+    - name: ２．内巻きショートボブ
+      tags:
+        内巻きショートボブ: '２．内巻きショートボブ: 内巻きショートボブ'
+    - name: ２．内巻きミドルヘア
+      tags:
+        内巻きミドルヘア: '２．内巻きミドルヘア: 内巻きミドルヘア'
+    - name: ２．高めツインテール（長め）
+      tags:
+        高めツインテール（長め: '２．高めツインテール（長め）: 高めツインテール（長め'
+    - name: ３．低めツインテール（短め）
+      tags:
+        低めツインテール（短め: '３．低めツインテール（短め）: 低めツインテール（短め'
+    - name: ３．前髪パッツンショートボブ
+      tags:
+        前髪パッツンショートボブ: '３．前髪パッツンショートボブ: 前髪パッツンショートボブ'
+    - name: ３．外ハネミドルヘア
+      tags:
+        外ハネミドルヘア: '３．外ハネミドルヘア: 外ハネミドルヘア'
+    - name: ４．マッシュ寄りショートボブ
+      tags:
+        マッシュ寄りショートボブ: '４．マッシュ寄りショートボブ: マッシュ寄りショートボブ'
+    - name: ４．低めツインテール（長め）
+      tags:
+        低めツインテール（長め: '４．低めツインテール（長め）: 低めツインテール（長め'
+    - name: ４．崩し三つ編み混在ミドル
+      tags:
+        崩し三つ編み混在ミドル: '４．崩し三つ編み混在ミドル: 崩し三つ編み混在ミドル'
+    - name: ４．結んだミドルヘア
+      tags:
+        結んだミドルヘア: '４．結んだミドルヘア: 結んだミドルヘア'
+    - name: ５．ねじりツイン
+      tags:
+        ねじりツイン: '５．ねじりツイン: ねじりツイン'
+    - name: ５．ウェーブ・ミドルヘア
+      tags:
+        ウェーブミドルヘア: '５．ウェーブ・ミドルヘア: ウェーブミドルヘア'
+    - name: ５．前髪パッツン・ミドルヘア
+      tags:
+        前髪パッツンミドルヘア: '５．前髪パッツン・ミドルヘア: 前髪パッツンミドルヘア'
+    - name: ６．編み込み起点ツイン
+      tags:
+        編み込みツイン: '６．編み込み起点ツイン: 編み込みツイン'
+    - name: ７．ループツイン
+      tags:
+        ループツイン: '７．ループツイン: ループツイン'

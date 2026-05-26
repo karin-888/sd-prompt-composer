@@ -1,0 +1,45 @@
+{
+  "imported_at": 1779635092.2705972,
+  "source_category": "https://sorenuts.jp/category/prompts/",
+  "article_count": 7,
+  "skipped_articles": 6,
+  "tag_count": 11511,
+  "yaml_path": "/Users/hiori222/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/group_tags/sorenuts.yaml",
+  "articles": [
+    {
+      "title": "表情・目の形のプロンプト(呪文)一覧【Stable Diffusion】",
+      "url": "https://sorenuts.jp/1954/",
+      "tag_count": 240
+    },
+    {
+      "title": "キャラクターの職業・種族のプロンプト(呪文)一覧【Stable Diffusion】",
+      "url": "https://sorenuts.jp/2187/",
+      "tag_count": 503
+    },
+    {
+      "title": "環境・背景・場所のプロンプト(呪文)一覧【Stable Diffusion】",
+      "url": "https://sorenuts.jp/2420/",
+      "tag_count": 2205
+    },
+    {
+      "title": "【LoRAなしで】画風を変えるプロンプト(呪文)一覧【Stable Diffusion】",
+      "url": "https://sorenuts.jp/3602/",
+      "tag_count": 26
+    },
+    {
+      "title": "動作・行動のプロンプト(呪文)一覧【Stable Diffusion】",
+      "url": "https://sorenuts.jp/4507/",
+      "tag_count": 5029
+    },
+    {
+      "title": "ポーズ・体の特徴のプロンプト(呪文)一覧【Stable Diffusion】",
+      "url": "https://sorenuts.jp/4566/",
+      "tag_count": 1585
+    },
+    {
+      "title": "服装のプロンプト(呪文)一覧【Stable Diffusion】",
+      "url": "https://sorenuts.jp/4580/",
+      "tag_count": 2049
+    }
+  ]
+}

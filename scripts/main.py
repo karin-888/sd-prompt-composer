@@ -37,6 +37,19 @@ import api as composer_api
 from modules import shared
 
 
+def _negpip_installed() -> bool:
+    """True when sd-webui-negpip (NegPiP) extension is loaded."""
+    try:
+        for script in scripts.scripts_txt2img.alwayson_scripts:
+            filename = (getattr(script, "filename", "") or "").lower()
+            if "negpip" in filename:
+                return True
+    except Exception:
+        pass
+    ext_root = os.path.dirname(EXTENSION_PATH)
+    return os.path.isdir(os.path.join(ext_root, "sd-webui-negpip"))
+
+
 def on_app_started(demo, app):
     """Register FastAPI endpoints when the app starts."""
     # Initialize modules
@@ -185,7 +198,10 @@ def on_ui_tabs():
                     'Tokenizer (簡易表示)'
                     '<button id="pc_tokenizer_button" class="pc-tokenizer-reload">トークン数を計算</button>'
                     '</div>'
-                    '<div id="pc_tokenizer_view" class="pc-tokenizer-view">プロンプトを入力して「トークン数を計算」を押すと結果が表示されます。</div>'
+                    '<div id="pc_tokenizer_view" class="pc-tokenizer-view">'
+                    'Positive / Negative それぞれのトークン数を表示します。'
+                    'プロンプトを入力して「トークン数を計算」を押してください。'
+                    '</div>'
                 )
             with gr.Column(scale=1, min_width=200):
                 gr.HTML('<div class="pc-section-header">🎨 生成</div>')
@@ -205,6 +221,9 @@ def on_ui_tabs():
                     "🎨 生成 (txt2img)",
                     elem_id="pc_generate_txt2img",
                     variant="primary",
+                )
+                gr.HTML(
+                    '<div id="pc_generate_forever_mount" class="pc-generate-forever-slot"></div>'
                 )
                 gr.HTML('<div style="margin-top:14px;"></div>')
                 gr.HTML('<div class="pc-section-header">🔄 同期</div>')
@@ -228,6 +247,10 @@ def on_ui_tabs():
                     elem_id="pc_auto_format",
                     variant="secondary"
                 )
+                if _negpip_installed():
+                    gr.HTML(
+                        '<div id="pc_negpip_mount" class="pc-negpip-slot" data-negpip="1"></div>'
+                    )
 
         # ===== MAIN: 3-column layout =====
         with gr.Row(elem_id="pc_main_area"):

@@ -13,6 +13,11 @@ from typing import Dict, List, Optional, Tuple
 _cache: Optional[List[Dict[str, str]]] = None
 _last_sources: List[Dict[str, str]] = []
 
+# Additional wildcard roots scanned after WebUI defaults (absolute paths).
+EXTRA_WILDCARD_ROOTS: Tuple[str, ...] = (
+    os.path.expanduser("~/Downloads/Wildcard"),
+)
+
 
 def _norm(p: str) -> str:
     return (p or "").replace("\\", "/").strip("/")
@@ -73,6 +78,10 @@ def _candidate_dirs() -> List[Tuple[str, str]]:
         out.append(("webui", p))
     for d in _try_get_extension_wildcard_dirs():
         out.append(("ext", d))
+    for p in EXTRA_WILDCARD_ROOTS:
+        ap = os.path.abspath(os.path.expanduser(p))
+        if os.path.isdir(ap):
+            out.append(("downloads", ap))
     # dedupe
     seen = set()
     deduped: List[Tuple[str, str]] = []
@@ -107,7 +116,7 @@ def _walk_txt_files(root: str) -> List[str]:
     return files
 
 
-def _list_from_sd_dynamic_prompts(limit: int = 2000) -> Optional[List[Dict[str, str]]]:
+def _list_from_sd_dynamic_prompts() -> Optional[List[Dict[str, str]]]:
     """
     Use sd-dynamic-prompts' WildcardManager to list wildcards, including non-text sources
     (e.g. YAML collections). Returns None if the dependency isn't available.
@@ -129,7 +138,6 @@ def _list_from_sd_dynamic_prompts(limit: int = 2000) -> Optional[List[Dict[str, 
 
     def walk(node) -> None:
         nonlocal out
-        # collections/files
         try:
             colls = sorted(list(getattr(node, "collections", [])))
         except Exception:
@@ -139,20 +147,15 @@ def _list_from_sd_dynamic_prompts(limit: int = 2000) -> Optional[List[Dict[str, 
                 name = node.qualify_name(coll)
                 token = manager.to_wildcard(name)
                 out.append({"token": token, "path": name, "source": "sd-dynamic-prompts"})
-                if len(out) >= limit:
-                    return
             except Exception:
                 continue
 
-        # child nodes (folders)
         try:
             child_nodes = getattr(node, "child_nodes", {}) or {}
             items = sorted(child_nodes.items(), key=lambda kv: kv[0])
         except Exception:
             items = []
         for _, child in items:
-            if len(out) >= limit:
-                return
             walk(child)
 
     walk(root)
@@ -168,45 +171,32 @@ def _to_wildcard_token(root: str, file_path: str) -> str:
     return f"__{rel}__"
 
 
-def list_wildcards(force: bool = False, limit: int = 2000) -> List[Dict[str, str]]:
-    """
-    List available wildcard files.
-    Returns list of {token, path, source}.
-      - token: '__folder/name__' form for insertion
-      - path: relative path without extension (folder/name)
-      - source: candidate label
-    """
-    global _cache, _last_sources
-    if _cache is not None and not force:
-        return _cache
+def _merge_items(base: List[Dict[str, str]], extra: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    merged: Dict[str, Dict[str, str]] = {}
+    for it in (base or []) + (extra or []):
+        token = (it.get("token") or "").strip()
+        path = (it.get("path") or "").strip()
+        if not token:
+            continue
+        key = token or path
+        if key not in merged:
+            merged[key] = {"token": token, "path": path, "source": it.get("source", "")}
+        else:
+            src = merged[key].get("source", "")
+            add = it.get("source", "")
+            if add and add not in src:
+                merged[key]["source"] = (src + "," + add).strip(",")
+    out = list(merged.values())
+    out.sort(key=lambda x: x.get("path", "") or x.get("token", ""))
+    return out
 
-    def merge_items(base: List[Dict[str, str]], extra: List[Dict[str, str]]) -> List[Dict[str, str]]:
-        merged: Dict[str, Dict[str, str]] = {}
-        for it in (base or []) + (extra or []):
-            token = (it.get("token") or "").strip()
-            path = (it.get("path") or "").strip()
-            if not token:
-                continue
-            key = token or path
-            if key not in merged:
-                merged[key] = {"token": token, "path": path, "source": it.get("source", "")}
-            else:
-                # merge sources
-                src = merged[key].get("source", "")
-                add = it.get("source", "")
-                if add and add not in src:
-                    merged[key]["source"] = (src + "," + add).strip(",")
-        out = list(merged.values())
-        out.sort(key=lambda x: x.get("path", "") or x.get("token", ""))
-        return out
 
-    # 1) sd-dynamic-prompts (supports yaml collections etc.)
-    sddp_items = _list_from_sd_dynamic_prompts(limit=limit)
-
-    # 2) plain txt scanning in common dirs (and any other sources)
+def _build_cache() -> List[Dict[str, str]]:
+    """Scan all candidate dirs and return the full wildcard index."""
     scanned: List[Dict[str, str]] = []
-    sources: List[Dict[str, str]] = [{"source": s, "dir": d} for s, d in _candidate_dirs()]
+    sources: List[Dict[str, str]] = []
     for source, root in _candidate_dirs():
+        sources.append({"source": source, "dir": root})
         try:
             for fp in _walk_txt_files(root):
                 token = _to_wildcard_token(root, fp)
@@ -214,27 +204,34 @@ def list_wildcards(force: bool = False, limit: int = 2000) -> List[Dict[str, str
                 if rel.lower().endswith(".txt"):
                     rel = rel[:-4]
                 scanned.append({"token": token, "path": rel, "source": source})
-                if len(scanned) >= limit:
-                    break
         except Exception:
             continue
-        if len(scanned) >= limit:
-            break
 
-    # 3) merge (allow txt + yaml mixed)
+    sddp_items = _list_from_sd_dynamic_prompts()
     if sddp_items is not None:
         sources = [{"source": "sd-dynamic-prompts", "dir": "sd_dynamic_prompts.get_wildcard_dir()"}] + sources
-        out = merge_items(sddp_items, scanned)
+        out = _merge_items(sddp_items, scanned)
     else:
-        out = merge_items(scanned, [])
+        out = _merge_items(scanned, [])
 
+    global _last_sources
     _last_sources = sources
-
-    # Respect limit after merge
-    if len(out) > limit:
-        out = out[:limit]
-
-    # stable sort: path asc
-    _cache = out
     return out
 
+
+def list_wildcards(force: bool = False, limit: int = 5000) -> List[Dict[str, str]]:
+    """
+    List available wildcard files.
+    Returns list of {token, path, source}.
+      - token: '__folder/name__' form for insertion
+      - path: relative path without extension (folder/name)
+      - source: candidate label
+    """
+    global _cache
+    if _cache is None or force:
+        _cache = _build_cache()
+
+    out = _cache
+    if limit and len(out) > limit:
+        out = out[:limit]
+    return out

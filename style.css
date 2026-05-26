@@ -218,6 +218,49 @@
     opacity: 0.85;
 }
 
+.pc-generate-forever-slot {
+    margin-top: 8px;
+    width: 100%;
+}
+
+.pc-generate-forever-slot:empty {
+    display: none;
+}
+
+.pc-generate-forever-row,
+.pc-generate-forever-clone {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.pc-generate-forever-row .pc-generate-forever-btn,
+.pc-generate-forever-clone button {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 2.4em;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color-primary, #555);
+    background: var(--button-secondary-background-fill, #eceff1);
+    color: var(--button-secondary-text-color, #1f2933);
+    font-size: 0.92em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pc-generate-forever-row .pc-generate-forever-btn:hover,
+.pc-generate-forever-clone button:hover {
+    background: var(--button-secondary-background-fill-hover, #dde3ea);
+}
+
+.pc-generate-forever-slot.is-forever-active .pc-generate-forever-start.is-active,
+.pc-generate-forever-slot.is-forever-active .pc-generate-forever-clone button.is-active {
+    border-color: rgba(255, 152, 0, 0.75);
+    box-shadow: 0 0 0 1px rgba(255, 152, 0, 0.25);
+}
+
 /* ===== Tokenizer Preview ===== */
 .pc-tokenizer-header {
     margin-top: 10px;
@@ -227,22 +270,53 @@
 
 .pc-tokenizer-view {
     margin-top: 4px;
+    font-size: 0.8em;
+}
+
+.pc-tokenizer-dual {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pc-tokenizer-pane {
     padding: 6px 8px;
     border-radius: 6px;
     background: var(--background-fill-secondary, #222);
     border: 1px solid var(--border-color-primary, #444);
-    max-height: 140px;
+    max-height: min(36vh, 260px);
     overflow-y: auto;
     scrollbar-width: thin;
-    font-size: 0.8em;
+}
+
+.pc-tokenizer-pane-pos {
+    border-left: 3px solid rgba(118, 185, 237, 0.85);
+}
+
+.pc-tokenizer-pane-neg {
+    border-left: 3px solid rgba(229, 115, 115, 0.85);
+}
+
+.pc-tokenizer-pane-pos .pc-tokenizer-summary strong {
+    color: #90caf9;
+}
+
+.pc-tokenizer-pane-neg .pc-tokenizer-summary strong {
+    color: #ef9a9a;
 }
 
 .pc-tokenizer-summary {
+    position: sticky;
+    top: 0;
+    z-index: 1;
     margin-bottom: 4px;
+    padding-bottom: 4px;
     color: var(--body-text-color-subdued, #ccc);
     display: flex;
     align-items: center;
     gap: 8px;
+    background: var(--background-fill-secondary, #222);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .pc-tokenizer-reload {
@@ -883,9 +957,11 @@
 
 .pc-tag-card-body .pc-tag-jp {
     display: block;
-    font-size: 0.68em;
-    line-height: 1.3;
-    color: #b0c4de;
+    font-size: 0.84em;
+    line-height: 1.35;
+    font-weight: 600;
+    color: var(--body-text-color, #4a6278);
+    opacity: 0.92;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -915,7 +991,7 @@
 .pc-tag-preview-float img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
 }
 
@@ -928,6 +1004,28 @@
     font-size: 0.78em;
     color: var(--body-text-color-subdued, #9aa6b2);
     padding: 6px 8px;
+}
+
+.pc-tag-load-more {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(118, 185, 237, 0.35);
+    background: rgba(118, 185, 237, 0.12);
+    color: inherit;
+    cursor: pointer;
+    font-size: 0.82em;
+}
+
+.pc-tag-load-more:hover:not(:disabled) {
+    background: rgba(118, 185, 237, 0.2);
+}
+
+.pc-tag-load-more:disabled {
+    opacity: 0.65;
+    cursor: wait;
 }
 
 .pc-tag-path-search-results {
@@ -1887,6 +1985,32 @@
     color: var(--body-text-color-subdued, #666);
 }
 
+/* NegPiP (sd-webui-negpip) slot under auto-format */
+.pc-negpip-slot {
+    margin-top: 12px;
+    width: 100%;
+    flex: 0 0 auto;
+    overflow: hidden;
+}
+
+.pc-negpip-slot:empty {
+    display: none;
+}
+
+.pc-negpip-slot .input-accordion-m,
+.pc-negpip-clone {
+    width: 100%;
+}
+
+.pc-negpip-clone .label-wrap {
+    width: 100%;
+}
+
+/* Hide anything except the mirrored NegPiP accordion */
+.pc-negpip-slot > :not(.pc-negpip-clone):not(.input-accordion-m) {
+    display: none !important;
+}
+
 /* Order profile manager (save/delete user profiles) */
 .pc-order-profile-manager {
     margin-top: 4px;
@@ -2284,7 +2408,9 @@
 
 .pc-tag-jp {
     font-size: 0.95em;
-    color: #b0c4de;
+    font-weight: 500;
+    color: var(--body-text-color, #5a7086);
+    opacity: 0.82;
     padding: 2px 2px;
 }
 

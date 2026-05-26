@@ -34,9 +34,159 @@ def looks_like_english_tag(text: str) -> bool:
 def normalize_tag_jp(tag: str, jp: str) -> tuple[str, str]:
     tag = (tag or "").strip()
     jp = (jp or "").strip()
+    if is_catalog_label_id(jp):
+        return tag, jp
     if looks_like_japanese(tag) and looks_like_english_tag(jp):
         tag, jp = jp, tag
     return tag, jp
+
+
+_NOPLOG_CATEGORY_SAMPLE_RE = re.compile(r"^「.+」カテゴリの作例画像$")
+_NOPLOG_GENERIC_SAMPLE_RE = re.compile(r".+(の作例画像?|の作例)$")
+_NOPLOG_ARTICLE_LABEL_RE = re.compile(r"[_\-]\d+－|－人物設定|－背景|－装飾")
+_TAG_CLAUSE_SPLIT_RE = re.compile(r"[,，]")
+_CATALOG_ID_RE = re.compile(r"^[A-Za-z]{1,4}-\d{2,3}$")
+_CATALOG_JP_PREFIX_RE = re.compile(r"^[A-Za-z]{1,4}-\d{2,3}\s+")
+
+
+def is_catalog_label_id(text: str) -> bool:
+    return bool(_CATALOG_ID_RE.match((text or "").strip()))
+
+
+def is_valid_english_prompt_tag(
+    text: str,
+    *,
+    max_len: int = 120,
+    max_commas: int = 8,
+) -> bool:
+    t = (text or "").strip()
+    if not t or len(t) > max_len:
+        return False
+    if t.count(",") > max_commas:
+        return False
+    if is_catalog_label_id(t):
+        return False
+    if not looks_like_english_tag(t):
+        return False
+    if not re.search(r"[a-zA-Z]{3,}", t):
+        return False
+    return True
+
+
+def clean_catalog_jp_label(jp: str) -> str:
+    jp = (jp or "").strip()
+    if not jp or is_catalog_label_id(jp):
+        return ""
+    jp = _CATALOG_JP_PREFIX_RE.sub("", jp).strip()
+    jp = re.sub(r"\s+[A-Za-z]{1,4}-\d{2,3}\s*$", "", jp).strip()
+    return jp
+
+
+def normalize_lookup_key(text: str) -> str:
+    text = (text or "").strip().lower()
+    for ch in ("\u2011", "\u2010", "‑", "–", "—"):
+        text = text.replace(ch, "-")
+    text = text.replace("?", "-")
+    return re.sub(r"\s+", " ", text)
+
+
+def tag_first_clause(tag: str) -> str:
+    return _TAG_CLAUSE_SPLIT_RE.split(tag or "", 1)[0].strip()
+
+
+def jp_quality_score(tag: str, jp: str) -> int:
+    jp = (jp or "").strip()
+    tag = (tag or "").strip()
+    if not jp:
+        return -1000
+    if is_low_quality_jp(tag, jp):
+        return -1000
+    if normalize_lookup_key(jp) in {
+        normalize_lookup_key(tag),
+        normalize_lookup_key(tag_first_clause(tag)),
+    }:
+        return -1000
+    if re.match(r"^[a-z]{2}-\d{3}$", jp, re.IGNORECASE):
+        return -1000
+    score = max(0, 120 - len(jp))
+    if looks_like_japanese(jp):
+        score += 40
+    return score
+
+
+def is_low_quality_jp(tag: str, jp: str) -> bool:
+    """True when jp is a noplog gallery/category caption, not a tag translation."""
+    jp = (jp or "").strip()
+    tag = (tag or "").strip()
+    if not jp or jp == tag:
+        return False
+    if _NOPLOG_CATEGORY_SAMPLE_RE.match(jp):
+        return True
+    if _NOPLOG_ARTICLE_LABEL_RE.search(jp):
+        return True
+    if _NOPLOG_GENERIC_SAMPLE_RE.match(jp):
+        clause = normalize_lookup_key(tag_first_clause(tag))
+        words = [w for w in re.split(r"[\s\-_/]+", clause) if len(w) >= 4]
+        if len(jp) >= 15 and words and not any(w in jp.lower() for w in words):
+            return True
+    return False
+
+
+def sanitize_tag_jp(tag: str, jp: str) -> str:
+    jp = (jp or "").strip()
+    if is_low_quality_jp(tag, jp):
+        return ""
+    return jp
+
+
+def build_jp_lookup(items) -> dict[str, str]:
+    """Map normalized tag / first-clause keys to the best known Japanese label."""
+    lookup: dict[str, str] = {}
+    scores: dict[str, int] = {}
+
+    def remember(key: str, tag: str, jp: str) -> None:
+        key = normalize_lookup_key(key)
+        jp = (jp or "").strip()
+        if not key or not jp:
+            return
+        score = jp_quality_score(tag, jp)
+        if score <= -1000:
+            return
+        prev = scores.get(key)
+        if prev is None or score > prev:
+            lookup[key] = jp
+            scores[key] = score
+
+    for item in items or []:
+        tag = (item.get("tag") if isinstance(item, dict) else "") or ""
+        jp = (item.get("jp") if isinstance(item, dict) else "") or ""
+        tag = str(tag).strip()
+        jp = sanitize_tag_jp(tag, str(jp).strip())
+        if not tag or not jp:
+            continue
+        remember(tag, tag, jp)
+        remember(tag_first_clause(tag), tag, jp)
+    return lookup
+
+
+def resolve_jp_label(tag: str, jp: str, lookup: dict[str, str] | None = None) -> str:
+    tag = (tag or "").strip()
+    jp = sanitize_tag_jp(tag, (jp or "").strip())
+    if jp and jp_quality_score(tag, jp) > -1000:
+        return jp
+    if not lookup:
+        return ""
+    best = ""
+    best_score = -1000
+    for key in (tag, tag_first_clause(tag)):
+        candidate = lookup.get(normalize_lookup_key(key), "")
+        if not candidate:
+            continue
+        score = jp_quality_score(tag, candidate)
+        if score > best_score:
+            best = candidate
+            best_score = score
+    return best if best_score > -1000 else ""
 
 
 def jp_from_img_alt(alt: str) -> str:

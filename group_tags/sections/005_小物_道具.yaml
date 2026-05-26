@@ -1,0 +1,1675 @@
+- name: 小物・道具
+  categories:
+  - name: 学習用具・文房具
+    groups:
+    - name: 学習用具
+      color: rgba(65, 105, 225, 1)
+      tags:
+        backpack: バックパック
+        book_stack: ブックスタック
+        bookshelf: 本棚
+        open_book: オープンブック
+        paintbrush: 絵筆
+        pencil: 鉛筆
+  - name: デジタル機器
+    groups:
+    - name: デジタル機器
+      color: rgba(255, 99, 132, 1)
+      tags:
+        buttons: ボタン
+        cable: ケーブル
+        cellphone: 携帯電話
+        computer: コンピューター
+        handheld_game_console: ハンドヘルドゲームコンソール
+        mouse: ねずみ
+        nintendo_switch: ニンテンドースイッチ
+        smartphones: スマートフォン
+        rabbit_ears_antenna: 2本のロッドまたはループで 構成された室内用双極 ラジオアンテナ
+  - name: 食器・キッチン用品
+    groups:
+    - name: 食器・キッチン用品
+      color: rgba(54, 162, 235, 1)
+      tags:
+        beer_mug: ビールのジョッキ
+        can: できる
+        candle: キャンドル
+        chopsticks: 箸
+        cup: カップ
+        drinking_glass: コップ
+        fork: フォーク
+        heart_shaped_box: ハート型のギフトボックス
+        ladle: ひしゃく
+        plate: 皿
+        pot: ポット
+        spoon: スプーン
+        teapot: ティーポット
+        tray: トレイ
+        tumbler: タンブラー
+  - name: 乗り物
+    groups:
+    - name: 乗り物
+      color: rgba(255, 206, 86, 1)
+      tags:
+        cannon: 大砲
+        car: 車
+        motorcycle: オートバイ
+        ship: 船
+        tank: タンク
+  - name: アイテム
+    groups:
+    - name: 学習用具
+      color: rgba(189, 182, 107, .4)
+      tags:
+        notebook: ノートブック
+        school_bag: 学校のバッグ（ハンドバッグ）
+    - name: デジタル機器
+      color: rgba(189, 182, 107, .4)
+      tags:
+        nintendo_3ds: ニンテンドー3DS
+        nintendo_ds: ニンテンドーDS
+    - name: 食器
+      color: rgba(189, 182, 107, .4)
+      tags:
+        bowl: ボウル
+        gift_box: ギフトボックス
+        heart-shaped_box: ハート型のギフトボックス
+        soda_can: 缶入り飲料
+    - name: その他のアイテム
+      color: rgba(189, 182, 107, .4)
+      tags:
+        copper: 銅貨
+        damaged: 損傷した
+        diamond_(shape): ダイヤモンド（形状）
+        gohei: 御幣（邪気除けの布）
+        key: キー
+        lantern/lamp: 提灯
+        lotion: 日焼け止めクリーム|ボディローション
+        lotion_bottle: ローションのボトル
+        microphone: マイクロフォン
+        oil-paper_umbrella: 和傘
+        Painting_(Object): 絵画（物体）
+        photo_(object): 写真（物体）
+        sack: 麻袋
+        stubble: ひげそりの剃り残し
+        wristwatch: 腕時計
+        bamboo_tube: 竹筒
+        explosive_ball: 火薬玉
+        ninja_sword: 忍者刀
+        ninja_tool_pouch: 忍具袋
+        holding_folding_fan: 扇子を持つ
+        holding_katana: 日本刀を持つ
+        holding_paper_umbrella: 番傘を持つ
+        holding_scabbard: 鞘を持つ
+        sake_cup: 盃
+        sword_bag: 刀袋
+        autograph_board: サイン色紙
+        fan_letter: ファンレター
+        streaming_microphone: 配信用マイク
+        apron_with_pockets: ポケット付きエプロン
+        cameo_brooch: カメオブローチ
+        delicate_apron: 繊細なエプロン
+        wrist_cuffs_with_lace: レースリストカフス
+        antique_key: アンティークキー
+        bouquet_of_flowers: 花束
+        feather_duster: 羽根のハタキ
+        serving_tray_with_teacups: ティーセットお盆
+        frilly_hair_bonnet: フリルボンネット
+        lace_headband: レースヘッドバンド
+        maid_cap_with_lace: レース付きメイドキャップ
+        ornate_hairpins: 装飾的ヘアピン
+        ribbon_hair_ties: リボンヘアタイ
+        aged_wooden_flooring_with_visible_wear_and_scratches: 古びた木床
+        bare_concrete_floor_in_an_industrial-style_classroom: コンクリート床（むき出し）
+        broken_chalk_pieces_scattered_across_the_floor: 床に散らばったチョークのかけら
+        crumpled_worksheet_lying_on_the_classroom_floor: 床に落ちたプリント
+        eraser_dropped_and_lying_on_the_classroom_floor: 床に落ちた消しゴム
+        faint_rubber_marks_from_chair_legs_on_the_floor: 椅子の脚ゴムの跡
+        floor_cushion_(zabuton)_placed_neatly_on_classroom_floor: 床に置かれた座布団（学習系）
+        floor_wet_with_raindrops_near_classroom_entrance: 濡れた床（雨の日）
+        floor_with_muddy_footprints_across_the_surface: 足跡のある床
+        overturned_chair_lying_on_the_classroom_floor: 床に転がる椅子
+        pencils, pens, and_erasers_scattered_across_the_floor: 床に文房具が散乱している
+        polished_floor_with_a_glossy, waxed_surface: ワックスがけされた床
+        school_bag_left_beside_a_desk_on_the_floor: 床に置かれたカバン
+        school_slippers_abandoned_on_the_classroom_floor: 床に落ちた上履き
+        scratched_and_scuffed_classroom_flooring: 傷ついた床
+        small_area_rug_spread_out_on_classroom_floor: 床に敷かれたラグ（部室）
+        smartphone_lying_face-down_on_the_floor: 床に落ちたスマホ
+        soft_overlapping_shadows_of_desks_and_chairs_on_the_floor: 床の影（机や椅子の影）
+        square_tile_flooring_in_a_classroom: タイル張りの床
+        stained_and_dusty_classroom_floor_surface: 汚れた床
+        warm_sunlight_streaming_across_the_wooden_floor: 日差しが差し込む床
+        water_bottle_tipped_over_on_the_classroom_floor: 床に水筒が転がっている
+        wooden_floorboards_in_a_standard_classroom: 木製の床板（教室）
+        ballpoint_pen_rolling_slightly_on_the_classroom_floor: 床に落ちたペン
+        colorful_sticky_notes_scattered_loosely_on_the_desk: 付箋メモ
+        compact_mirror_lying_on_the_school_desk: 小さな鏡（卓上）
+        crumpled_lunch_wrappers_left_on_the_desk_surface: 昼食のゴミ（包み紙など）
+        empty_bento_box_with_chopsticks_resting_beside_it: 弁当箱（食べ終わり状態）
+        eraser_partially_under_the_desk_with_motion_trail: 落とされた消しゴム
+        eraser_with_slightly_worn_corners_on_desk: 消しゴム
+        folded_handkerchief_with_floral_embroidery: ミニハンカチ
+        folded_origami_crane_placed_on_the_school_desk: 折り紙（完成済み）
+        keychain_with_house_keys_and_small_mascot_on_desk: カギ付きキーホルダー
+        lined_notebook_lying_open_on_the_desk: ノート
+        loose_sheets_of_paper_scattered_across_the_classroom_floor: 床に散らばったプリント
+        mechanical_pencil_placed_beside_a_notebook: シャープペンシル
+        open_comic_book_hidden_under_a_textbook: 漫画の単行本
+        pair_of_scissors_resting_on_desk_corner: はさみ
+        pencil_case_on_the_school_desk: 筆箱
+        phone_stand_holding_a_phone_playing_music: スマホスタンド
+        plastic_ruler_and_triangle_set_neatly_on_the_desk: 定規・三角定規
+        school_water_bottle_standing_on_the_desk: 水筒
+        single_wireless_earbud_left_unattended_on_the_desk: ワイヤレスイヤホン（片耳のみ）
+        small_puddle_of_water_beneath_the_desk: 水たまり（床）
+        smartphone_placed_face-down_on_the_school_desk: スマートフォン
+        wet_folding_umbrella_dripping_beside_the_desk: 折りたたみ傘
+        bow-tie_blouse: ボウタイブラウス
+        cropped_blazer: ショート丈ジャケット
+        double-breasted_blazer: ダブルジャケット
+        frill_blouse: フリルブラウス
+        straight_slacks: スラックス（ストレート）
+        tailored_blazer: テーラードジャケット
+        tapered_slacks: スラックス（テーパード）
+        V-neck_cardigan: 薄手Vネックカーディガン
+        ancient_spellbook: 古い本・魔導書
+        antique_mirror: 鏡
+        black_cat: 黒猫
+        candles: キャンドル
+        cobwebs: 蜘蛛の巣
+        constellation_chart: 星図・天文図
+        crystal_ball: 水晶玉
+        crystal_cluster: クリスタルクラスター
+        divination_dice: 占いサイコロ
+        dripping_wax: 蝋燭の蝋
+        hourglass: 砂時計
+        incense_smoke: お香・煙
+        magic_circle: 魔法陣
+        pendulum: 振り子
+        quill_pen: 羽根ペン
+        raven: カラス・鴉
+        rose_petals: バラの花びら
+        rune_stones: ルーン石
+        scrying_bowl: 水差し・ボウル
+        skull: 髑髏
+        tarot_cards: タロットカード
+        angel_halo: 天使の輪（ハロー）のAIイラスト
+        bear_ear_headband: 熊耳ヘッドバンドのAIイラスト
+        bunny_ear_headband: うさみみヘッドバンドのAIイラスト
+        cat_ear_headband: 猫耳ヘッドバンドのAIイラスト
+        devil_horn_headband: デビルホーンのAIイラスト
+        fox_ear_headband: 狐耳ヘッドバンドのAIイラスト
+        headphones, audio_headset: ヘッドホンのAIイラスト
+        unicorn_horn, pastel_unicorn_horn: ユニコーンホーンのAIイラスト
+        wolf_ear_headband: 狼耳ヘッドバンドのAIイラスト
+        broom: 箒
+        bucket_of_water: 水の入ったバケツ
+        cleaning_rag: 雑巾
+        cleaning_rod: 掃除棒
+        detergent: 洗剤
+        duster: ダスター・はたき
+        dustpan: ちりとり
+        ear_cleaner: 耳かき
+        headscarf: 三角巾
+        hose: ホース
+        mop: モップ
+        plunger: ラバーカップ
+        sponge: スポンジ
+        spray_bottle: スプレーボトル
+        trash_can: ゴミ箱
+        vacuum_cleaner: 掃除機
+        washing_machine: 洗濯機
+        work_gloves: 作業手袋
+        dirty_fabric: 生地の汚れ
+        name_tag_on_chest: 名札
+        name_tag_on_chest, name_tag_labeled_“AIRI”: 胸に名札ワッペン（AIRIのところは自由に名前を変更できます）
+        tool_pouch: 腰の道具袋
+        torn_sleeve: 破れた袖口
+        wrench_in_hand: スパナ
+        tickling_with_cat_teaser: 猫じゃらしでくすぐる
+        tickling_with_cotton_swab: 綿棒でくすぐる
+        tickling_with_feather: 羽でくすぐる
+        tickling_with_makeup_brush: メイクブラシでくすぐる
+        all-over_cupcake_pattern_clothes, yume_kawaii: カップケーキ柄の服
+        angel_blue, yume_kawaii: レースの縁取りのあるゆめかわいい服
+        charm_(object): チャーム
+        charm_(object), yume_kawaii: チャーム
+        clothes_with_heart_print, yume_kawaii: ハート型モチーフの服
+        clothes_with_star_(symbol), yume_kawaii: 星型モチーフの服
+        clothes_with_unicorn_motif, yume_kawaii: ユニコーンモチーフの服（ゆめかわの定番）
+        confetti_pattern_clothes, yume_kawaii: カラフルなチップを散りばめた服
+        flowy_skirt, yume_kawaii: 模様が入ったゆめかわいい服
+        frills, yume_kawaii: 刺繍入りのゆめかわいい服
+        fruit_print_clothes, yume_kawaii: フルーツ柄の服
+        hair_bow, yume_kawaii: ヘアリボン
+        hairclip, yume_kawaii: ヘアクリップ
+        mezzo_piano, yume_kawaii: フリルの付いたゆめかわいい服
+        musical_score_print_clothes, yume_kawaii: 楽譜デザインの服
+        oversized_clothes, yume_kawaii: 装飾を加えて豪華にしたゆめかわいい服
+        polka_dot_clothes, yume_kawaii: ドット柄の服
+        sparkle_clothes, yume_kawaii: キラキラの服
+        stickers_on_clothes: ステッカー
+        stickers_on_clothes, yume_kawaii: ステッカー
+        stuffed_animal, yume_kawaii: ぬいぐるみ
+        teddy_bear, yume_kawaii: テディベア
+        tutu, yume_kawaii: 精巧なデザインのゆめかわいい服
+        back_long_bow: 後ろリボン
+        brown_pantyhose: 茶色のパンスト
+        button_gap, strained_fabric, waitress: 胸囲にテンションがかかる
+        checkered_thighhighs: チェック柄
+        collar_with_orange_trim: 縁取り付き襟
+        detached_collar: 付け襟
+        frilled_apron: フリル付きエプロン
+        frilled_shirt_collar: フリル付き
+        gingham_apron: ギンガムチェックエプロン
+        heart-shaped_name_tag: ハート型ネームタグ
+        horizontal-striped_thighhighs: 横縞（ボーダー）
+        impossible_clothes, waitress: 乳袋を強調
+        mismatched_thighhighs: 左右デザイン違い
+        muffin_top: ハミ肉（お腹周り）
+        multicolored_thighhighs: カラフルなニーハイ
+        name_tag: ネームタグ
+        polka_dot_pantyhose: 水玉模様
+        red_vest: 赤ベスト
+        rounded_collar: 丸襟
+        sleeve_cuffs: 袖口カフス
+        striped_apron: ストライプ柄エプロン
+        striped_pantyhose: ストライプ柄
+        tented_shirt, waitress: 乳テントを強調
+        vertical-striped_thighhighs: 縦縞のニーハイ
+        apron, work_gloves: エプロンと軍手
+        flower_bed: 花壇
+        gardening: ガーデニング（行為）
+        hanging_plant: 吊り植物
+        potted_plant: 鉢植え植物
+        rock_garden: ロックガーデン
+        garden, gardening, apron, work_gloves: 基本
+        greenhouse, flower_bed, flower_field, potted_plant: 場所
+        muted_green_apron, overalls, sun_hat, straw_hat, serafuku_+_apron: 服装
+        planting, harvesting, digging_soil, squatting, kneeling, wiping_forehead, dirty_hands/clothes/face: 仕草・状況
+        watering_can, trowel, shovel, rake, wheelbarrow: 道具
+        aviator_cap, aviator_goggles: 飛行帽＋ゴーグル
+        belted_mini_skirt: ベルト付きスカート
+        belted_vest: ベルト付きベスト
+        clothes_with_chains: チェーン装飾
+        clothes_with_winding_key: ゼンマイキー
+        clothes_with_winding_wheel: ゼンマイ装飾
+        flintlock: 火縄銃
+        gear_hair_ornament: 歯車装飾の髪飾り
+        gear_hat_ornament: 歯車装飾の帽子
+        gears_print: 歯車プリント
+        high-waist_dress: ハイウエストドレス
+        high-waist_mini_skirt: ハイウエストスカート
+        holding_cane: ステッキ
+        huge_steampunk_weapon: 巨大なスチームパンク武器
+        juliet_sleeves_shirt: ジュリエットスリーブ・シャツ
+        leather_knee_boots: レザーブーツ
+        mechanical_gauntlets: 機械式手甲
+        neck_corset: ネックコルセット
+        prosthesis: 機械義手
+        puffy_sleeves_blouse: パフスリーブ・ブラウス
+        sorting_hat: 組み分け帽子
+        thigh_holster, holstered_weapon: ホルスター
+        utility_belt: ツールベルト
+        waist_cincher: 腰締め
+        welding_goggles: 溶接ゴーグル
+        blowing_whistle: ホイッスルを吹いている
+        holding_pom_poms: ポンポンを持っている
+        incoming_fist_bump: 拳を突き出す
+        triumph_(expression): 勝利の表情
+        blood_bag: 血液バッグ
+        holding_stethoscope: 聴診器（手に持った状態）
+        ice_pack: アイスパック
+        intravenous_drip, iv_stand: 点滴と点滴スタンド
+        medical_armband: アームバンド
+        nurse_cap_with_cross: ナースキャップ（十字マーク）
+        pill_bottle: 錠剤や薬瓶
+        stethoscope_around_neck: 聴診器（首にかけた状態）
+        syringe: 注射器
+        thermometer: 体温計
+        bikesuit, belt: ベルト付き
+        bikesuit, elbow_pads: 肘パッド付き
+        bikesuit, fingerless_gloves: フィンガーレスグローブ
+        bikesuit, gloves: グローブ
+        bikesuit, knee_pads: 膝パッド付き
+        bikesuit, shoulder_pads: ショルダーパッド付き
+        wearing_cat_helmet: 猫耳付きヘルメット
+        wearing_motorcycle_helmet: バイクのヘルメット
+        belt_around_waist: ウエストに巻いた状態を明確に。
+        feather_boa: 羽根ボア
+        gold_earrings: ゴールドイヤリング
+        high_belt: ハイウエストベルト
+        holding_feather_fan: 羽根扇子（ジュリ扇）
+        luxury_handbag: ハンドバッグ
+        luxury_shoulder_bag: ショルダーバッグ
+        mini_formal_jacket_with_shoulder_pads: 肩パッド
+        o-ring_belt: Oリングベルト
+        red_lipstick: 真っ赤なリップでバブルメイク完成。
+        band_uniform_with_blue_side_panels: サイドパネル装飾
+        band_uniform_with_checkered_pattern: チェック柄
+        band_uniform_with_green_panel_lines: パネルライン装飾
+        band_uniform_with_red_center_panel: センターパネル装飾
+        band_uniform_with_red_piping: パイピング装飾
+        band_uniform_with_tassel: タッセル（房）付き
+        buttoned_cuffs: 袖口ボタン
+        chest_bow: 胸元のリボン
+        fold-over_gloves: 折り返し手袋
+        gold_buttons: 金のボタン装飾
+        latex_pleated_skirt: エナメル製のプリーツスカート
+        multicolored_jacket: カラフルなジャケット
+        pleated_skirt_with_red_thick_panels: 太いパネル入り
+        pleated_skirt_with_red_thin_panel_lines: 細いパネルライン入り
+        pleated_skirt_with_red_trim: 縁取りのあるプリーツスカート
+        shako_cap, hat_ornament: 豪華な装飾付き
+        shako_cap_with_plume: 羽飾り付き
+        shako_cap_with_pom_pom_(clothes): ポンポン付き
+        two-tone_pants, red_and_blue_pants: ツートンカラーのパンツ
+        white_thighhighs, zettai_ryouiki: 白色ニーハイと絶対領域
+        circle_skirt: 円形に広がるスカート
+        backpack_on_one_shoulder: リュックサックを片方の肩にかける
+        black_hiking_backpack: リュックサック
+        black_sports_wristwatch: スポーツウォッチ
+        holding_drink_can: 缶ジュース
+        holding_smartphone, smartphone_case: スマホ（ケース付き）
+        holding_snack_bag: スナック菓子
+        holding_bead_gamaguchi_bag: ビーズの小さなバッグ
+        holding_lace-trimmed_umbrella: レース付き傘
+        lace-trim_gloves: レースの縁取りの手袋
+        large_hair_bow: 大きなヘアリボン
+        tabi, geta: 足袋と下駄
+        fashionable_mask: マスク
+        hanging_long_straps: ハンギングストラップス
+        head_dress: ヘッドドレス
+        jersey_hoodie: ジャージフーディ
+        lace-up_sleeves: 編み上げの袖
+        platform_sandals: 厚底サンダル
+        ribbon-trimmed_mini_skirt: リボントリムスカート
+        small_wings: 小さな翼
+        thighhigh: ニーハイソックス
+        white_eyepatch: 眼帯
+        aed-device: AED
+        aed-device, clinical-setting, sleek-white: AED（自動体外式除細動器）
+        first-aid-kit: 救急箱
+        first-aid-kit, clean-medical-equipment: 救急箱（ファーストエイドキット）
+        sharps-disposal-container: 注射針廃棄用容器
+        sharps-disposal-container, bright-red-lid, warning-label: 注射針廃棄用シャープ容器
+        digital-bp-monitor: 血圧計（デジタル）
+        digital-bp-monitor, screen-display, chrome-finishes: 血圧計（デジタル）
+        ecg-monitor-cables: 心拍モニターケーブル
+        ecg-monitor-cables, coiled-wires, plugged-into-device: 心拍モニターケーブル
+        manual-blood-pressure-cuff: 血圧計（手動）
+        manual-blood-pressure-cuff, mounted-on-wall: 血圧計（手動）
+        penlight, medical-inspection: 視診用懐中電灯
+        penlight, medical-inspection, silver-metal: 視診用懐中電灯
+        stethoscope: 聴診器
+        stethoscope, hanging-on-wall-hook, metallic-shine: 聴診器
+        cardigan_over_school_uniform, standing: カーディガン 羽織り
+        student_girl_in_school_uniform_with_knit_vest, neat_and_classic_style: 制服 ニットベスト 上品
+        cropped_jacket, mini_skirt: ボレロとミニスカ
+        double_flare_skirt_one-piece: ダブルフレアスカート ワンピース
+        frilled_blouse, pleated_mini_skirt: フリルブラウスとミニスカ
+        off-shoulder_sweater, skirt: オフショルセーターとスカート
+        see-through_scarf: 薄手のスカーフ
+        sundress, cardigan: サンドレスとカーディガン
+        t-shirt, flower_underskirt: Tシャツと花柄の裾のスカート
+        turtleneck, mini_skirt: タートルネックとミニスカート
+        black_mary_jane_shoes_with_rounded_toes: メリージェーンシューズ
+        dark_brown_glossy_strap_shoes_or_loafers: エナメルのストラップシューズやローファー
+        round_vintage_glasses_or_sunglasses: 丸いメガネやサングラス
+        small_clasp_handbag_or_vintage_round_purse: がま口バッグ、ハンドバッグ
+        small_printed_scarf_tied_around_neck: 小さめのスカーフを首に巻く
+        white_frilly_socks_with_delicate_lace_edge: 白いフリルソックス
+        blue_denim_pleated_skirt: 青いデニム素材のプリーツスカート
+        red_silk_long_dress: 赤いシルク素材のロングドレス
+        acoustic_guitar: アコースティックギター
+        banjo: バンジョー
+        bass_guitar: ベースギター
+        double_bass: コントラバス
+        electric_guitar: エレキギター
+        erhu: 二胡
+        harp: ハープ
+        koto_(instrument): 琴（こと）
+        lute_(instrument): リュート
+        lyre: ライアー
+        mandolin: マンドリン
+        pipa_(instrument): 琵琶
+        shamisen: 三味線
+        ukulele: ウクレレ
+        viola_(instrument): ヴィオラ
+        violin: バイオリン
+        castanets: カスタネット
+        cowbell: カウベル
+        cymbals: シンバル
+        drum_set: ドラム
+        handbell: ハンドベル
+        maracas: マラカス
+        taiko_drum: 和太鼓
+        tambourine: タンバリン
+        bassoon: ファゴット
+        clarinet: クラリネット
+        flute: フルート
+        harmonica: ハーモニカ
+        oboe: オーボエ
+        ocarina: オカリナ
+        piccolo: ピッコロ
+        recorder: リコーダー
+        saxophone: サックス
+        playing_instrument, dress: ドレス姿で楽器を演奏する（ヴァイオリン）AIイラスト作例
+        playing_instrument, layered_kimono: 着物姿で和楽器を演奏するAIイラスト作例
+        playing_instrument, serafuku: 制服姿でトランペットを演奏するAIイラスト作例
+        playing_instrument, shorts: Tシャツとしょーパン姿でギターを演奏するAIイラスト作例
+        euphonium: ユーフォニアム
+        french_horn: フレンチホルン
+        sousaphone: スーザフォン
+        trombone: トロンボーン
+        trumpet: トランペット
+        tuba: チューバ
+        accordion: アコーディオン
+        grand_piano: グランドピアノ
+        keyboard_(instrument): キーボード
+        keytar: キーター
+        organ_(instrument): オルガン
+        pipe_organ: パイプオルガン
+        synthesizer: シンセサイザー
+        pouring_coffee_into_ceramic_mug_on_table, tilting_coffee_pot, looking_at_ceramic_mug: コーヒーをカップに注ぐ
+        beach_ball: ビーチボール
+        beach_towel: ビーチタオル
+        beach_umbrella: ビーチパラソル
+        calm_sea: 海
+        coastline: ビーチ
+        cooler_box: クーラーボックス
+        flip_flops: ビーチサンダル
+        frozen_sea: 特殊
+        glowing_sea: 特殊
+        open_sea: 海
+        pebble_beach: ビーチ
+        rocky_shore: ビーチ
+        rough_sea: 海
+        sand_bucket: 浜辺のバケツ
+        sea, clear_blue_sky: 空
+        sea, cloudy_sky: 空
+        sea, starry_night: 空
+        sea, sunset_sky: 空
+        seashells: 貝殻
+        snorkel_gear: シュノーケル
+        swim_ring: 浮き輪
+        tropical_beach: ビーチ
+        tropical_drink: トロピカルドリンク
+        volcanic_coast: 特殊
+        watermelon: スイカ
+        bandages: 包帯
+        black_mask: 黒いマスク
+        clothes_with_safety_pin: 安全ピン
+        heart_hairclip: ハート髪留め
+        intravenous_drip: 点滴
+        lip_piercing: 唇ピアス
+        multiple_ear_piercings: 多重ピアス
+        pill_hair_ornament: 薬のピルの髪飾り
+        pink_bow: ピンクのリボン
+        self-harm_scar: 自傷痕
+        torn_apron_with_a_ripped_pocket_area: ポケット付近が裂けたエプロン
+        torn_belt_with_a_ripped_tip: 先端が裂けたベルト
+        torn_bowtie_with_a_ripped_knot_area: 結び目付近が裂けた蝶ネクタイ
+        torn_cape_with_a_ripped_hem: 裾が裂けたケープ
+        torn_cloak_with_a_frayed_hem: 裾がほつれたクローク
+        torn_footwear_with_a_ripped_upper_near_the_toes: つま先上部が裂けた靴
+        torn_gloves_with_torn_fingertips: 指先が破れたグローブ
+        torn_hair_ribbon_with_frayed_ends: 端がほつれたヘアリボン
+        torn_hat_with_a_ripped_brim: つばが裂けた帽子
+        torn_mittens_with_a_hole_at_the_thumb: 親指部分に穴の開いたミトン
+        torn_neckerchief_with_a_ripped_corner: 角が裂けたネッカチーフ
+        torn_necktie_with_a_ripped_blade_tip: 大剣の先が裂けたネクタイ
+        torn_ribbon_with_frayed_ends: 端がほつれたリボン
+        torn_scarf_with_frayed_fringes: 端のフリンジがほつれたマフラー
+        torn_shawl_with_frayed_edges: 端がほつれたショール
+        torn_sleeves_with_frayed_openings: 口元がほつれた袖（単体）
+        torn_veil_with_a_torn_edge: 端が破れたベール
+        boutonniere: ブートニエール
+        cufflinks: カフリンクス
+        fedora_hat: フェドラハット
+        glen_check_tie: グレンチェックタイ
+        leather_belt: レザーベルト
+        pocket_square: ポケットチーフ
+        silk_scarf: シルクスカーフ
+        tie_chain: タイチェーン
+        tie_clip: ネクタイピン
+        wool_overcoat: ウールオーバーコート
+        boxy_suit: ボックスシルエットスーツ
+        cropped_suit: クロップドスーツ
+        fashion_suit: ファッションスーツ
+        high-waisted_suit: ハイウエストスーツ
+        mod_suit: モッズスーツ
+        pantsuit: パンツスーツ
+        short-sleeve_suit: ハーフスリーブスーツ
+        short_pants_suit: ショートパンツスーツ
+        blazer_suit: ブレザースーツ
+        checkered_suit: チェックスーツ
+        collarless_suit: ノーカラースーツ
+        double-breasted_suit: ダブルブレストスーツ
+        pinstripe_suit: ストライプスーツ
+        three-piece_suit: スリーピーススーツ
+        androgynous_suit: 中性的スーツ
+        coat_suit: コートスーツ
+        oriental_suit: アジア風スーツ
+        sexy_suit: セクシースーツ（女性）
+        black_suit: ブラックスーツ
+        gray_suit: グレースーツ
+        navy_suit: ネイビースーツ
+        white_suit: ホワイトスーツ
+        edwardian_suit: エドワード朝スーツ
+        victorian_suit: ビクトリア朝スーツ
+        zoot_suit: ズートスーツ
+        collared_shirt_/_jacket_/_vest_/_belt_/_gloves: 服装
+        holster_/_thigh_holster_/_shoulder_holster: 装着位置
+        police_/_police_uniform_/_policewoman_/_policeman: 基本
+        police_badge_/_handcuffs_/_baton_/_walkie-talkie: 装備
+        police_hat_/_peaked_cap_/_service_cap: 帽子
+        salute_/_holding_handcuffs_/_holding_shield: 動作
+        traffic_officer_/_japan_national_police: バリエーション
+        black_baton_(weapon): 警棒
+        black_belt: 黒ベルト
+        black_boots: ブーツ
+        black_gloves: 黒い手袋
+        blue_pants: 青いパンツ
+        body_armor: ボディアーマー
+        bulletproof_vest: 防弾ベスト
+        collared_shirt, necktie: 襟付きシャツとネクタイ
+        combat_helmet: 戦闘ヘルメット
+        custodian_helmet: カストディアンヘルメット
+        earpiece: イヤーピース
+        embroidered_police_hat_with_gold_trim, peaked_cap: 幹部用の制帽風
+        epaulettes_with_gold_trim: 肩章
+        female_service_cap: サービスキャップ
+        high-visibility_vest: 高視認性ベスト
+        police_badge_on_chest: 警察バッジ（胸）
+        police_badge_on_hat: 警察バッジ（帽子）
+        police_hat, peaked_cap: ピークドキャップ型
+        riot_police, holding_shield: 防護シールド
+        shoulder_holster: ホルスター（肩）
+        silver_whistle: ホイッスル
+        utility_vest: ユーティリティベスト
+        walkie-talkie: 無線機
+        policeman: 男性警察官
+        policewoman: 女性警察官
+        california_highway_patrol: カリフォルニア高速道路警察
+        indonesian_national_police: インドネシア国家警察
+        italian_carabinieri: イタリア憲兵
+        japan_national_police: 日本警察
+        korean_national_police_agency: 韓国国家警察
+        los_angeles_county_sheriff’s_department: ロサンゼルス郡保安官
+        los_angeles_police_department: LAPD
+        metropolitan_police_service: ロンドン警視庁
+        military_police: 憲兵 / 軍警察
+        mounted_police: 騎馬警察、馬に乗った警察
+        new_york_city_police_department: NYPD
+        park_ranger: 公園管理官 / レンジャー
+        police_of_russia: ロシア警察
+        royal_canadian_mounted_police: カナダ騎馬警察
+        traffic_officer: 交通警官
+        baseball_cap_with_number_print: 野球帽
+        baseball_field_/_baseball_diamond: 背景
+        cheering_/_holding_bottle_/_wiping_sweat: ポーズ
+        polo_shirt_/_t-shirt_/_baseball_uniform_top_+_navy_pleated_miniskirt: 服装
+        whistle_/_holding_clipboard_/_holding_stopwatch: 小物
+        wide_hips_/_thigh_gap_/_thick_thighs: 体型
+        baseball_cap, backwards_hat: 野球帽を後ろにかぶる
+        baseball_diamond: 野球場のダイヤモンド部分
+        baseball_field: 野球グラウンド背景
+        baseball_mit: グローブ（野球ミット）
+        baseball_uniform_with_number_print, shorts: 野球ユニフォームセット
+        dirt_baseball_field: 土の野球グラウンド
+        grass_baseball_field: 芝生の野球グラウンド
+        holding_baseball: 野球ボールを持つ
+        holding_baseball_bat: 野球バットを持つ
+        holding_baseballs_(object)_green_basket: ボールカゴを持つ
+        holding_clipboard: スコアブックを持つ
+        holding_large_duffel_bag_with_baseball_equipment: 大きなダッフルバッグ（野球道具入り）を持つ
+        holding_stopwatch: ストップウォッチを持つ
+        locker, wooden_bench, indoors: ロッカールームとベンチ
+        sweatband: 汗拭きバンド
+        whistle: ホイッスル
+        baseball_cap_with_number_print, baseball_uniform_top, navy_pleated_miniskirt: 野球ユニフォームとミニスカ
+        baseball_cap_with_number_print, hoodie, navy_pleated_miniskirt: パーカーとミニスカ
+        baseball_cap_with_number_print, naked_dark_red_track_jacket, navy_pleated_miniskirt: ジャージとミニスカ
+        baseball_cap_with_number_print, sailor_top, navy_pleated_miniskirt_over_red_track_pants: セーラー服の下にジャージ
+        baseball_cap_with_number_print, white_t-shirt, navy_pleated_miniskirt_over_red_track_pants: Tシャツとミニスカの下にジャージ
+        navy_baseball_cap_with_number_print, polo_shirt, navy_pleated_miniskirt: ポロシャツとミニスカ
+        navy_baseball_cap_with_number_print, sleeveless_shirt, navy_pleated_miniskirt: ノースリーブシャツとミニスカ
+        navy_baseball_cap_with_number_print, white_t-shirt, navy_pleated_miniskirt: Tシャツとミニスカ
+        face_hidden_behind_book: 本で顔を隠す
+        face_hidden_by_flower_bouquet: 花束で顔を隠す
+        face_hidden_by_tree_leaves, blurry_foreground: 木の枝・葉で顔を隠す
+        face_obscured_by_smartphone: スマホで顔が隠れる
+        hat_covering_eyes: 帽子で顔を隠す
+        helmet_obscuring_face: ヘルメットで顔を隠す
+        hidden_face: 顔が見えない・顔が隠れる
+        long_bangs_covering_face: 髪で顔を隠す
+        scarf_covering_mouth_and_nose: スカーフで鼻と口を隠す
+        veil_covering_eyes: ヴェールで顔を隠す
+        white_large_curtain_obscuring_face: カーテンで顔を隠す
+        rose_\(flower\): バラ（花）
+        indoors_onsen: 屋内温泉
+        indoors_pool: 屋内プール
+        outdoors_onsen: 屋外温泉
+        outdoors_pool: 屋外プール
+        wires: ワイヤー
+        light_origami_butterflies: 軽い折り紙の蝶
+        gears: ギア
+        heart: ハート
+        an_octopus_in_the_arctic_ocean: 北極海のタコ
+        and_a_hat_with_a_red_feather: そして赤い羽根のついた帽子
+        as_if_the_octopus_is_a_living: まるでタコが生きているかのように
+        bolts: ボルト
+        cables: ケーブル
+        crystals: 結晶
+        feather: フェザー
+        golden_glow_of_lanterns_and_candles: ランタンとキャンドルの黄金色の輝き
+        like_ice_crystals_in_the_sunlight: 太陽の光の中の氷の結晶のように
+        rough-hewn_stone_bowl_held_by_the_figure's_heavy: 像の重いものに支えられた荒削りの石のボウル
+        abyssal_ship: アビスサル船
+        ball: ボール
+        box: 箱
+        card: カード
+        card_(medium): カード（中）
+        center_opening: センターオープニング
+        double_penetration: 二重浸透
+        flag: フラグ
+        imminent_penetration: 差し迫った浸透
+        male_penetrated: male_penetrated
+        motor_vehicle: 自動車
+        patreon_logo: パトレオンのロゴ
+        pen: ペン
+        phone: 電話
+        poke_ball: ポークボール
+        scar_on_cheek: 頬の傷
+        ship_turret: ship_turret
+        sign: サイン
+        ace_(playing_card): ace_(playing_card)
+        airship: 飛行船
+        american_flag: アメリカ国旗
+        american_flag_print: アメリカ国旗の印刷
+        antique_phone: antique_phone
+        baseball: 野球
+        basketball: バスケットボール
+        black_umbrella: 黒い傘
+        blue_umbrella: 青い傘
+        boat: ボート
+        bolt_action: ボルトアクション
+        bookmark: ブックマーク
+        borrowed_design: 借りたデザイン
+        brazilian_flag: ブラジルの旗
+        burn_scar: 傷跡を燃やします
+        camouflage_headwear: カモフラージュヘッドウェア
+        card_parody: カードパロディ
+        cardboard_box: 段ボール箱
+        carrying_person: 運ぶ人
+        cart: カート
+        cartoon_bone: 漫画の骨
+        cellphone_charm: 携帯電話の魅力
+        chaldea_logo: Chaldeaロゴ
+        character_signature: 文字署名
+        cheating_(relationship): 不正行為（関係）
+        child_carry: 子供のキャリー
+        condom_box: コンドームボックス
+        corded_phone: コード付き電話
+        cross_scar: クロス・スカー
+        deep_penetration: 深い浸透
+        dialogue_box: ダイアログボックス
+        ejaculating_while_penetrated: 浸透中に射精します
+        energy_ball: エネルギーボール
+        exercise_ball: エクササイズボール
+        facebook_username: Facebookユーザー名
+        fake_phone_screenshot: fake_phone_screenshot
+        flip_phone: 折り畳み式携帯電話
+        floating_book: 浮かぶ本
+        floating_card: フローティングカード
+        french_flag: フランスの旗
+        german_flag: ドイツの旗
+        guitar_case: ギターケース
+        hand_on_headphones: ヘッドフォンに手をかけます
+        heart_pendant: ハートペンダント
+        holding_guitar: holding_guitar
+        holding_megaphone: メガホンを保持します
+        holding_microphone_stand: マイクスタンドを保持します
+        holding_notebook: 保持ノートブック
+        in_box: ボックスに
+        insignia: 記章
+        instagram_logo: Instagramロゴ
+        instrument_case: 計装ケース
+        iphone: iPhone
+        italian_flag: イタリアの旗
+        japanese_flag: 日本国旗
+        juice_box: ジュースボックス
+        logo_parody: ロゴパロディ
+        m4_carbine: M4カービン
+        macaron: マカロン
+        mechanical_pencil: シャープペンシル
+        megaphone: メガホン
+        milk_carton: 牛乳パック
+        multiple_scars: 複数の傷
+        nib_pen_(object): ペンペン（オブジェクト）
+        on_car: on_car
+        open_door: 開いたドア
+        open_window: ウィンドウを開く
+        opened_by_self: 自己によって開かれました
+        opening_door: 開くドア
+        pencil_case: 筆入れ
+        penguin_hood: ペンギンフッド
+        pennant: ペナント
+        pentacle: 五角形
+        pentagram: 五gram星
+        pink_umbrella: ピンクの傘
+        pixiv_logo: Pixivロゴ
+        pizza_box: ピザボックス
+        playing_guitar: playing_guitar
+        prototype_design: prototype_design
+        purple_umbrella: 紫色の傘
+        race_vehicle: レース車
+        racecar: レースカー
+        red_umbrella: 赤い傘
+        redesign: 再設計
+        reverse_suspended_congress: 逆停止した議会
+        rising_sun_flag: rising_sun_flag
+        scar_on_arm: 腕に傷
+        scar_on_chest: 胸の傷跡
+        scar_on_forehead: 額に傷
+        scar_on_hand: 手に傷
+        scar_on_leg: 脚の傷
+        scar_on_neck: 首に傷
+        scar_on_stomach: 胃の傷跡
+        scarlet_devil_mansion: スカーレットデビルマンション
+        sketchbook: スケッチブック
+        soccer_ball: サッカーボール
+        spell_card: スペルカード
+        sports_car: スポーツカー
+        stuffed_penguin: ぬいぐるみペンギン
+        suspended_congress: 議会を一時停止
+        suspension: サスペンション
+        tennis_ball: テニスボール
+        tissue_box: ティッシュボックス
+        triple_penetration: トリプル浸透
+        twitter_logo: Twitterロゴ
+        ultra_ball: ウルトラボール
+        video_camera: ビデオカメラ
+        vocaloid_append: ボーカロイドの付録
+        volleyball: バレーボール
+        warning_sign: 警告サイン
+        weibo_logo: Weiboロゴ
+        white_umbrella: 白い傘
+        yarn_ball: 糸ボール
+        404_logo_(girls'_frontline): 404ロゴ（女の子の最前線）
+        ability_card_(touhou): 能力カード（Touhou）
+        adjusting_headphones: ヘッドフォンの調整
+        against_bookshelf: 本棚に対して
+        akg_k-series_headphones: akg_k-series_headphones
+        alpha_signature: アルファ署名
+        alternate_design: 代替デザイン
+        alto_saxophone: アルトサックス
+        american_flag_neckwear: american_flag_neckwear
+        american_flag_tattoo: アメリカ国旗のタトゥー
+        american_football: アメリカンフットボール
+        ammunition_box: 弾薬ボックス
+        argentinian_flag: アルゼンチンの旗
+        armored_personnel_carrier: 装甲担当者
+        armpit_carry: armpit_carry
+        arrancar: arrancar
+        artoria_pendragon_(lancer_alter)_(royal_icing)_(fate)_(cosplay): Artoria Pendragon（Lancer Alter）（Royal Icing）（Fate）（Cosplay）
+        artoria_pendragon_(swimsuit_ruler)_(fate)_(cosplay): Artoria Pendragon（水着の支配者）（運命）（コスプレ）
+        artstation_logo: アートステーションのロゴ
+        ass-to-ass_penetration: ass-to-ass_penetration
+        ass_worship: お尻の礼拝
+        attack_ship_(eve_online): attack_ship_(eve_online)
+        australian_flag: オーストラリアの旗
+        baby_carrier: ベビーキャリア
+        baby_carry: ベビーキャリー
+        banana_boat: バナナボート
+        battleship: 戦艦
+        battleship_(eve_online): battleship_(eve_online)
+        bilibili_logo: bilibili_logo
+        billiard_ball: ビリヤードボール
+        binaural_microphone: バイノーラルマイク
+        bisexual_flag: バイセクシュアルフラグ
+        black_car: black_car
+        black_headphones: 黒いヘッドフォン
+        blue_car: blue_car
+        bolt_(hardware): bolt_(hardware)
+        bolter: ボルター
+        book_focus: 本の焦点
+        book_holster: 予約ホルスター
+        book_on_head: 頭に予約してください
+        book_on_lap: ラップで予約してください
+        book_strap: ブックストラップ
+        bookstore: 書店
+        boom_microphone: ブームマイク
+        boombox: ブームボックス
+        brazilian_flag_print: brazilian_flag_print
+        broken_umbrella: 壊れた傘
+        brown_umbrella: 茶色の傘
+        bunny_headphones: バニーヘッドフォン
+        bus_stop_sign: バス停の標識
+        business_card: 名刺
+        cable_tie: ケーブルタイ
+        calling_card: テレフォンカード
+        camera_around_neck: 首の周りのカメラ
+        camera_flash: カメラフラッシュ
+        camera_phone: カメラ付き携帯電話
+        canadian_flag: カナダの旗
+        car_crash: 自動車事故
+        car_keys: 車のキー
+        carabiner: カラビナー
+        carapace: 甲羅
+        card_between_breasts: 胸の間のカード
+        card_between_fingers: 指の間のカード
+        card_game: トランプゲーム
+        card_holster: カードホルスター
+        cardboard: 段ボール
+        cardboard_cutout: 段ボールの切り抜き
+        cardigan_lift: カーディガンリフト
+        cardiogram: 心臓図
+        caress: 愛撫
+        cargo_net: 貨物ネット
+        carhop: carhop
+        carnival: カーニバル
+        carp: 鯉
+        carriage: キャリッジ
+        carrier: キャリア
+        carro_armato_p40: Carro Armato P40
+        carro_veloce_cv-33: Carro Veloce CV-33
+        carrot-shaped_pillow: carrot-shaped_pillow
+        carrot_in_pocket: carrot_in_pocket
+        carrot_pin: ニンジンピン
+        carrot_slice: carrot_slice
+        carry_me: 私を運んで
+        carrying_overhead: 頭上を運ぶ
+        carton: カートン
+        cartoonized: 漫画
+        cartridge: カートリッジ
+        carving: 彫刻
+        catcher_(baseball): catcher_(baseball)
+        cellphone_strap: 携帯電話ストラップ
+        cereal_box: シリアルボックス
+        cervical_penetration: 子宮頸部浸透
+        character_logo: character_logo
+        children's_book: 児童書
+        cinderella_girls_card_parody: シンデレラガールズカードパロディ
+        class_card_(prisma_illya): class_card_(prisma_illya)
+        clear_card: クリアカード
+        clow_card: Clowカード
+        cocktail_umbrella: カクテル傘
+        combat_ship_(eve_online): combat_ship_(eve_online)
+        company_logo: company_logo
+        compass_(instrument): コンパス（楽器）
+        cookbook: 料理本
+        copyright_logo: copyright_logo
+        cotton_ball: 綿の球
+        covered_penetration: covered_penetration
+        cracked_phone: ひび割れた電話
+        cradling_phone: 揺りかごの電話
+        credit_card: クレジットカード
+        cross_pendant: cross_pendant
+        death_flag: 死の旗
+        deck_of_cards: カードのデッキ
+        desert_camouflage: 砂漠のカモフラージュ
+        design_speculation: design_speculation
+        deviantart_logo: DeviantArtロゴ
+        digital_camera: デジタルカメラ
+        digital_camouflage: デジタルカモフラージュ
+        discord_logo: discord_logo
+        dive_ball: ダイブボール
+        dodgeball: ドッジボール
+        dollar_sign: ドル記号
+        double_ok_sign: ダブルOKサイン
+        dribbling_(basketball): ドリブル（バスケットボール）
+        dusk_ball: 夕暮れのボール
+        dynamax_ball: ダイナックスボール
+        earphones_removed: イヤホンが削除されました
+        electric_bass_guitar: electric_bass_guitar
+        emperor_penguin: 皇帝ペンギン
+        english_flag: 英語の旗
+        exit_sign: 出口標識
+        facebook_logo: Facebookのロゴ
+        fanbook: ファンブック
+        fanbox_logo: fanbox_logo
+        fender_musical_instruments_corporation: fender_musical_instruments_corporation
+        finnish_flag: フィンランドの旗
+        fireman's_carry: 消防士のキャリー
+        flagpole: 旗竿
+        flags_of_all_nations: すべての国の旗
+        flandre_scarlet_(cosplay): フランドルスカーレット（コスプレ）
+        flat_sign: フラットサイン
+        flying_boat: 空飛ぶボート
+        flying_car: 空飛ぶ車
+        fn_scar: fn scar
+        fn_scar_17: fn scar 17
+        friendship_club_(princess_connect!): friendship_club_(princess_connect!)
+        frilled_umbrella: フリル傘
+        game_cartridge: ゲームカートリッジ
+        gear_fifth: ギア5番目
+        gear_print: ギアプリント
+        gehenna_academy_logo: gehenna_academy_logo
+        gift_card: ギフトカード
+        glass_pen: glass_pen
+        golf_ball: ゴルフボール
+        graphics_card: グラフィックスカード
+        great_ball: 素晴らしいボール
+        green_car: green_car
+        green_suspenders: 緑のサスペンダー
+        green_umbrella: 緑の傘
+        grey_car: grey_car
+        grey_umbrella: 灰色の傘
+        griffin_&_kryuger_logo: griffin_&_kryuger_logo
+        guitar_strap: guitar_strap
+        gumroad_logo: Gumroadロゴ
+        hands_on_headphones: ハンズオンヘッドフォン
+        head_flag: ヘッドフラグ
+        headphones_over_headwear: ヘッドウェアのヘッドフォン
+        headphones_removed: ヘッドフォンが削除されました
+        heavenly_boat_maanna: 天国のボートマンナ
+        hidden_camera: 隠しカメラ
+        hitbox: ヒットボックス
+        holding_bass_guitar: holding_bass_guitar
+        holding_carton: カートンを保持します
+        holding_earphones: イヤホンを保持します
+        holding_eyeball: holding_eyeball
+        holding_headphones: ヘッドフォンを保持します
+        holding_id_card: holding_id_card
+        holding_lighter: ライターを保持します
+        holding_pendulum: 振り子を保持します
+        holding_saxophone: holding_saxophone
+        holding_sketchbook: スケッチブックを保持します
+        horn_(instrument): ホーン（楽器）
+        house_of_cards: 砂上の楼閣
+        hover_vehicle: ホバー車
+        hugging_book: hugging_book
+        humagear_headphones: Humagearヘッドフォン
+        humboldt_penguin: フンボルトペンギン
+        implied_penetration: 暗黙の侵入
+        improvised_umbrella: 即興の傘
+        in_shopping_cart: ショッピングカートで
+        indonesian_flag: インドネシアの旗
+        instrument_on_back: 背面に楽器
+        inverted_pentagram: inverted_pentagram
+        iphone_11_pro: iPhone 11 Pro
+        italian_flag_print: イタリアの旗印刷
+        jack-in-the-box: ジャックインボックス
+        jack_(playing_card): jack_(playing_card)
+        japanese_cylindrical_postbox: 日本の円筒形の郵便箱
+        jewelry_box: 宝石箱
+        joker_(playing_card): joker_(playing_card)
+        jug_(bottle): jug_(bottle)
+        jukebox: ジュークボックス
+        kamehameha_(dragon_ball): kamehameha_(dragon_ball)
+        karuta_(card_game): Karuta（カードゲーム）
+        kei_car: kei_car
+        kessoku_band_logo: kessoku_band_logo
+        king_(playing_card): king_(playing_card)
+        king_of_hearts_(playing_card): king_of_hearts_(playing_card)
+        kingdom_of_kazimierz_logo: 王国のカジミエルツのロゴ
+        kjerag_logo: Kjeragロゴ
+        leaning_against_vehicle: 車にもたれかかっています
+        lesbian_flag: lesbian_flag
+        love_ball: ボールが大好きです
+        love_guitar_rod: ギターロッドが大好きです
+        lunchbox: 弁当箱
+        luxury_ball: 豪華なボール
+        mastectomy_scar: mastectomy_scar
+        master_ball: マスターボール
+        matchbox: マッチ箱
+        meatball: ミートボール
+        medicine_box: 薬箱
+        mexican_flag: メキシコの旗
+        microphone_cord: マイクコード
+        mikan_box: ミカンボックス
+        military_rank_insignia: 軍事ランクの記章
+        minecart: Minecart
+        mini_flag: ミニフラグ
+        model_ship: モデル船
+        molcar: モルカー
+        multicolored_umbrella: 多色の傘
+        muscle_car: マッスルカー
+        music_box: オルゴール
+        nasa_logo: NASAロゴ
+        natural_sign: ナチュラルサイン
+        neon_sign: neon_sign
+        no_ai_logo: no_ai_logo
+        no_entry_sign: エントリサインはありません
+        no_scar: 傷はありません
+        numbered_flag: 番号付きフラグ
+        occult_ball: オカルトボール
+        ok_sign_over_eye: 目で署名します
+        on_boat: on_boat
+        on_box: ボックスに
+        on_piano: ピアノで
+        open_box: 箱を開ける
+        open_cloak: クロークを開きます
+        open_cockpit: オープンコックピット
+        open_drawer: 開いた引き出し
+        open_happi: open_happi
+        open_hatch: ハッチを開きます
+        open_jumpsuit: オープンジャンプスーツ
+        open_magazine: オープンマガジン
+        open_poke_ball: ポークボールを開きます
+        open_sign: オープンサイン
+        open_towel: タオルを開けます
+        opening: オープニング
+        orange_umbrella: オレンジ色の傘
+        overwatch_(logo): オーバーウォッチ（ロゴ）
+        palanquin_ship: パランキン船
+        paper_boat: 紙の船
+        pastry_box: ペストリーボックス
+        payphone: ペイフォン
+        pen_in_pocket: ポケットに入れるペン
+        pencil_as_mustache: pencil_as_mustache
+        pencil_behind_ear: 耳の後ろの鉛筆
+        pencil_mustache: 鉛筆口ひげ
+        pendant_earring: pendant_earring
+        pendant_watch: ペンダントウォッチ
+        pendulum_clock: 振り子時計
+        penguin_chick: penguin_chick
+        penguin_logistics_logo: ペンギンロジスティクスロゴ
+        penguins_performance_project_(kemono_friends): ペンギンズパフォーマンスプロジェクト（ケモモンフレンズ）
+        pentagon_(shape): ペンタゴン（形）
+        pentagram_necklace: 五gram星のネックレス
+        people's_republic_of_china_flag: 中国共和国旗
+        phonecard: テレホンカード
+        piano_bench: ピアノベンチ
+        piano_keys: ピアノの鍵
+        picture_book: 写真アルバム
+        pile_of_books: 本の山
+        pink_headphones: pink_headphones
+        pirate_ship: 海賊船
+        placard: プラカード
+        planted_umbrella: 植えられた傘
+        playing_bass_guitar: playing_bass_guitar
+        playing_card_theme: トランプのテーマ
+        playing_piano: ピアノを弾きます
+        playstation_logo: playstation_logo
+        plus_sign: プラス記号
+        pocari_sweat: ポカリの汗
+        pokemon_card: ポケモンカード
+        polaroid_camera: polaroid_camera
+        police_car: 警察車両
+        polka_dot_umbrella: ポルカドット傘
+        pop-up_book: ポップアップブック
+        postcard: はがき
+        prelati's_spellbook: Prelatiのスペルブック
+        premier_ball: プレミアボール
+        print_umbrella: 傘を印刷します
+        pullcart: プルカート
+        pushcart: プッシュカート
+        queen_(playing_card): queen_(playing_card)
+        queen_of_hearts_(playing_card): queen_of_hearts_(playing_card)
+        r-301_carbine: R-301カービン
+        rabbit_ear_headphones: rabbit_ear_headphones
+        race_flag: race_flag
+        railroad_signal: 鉄道信号
+        rally_car: ラリーカー
+        recreational_vehicle: recreational_vehicle
+        red_car: red_car
+        red_carnation: レッドカーネーション
+        red_flag: 赤旗
+        red_headphones: red_headphones
+        red_suspenders: red_suspenders
+        red_winter_federal_academy_logo: red_winter_federal_academy_logo
+        reincarnation: 生まれ変わり
+        relationship_graph: 関係グラフ
+        remilia_scarlet_(cosplay): レミリアスカーレット（コスプレ）
+        republic_of_china_flag: 中国共和国旗
+        reverse_princess_carry: reverse_princess_carry
+        rhine_lab_logo: ラインラボのロゴ
+        ring_box: リングボックス
+        rocket_ship: ロケット船
+        rotary_phone: ロータリー電話
+        rowboat: ローボート
+        rugby_ball: ラグビーボール
+        russian_flag: ロシアの旗
+        saigyouji_yuyuko's_fan_design: Saigyouji Yuyukoのファンデザイン
+        sailboat: ヨット
+        sailing_ship: 帆船
+        sandbox: サンドボックス
+        scar_across_eyebrow: scar_across_eyebrow
+        scar_on_back: 背中に傷がある
+        scar_on_breasts: 胸の傷跡
+        scar_on_chin: scar_on_chin
+        scar_on_shoulder: scar_on_shoulder
+        scarab: スカラベ
+        scarecrow: かかし
+        scars_all_over: scars_all_over
+        security_camera: セキュリティカメラ
+        servant_card_(fate/grand_order): 使用人カード（運命/大命令）
+        serving_cart: サービングカート
+        shared_earphones: 共有イヤホン
+        sharp_sign: シャープサイン
+        ship's_wheel: 舵輪
+        ship_deck: シップデッキ
+        shipping_(fandom): shipping_(fandom)
+        shipping_container: 出荷用コンテナ
+        shipwreck: 難破船
+        shoe_box: 靴箱
+        sidecar: サイドカー
+        sign_around_neck: 首の周りにサインします
+        signal_flag: 信号フラグ
+        signpost: SINDPOST
+        single-lens_reflex_camera: シングルレンズ反射カメラ
+        single_earphone_removed: 単一イヤホンが削除されました
+        sitting_on_ball: ボールに座っています
+        sitting_on_books: 本に座っています
+        sitting_on_box: 箱の上に座っています
+        slam_dunk_(basketball): スラムダンク（バスケットボール）
+        smartphone_case: スマートフォンケース
+        smash_ball: スマッシュボール
+        soap_dispenser: 石鹸ディスペンサー
+        south_korean_flag: 韓国の旗
+        soviet_flag: ソビエトの旗
+        spanish_flag: スペインの旗
+        speed_limit_sign: 速度制限符号
+        spike_ball: スパイクボール
+        sports_utility_vehicle: スポーツユーティリティ車
+        ss_insignia: SS Insignia
+        stance_(vehicle): stance_(vehicle)
+        standing_double_penetration: 立っている二重浸透
+        stop_sign: 一時停止標識
+        string_phone: 文字列電話
+        stuck_in_a_box: stuck_in_a_box
+        studio_microphone: スタジオマイク
+        subscribestar_logo: subscribestar_logo
+        super_smash_bros._logo: スーパースマッシュブラザーズ。ロゴ
+        superman_logo: superman_logo
+        suspenders_hanging: サスペンダーがぶら下がっています
+        suspenders_pull: サスペンダーが引っ張ります
+        suspenders_slip: サスペンダーは滑ります
+        swedish_flag: スウェーデンの旗
+        swiss_flag: スイスの旗
+        symphogear_pendant: Symphogearペンダント
+        table_tennis_ball: 卓球ボール
+        tarot_card: tarot_card
+        temari_ball: テマリボール
+        textbook: 教科書
+        throat_microphone: 喉のマイク
+        throwing_poke_ball: ポークボールを投げる
+        tiktok_logo: Tiktokロゴ
+        time_patrol_(dragon_ball): time_patrol_(dragon_ball)
+        titan_shifter_scars: titan_shifter_scars
+        too_many_books: 本が多すぎる
+        toolbox: ツールボックス
+        torn_flag: 引き裂かれた旗
+        torn_umbrella: 引き裂かれた傘
+        toy_car: おもちゃの車
+        transgender_flag: トランスジェンダーフラグ
+        triangle_(instrument): 三角形（楽器）
+        tumblr_logo: Tumblrロゴ
+        twin-lens_reflex_camera: ツインレンズ反射カメラ
+        twitch_logo: Twitchロゴ
+        twitter_x_logo: twitter_x_logo
+        two-tone_umbrella: two-tone_umbrella
+        umbrella_octopus: 傘のタコ
+        umbrella_over_shoulder: umbrella_over_shoulder
+        umbrella_riding: 傘の乗馬
+        unconventional_guitar: 型破りなギター
+        unconventional_vehicle: 型破りな車両
+        under_umbrella: 傘下
+        unworn_headphones: unworn_headphones
+        upright_piano: upright_piano
+        ursus_empire_logo: Ursus Empireのロゴ
+        vehicle_and_personification: vehicle_and_personification
+        vehicle_name: 車両名
+        vending_cart: 自動販売カート
+        vintage_microphone: ビンテージマイク
+        waist_poke_ball: ウエストポークボール
+        war_flag: war_flag
+        washing_vehicle: washing_vehicle
+        wet_floor_sign: ウェットフロアサイン
+        white_car: white_car
+        white_flag: 白い旗
+        white_headphones: white_headphones
+        wireless_earphones: ワイヤレスイヤホン
+        wood_carving_tool: 木彫りツール
+        wooden_box: 木箱
+        wooden_pencil: 木製の鉛筆
+        woodland_camouflage: 森林カモフラージュ
+        yamato_(battleship): ヤマト（戦艦）
+        yellow_car: yellow_car
+        yellow_umbrella: 黄色の傘
+        yen_sign: 円のサイン
+        youtube_logo: YouTubeロゴ
+        z_flag: Zフラグ
+        zener_card: ツェナーカード
+        zippo_lighter: ジッポライター
+        feather_duster_prop: 羽根ハタキ
+        ornate_antique_key: アンティークキー
+        pocket_watch_on_chain: 懐中時計
+        small_bouquet_of_flowers: 花束
+        stack_of_antique_books: 書籍
+        apron_with_front_pockets: ポケット付きエプロン
+        cameo_brooch_pin: カメオブローチ
+        choker_necklace_accessory: チョーカー
+        delicate_sheer_apron: 繊細なエプロン
+        goggles_on_forehead: ゴーグル
+        holding_clipboard, medical_chart, writing_notes, focused_expression: クリップボード
+        holding_syringe, medical_injection, needle_in_hand, playful_nurse_expression: 注射器
+        holding_thermometer, blood_pressure_monitor_nearby, caring_and_attentive_expression: 体温計・血圧計
+        nurse_cap, white_traditional_cap, pinned_to_hair, classic_nurse_style: ナースキャップ
+        stethoscope_around_neck, silver_stethoscope, hanging_on_chest: 聴診器
+        inverted_umbrella: 逆さ傘
+    - name: 武器
+      color: rgba(189, 182, 107, .4)
+      tags:
+        arrow: 矢
+        bomb: 爆弾
+        broken_weapon: 壊れた武器
+        claw_(weapon): 爪（武器）
+        complex_Trajectory: 複雑な軌道
+        dagger: 短剣
+        dynamite: ダイナマイト
+        gun: 銃
+        handgun: ハンドガン
+        hatchet: 手斧
+        machine: 機械
+        machinery: 機械武装
+        magazine_(weapon): 弾倉（武器）
+        mechanical_arms: メカニカルアーム
+        mechanization: 機械化
+        military_vehicle: 軍用車両
+        nose_hatchet: 鼻斧
+        planted_sword: 立てかけた剣
+        planted_weapon: 地面に刺さった武器
+        rifle: ライフル
+        saber_(weapon): サーベル（武器）
+        scabbard: 鞘
+        scissors: ハサミ
+        scythe: 鎌
+        sorcerer's_sutra_scroll: 魔術師の経典
+        sword: 剣
+        track_missiles: 追尾ミサイル
+        variable_fighter: 可変戦闘機
+        watercraft: 水上船舶
+        weapon: 武器
+        weapon_on_back: 背中の武器
+        weapon_over_shoulder: 肩にかけた武器
+        light_burgundy: ライト・ワインレッド
+        sword_guard_stance: 刀を抜いて構えるポーズ
+        casting_spell: 魔法を唱える
+        defensive_stance, blocking: 防御ポーズ
+        holding_weapon: 武器を構える
+        martial_arts_pose, karate: 格闘ポーズ
+        ninja_stance: 忍者のポーズ
+        stomping, stepping_on, foot_on: 踏みつける
+        sunrise_stance, sword: ヒーローポーズ
+        sword_stance, fencing: 剣を構える
+        blood_on_face, blood_splatter: 顔に飛び散った血糊
+        body_markings: ボディマーキング
+        painted_clothes, naked_paint: ペイントされた服
+        skull_facepaint: 頭蓋骨モチーフの顔ペイント
+        war_paint: ウォーペイント
+        white_facepaint: 白色のフェイスペイント
+        bone_club: 骨の棍棒
+        bone_spear: 骨の槍
+        bow_(weapon), aiming: 弓
+        club_(weapon): 棍棒
+        flint_knife: 火打石のナイフ
+        flint_spear: 火打石の槍
+        stone_axe: 石の斧
+        stone_spear: 石の槍
+        battle_axe: 戦斧
+        chakram: チャクラム
+        combat_knife: 戦闘ナイフ
+        crossbow: クロスボウ
+        energy_cannon: エネルギーキャノン
+        energy_gun: エネルギー銃
+        energy_sword: エネルギー剣
+        flamethrower: 火炎放射器
+        gatling_gun: ガトリングガン
+        glowing_weapon: 光り輝く武器
+        greatsword: 大剣
+        gunblade: ガンブレード
+        kanabou: 金棒
+        kunai: 苦無
+        polearm: 長柄武器
+        rapier: レイピア
+        shuriken: 手裏剣
+        tantou: 短刀
+        throwing_knife: 投げナイフ
+        war_hammer: 戦鎚
+        wearing_brass_knuckles: メリケンサック
+        whip_sword: 鞭剣
+        wing_bow_(weapon): ウィングボウ
+        dual_wielding_weapon: 両手に武器を持つ
+        fighting, dynamic_pose, afterimage: 攻撃エフェクト
+        incoming_attack: 攻撃モーション
+        leaning_on_weapon: 武器に寄りかかる
+        pointing_melee_weapon: 武器を向ける
+        sheathed, weapon: 鞘に収まった剣
+        spinning_weapon: 武器を振り回す
+        sunrise_stance: 勇者パース
+        swinging_weapon, slashing: 武器を振る
+        two-handed_weapon: 両手で武器を持つ
+        weapon_behind_back: 武器を背負う
+        engraved_hilt: 掘り込み模様の武器
+        exquisite_weaponry, detailed_weaponry: 精巧な武器
+        filigree_hilt: 細い金銀の細工の武器
+        gilded_sword: 金メッキの装飾の武器
+        intricate_hilt: 複雑な模様の装飾の武器
+        jeweled_hilt: 宝石が嵌め込まれている武器
+        ornate_sword: なので、まずはここから紹介していきます。
+        fire_trail, attack_trail: 攻撃モーションによる火の軌跡
+        flaming_sword_with_gigantic_orange_fire: 巨大な炎に覆われた剣
+        ice_sword: 氷の剣
+        weapon_shop: 武器屋
+        cone_chest_plate: コーンチェストプレート
+        cone_shoulder_armor: コーンショルダーアーマー
+        knife: ナイフ
+        shield: シールド
+        staff: スタッフ
+        anti-materiel_rifle: アンチマテルライフル
+        arrow_through_heart: 心の矢印
+        battle_rifle: バトルライフル
+        beam_rifle: ビームライフル
+        blood_on_knife: ナイフの血
+        bow_(music): 弓（音楽）
+        bow_earrings: 弓のイヤリング
+        buster_sword: バスターソード
+        drawing_sword: 剣を描く
+        elbow_carry: elbow_carry
+        elbow_rest: 肘の休息
+        glowing_sword: 光る剣
+        gun_sling: gun_sling
+        gun_to_head: 銃を向かう
+        hammer_and_sickle: ハンマーと鎌
+        holding_bow_(music): 弓を保持する（音楽）
+        holding_hammer: ハンマーを保持します
+        holding_water_gun: ウォーターガンを持っています
+        kalashnikov_rifle: カラシニコフライフル
+        kitchen_knife: 包丁
+        knife_sheath: knife_sheath
+        light_machine_gun: 軽機関銃
+        machine_gun: 機関銃
+        mage_staff: 魔術師のスタッフ
+        master_sword: マスターソード
+        multiple_swords: 複数の剣
+        pickaxe: ピカクセ
+        short_sword: 短い剣
+        shotgun: ショットガン
+        shotgun_shell: ショットガンシェル
+        sparrow: スズメ
+        spear_the_gungnir: ガンニールの槍
+        staff_(music): スタッフ（音楽）
+        sword_behind_back: 後ろの剣
+        sword_of_hisou: sword of Hasou
+        sword_on_back: 背中に剣
+        sword_over_shoulder: 肩越しの剣
+        wooden_sword: 木製の剣
+        adaptive_combat_rifle: adaptive_combat_rifle
+        aegis_sword_(xenoblade): エージスの剣（xenoblade）
+        amos'_bow_(genshin_impact): アモスの弓（genshinインパクト）
+        ankle_gun: 足首の銃
+        arm_shield: アームシールド
+        arrow_(jojo): 矢印（ジョジョ）
+        arrow_cross: arrow_cross
+        arrow_in_body: 体の矢印
+        arrow_in_head: 頭の矢印
+        at_gunpoint: 銃口で
+        at_knifepoint: KnifePointで
+        axent_wear: アクセントウェア
+        bad_gun_anatomy: 悪い銃の解剖学
+        ballistic_shield: 弾道シールド
+        bazooka_(gundam): バズーカ（ガンダム）
+        bishamonten's_spear: ビシャモンテンの槍
+        bit_(gundam): bit_(gundam)
+        blood_on_axe: xの血
+        blood_sword: 血の剣
+        blue_rose_sword: 青いバラの剣
+        bow_bloomers: 弓のブルマー
+        bow_button: bow_button
+        bow_camisole: 弓のカミソール
+        bow_print: 弓印刷
+        bowgun: ボウガン
+        boys_anti_tank_rifle: 男の子アンチタンクライフル
+        broken_sword: 壊れた剣
+        bubble_wand: バブルワンド
+        butter_knife: バターナイフ
+        butterfly_swords: 蝶の剣
+        chainsword: チェーンソード
+        chaos_(warhammer): カオス（ウォーハンマー）
+        claw_hammer: クローハンマー
+        claymore_(sword): クレイモア（剣）
+        cocked_hammer: コックされたハンマー
+        cocking_gun: cocking_gun
+        crystal_sword: クリスタルソード
+        deku_shield: deku_shield
+        dominator_(gun): ドミネーター（銃）
+        double-barreled_shotgun: 二重バレルショットガン
+        double-sided_axe: double-sided_axe
+        double_finger_gun: double_finger_gun
+        dragunov_svd: Dragunov Svd
+        elbow_cutout: 肘の切り抜き
+        elbow_on_knee: 膝の肘
+        elbow_on_table: テーブルの肘
+        elbow_spikes: 肘のスパイク
+        energy_arrow: エネルギー矢印
+        energy_shield: エネルギーシールド
+        energy_spear: エネルギー槍
+        escudo_sword_(rayearth): escudo_sword_(rayearth)
+        face_shield: face_shield
+        fairey_swordfish: フェアリーメカジキ
+        favonius_sword_(genshin_impact): ファボニウスの剣（ジェンシンインパクト）
+        finger_gun_to_head: 頭からフィンガーガン
+        fliegerhammer: Fliegerhammer
+        floating_sword: 浮かぶ剣
+        funnels_(gundam): ファンネル（ガンダム）
+        fusion_swords: 融合剣
+        galaxia_(sword): 銀河（剣）
+        glowing_arrow: 輝く矢印
+        golden_sword: golden_sword
+        great_knife: 素晴らしいナイフ
+        gun_on_back: 背中に銃
+        gunbuster_pose: ガンバスターのポーズ
+        gunkanmaki: ガンカンマキ
+        gunlance: ガンランス
+        gunpla: gunpla
+        gunpod: ガンポッド
+        gunshot_wound: 銃創
+        hammerhead_shark: シュモクザメ
+        hatchet_(axe): hatch（ax）
+        heart_arrow: ハートアロー
+        heart_wand: ハートワンド
+        heavy_machine_gun: 重機関銃
+        holding_bow_(ornament): 弓を持っている（飾り）
+        holding_pickaxe: ピカクセを保持します
+        hylian_shield: ハイリアンシールド
+        innovators_(gundam_00): イノベーター（ガンダム00）
+        java_sparrow: Java Sparrow
+        javelin_(spear): ジャベリン（槍）
+        jikan_sokougun: ジカン・ソコーグン
+        kagune_(tokyo_ghoul): カグネ（東京グール）
+        knife_in_head: 頭のナイフ
+        knifed: ナイフ
+        laser_rifle: レーザーライフル
+        long_sword: 長い剣
+        lunatic_gun: 狂った銃
+        m134_minigun: M134ミニガン
+        m60_(machine_gun): m60_(machine_gun)
+        manually-operated_mounted_gun: manually-operated_mounted_gun
+        mascara_wand: マスカラの杖
+        microphone_wand: マイクワンド
+        minecraft_pickaxe: Minecraft Pickaxe
+        minecraft_sword: Minecraft Sword
+        moonlight_greatsword: ムーンライトグレートソード
+        musical_staff_print: musical_staff_print
+        nameless_axe-sword_(fate): nameless_axe-sword_(fate)
+        needle_sword: 針の剣
+        palette_knife: パレットナイフ
+        palutena_bow_(kid_icarus): palutena_bow_(kid_icarus)
+        planted_arrow: 植えられた矢印
+        planted_knife: 植えられたナイフ
+        planted_spear: 槍の植えられた槍
+        pointing_sword: 剣
+        primordial_jade_winged-spear_(genshin_impact): 原始ジェイド翼の槍（Genshin Impact）
+        raiden_shogun_(cosplay): Raiden Shogun（コスプレ）
+        railgun_(misaka_mikoto): railgun_(misaka_mikoto)
+        ray_gun: 光線銃
+        rebellion_(sword): 反乱（剣）
+        rifle_cartridge: rifle_cartridge
+        riot_shield: 防護盾
+        sawed-off_shotgun: のこぎりのショットガン
+        shield_module: shield_module
+        shield_on_back: shield_on_back
+        shield_print: シールドプリント
+        single_elbow_pad: シングルエルボパッド
+        skull_and_crossed_swords: 頭蓋骨と交差した剣
+        sledgehammer: 大型ハンマー、大槌
+        space_sword: スペースソード
+        spear_of_cassius: カシウスの槍
+        staff_(ff10): staff_(ff10)
+        staff_of_homa_(genshin_impact): ホマのスタッフ（Genshin Impact）
+        staff_of_selection_(fate): staff_of_selection_(fate)
+        staff_of_the_scarlet_sands_(genshin_impact): staff_of_the_scarlet_sands_(genshin_impact)
+        staff_riding: スタッフライディング
+        star_wand: スターワンド
+        stun_gun: スタンガン
+        sword_between_breasts: 胸の間の剣
+        sword_earrings: sword_earrings
+        sword_hilt: 剣柄
+        sword_in_head: 頭の中の剣
+        sword_of_dios: ディオスの剣
+        sword_of_kusanagi: クサナギの剣
+        sword_of_st._catherine_(fate): sword_of_st._catherine_(fate)
+        sword_of_the_creator: 創造主の剣
+        sword_print: ソードプリント
+        sword_writing: 剣の執筆
+        swordfish: メカジキ
+        syringe_gun: シリンジガン
+        table_knife: テーブルナイフ
+        three_section_staff: 3つのセクションスタッフ
+        titans_(gundam): titans_(gundam)
+        toy_gun: おもちゃ銃
+        toy_hammer: おもちゃハンマー
+        toy_sword: おもちゃの剣
+        two-handed_sword: 両手の剣
+        umbrella_gun: 傘の銃
+        wandenreich: ワンデンライヒ
+        weapon_between_legs: weapon_between_legs
+        weapon_case: 武器ケース
+        weapon_connection: 武器の接続
+        weapon_focus: 武器の焦点
+        weapon_formation: weapon_formation
+        weapon_in_garters: weapon_in_garters
+        weapon_name: 武器名
+        weapon_on_floor: 床に武器
+        windshield: フロントガラス
+        winged_sword: 翼のある剣
+        winged_wand: 翼のある杖
+        wooden_shield: 木製の盾
+        wooden_staff: 木製のスタッフ
+        yamato_(sword): ヤマト（剣）
+        yoru_(sword): ヨル（剣）
+    - name: 食べ物
+      color: rgba(189, 182, 107, .4)
+      tags:
+        A_sushi_roll: 寿司ロール
+        apple: りんご
+        aubergine: ナス
+        bottled_water: ボトル入り水
+        burger: バーガー
+        cake: ケーキ
+        candy: キャンディー
+        candy_apple: キャンディーアップル
+        candy_cane: キャンディーケイン
+        carrot: にんじん
+        chips: ポテトチップス
+        coffee: コーヒー
+        cookie: クッキー
+        cotton_candy: 綿菓子
+        cream: クリーム
+        doughnut: ドーナツ
+        drink: 飲み物
+        egg: 卵
+        food: 食べ物
+        food_on: 顔に食べ物
+        food_on_body: 体に食べ物
+        food_print: 食べ物のプリント
+        food_stand: 食品スタンド
+        ice_cream: アイスクリーム
+        in_food: 食べ物の中にいる（キャラクター）
+        makizushi: 巻き寿司
+        meat: 肉
+        noodles: 麺類
+        obento: お弁当
+        pancake: パンケーキ
+        peach: 桃
+        pocky: ポッキー
+        potato_chips: ポテトチップス
+        ramen: ラーメン
+        sake: 日本酒
+        sundae: サンデー
+        sweets: お菓子
+        taiyaki: たい焼き
+        tea: お茶
+        teacup: ティーカップ
+        telstar: テルスター
+        tempura: 天ぷら
+        wagashi: 和菓子
+        wine: ワイン
+    - name: 動物
+      color: rgba(189, 182, 107, .4)
+      tags:
+        bat: コウモリ
+        bear: クマ
+        bird: 鳥
+        bunny: ウサギ
+        cat: 猫
+        chick: ひよこ
+        cow: 牛
+        crow: カラス
+        dog: 犬
+        dragon: ドラゴン
+        dragonfly: トンボ
+        fox: キツネ
+        hamster: ハムスター
+        horse: 馬
+        loong: 中国の龍
+        mammal: 哺乳動物
+        manjuu_(azur_lane): マンジュウ（アズールレーン）
+        panda: パンダ
+        penguin: ペンギン
+        reptile: 爬虫類
+        slime: スライム
+        snake: 蛇
+        snow_bunny: スノーバニー
+        squirrel: リス
+        stuffed_bunny: ぬいぐるみのウサギ
+        tiger: 虎
+        whale: クジラ
+        wolf: オオカミ
+        wriggle_nightbug: リグル・ナイトバグ
+        扶桑花: 馬
+    - name: 植物
+      color: rgba(189, 182, 107, .4)
+      tags:
+        bamboo: 竹
+        bush/shrub: 低木
+        cherry_blossoms: 桜の花
+        christmas_tree: クリスマスツリー
+        chrysanthemum: 菊
+        entangled_plants: 絡み合った植物
+        flower: 花
+        flower_bloom: 花が咲く
+        forest: 森
+        hibiscus: ハイビスカス
+        jack-o'-lantern: ジャックオーランタン
+        lily: ユリ
+        maple_tree: カエデの木
+        narcissu: スイセン
+        palm_tree: ヤシの木
+        pine_tree: 松の木
+        plant: 植物
+        plum_blossom: 梅の花
+        pumpkin: カボチャ
+        rose: バラ
+        tree: 木
+        vase: 花瓶
+        wisteria: 藤
+  - name: noplog · 【AIイラスト】Stable Diffusion プロンプト(呪文)一覧/職業・装飾編
+    groups:
+    - name: ３．持ち物
+      tags:
+        with_a_staff: 杖

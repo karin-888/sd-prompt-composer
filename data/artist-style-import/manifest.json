@@ -1,0 +1,14 @@
+{
+  "source_files": [
+    "/Users/hiori222/Downloads/Naiv3IllustriousXLMixedArtist_v10/single_artist_style.html",
+    "/Users/hiori222/Downloads/Naiv3IllustriousXLMixedArtist_v10/mixed_artists_style.html"
+  ],
+  "import_dir": "/Users/hiori222/stable-diffusion-webui-reForge/extensions/sd-prompt-composer/data/artist-style-import",
+  "single_rows": 748,
+  "single_tags": 746,
+  "single_images": 746,
+  "mixed_rows": 447,
+  "mixed_webui_prompts": 447,
+  "mixed_tags": 447,
+  "mixed_images": 447
+}

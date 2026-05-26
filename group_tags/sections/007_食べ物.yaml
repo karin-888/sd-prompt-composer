@@ -1,0 +1,419 @@
+- name: 食べ物
+  categories:
+  - name: 食べ物・飲み物
+    groups:
+    - name: 食べ物・飲み物
+      color: rgba(83, 102, 255, 1)
+      tags:
+        cigarette: シガレット
+        dango: ダンゴ
+        food_in_mouth: 口の中の食べ物
+        fruit: フルーツ
+        gelatin: ゼラチン
+        jam: 混雑する
+        kafuu_chino: Kafuu Chino
+        onigiri: onigiri
+        sweet_potato: スイートポテト
+        chocolate-coated_banana_popsicle: チョコバナナバーを食べる美少女
+        chocolate-coated_banana_popsicle, bite_mark_revealing_bright_banana_yellow_core, realistic_melted_chocolate_gloss: チョコバナナバー
+        dual-layer_popsicle, top_creamy_white, bottom_bright_raspberry: 二層アイスバーを食べる美少女
+        dual-layer_popsicle, top_creamy_white, bottom_bright_raspberry, clean_horizontal_split, glossy_finish: 二層アイスバー
+        fruit-chunk_popsicle: つぶつぶ果実バーを舐めて食べる美少女
+        fruit-chunk_popsicle, mixed_berries_embedded, clear_ice: つぶつぶ果実バー
+        neon_green_melon_popsicle: メロンバーを食べる美少女
+        neon_green_melon_popsicle, translucent, frosty_surface: メロンバー
+        sky-blue_soda_popsicle: ソーダバーを食べる美少女
+        sky-blue_soda_popsicle, fizzy_bubbles_trapped_inside, icy_shine: ソーダバー
+        solid_white_milk_popsicle: ミルクバーを食べる美少女
+        solid_white_milk_popsicle, smooth_creamy_surface_sheen, subtle_frost_crystals: ミルクバー
+        strawberry-milk_popsicle: イチゴミルクバーを舐めて食べる美少女
+        strawberry-milk_popsicle, pink-and-white_marble_swirl, semi-transparent_edges, condensation_pearls: イチゴミルクバー
+        translucent_rectangular_popsicle: アイスキャンディーを咥えて食べる胃美少女
+        translucent_rectangular_popsicle, pale_aqua, glossy_ice_texture, tiny_condensation_droplets, wooden_stick: アイスキャンディー
+        watermelon_popsicle: スイカバー風を食べる美少女
+        watermelon_popsicle, vivid_red_body, emerald_green_rind_tip, scattered_black_seed_dots: スイカバー風
+        charcoal_black_soft-serve: ブラックソフトを食べる美少女
+        charcoal_black_soft-serve, matte_sheen, sesame_seeds_topping: ブラックソフト
+        classic_vanilla_soft-serve: バニラソフトアイスを舐める美少女
+        classic_vanilla_soft-serve_swirl, pure_white, glossy_highlights, waffle_cone: バニラソフト
+        matcha_green-tea_soft-serve: 抹茶ソフトを食べる美少女
+        matcha_green-tea_soft-serve, earthy_green_hue, subtle_tea_powder_dusting: 抹茶ソフト
+        rainbow_soft-serve_cone: 虹色ソフトを食べる美少女
+        rainbow_soft-serve_cone, smooth_gradient_swirl_(red-orange-yellow-green-blue-purple): 虹色ソフト
+        rich_chocolate_soft-serve: チョコソフトを食べる美少女
+        rich_chocolate_soft-serve, dark_cocoa_color, silky_swirl_texture, waffle_cone: チョコソフト
+        soda-blue_soft-serve: 青いソフトを食べる美少女
+        soda-blue_soft-serve, translucent_cyan, subtle_fizz_bubbles_on_surface: 青いソフト
+        strawberry_pink_soft-serve: イチゴソフトアイスを舐めて食べる美少女
+        strawberry_pink_soft-serve, pastel_tone, small_heart-shaped_sprinkle_accents, wafer_cone: イチゴソフト
+        twist_soft-serve: ミックスソフトを食べる美少女
+        twist_soft-serve, vanilla_and_chocolate_spiral, perfect_symmetry, crispy_cone: ミックスソフト
+        artisan_Italian_gelato: 高級ジェラートを食べる美少女
+        artisan_Italian_gelato, silky_texture, metal_spatula_swirl_marks, elegant_paper_cup_with_gold_rim: 高級ジェラート
+        assorted_fruit_parfait_cup: フルーツミックスカップアイスを食べる美少女
+        assorted_fruit_parfait_cup, layered_strawberry-mango-kiwi_ice_cream, visible_fruit_chunks, transparent_cup: フルーツミックスカップ
+        bowl_of_shaved_ice_with_strawberry_syrup: イチゴかき氷を食べる美少女
+        bowl_of_shaved_ice_with_strawberry_syrup, ice_crystals_glistening, white_ceramic_bowl, wooden_spoon: イチゴかき氷
+        ceramic_bowl_of_matcha_ice_cream: 抹茶カップアイスを食べる美少女
+        ceramic_bowl_of_matcha_ice_cream, deep_green_color, red_bean_paste_garnish, wooden_spoon: 抹茶カップ
+        gourmet_gelato_cup_topped_with_colorful_macarons: マカロン乗せアイスアイスを食べる美少女
+        gourmet_gelato_cup_topped_with_colorful_macarons, pastel_palette: マカロン乗せアイス
+        heart-shaped_ceramic_dish, twin_scoops_strawberry_ice_cream: ハート型器のアイスを食べる美少女
+        heart-shaped_ceramic_dish, twin_scoops_strawberry_ice_cream, whipped_cream_swirl: ハート型器のアイス
+        mint-blue_ice_cream_with_dark_chocolate_chips: チョコミントカップアイスを食べる美少女
+        mint-blue_ice_cream_with_dark_chocolate_chips, frosted_glass_cup: チョコミントカップ
+        round_cup_with_three_scoops_of_vanilla_ice_cream: バニラカップアイスを食べる美少女
+        round_cup_with_three_scoops_of_vanilla_ice_cream, creamy_texture, silver_spoon: バニラカップ
+        shaved_ice_cone_with_rainbow_syrup_layers: レインボーかき氷を食べる美少女
+        shaved_ice_cone_with_rainbow_syrup_layers, vibrant_colors, paper_cone, summer_festival_vibe: レインボーかき氷
+        cookie_ice-cream_sandwich: アイスサンド（ビスケット）をかじって食べる美少女
+        cookie_ice-cream_sandwich, crunchy_chocolate_biscuits, vanilla_ice_cream_visible, crumbs: アイスサンド（ビスケット）
+        heart-shaped_popsicle: ハート型アイスを食べる美少女
+        heart-shaped_popsicle, bright_strawberry_red, glossy_glaze, stick_handle: ハート・星型アイス
+        japanese_monaka_ice_cream: アイス最中をかじって食べる美少女
+        japanese_monaka_ice_cream, crisp_mochi_wafer_shell, smooth_matcha_ice_cream_filling: アイス最中
+        perfect_cube_ice_cream_bar: キューブ型アイスを食べる美少女
+        perfect_cube_ice_cream_bar, pastel_gradient_glaze: キューブ型アイス
+        round_spiral_lollipop-style_ice_pop: ペロペロキャンディ風アイスを食べる美少女
+        round_spiral_lollipop-style_ice_pop, rainbow_swirl, wooden_stick: ペロペロキャンディ風
+        thick_macaron_ice-cream_sandwich: アイスマカロンを食べる美少女
+        thick_macaron_ice-cream_sandwich, vibrant_shell_colors, ice_cream_core_peeking: アイスマカロン
+        hiccup: しゃっくり
+        slurred: ろれつが回らない
+        tipsy: ほろ酔い状態のプロンプト紹介とAIイラスト作例
+        beer: ビール
+        beer_can, beer_mug, beer_bottle: ビール
+        brandy: ブランデー
+        brandy_bottle, brandy_glass: ブランデー
+        champagne_flute, champagne_bottle: シャンパン
+        cocktail: カクテル全般
+        cocktail_glass, cocktail_shaker: カクテル全般
+        cocktail_glass, olive_on_toothpick: マティーニ
+        gin: ジン
+        gin_bottle, tonic_water: ジン
+        liquor: 蒸留酒全般
+        liquor_bottle, shot_glass: 蒸留酒全般
+        martini: マティーニ
+        rum: ラム
+        rum_bottle, shot_glass: ラム
+        shot_glass, lime_wedge: テキーラ
+        soju: 焼酎
+        soju_bottle, shot_glass: 焼酎
+        tequila: テキーラ
+        tokkuri, choko_(cup), sakazuki, sake_bottle: 日本酒
+        vodka: ウォッカ
+        vodka_bottle, shot_glass: ウォッカ
+        whiskey: ウイスキー
+        whiskey_glass, ice_cubes, whiskey_bottle: ウイスキー
+        wine_glass, wine_bottle: ワイン
+        chewing: もぐもぐ
+        cream_on_body: クリームが体に
+        crumbs: 食べかす
+        drinking_straw: ストローで飲む
+        eating_contest, solo_focus, wide_shot: 早食い競争・大食い対決
+        food_between_breasts: 胸の谷間に食べ物が挟まれている
+        food_bite: 食べ物に噛み跡
+        food_in_mouth, open_mouth: 口に食べ物
+        food_on_breasts: 胸に食べ物が付いている
+        foodgasm: 食べて至福の瞬間
+        imminent_bite: 食べる瞬間
+        messy_eating: 汚く食べる
+        milk_mustache: 牛乳ひげ
+        mukbang, too_many_foods_on_table: 豪快・大食い配信風
+        swallowing: ごっくん
+        fed_by_viewer, pov: 食べさせてもらう
+        lollipop_in_mouth: 咥えロリポップ
+        alcohol: アルコール
+        bottle: ボトル
+        disposable_cup: 使い捨てカップ
+        food_focus: フードフォーカス
+        adam's_apple: アダムのりんご
+        baby_bottle: 哺乳瓶
+        bad_food: 不味い食べ物
+        bagged_fish: 袋詰め魚
+        beer_bottle: ビール瓶
+        birthday_cake: 誕生日ケーキ
+        boned_meat: 骨付き肉
+        boobplate: ブーブプレート
+        bubble_tea: バブルティー
+        bubble_tea_challenge: バブルティーチャレンジ
+        checkerboard_cookie: チェッカーボードクッキー
+        chocolate_cake: チョコケーキ
+        clitoris_piercing: クリトリスピアス
+        crotch_plate: 股間
+        cup_ramen: カップラーメン
+        curry_rice: カレーライス
+        devil_fruit_power: devil_fruit_power
+        disposable_coffee_cup: disposable_coffee_cup
+        easter_egg: イースターエッグ
+        energy_drink: 栄養ドリンク
+        eyebrow_piercing: 眉のピアス
+        fast_food: ファーストフード
+        flying_fish: 空飛ぶ魚
+        food-themed_clothes: 食べ物をテーマにした服
+        food-themed_earrings: 食品をテーマにしたイヤリング
+        food_art: フードアート
+        food_on_head: 頭の食べ物
+        fried_egg: 目玉焼き
+        galaxy_expedition_team_survey_corps_uniform: Galaxy Expedition Team Survey Corps Uniform
+        glass_bottle: ガラス瓶
+        green_tea: 緑茶
+        heart-shaped_chocolate: ハート型のチョコレート
+        heart-shaped_food: ハート型の食べ物
+        ho-kago_tea_time: ho-kago_tea_time
+        holding_burger: holding_burger
+        holding_cake: ケーキを持っています
+        holding_chocolate: チョコレートを持っています
+        holding_cotton_candy: holding_cotton_candy
+        holding_drink: 飲み物を持っています
+        holding_fish: 魚を持っています
+        holding_ice_cream: アイスクリームを持っています
+        holding_teapot: ティーポットを保持します
+        holding_vegetable: 野菜を保持します
+        in_cup: カップで
+        labret_piercing: ラブレットピアス
+        license_plate: ナンバープレート
+        linked_piercing: リンクピアス
+        melon_bread: メロンパン
+        milk_bottle: 牛乳びん
+        mixing_bowl: ミキシングボウル
+        mouth_piercing: 口のピアス
+        nissin_cup_noodle: nissin_cup_noodle
+        nose_piercing: ノーズピアス
+        oversized_food: 特大の食べ物
+        perfume_bottle: 香水ボトル
+        pet_bowl: ペットボウル
+        plastic_bottle: ペットボトル
+        red_wine: 赤ワイン
+        rice_bowl: ライスボウル
+        sake_bottle: 日本酒
+        shrimp_tempura: エビの天ぷら
+        soap_bottle: 石鹸ボトル
+        soda_bottle: ソーダボトル
+        spoken_food: 話された食べ物
+        tail_piercing: テールピアス
+        tropical_fish: 熱帯魚
+        wine_bottle: ワインボトル
+        wrapped_candy: 包まれたキャンディー
+        1-up_mushroom: 1-upキノコ
+        alcohol_carton: alcohol_carton
+        animal-themed_food: animal-themed_food
+        anti-eyebrow_piercing: アンチエウモウピアス
+        apollo_chocolate: アポロチョコレート
+        apple_juice: リンゴジュース
+        apple_pie: アップルパイ
+        arrow_through_apple: リンゴを通る矢印
+        bad_apple!!: ダメなりんご！！
+        bitten_apple: 噛まれたリンゴ
+        black_tea: 紅茶
+        black_tears: 黒い涙
+        blue_apple: ブルーアップル
+        bottle_between_breasts: bottle_between_breasts
+        bottle_cap: 瓶のキャップ
+        bottle_to_cheek: ボトルからチーク
+        bowl_stack: ボウルスタック
+        boy_and_girl_sandwich: 男の子と女の子のサンドイッチ
+        bridge_piercing: ブリッジピアス
+        broken_bottle: 壊れたボトル
+        broken_cup: 壊れたカップ
+        broken_egg: 壊れた卵
+        broken_plate: 壊れたプレート
+        burnt_food: 焦げた食べ物
+        bust_cup: バストカップ
+        buttercup_redraw_challenge_(meme): バターカップレッドラウチャレンジ（ミーム）
+        canned_coffee: 缶詰コーヒー
+        canned_food: 缶詰食品
+        censored_food: 検閲された食べ物
+        champagne_bottle: シャンパンボトル
+        character-themed_food: character-themed_food
+        cheek_piercing: 頬ピアス
+        cherry_tomato: チェリートマト
+        chin_piercing: あごのピアス
+        chinese_food: 中華料理
+        chocolate_banana: チョコレートバナナ
+        chocolate_chip_cookie: チョコチップクッキー
+        chocolate_cornet: チョコレートコルネット
+        chocolate_milk: チョコレートミルク
+        chopped_spring_onion: chopped_spring_onion
+        christmas_cake: クリスマスケーキ
+        coconut_cup: coconut_cup
+        colored_tears: 色付きの涙
+        conveyor_belt_sushi: コンベアベルト寿司
+        corked_bottle: コルクボトル
+        corset_piercing: コルセットピアス
+        covered_piercing: 覆われたピアス
+        cracked_egg: 割れた卵
+        creature_as_food: creature_as_food
+        cup_on_head: cup_on_head
+        dropped_food: dropped_food
+        empty_plate: 空のプレート
+        fish_bottle: fish_bottle
+        fishbowl: フィッシュボウル
+        fishbowl_helmet: フィッシュボウルヘルメット
+        flipping_food: ひっくり返る食べ物
+        flying_teardrops: 飛ぶ涙
+        food-themed_background: 食品をテーマにした背景
+        food-themed_bag: 食べ物をテーマにしたバッグ
+        food-themed_creature: 食品をテーマにした生き物
+        food-themed_hair: food-themed_hair
+        food-themed_hat: 食べ物をテーマにした帽子
+        food-themed_hat_ornament: 食べ物をテーマにした帽子飾り
+        food-themed_ornament: 食べ物をテーマにした飾り
+        food-themed_pillow: 食品をテーマにした枕
+        food_as_clothes: 服として食べ物
+        food_costume: food_costume
+        food_in_ass: food_in_ass
+        food_insertion: 食品挿入
+        food_name: food_name
+        food_on_clothes: 服の食べ物
+        food_on_hair: 髪の毛の食べ物
+        food_on_hand: 手元の食べ物
+        food_on_legs: 足の食べ物
+        food_packaging: food_packaging
+        food_theft: 食料盗難
+        food_truck: 屋台
+        food_wrapper: フードラッパー
+        food_writing: フードライティング
+        foodification: 食料化
+        frenulum_piercing: 紅斑ピアス
+        fried_egg_on_toast: トーストに目玉焼き
+        fried_rice: 炒飯
+        fruit_bowl: フルーツボウル
+        fruit_cup: フルーツカップ
+        fruit_sandwich: フルーツサンドイッチ
+        giant_mushroom: 巨大なキノコ
+        giving_food: giving_food
+        glass_bowl: ガラスのボウル
+        glass_teacup: ガラスティーカップ
+        glass_teapot: ガラスティーポット
+        glasses_with_tear: glasses_with_tear
+        golden_apple: 金のりんご
+        golden_egg_(splatoon): golden_egg_(splatoon)
+        good_meat_day: 良い肉の日
+        green_apple: 青りんご
+        grilled_fish: 焼き魚
+        hamburger_steak: ハンバーガーステーキ
+        hand_milking: ハンド搾乳
+        hanging_food: ぶら下がっている食べ物
+        hardboiled_egg: ハードボイルドエッグ
+        heart-shaped_cake: ハート型のケーキ
+        heart-shaped_cookie: heart-shaped_cookie
+        holding_bento: ベントを保持します
+        holding_candy_apple: holding_candy_apple
+        holding_candy_cane: キャンディケインを持っています
+        holding_carrot: ニンジンを保持します
+        holding_chess_piece: チェスのピースを持っています
+        holding_coffee_pot: holding_coffee_pot
+        holding_cookie: クッキーを保持します
+        holding_drinking_straw: ストローを飲む
+        holding_egg: 卵を持っています
+        holding_ice_cream_cone: holding_ice_cream_cone
+        holding_juice_box: holding_juice_box
+        holding_milk_carton: holding_milk_carton
+        holding_mushroom: マッシュルームを保持します
+        holding_sandwich: holding_sandwich
+        holding_snack: holding_snack
+        holding_spring_onion: スプリングオニオンを保持します
+        horn_piercing: ホーンピアス
+        hot_chocolate: ホットチョコレート
+        hot_drink: ホットドリンク
+        ice_cream_cup: アイスクリームカップ
+        iced_coffee: アイスコーヒー
+        iced_tea: アイスティー
+        in_bottle: ボトルで
+        in_bowl: ボウルで
+        incoming_drink: 入ってくる飲み物
+        instant_ramen: インスタントラーメン
+        invincible_candy: 無敵のキャンディ
+        kashiwa_mochi_(food): カシワモチ（食べ物）
+        ketchup_bottle: ケチャップボトル
+        kindergarten_teacher: 幼稚園の先生
+        labia_piercing: ラビアピアス
+        layer_cake: レイヤーケーキ
+        loaf_of_bread: パンのパン
+        lunar_tear: 月の涙
+        margherita_pizza: margherita_pizza
+        marine_uniform_(one_piece): marine_uniform_(one_piece)
+        maxim_tomato: マキシムトマト
+        mayonnaise_bottle: マヨネーズボトル
+        measuring_cup: 計量カップ
+        medicine_bottle: 薬ボトル
+        mega_milk: メガミルク
+        message_in_a_bottle: ボトルの中のメッセージ
+        milk_tea: ミルクティー
+        mint_chocolate: mint_chocolate
+        miso_soup: みそ汁
+        mitarashi_dango: ミタラシダンゴ
+        moomoo_milk: Moomooミルク
+        mustard_bottle: マスタードボトル
+        nameplate: ネームプレート
+        on_banana: バナナで
+        on_food: 食べ物に
+        on_plate: プレート上
+        oral_sandwich: oral_sandwich
+        orange_juice: オレンジジュース
+        page_tear: ページの涙
+        peeing_in_cup: カップでおしっこ
+        pet_food: ペットフード
+        plate_stack: プレートスタック
+        pokemon_egg: ポケモンエッグ
+        prefect_team_(blue_archive): prefect_team_(blue_archive)
+        princess_peach_(cosplay): プリンセスピーチ（コスプレ）
+        puffer_fish: フグ
+        puzzle_piece: パズルピース
+        raw_meat: 生肉
+        robot_fish: robot_fish
+        sakura_mochi: さくらモチ
+        sandwich_cookie: サンドイッチクッキー
+        sapporo_beer: サッポロビール
+        school_of_fish: 魚の学校
+        seraphim_(one_piece): seraphim_(one_piece)
+        shampoo_bottle: シャンプーボトル
+        shared_drink: 共有ドリンク
+        sharing_food: 食べ物を共有します
+        shogi_piece: ショギのピース
+        siamese_fighting_fish: シャム戦闘魚
+        sidetail_miku_noodle_stopper_(meme): sidetail_miku_noodle_stopper_(meme)
+        simple_fish: simple_fish
+        single_fishnet_legwear: シングルフィッシュネットレッグウェア
+        sitting_on_food: 食べ物の上に座っています
+        skull_cup: スカルカップ
+        sliced_meat: スライスした肉
+        softboiled_egg: 柔らかい卵
+        soy_sauce_bottle: soy_sauce_bottle
+        spaghetti_and_meatballs: スパゲッティとミートボール
+        spike_piercing: spike_piercing
+        spiked_ear_piercing: スパイクされた耳のピアス
+        spilled_milk: こぼれた牛乳
+        squeeze_bottle: ボトルを絞ります
+        star-shaped_food: star-shaped_food
+        stargazy_pie: スターガジーパイ
+        strawberry_cake: ストロベリーケーキ
+        strawberry_milk: いちごミルク
+        stuffed_carrot: ぬいぐるみのニンジン
+        stuffed_eggplant: ぬいぐるみ
+        stuffed_fish: ぬいぐるみ
+        submarine_sandwich: 潜水艦サンドイッチ
+        sugar_bowl: シュガーボウル
+        super_mushroom: スーパーキノコ
+        tasting_plate: テイスティングプレート
+        template: テンプレート
+        thumbprint_cookie: Thumbprint Cookie
+        tomato_juice: トマトジュース
+        too_much_food: あまりにも多くの食べ物
+        tsukimi_dango: ツキミダンゴ
+        washbowl: ウォッシュボウル
+        wedding_cake: ウエディングケーキ
+        white_chocolate: ホワイトチョコレート
+        wing_piercing: 翼のピアス
+        wooden_cup: 木製のカップ
+        wrapped_bento: ラップベント
+        yoshi_egg: ヨッシーエッグ
+        zunda_mochi: ズンダモチ
+        french_toast: フレンチトースト
+        imagawayaki: 今川焼き
+        tsukimi_burger: お月見バーガー
+        barley_tea: バーレイティー
+        cappuccino: カプチーノ
+        margarita: マーガリータ
+        strainer: ざる

@@ -1,13 +1,16 @@
 """ -*- coding: UTF-8 -*-
 Tag dictionary loader for Prompt Composer.
 
-Reads tags from prompt-aio's YAML file and exposes a simple
-in-memory search API for the FastAPI routes.
+When ``group_tags/manifest.json`` exists, sections are loaded on demand from
+``group_tags/sections/*.yaml``. Otherwise falls back to loading legacy YAML files.
 """
 
+import json
 import os
+import pickle
+import time
 import urllib.parse
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Tuple, Set
 
 import yaml
 
@@ -17,6 +20,7 @@ import preview_filenames
 
 _tags: List[Dict] = []
 _loaded: bool = False
+_lazy_mode: bool = False
 _jp_map: Dict[str, str] = {}
 _extension_dir: str = ""
 _previews_dir: str = ""
@@ -24,6 +28,19 @@ _preview_by_tag: Dict[str, str] = {}
 _preview_dir_mtime: float = 0.0
 _related_preview_cache: Dict[str, Optional[str]] = {}
 _preview_alias_index: Dict[str, str] = {}
+_tag_by_name: Dict[str, Dict] = {}
+_tags_by_path: Dict[Tuple[str, str, str], List[int]] = {}
+_cached_paths: List[Dict] = []
+_cached_path_counts: Dict[str, int] = {}
+_cached_path_entries: List[Dict] = []
+_manifest_sections: Dict[str, Dict] = {}
+_manifest_sections_ordered: List[Dict] = []
+_search_index: List[Dict] = []
+_loaded_sections: Set[str] = set()
+_global_tag_keys: Set[str] = set()
+_MANIFEST_VERSION = 2
+_SECTION_CACHE_VERSION = 2
+_LEGACY_CACHE_VERSION = 1
 _PREVIEW_EXTS = (".webp", ".png", ".jpg", ".jpeg", ".gif")
 
 
@@ -40,12 +57,20 @@ def _item_dedupe_score(item: Dict) -> int:
         score += 1000
     if (item.get("preview") or "").strip():
         score += 500
-    score += min(len((item.get("jp") or "").strip()), 200)
+    jp = (item.get("jp") or "").strip()
+    if jp and not tag_text_utils.is_low_quality_jp(tag, jp):
+        score += min(len(jp), 200)
     return score
 
 
+def _resolve_jp_labels(items: List[Dict]) -> None:
+    lookup = tag_text_utils.build_jp_lookup(items)
+    for item in items:
+        tag = (item.get("tag") or "").strip()
+        item["jp"] = tag_text_utils.resolve_jp_label(tag, item.get("jp") or "", lookup)
+
+
 def _dedupe_items(items: List[Dict]) -> List[Dict]:
-    """Keep one entry per tag string (case-insensitive), preferring preview + richer jp."""
     best: Dict[str, tuple[int, int]] = {}
     for idx, item in enumerate(items):
         key = _tag_dedupe_key(item.get("tag") or "")
@@ -55,7 +80,6 @@ def _dedupe_items(items: List[Dict]) -> List[Dict]:
         prev = best.get(key)
         if prev is None or score > prev[0] or (score == prev[0] and idx < prev[1]):
             best[key] = (score, idx)
-
     keep_indices = {idx for _score, idx in best.values()}
     return [item for idx, item in enumerate(items) if idx in keep_indices]
 
@@ -66,10 +90,16 @@ def _parse_yaml_sections(data) -> List[Dict]:
         return items
 
     for section in data:
+        if not isinstance(section, dict):
+            continue
         section_name = section.get("name") or ""
         for cat in section.get("categories", []) or []:
+            if not isinstance(cat, dict):
+                continue
             cat_name = cat.get("name") or ""
             for group in cat.get("groups", []) or []:
+                if not isinstance(group, dict):
+                    continue
                 group_name = group.get("name") or ""
                 tags = group.get("tags", {}) or {}
                 for key, value in tags.items():
@@ -81,6 +111,7 @@ def _parse_yaml_sections(data) -> List[Dict]:
                     else:
                         jp_text = str(value) if value is not None else ""
                     eng, jp_text = tag_text_utils.normalize_tag_jp(eng, jp_text)
+                    jp_text = tag_text_utils.sanitize_tag_jp(eng, jp_text)
                     item = {
                         "tag": eng,
                         "jp": jp_text,
@@ -94,6 +125,37 @@ def _parse_yaml_sections(data) -> List[Dict]:
     return items
 
 
+_PATH_SEP = "\x1f"
+
+
+def _path_key(section: str, category: str = "", group: str = "") -> str:
+    sec = (section or "").strip() or "(未分類)"
+    cat = (category or "").strip()
+    grp = (group or "").strip()
+    parts = [sec]
+    if cat:
+        parts.append(cat)
+        if grp:
+            parts.append(grp)
+    return _PATH_SEP.join(parts)
+
+
+def _group_tags_dir() -> str:
+    return os.path.join(_extension_dir, "group_tags")
+
+
+def _manifest_path() -> str:
+    return os.path.join(_group_tags_dir(), "manifest.json")
+
+
+def _search_index_path() -> str:
+    return os.path.join(_group_tags_dir(), "search-index.pkl")
+
+
+def _lazy_available() -> bool:
+    return os.path.isfile(_manifest_path())
+
+
 def _dictionary_yaml_paths(extension_dir: str) -> List[str]:
     paths: List[str] = []
     local_yaml_path = os.path.join(extension_dir, "group_tags", "default.yaml")
@@ -103,7 +165,7 @@ def _dictionary_yaml_paths(extension_dir: str) -> List[str]:
     group_dir = os.path.join(extension_dir, "group_tags")
     if os.path.isdir(group_dir):
         for name in sorted(os.listdir(group_dir)):
-            if not name.endswith(".yaml") or name == "default.yaml":
+            if not name.endswith(".yaml") or name in ("default.yaml", "default.yaml.bak"):
                 continue
             path = os.path.join(group_dir, name)
             if os.path.isfile(path) and path not in paths:
@@ -121,23 +183,303 @@ def _dictionary_yaml_paths(extension_dir: str) -> List[str]:
     return paths
 
 
-def init(extension_dir: str):
-    """Load tag dictionary once at startup."""
-    global _tags, _loaded, _jp_map, _extension_dir, _previews_dir
-    if _loaded:
+def _cache_file_path() -> str:
+    root = user_storage.user_root_dir()
+    if root:
+        return os.path.join(root, "tag-dictionary-cache.pkl")
+    if _extension_dir:
+        return os.path.join(_extension_dir, "data", "tag-dictionary-cache.pkl")
+    return ""
+
+
+def _section_cache_path(section_name: str) -> str:
+    root = user_storage.user_root_dir()
+    base = root or os.path.join(_extension_dir, "data")
+    safe = _tag_dedupe_key(section_name).replace("/", "_") or "section"
+    return os.path.join(base, "tag-section-cache", f"{safe}.pkl")
+
+
+def _section_yaml_path(section_name: str) -> Optional[str]:
+    meta = _manifest_sections.get(section_name)
+    if not meta:
+        return None
+    rel = (meta.get("file") or "").strip()
+    if not rel:
+        return None
+    return os.path.join(_group_tags_dir(), rel)
+
+
+def _section_yaml_mtime(section_name: str) -> float:
+    path = _section_yaml_path(section_name)
+    if not path:
+        return 0.0
+    try:
+        return os.path.getmtime(path)
+    except OSError:
+        return 0.0
+
+
+def _reset_indexes() -> None:
+    global _jp_map, _tag_by_name, _tags_by_path, _cached_paths, _cached_path_counts, _cached_path_entries
+    _jp_map = {}
+    _tag_by_name = {}
+    _tags_by_path = {}
+    _cached_paths = []
+    _cached_path_counts = {}
+    _cached_path_entries = []
+
+
+def _append_to_indexes(items: List[Dict], start_idx: int) -> None:
+    global _cached_path_entries
+
+    seen_paths = {(p["section"], p["category"], p["group"]) for p in _cached_paths}
+
+    for offset, item in enumerate(items):
+        idx = start_idx + offset
+        tag = (item.get("tag") or "").strip()
+        jp = (item.get("jp") or "").strip()
+        if tag:
+            if tag not in _tag_by_name:
+                _tag_by_name[tag] = item
+            if jp and tag not in _jp_map:
+                _jp_map[tag] = jp
+
+        sec = item.get("section") or ""
+        cat = item.get("category") or ""
+        grp = item.get("group") or ""
+        path_tuple = (sec, cat, grp)
+        _tags_by_path.setdefault(path_tuple, []).append(idx)
+
+        if path_tuple not in seen_paths:
+            seen_paths.add(path_tuple)
+            _cached_paths.append({"section": sec, "category": cat, "group": grp})
+
+
+def _build_indexes(items: List[Dict]) -> None:
+    _reset_indexes()
+    if items:
+        _append_to_indexes(items, 0)
+
+
+def _load_manifest() -> None:
+    global _manifest_sections, _manifest_sections_ordered, _cached_paths, _cached_path_counts, _cached_path_entries
+
+    with open(_manifest_path(), encoding="utf-8") as f:
+        manifest = json.load(f) or {}
+
+    if manifest.get("version") != _MANIFEST_VERSION:
+        raise ValueError("Unsupported manifest version")
+
+    _manifest_sections = {}
+    _manifest_sections_ordered = []
+    for entry in manifest.get("sections") or []:
+        name = (entry.get("name") or "").strip()
+        if name:
+            _manifest_sections[name] = entry
+            _manifest_sections_ordered.append(entry)
+
+    _cached_paths = list(manifest.get("paths") or [])
+    _cached_path_counts = dict(manifest.get("pathCounts") or {})
+    _cached_path_entries = list(manifest.get("pathEntries") or [])
+
+
+def _load_search_index() -> None:
+    global _search_index
+    path = _search_index_path()
+    if not os.path.isfile(path):
+        _search_index = []
         return
-
-    _extension_dir = extension_dir
-    _previews_dir = user_storage.tag_previews_dir(extension_dir)
-
-    yaml_paths = _dictionary_yaml_paths(extension_dir)
-    if not yaml_paths:
-        print("[Prompt Composer] Tag dictionary YAML not found")
-        _tags = []
-        _loaded = True
-        _scan_previews(force=True)
+    try:
+        with open(path, "rb") as f:
+            payload = pickle.load(f)
+    except Exception:
+        _search_index = []
         return
+    if isinstance(payload, dict):
+        _search_index = list(payload.get("rows") or [])
+    elif isinstance(payload, list):
+        _search_index = payload
+    else:
+        _search_index = []
 
+
+def _try_load_section_cache(section_name: str) -> Optional[List[Dict]]:
+    cache_path = _section_cache_path(section_name)
+    if not cache_path or not os.path.isfile(cache_path):
+        return None
+    try:
+        with open(cache_path, "rb") as f:
+            payload = pickle.load(f)
+    except Exception:
+        return None
+    if not isinstance(payload, dict) or payload.get("version") != _SECTION_CACHE_VERSION:
+        return None
+    if payload.get("section") != section_name:
+        return None
+    if payload.get("yaml_mtime") != _section_yaml_mtime(section_name):
+        return None
+    if payload.get("preview_dir_mtime") != _preview_dir_mtime:
+        return None
+    items = payload.get("items")
+    return list(items) if isinstance(items, list) else None
+
+
+def _save_section_cache(section_name: str, items: List[Dict]) -> None:
+    cache_path = _section_cache_path(section_name)
+    if not cache_path:
+        return
+    os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+    payload = {
+        "version": _SECTION_CACHE_VERSION,
+        "section": section_name,
+        "yaml_mtime": _section_yaml_mtime(section_name),
+        "preview_dir_mtime": _preview_dir_mtime,
+        "items": items,
+    }
+    tmp = cache_path + ".tmp"
+    try:
+        with open(tmp, "wb") as f:
+            pickle.dump(payload, f, protocol=pickle.HIGHEST_PROTOCOL)
+        os.replace(tmp, cache_path)
+    except OSError:
+        pass
+
+
+def _merge_section_items(raw_items: List[Dict]) -> List[Dict]:
+    kept: List[Dict] = []
+    for item in raw_items:
+        key = _tag_dedupe_key(item.get("tag") or "")
+        if not key or key in _global_tag_keys:
+            continue
+        _global_tag_keys.add(key)
+        kept.append(item)
+    return kept
+
+
+def _load_section_items(section_name: str) -> List[Dict]:
+    cached = _try_load_section_cache(section_name)
+    if cached is not None:
+        return cached
+
+    yaml_path = _section_yaml_path(section_name)
+    if not yaml_path or not os.path.isfile(yaml_path):
+        return []
+
+    try:
+        with open(yaml_path, encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+    except Exception as e:
+        print(f"[Prompt Composer] Failed to load section {section_name!r}: {e}")
+        return []
+
+    items = _parse_yaml_sections(data)
+    _resolve_jp_labels(items)
+    items = _dedupe_items(items)
+    _save_section_cache(section_name, items)
+    return items
+
+
+def load_section(section_name: str) -> bool:
+    """Load one section YAML into memory. Returns True when loaded or already present."""
+    if not _loaded or not _lazy_mode:
+        return False
+
+    name = (section_name or "").strip()
+    if not name or name not in _manifest_sections:
+        return False
+    if name in _loaded_sections:
+        return True
+
+    t0 = time.time()
+    raw_items = _load_section_items(name)
+    items = _merge_section_items(raw_items)
+    if not items and raw_items:
+        _loaded_sections.add(name)
+        return True
+
+    start_idx = len(_tags)
+    _tags.extend(items)
+    _append_to_indexes(items, start_idx)
+    _loaded_sections.add(name)
+    print(
+        f"[Prompt Composer] Loaded section {name!r}: {len(items)} tags "
+        f"({time.time() - t0:.1f}s, total loaded={len(_tags)})"
+    )
+    return True
+
+
+def ensure_section_loaded(section_name: Optional[str]) -> None:
+    if section_name:
+        load_section(section_name)
+
+
+def is_section_loaded(section_name: str) -> bool:
+    return (section_name or "").strip() in _loaded_sections
+
+
+def loaded_sections() -> List[str]:
+    return sorted(_loaded_sections)
+
+
+def lazy_mode() -> bool:
+    return _lazy_mode
+
+
+def _yaml_signature(yaml_paths: List[str]) -> List[Tuple[str, float]]:
+    sig: List[Tuple[str, float]] = []
+    for path in yaml_paths:
+        try:
+            sig.append((path, os.path.getmtime(path)))
+        except OSError:
+            sig.append((path, 0.0))
+    return sig
+
+
+def _try_load_legacy_cache(yaml_paths: List[str], preview_dir_mtime: float) -> Optional[Dict]:
+    cache_path = _cache_file_path()
+    if not cache_path or not os.path.isfile(cache_path):
+        return None
+    try:
+        with open(cache_path, "rb") as f:
+            payload = pickle.load(f)
+    except Exception:
+        return None
+    if not isinstance(payload, dict) or payload.get("version") != _LEGACY_CACHE_VERSION:
+        return None
+    if payload.get("yaml_sig") != _yaml_signature(yaml_paths):
+        return None
+    if payload.get("preview_dir_mtime") != preview_dir_mtime:
+        return None
+    return payload
+
+
+def _save_legacy_cache(yaml_paths: List[str], preview_dir_mtime: float) -> None:
+    cache_path = _cache_file_path()
+    if not cache_path:
+        return
+    os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+    payload = {
+        "version": _LEGACY_CACHE_VERSION,
+        "yaml_sig": _yaml_signature(yaml_paths),
+        "preview_dir_mtime": preview_dir_mtime,
+        "tags": _tags,
+        "paths": _cached_paths,
+        "path_counts": _cached_path_counts,
+        "path_entries": _cached_path_entries,
+        "tags_by_path": _tags_by_path,
+        "jp_map": _jp_map,
+        "tag_by_name": _tag_by_name,
+    }
+    tmp = cache_path + ".tmp"
+    try:
+        with open(tmp, "wb") as f:
+            pickle.dump(payload, f, protocol=pickle.HIGHEST_PROTOCOL)
+        os.replace(tmp, cache_path)
+    except OSError as e:
+        print(f"[Prompt Composer] Could not write tag dictionary cache: {e}")
+
+
+def _load_items_from_yaml(yaml_paths: List[str]) -> Tuple[List[Dict], List[str]]:
     items: List[Dict] = []
     loaded_files: List[str] = []
     for yaml_path in yaml_paths:
@@ -149,24 +491,93 @@ def init(extension_dir: str):
             continue
         items.extend(_parse_yaml_sections(data))
         loaded_files.append(os.path.basename(yaml_path))
+    return items, loaded_files
 
-    _scan_previews(force=True)
+
+def _init_lazy() -> None:
+    global _loaded, _lazy_mode, _tags, _loaded_sections, _global_tag_keys
+
+    _lazy_mode = True
+    _tags = []
+    _loaded_sections = set()
+    _global_tag_keys = set()
+    _reset_indexes()
+    _load_manifest()
+    _load_search_index()
+    _loaded = True
+
+    total_tags = sum(int(v.get("tagCount") or 0) for v in _manifest_sections.values())
+    print(
+        f"[Prompt Composer] Tag dictionary ready (lazy): "
+        f"{len(_manifest_sections)} sections, {len(_search_index)} indexed tags "
+        f"(~{total_tags} total, previews={len(_preview_by_tag)})"
+    )
+
+
+def _init_legacy(yaml_paths: List[str], preview_mtime: float) -> None:
+    global _loaded, _lazy_mode, _tags
+
+    _lazy_mode = False
+    cached = _try_load_legacy_cache(yaml_paths, preview_mtime)
+    if cached:
+        _tags = cached.get("tags") or []
+        globals()["_jp_map"] = cached.get("jp_map") or {}
+        globals()["_tag_by_name"] = cached.get("tag_by_name") or {}
+        globals()["_tags_by_path"] = cached.get("tags_by_path") or {}
+        globals()["_cached_paths"] = cached.get("paths") or []
+        globals()["_cached_path_counts"] = cached.get("path_counts") or {}
+        globals()["_cached_path_entries"] = cached.get("path_entries") or []
+        if not _cached_paths or not _tags_by_path:
+            _build_indexes(_tags)
+        _loaded = True
+        print(
+            f"[Prompt Composer] Loaded {len(_tags)} prompt dictionary tags from cache "
+            f"(previews={len(_preview_by_tag)})"
+        )
+        return
+
+    t0 = time.time()
+    items, loaded_files = _load_items_from_yaml(yaml_paths)
+    _resolve_jp_labels(items)
     before = len(items)
     items = _dedupe_items(items)
     removed = before - len(items)
     _tags = items
-    _jp_map = {}
-    for it in _tags:
-        tag = (it.get("tag") or "").strip()
-        jp = (it.get("jp") or "").strip()
-        if tag and jp and tag not in _jp_map:
-            _jp_map[tag] = jp
+    _build_indexes(_tags)
     _loaded = True
+    _save_legacy_cache(yaml_paths, preview_mtime)
     dup_note = f", deduped={removed}" if removed else ""
     print(
         f"[Prompt Composer] Loaded {len(_tags)} prompt dictionary tags "
-        f"from {', '.join(loaded_files)} (previews={len(_preview_by_tag)}{dup_note})"
+        f"from {', '.join(loaded_files)} in {time.time() - t0:.1f}s "
+        f"(previews={len(_preview_by_tag)}{dup_note}, cache written)"
     )
+
+
+def init(extension_dir: str):
+    """Prepare tag dictionary (manifest only in lazy mode)."""
+    global _extension_dir, _previews_dir
+    if _loaded:
+        return
+
+    _extension_dir = extension_dir
+    _previews_dir = user_storage.tag_previews_dir(extension_dir)
+    _scan_previews(force=True)
+    preview_mtime = _preview_dir_mtime
+
+    if _lazy_available():
+        _init_lazy()
+        return
+
+    yaml_paths = _dictionary_yaml_paths(extension_dir)
+    if not yaml_paths:
+        print("[Prompt Composer] Tag dictionary YAML not found")
+        globals()["_tags"] = []
+        globals()["_loaded"] = True
+        _build_indexes(_tags)
+        return
+
+    _init_legacy(yaml_paths, preview_mtime)
 
 
 def previews_dir() -> str:
@@ -187,12 +598,15 @@ def _rebuild_preview_alias_index() -> None:
 
     for known_tag, path in _preview_by_tag.items():
         kt = known_tag.strip()
-        add_alias(kt, kt, path)
+        for variant in preview_filenames.preview_lookup_variants(kt):
+            add_alias(variant, kt, path)
         first = kt.split(",", 1)[0].strip()
-        add_alias(first, kt, path)
+        for variant in preview_filenames.preview_lookup_variants(first):
+            add_alias(variant, kt, path)
         for part in kt.split(","):
             part = part.strip()
-            add_alias(part, kt, path)
+            for variant in preview_filenames.preview_lookup_variants(part):
+                add_alias(variant, kt, path)
             if part.startswith("(") and ":" in part:
                 add_alias(part.split(":", 1)[0][1:].strip(), kt, path)
 
@@ -224,34 +638,12 @@ def _scan_previews(force: bool = False) -> None:
     _rebuild_preview_alias_index()
 
 
-def _tags_related_for_preview(query: str, candidate: str) -> bool:
-    """True when query can reuse candidate's preview (e.g. table variant -> card tag)."""
-    q = (query or "").strip().lower()
-    c = (candidate or "").strip().lower()
-    if not q or not c:
-        return False
-    if q == c:
-        return True
-    q_first = q.split(",", 1)[0].strip()
-    c_first = c.split(",", 1)[0].strip()
-    if q_first == c or q_first == c_first:
-        return True
-    if q.startswith(c + ",") or q.startswith(c + " "):
-        return True
-    if c.startswith(q + ",") or c.startswith(q + " "):
-        return True
-    if f", {q}," in c or c.endswith(f", {q}") or f"({q}" in c or f"({q}:" in c:
-        return True
-    return False
-
-
 def _find_related_preview_path(tag: str) -> Optional[str]:
     tag = (tag or "").strip()
     if not tag or not _preview_by_tag:
         return None
     if tag in _related_preview_cache:
         return _related_preview_cache[tag]
-
     alias_hit = _preview_alias_index.get(tag.lower())
     _related_preview_cache[tag] = alias_hit
     return alias_hit
@@ -276,15 +668,17 @@ def _resolve_preview_path(tag: str, yaml_preview: str = "", *, allow_related: bo
             if os.path.isfile(candidate):
                 return candidate
 
-    hit = _preview_by_tag.get(tag)
-    if hit:
-        return hit
+    for variant in preview_filenames.preview_lookup_variants(tag):
+        hit = _preview_by_tag.get(variant)
+        if hit:
+            return hit
 
-    safe_base = preview_filenames.tag_to_preview_basename(tag)
-    for ext in _PREVIEW_EXTS:
-        candidate = os.path.join(_previews_dir, safe_base + ext)
-        if os.path.isfile(candidate):
-            return candidate
+    for variant in preview_filenames.preview_lookup_variants(tag):
+        safe_base = preview_filenames.tag_to_preview_basename(variant)
+        for ext in _PREVIEW_EXTS:
+            candidate = os.path.join(_previews_dir, safe_base + ext)
+            if os.path.isfile(candidate):
+                return candidate
 
     if "," in tag and allow_related:
         first = tag.split(",", 1)[0].strip()
@@ -305,7 +699,13 @@ def preview_url_for_tag(tag: str, yaml_preview: str = "") -> Optional[str]:
 
 
 def get_preview_file(tag: str) -> Optional[str]:
-    item = next((it for it in _tags if (it.get("tag") or "") == tag), None)
+    item = _tag_by_name.get((tag or "").strip())
+    if item is None and _lazy_mode:
+        for row in _search_index:
+            if (row.get("tag") or "").strip() == (tag or "").strip():
+                ensure_section_loaded(row.get("section") or "")
+                item = _tag_by_name.get((tag or "").strip())
+                break
     yaml_preview = (item or {}).get("preview") or ""
     return _resolve_preview_path(tag, yaml_preview)
 
@@ -323,104 +723,198 @@ def _public_item(item: Dict) -> Dict:
     return out
 
 
+def _item_from_index_row(row: Dict) -> Dict:
+    return {
+        "tag": row.get("tag") or "",
+        "jp": row.get("jp") or "",
+        "section": row.get("section") or "",
+        "category": row.get("category") or "",
+        "group": row.get("group") or "",
+    }
+
+
 def translate_exact(tag: str) -> str:
-    """Return JP translation for exact tag if present in dictionary YAML."""
     if not _loaded:
         return ""
     t = (tag or "").strip()
     if not t:
         return ""
-    return (_jp_map.get(t) or "").strip()
+    jp = (_jp_map.get(t) or "").strip()
+    if jp:
+        return jp
+    if _lazy_mode:
+        for row in _search_index:
+            if (row.get("tag") or "").strip() == t:
+                return (row.get("jp") or "").strip()
+    return ""
+
+
+def _match_path_filters(
+    section: Optional[str],
+    category: Optional[str],
+    group: Optional[str],
+    item_section: str,
+    item_category: str,
+    item_group: str,
+) -> bool:
+    if section is not None and item_section != section:
+        return False
+    if category is not None and item_category != category:
+        return False
+    if group is not None and item_group != group:
+        return False
+    return True
+
+
+def _collect_tags_for_path_filter(
+    section: Optional[str],
+    category: Optional[str],
+    group: Optional[str],
+) -> List[Dict]:
+    """Return tags in manifest/YAML path order for the given filters."""
+    pool: List[Dict] = []
+    for path_dict in _cached_paths:
+        sec = path_dict.get("section") or ""
+        cat = path_dict.get("category") or ""
+        grp = path_dict.get("group") or ""
+        if not _match_path_filters(section, category, group, sec, cat, grp):
+            continue
+        path_tuple = (sec, cat, grp)
+        for idx in _tags_by_path.get(path_tuple, []):
+            pool.append(_tags[idx])
+    return pool
+
+
+def _search_tags_lazy(
+    query: str,
+    limit: int,
+    offset: int,
+    section: Optional[str],
+    category: Optional[str],
+    group: Optional[str],
+) -> Dict:
+    q = (query or "").strip().lower()
+    has_path = any(v is not None for v in (section, category, group))
+
+    if section is not None:
+        ensure_section_loaded(section)
+
+    if q:
+        pool_rows: List[Dict] = []
+        for row in _search_index:
+            if not _match_path_filters(section, category, group, row.get("section") or "", row.get("category") or "", row.get("group") or ""):
+                continue
+            tag_l = (row.get("tag") or "").lower()
+            jp_l = (row.get("jp") or "").lower()
+            if q in tag_l or q in jp_l:
+                pool_rows.append(row)
+
+        total = len(pool_rows)
+        page_rows = pool_rows[offset : offset + limit]
+        sections_needed = sorted({(row.get("section") or "").strip() for row in page_rows if row.get("section")})
+        for sec in sections_needed:
+            load_section(sec)
+
+        items: List[Dict] = []
+        for row in page_rows:
+            tag = (row.get("tag") or "").strip()
+            item = _tag_by_name.get(tag) or _item_from_index_row(row)
+            items.append(_public_item(item))
+        return {
+            "items": items,
+            "total": total,
+            "hasMore": offset + len(page_rows) < total,
+            "offset": offset,
+            "limit": limit,
+        }
+
+    if has_path:
+        pool = _collect_tags_for_path_filter(section, category, group)
+        total = len(pool)
+        page = pool[offset : offset + limit]
+        items = [_public_item(it) for it in page]
+        return {
+            "items": items,
+            "total": total,
+            "hasMore": offset + len(page) < total,
+            "offset": offset,
+            "limit": limit,
+        }
+
+    return {"items": [], "total": 0, "hasMore": False, "offset": offset, "limit": limit}
 
 
 def search_tags(
     query: str = "",
     limit: int = 50,
+    offset: int = 0,
     section: str | None = None,
     category: str | None = None,
     group: str | None = None,
-) -> List[Dict]:
-    """Simple case-insensitive search over english tag and jp text, with optional path filters."""
+) -> Dict:
     if not _loaded:
-        return []
+        return {"items": [], "total": 0, "hasMore": False, "offset": offset, "limit": limit}
+
+    limit = max(1, min(int(limit or 50), 500))
+    offset = max(0, int(offset or 0))
+
+    if _lazy_mode:
+        return _search_tags_lazy(query, limit, offset, section, category, group)
 
     q = (query or "").strip().lower()
+    has_path = any(v is not None for v in (section, category, group))
 
-    def match_path(item: Dict) -> bool:
-        if section and item["section"] != section:
-            return False
-        if category and item["category"] != category:
-            return False
-        if group and item["group"] != group:
-            return False
-        return True
+    def match_query(item: Dict) -> bool:
+        if not q:
+            return True
+        return q in item["tag"].lower() or q in (item.get("jp") or "").lower()
 
-    results: List[Dict] = []
-    for item in _tags:
-        if len(results) >= limit:
-            break
-        if not match_path(item):
-            continue
-        if not q or q in item["tag"].lower() or q in item["jp"].lower():
-            results.append(_public_item(item))
+    pool: List[Dict] = []
+    if has_path and not q:
+        pool = _collect_tags_for_path_filter(section, category, group)
+    else:
+        for item in _tags:
+            if section is not None and item["section"] != section:
+                continue
+            if category is not None and item["category"] != category:
+                continue
+            if group is not None and item["group"] != group:
+                continue
+            if match_query(item):
+                pool.append(item)
 
-    # If we filtered everything out with path, but no query, try again without path to provide something
-    if not results and not q and not any([section, category, group]):
-        return [_public_item(it) for it in _tags[: max(1, min(limit, 200))]]
-
-    return results
+    total = len(pool)
+    page = pool[offset : offset + limit]
+    items = [_public_item(it) for it in page]
+    return {
+        "items": items,
+        "total": total,
+        "hasMore": offset + len(page) < total,
+        "offset": offset,
+        "limit": limit,
+    }
 
 
 def list_paths() -> List[Dict]:
-    """Return distinct (section, category, group) combinations."""
     if not _loaded:
         return []
-
-    seen = set()
-    paths: List[Dict] = []
-    for item in _tags:
-        key = (item["section"], item["category"], item["group"])
-        if key in seen:
-            continue
-        seen.add(key)
-        paths.append(
-            {
-                "section": item["section"],
-                "category": item["category"],
-                "group": item["group"],
-            }
-        )
-    return paths
+    return list(_cached_paths)
 
 
-def _path_key(section: str, category: str = "", group: str = "") -> str:
-    """Build a UI tree path key (matches javascript/tags.js)."""
-    sec = (section or "").strip() or "(未分類)"
-    cat = (category or "").strip()
-    grp = (group or "").strip()
-    parts = [sec]
-    if cat:
-        parts.append(cat)
-        if grp:
-            parts.append(grp)
-    return "/".join(parts)
+def list_sections() -> List[Dict]:
+    """Manifest sections in file order (000, 001, …)."""
+    if not _loaded:
+        return []
+    return list(_manifest_sections_ordered)
 
 
 def path_tag_counts() -> Dict[str, int]:
-    """Return tag counts for each folder node in the path tree."""
     if not _loaded:
         return {}
+    return dict(_cached_path_counts)
 
-    counts: Dict[str, int] = {}
-    for item in _tags:
-        sec = item.get("section") or ""
-        cat = item.get("category") or ""
-        grp = item.get("group") or ""
-        keys = [_path_key(sec)]
-        if (cat or "").strip():
-            keys.append(_path_key(sec, cat))
-            if (grp or "").strip():
-                keys.append(_path_key(sec, cat, grp))
-        for key in keys:
-            counts[key] = counts.get(key, 0) + 1
-    return counts
+
+def path_count_entries() -> List[Dict]:
+    if not _loaded:
+        return []
+    return list(_cached_path_entries)

@@ -24,8 +24,40 @@
     let _pcProgressTimer = null;
     let _pcLivePreviewId = -1;
     let _pcProgressWasActive = false;
+    let _pcForeverProgressSession = false;
+    let _pcProgressTarget = 'txt2img';
+    let _pcGenerateForeverActive = false;
+
+    function setGenerateForeverActive(active) {
+        _pcGenerateForeverActive = !!active;
+    }
+
+    function resetGenerateForeverLoop() {
+        clearInterval(window.generateOnRepeatInterval);
+        window.generateOnRepeatInterval = null;
+        _pcGenerateForeverActive = false;
+    }
+
+    function resetGenerateForeverState() {
+        resetGenerateForeverLoop();
+        _pcForeverProgressSession = false;
+    }
+
+    function isTxt2imgGenerationInProgress() {
+        const interruptEl = getInterruptEl('txt2img');
+        if (interruptEl && interruptEl.offsetParent) return true;
+        try {
+            if (typeof localGet === 'function') {
+                const taskId = localGet('txt2img_task_id', null);
+                if (taskId) return true;
+            }
+        } catch (_) { /* ignore */ }
+        return false;
+    }
 
     function init() {
+        resetGenerateForeverState();
+        stopPcProgressWatch();
         setupButtons();
         setupGeneratePreview();
         if (!_syncLogged) {
@@ -201,24 +233,53 @@
         preview.appendChild(img);
     }
 
-    function stopPcProgressWatch() {
+    function isGenerateForeverActive() {
+        return _pcGenerateForeverActive;
+    }
+
+    function stopPcProgressWatch(forceHide) {
         if (_pcProgressTimer) {
             clearTimeout(_pcProgressTimer);
             _pcProgressTimer = null;
         }
         _pcLivePreviewId = -1;
         _pcProgressWasActive = false;
-        showProgressUi(false);
+        _pcForeverProgressSession = false;
+        if (forceHide !== false) {
+            showProgressUi(false);
+        }
     }
 
-    function startPcProgressWatch(target) {
-        stopPcProgressWatch();
-        showProgressUi(true);
-        updateProgressUi({ progress: 0, textinfo: '準備中...' });
+    function startPcProgressWatch(target, options) {
+        options = options || {};
+        const foreverSession = !!(options.foreverSession || isGenerateForeverActive());
+        if (foreverSession) {
+            _pcForeverProgressSession = true;
+        }
+        _pcProgressTarget = target || 'txt2img';
 
-        const taskKey = target === 'img2img' ? 'img2img_task_id' : 'txt2img_task_id';
+        if (_pcProgressTimer) {
+            clearTimeout(_pcProgressTimer);
+            _pcProgressTimer = null;
+        }
+
+        if (!options.softRestart) {
+            _pcLivePreviewId = -1;
+            if (!foreverSession) {
+                _pcProgressWasActive = false;
+            }
+        }
+
+        showProgressUi(true);
+        updateProgressUi({
+            progress: 0,
+            textinfo: foreverSession ? '生成準備中...' : '準備中...'
+        });
+
+        const taskKey = _pcProgressTarget === 'img2img' ? 'img2img_task_id' : 'txt2img_task_id';
         const preview = appRoot().getElementById('pc_generate_preview');
         const startedAt = Date.now();
+        let lastTaskId = null;
 
         const tick = () => {
             let taskId = null;
@@ -228,13 +289,26 @@
                 }
             } catch (_) { /* ignore */ }
 
+            const foreverActive = _pcForeverProgressSession && isGenerateForeverActive();
+
             if (!taskId) {
-                if (Date.now() - startedAt < 15000) {
-                    _pcProgressTimer = setTimeout(tick, 300);
+                if (foreverActive || Date.now() - startedAt < 15000) {
+                    if (foreverActive && _pcProgressWasActive) {
+                        updateProgressUi({ progress: 0, textinfo: '次の生成を待機中...' });
+                    }
+                    _pcProgressTimer = setTimeout(tick, foreverActive ? 250 : 300);
                     return;
                 }
                 stopPcProgressWatch();
                 return;
+            }
+
+            if (taskId !== lastTaskId) {
+                lastTaskId = taskId;
+                _pcLivePreviewId = -1;
+                if (taskId) {
+                    updateProgressUi({ progress: 0, textinfo: '生成開始...' });
+                }
             }
 
             fetchInternalProgress({
@@ -244,9 +318,23 @@
             }).then(res => {
                 if (res.active) _pcProgressWasActive = true;
 
-                if (res.completed || (_pcProgressWasActive && !res.active && !res.queued)) {
+                const generationEnded = res.completed
+                    || (_pcProgressWasActive && !res.active && !res.queued);
+
+                if (generationEnded) {
+                    syncGeneratePreview(_pcProgressTarget);
+
+                    if (foreverActive) {
+                        _pcLivePreviewId = -1;
+                        _pcProgressWasActive = false;
+                        lastTaskId = null;
+                        showProgressUi(true);
+                        updateProgressUi({ progress: 0, textinfo: '次の生成を待機中...' });
+                        _pcProgressTimer = setTimeout(tick, 250);
+                        return;
+                    }
+
                     stopPcProgressWatch();
-                    syncGeneratePreview(target);
                     return;
                 }
 
@@ -263,7 +351,7 @@
 
                 _pcProgressTimer = setTimeout(tick, getProgressRefreshMs());
             }).catch(() => {
-                _pcProgressTimer = setTimeout(tick, 1000);
+                _pcProgressTimer = setTimeout(tick, foreverActive ? 400 : 1000);
             });
         };
 
@@ -424,7 +512,7 @@
             }
             genBtn.click();
             ensureGalleryObserver();
-            startPcProgressWatch('txt2img');
+            startPcProgressWatch('txt2img', { foreverSession: isGenerateForeverActive() });
         }, 150);
     }
 
@@ -451,12 +539,17 @@
         if (!genBtn) return false;
         genBtn.click();
         ensureGalleryObserver();
-        startPcProgressWatch('txt2img');
+        if (isGenerateForeverActive()) {
+            if (!_pcForeverProgressSession || !_pcProgressTimer) {
+                startPcProgressWatch('txt2img', { foreverSession: true });
+            } else {
+                showProgressUi(true);
+                updateProgressUi({ progress: 0, textinfo: '生成開始...' });
+            }
+        } else {
+            startPcProgressWatch('txt2img');
+        }
         return true;
-    }
-
-    function isGenerateForeverActive() {
-        return !!window.generateOnRepeatInterval;
     }
 
     function notifyGenerateForeverChanged() {
@@ -466,8 +559,20 @@
     }
 
     function cancelGenerateForeverTxt2img() {
-        clearInterval(window.generateOnRepeatInterval);
-        window.generateOnRepeatInterval = null;
+        resetGenerateForeverLoop();
+        _pcForeverProgressSession = false;
+
+        if (isTxt2imgGenerationInProgress()) {
+            showProgressUi(true);
+            if (!_pcProgressTimer) {
+                startPcProgressWatch('txt2img');
+            } else {
+                updateProgressUi({ progress: 0, textinfo: '生成中...' });
+            }
+        } else {
+            stopPcProgressWatch();
+        }
+
         notifyGenerateForeverChanged();
     }
 
@@ -476,8 +581,15 @@
         const interruptEl = getInterruptEl('txt2img');
         if (!genBtn || !interruptEl) return false;
 
+        setGenerateForeverActive(true);
+        _pcForeverProgressSession = true;
+        showProgressUi(true);
+        updateProgressUi({ progress: 0, textinfo: '連続生成を開始...' });
+
         if (!interruptEl.offsetParent) {
             if (!triggerTxt2imgGenerateOnce()) return false;
+        } else {
+            startPcProgressWatch('txt2img', { foreverSession: true });
         }
 
         clearInterval(window.generateOnRepeatInterval);
@@ -652,6 +764,8 @@
         generateForeverTxt2img,
         cancelGenerateForeverTxt2img,
         isGenerateForeverActive,
+        setGenerateForeverActive,
+        resetGenerateForeverState,
         syncGeneratePreview,
         startPcProgressWatch,
         stopPcProgressWatch,

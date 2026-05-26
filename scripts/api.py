@@ -318,10 +318,12 @@ def register_api(app: FastAPI, extension_dir: str):
     ):
         """Get asset list with optional filtering."""
         print(f"[Prompt Composer] API Request: type={type}, subfolder={subfolder}, search={search}, special={special}")
-        assets = asset_indexer.scan_all_assets()
-        
-        if type:
-            assets = [a for a in assets if a["type"] == type]
+        if type == "checkpoint":
+            assets = asset_indexer.list_checkpoints()
+        else:
+            assets = asset_indexer.scan_all_assets()
+            if type:
+                assets = [a for a in assets if a["type"] == type]
         
         # Specifically handle subfolder filter
         if subfolder is not None and subfolder != "(すべて)":
@@ -416,7 +418,10 @@ def register_api(app: FastAPI, extension_dir: str):
         """Force rescan of asset directories."""
         asset_indexer.invalidate_cache()
         assets = asset_indexer.scan_all_assets(force=True)
-        return {"message": f"Rescan complete. Found {len(assets)} assets."}
+        checkpoints = asset_indexer.list_checkpoints(force=True)
+        return {
+            "message": f"Rescan complete. Found {len(assets)} LoRA/Embedding assets and {len(checkpoints)} checkpoints."
+        }
 
     @app.delete("/prompt-composer/api/assets/{asset_id}")
     async def api_delete_asset(asset_id: str):
@@ -425,8 +430,11 @@ def register_api(app: FastAPI, extension_dir: str):
         This is irreversible and intended for manual cleanup of duplicated/bad files.
         """
         asset = asset_indexer.get_asset_by_id(asset_id)
-        if not asset:
+        if not asset or not asset.get("filePath"):
             return JSONResponse(status_code=404, content={"error": "Asset not found"})
+
+        if asset.get("type") == "checkpoint":
+            return JSONResponse(status_code=403, content={"error": "Checkpoint files cannot be deleted from Prompt Composer"})
 
         file_path = asset.get("filePath")
         if not file_path:

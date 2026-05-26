@@ -9,9 +9,9 @@
     let displayedAssets = [];
     let currentOffset = 0;
     let currentSearch = '';
-    let currentTypeFilter = '';
+    let currentTypeFilter = 'lora';
     let currentSubfolder = '';
-    let currentSpecialFilter = ''; // 'favorites' or 'recent'
+    let currentSpecialFilter = ''; // 'favorites'
     let isLoading = false;
     const PAGE_SIZE = 50;
     const MAX_DOM_CARDS = 250; // safety cap for DOM size
@@ -30,6 +30,12 @@
         setupObservers();
         loadAssets();
         loadSubfolders();
+
+        if (typeof onOptionsChanged === 'function') {
+            onOptionsChanged(function () {
+                markActiveCheckpointCards();
+            });
+        }
         
         console.log('[Prompt Composer] Asset Browser initialized');
     }
@@ -80,6 +86,7 @@
 
             renderAssetCards(displayedAssets, data.total, append);
             currentOffset = displayedAssets.length;
+            markActiveCheckpointCards();
 
             // Show/hide load more button
             const loadMoreBtn = document.getElementById('pc_asset_load_more');
@@ -157,17 +164,18 @@
         assets.slice(existingCards.length).forEach(asset => {
             const previewSrc = asset.previewUrl || '';
             const triggerStr = (asset.triggerWords || []).join(', ');
-            const typeClass = asset.type === 'lora' ? 'pc-type-lora' : 'pc-type-embedding';
-            const typeBadge = asset.type === 'lora' ? 'LoRA' : 'Emb';
+            const isCheckpoint = asset.type === 'checkpoint';
+            const typeClass = isCheckpoint ? 'pc-type-checkpoint'
+                : (asset.type === 'lora' ? 'pc-type-lora' : 'pc-type-embedding');
+            const typeBadge = isCheckpoint ? 'CKPT'
+                : (asset.type === 'lora' ? 'LoRA' : 'Emb');
             const weightStr = asset.defaultWeight ? `w:${asset.defaultWeight}` : '';
             const subfolder = asset.subfolder || '';
             const favClass = asset.isFavorite ? 'pc-fav-active' : '';
-            // Prefer backend-provided direct URL; fallback to search by name.
             const baseName = asset.name || asset.displayName || '';
             const civitaiUrl = asset.civitaiUrl
                 || `https://civitai.com/search/models?query=${encodeURIComponent(baseName)}`;
             
-            // Phase 2: Preferred Block Hint
             let blockHint = '';
             if (asset.preferredBlock) {
                 const blockNames = {
@@ -181,27 +189,34 @@
             }
             
             const wrapper = document.createElement('div');
-            wrapper.className = 'pc-asset-card';
+            wrapper.className = 'pc-asset-card' + (isCheckpoint ? ' pc-asset-card-checkpoint' : '');
             wrapper.dataset.assetId = asset.id;
-            wrapper.title = escapeHtml(asset.displayName);
+            wrapper.dataset.assetType = asset.type || '';
+            if (isCheckpoint && asset.checkpointTitle) {
+                wrapper.dataset.checkpointTitle = asset.checkpointTitle;
+            }
+            wrapper.title = isCheckpoint
+                ? `${escapeHtml(asset.displayName || asset.name)}（クリックでチェックポイントを切り替え）`
+                : escapeHtml(asset.displayName);
 
             wrapper.innerHTML = `
-                    <button class="pc-asset-fav-btn ${favClass}" data-asset-id="${asset.id}" title="お気に入り">⭐</button>
-                    <button class="pc-asset-remove-btn" data-asset-id="${asset.id}" title="削除（フォルダから）">×</button>
+                    ${isCheckpoint ? '' : `<button class="pc-asset-fav-btn ${favClass}" data-asset-id="${asset.id}" title="お気に入り">⭐</button>`}
+                    ${isCheckpoint ? '' : `<button class="pc-asset-remove-btn" data-asset-id="${asset.id}" title="削除（フォルダから）">×</button>`}
                     <div class="pc-asset-preview">
                         ${previewSrc 
                             ? `<img loading="lazy" data-src="${previewSrc}" alt="${escapeHtml(asset.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                               <div class="pc-asset-no-preview" style="display:none">📄</div>`
-                            : `<div class="pc-asset-no-preview">📄</div>`
+                               <div class="pc-asset-no-preview" style="display:none">${isCheckpoint ? '🧠' : '📄'}</div>`
+                            : `<div class="pc-asset-no-preview">${isCheckpoint ? '🧠' : '📄'}</div>`
                         }
                         <span class="pc-asset-type-badge ${typeClass}">${typeBadge}</span>
-                        <button class="pc-asset-civitai-icon" data-civitai-url="${escapeHtml(civitaiUrl)}" title="Civitaiで開く">🌐</button>
+                        ${isCheckpoint ? '' : `<button class="pc-asset-civitai-icon" data-civitai-url="${escapeHtml(civitaiUrl)}" title="Civitaiで開く">🌐</button>`}
                     </div>
                     <div class="pc-asset-info">
                         <div class="pc-asset-name">${escapeHtml(asset.displayName || asset.name)}</div>
                         ${subfolder ? `<div class="pc-asset-subfolder">${escapeHtml(subfolder)}</div>` : ''}
                         ${triggerStr ? `<div class="pc-asset-trigger" title="${escapeHtml(triggerStr)}">🏷️ ${escapeHtml(triggerStr)}</div>` : ''}
                         ${weightStr ? `<div class="pc-asset-weight">${weightStr}</div>` : ''}
+                        ${isCheckpoint ? '<div class="pc-asset-checkpoint-hint">クリックで反映</div>' : ''}
                     </div>
                     ${blockHint}
             `;
@@ -268,7 +283,13 @@
 
                 console.log('[Prompt Composer] Type filter changed to:', val);
 
-                if (val === 'LoRA') {
+                if (val === 'Checkpoint') {
+                    currentTypeFilter = 'checkpoint';
+                    currentSpecialFilter = '';
+                    currentSubfolder = '';
+                    const sfInput = document.querySelector('#pc_asset_subfolder input');
+                    if (sfInput) sfInput.value = '';
+                } else if (val === 'LoRA') {
                     currentTypeFilter = 'lora';
                     currentSpecialFilter = '';
                     currentSubfolder = '';
@@ -280,22 +301,10 @@
                     currentSubfolder = '';
                     const sfInput = document.querySelector('#pc_asset_subfolder input');
                     if (sfInput) sfInput.value = '';
-                } else if (val === 'All') {
-                    currentTypeFilter = '';
-                    currentSpecialFilter = '';
-                    currentSubfolder = '';
-                    const sfInput = document.querySelector('#pc_asset_subfolder input');
-                    if (sfInput) sfInput.value = '';
                 } else if (val === 'Favorites' || val === 'お気に入り') {
                     currentTypeFilter = '';
                     currentSpecialFilter = 'favorites';
-                    // Clear subfolder when specifically looking at favorites/recent
-                    currentSubfolder = '';
-                    const sfInput = document.querySelector('#pc_asset_subfolder input');
-                    if (sfInput) sfInput.value = '';
-                } else if (val === 'Recent' || val === '最近使った') {
-                    currentTypeFilter = '';
-                    currentSpecialFilter = 'recent';
+                    // Clear subfolder when specifically looking at favorites
                     currentSubfolder = '';
                     const sfInput = document.querySelector('#pc_asset_subfolder input');
                     if (sfInput) sfInput.value = '';
@@ -318,8 +327,8 @@
                             console.log('[Prompt Composer] Subfolder changed to:', newVal);
                             currentSubfolder = newVal;
                             
-                            // If a subfolder is selected, we usually want to see everything in it, 
-                            // so clear the 'Favorites'/'Recent' special filters
+                            // If a subfolder is selected, we usually want to see everything in it,
+                            // so clear the Favorites special filter
                             if (currentSpecialFilter) {
                                 currentSpecialFilter = '';
                                 // We don't reset the Radio UI here to avoid jumpiness, 
@@ -403,6 +412,56 @@
         }
     }
 
+    function getCurrentCheckpointTitle() {
+        try {
+            if (typeof opts !== 'undefined' && opts.sd_model_checkpoint) {
+                return String(opts.sd_model_checkpoint);
+            }
+        } catch (_) { /* ignore */ }
+        return '';
+    }
+
+    function markActiveCheckpointCards() {
+        const current = getCurrentCheckpointTitle();
+        document.querySelectorAll('#pc_asset_cards .pc-asset-card-checkpoint').forEach(function (card) {
+            const title = card.dataset.checkpointTitle || '';
+            card.classList.toggle('pc-asset-checkpoint-active', !!title && title === current);
+        });
+    }
+
+    function applyCheckpoint(asset, card) {
+        const title = asset.checkpointTitle || asset.title;
+        if (!title) return;
+
+        if (typeof selectCheckpoint === 'function') {
+            selectCheckpoint(title);
+        } else {
+            try {
+                const root = (typeof gradioApp === 'function') ? gradioApp() : document;
+                const input = root.querySelector('#setting_sd_model_checkpoint input');
+                if (input) {
+                    input.value = title;
+                    if (typeof updateInput === 'function') updateInput(input);
+                }
+                const btn = root.getElementById('change_checkpoint');
+                if (btn) btn.click();
+            } catch (err) {
+                console.warn('[Prompt Composer] Failed to apply checkpoint:', err);
+                alert('チェックポイントの切り替えに失敗しました');
+                return;
+            }
+        }
+
+        document.querySelectorAll('#pc_asset_cards .pc-asset-card-checkpoint').forEach(function (el) {
+            el.classList.remove('pc-asset-checkpoint-active', 'pc-asset-inserted');
+        });
+        if (card) {
+            card.classList.add('pc-asset-checkpoint-active', 'pc-asset-inserted');
+            setTimeout(function () { card.classList.remove('pc-asset-inserted'); }, 800);
+        }
+        setTimeout(markActiveCheckpointCards, 1200);
+    }
+
     async function onAssetCardClick(e) {
         // Ignore if clicking the favorite button
         if (e.target.closest('.pc-asset-fav-btn')) return;
@@ -413,8 +472,14 @@
 
         const assetId = card.dataset.assetId;
         const asset = displayedAssets.find(a => a.id === assetId);
+        if (!asset) return;
+
+        if (asset.type === 'checkpoint') {
+            applyCheckpoint(asset, card);
+            return;
+        }
         
-        if (asset && window.PromptComposer) {
+        if (window.PromptComposer) {
             window.PromptComposer.insertAsset(asset);
             
             // Record usage

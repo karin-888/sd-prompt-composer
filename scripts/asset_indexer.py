@@ -24,10 +24,14 @@ import user_storage
 
 # Supported model file extensions
 MODEL_EXTS = {".safetensors", ".ckpt", ".pt", ".bin"}
+CHECKPOINT_EXTS = {".safetensors", ".ckpt"}
+CHECKPOINT_EXT_BLACKLIST = (".vae.ckpt", ".vae.safetensors")
 
 # Cache file path (set during init)
 _cache_path = None
 _assets_cache = None
+_checkpoints_cache = None
+_checkpoints_fingerprint = None
 _extension_dir = None
 
 
@@ -69,6 +73,120 @@ def _get_model_folders():
             resolved[key] = path
     
     return resolved
+
+
+def _get_checkpoint_folders():
+    """Resolve checkpoint model roots (Stable-diffusion / --ckpt-dir)."""
+    folders = []
+
+    def _add(path):
+        if not path:
+            return
+        try:
+            real = os.path.realpath(path)
+        except OSError:
+            return
+        if os.path.isdir(real) and real not in folders:
+            folders.append(real)
+
+    try:
+        from modules import sd_models
+        _add(sd_models.model_path)
+    except Exception:
+        pass
+
+    root = paths_internal.data_path
+    _add(os.path.join(root, "models", "Stable-diffusion"))
+    _add(os.path.join(root, "models", "StableDiffusion"))
+
+    try:
+        ckpt_dir = getattr(shared.cmd_opts, "ckpt_dir", None)
+        _add(ckpt_dir)
+    except Exception:
+        pass
+
+    return folders
+
+
+def _is_checkpoint_file(filename):
+    low = filename.lower()
+    if any(low.endswith(suffix) for suffix in CHECKPOINT_EXT_BLACKLIST):
+        return False
+    _, ext = os.path.splitext(filename)
+    return ext.lower() in CHECKPOINT_EXTS
+
+
+def _checkpoint_asset_from_file(file_path, folder_root, checkpoint_info=None):
+    rel_path = os.path.relpath(file_path, folder_root).replace("\\", "/")
+    subfolder = os.path.dirname(rel_path).replace("\\", "/") if os.path.dirname(rel_path) else ""
+    preview_path = civitai_reader.find_preview_image(file_path)
+
+    title = rel_path
+    display = os.path.splitext(os.path.basename(file_path))[0]
+    name_base = display
+    shorthash = ""
+
+    info = checkpoint_info
+    if info is None:
+        try:
+            from modules import sd_models
+            info = sd_models.CheckpointInfo(file_path)
+        except Exception:
+            info = None
+
+    if info is not None:
+        title = info.title or title
+        display = info.short_title or info.title or display
+        name_base = info.name_for_extra or name_base
+        shorthash = getattr(info, "shorthash", None) or ""
+        if not preview_path and getattr(info, "modelspec_thumbnail", None):
+            thumb = info.modelspec_thumbnail
+            if isinstance(thumb, str) and os.path.isfile(thumb):
+                preview_path = thumb
+
+    asset_id = hashlib.md5(f"checkpoint:{os.path.realpath(file_path)}".encode()).hexdigest()[:12]
+    return {
+        "id": asset_id,
+        "type": "checkpoint",
+        "fileName": os.path.basename(file_path),
+        "filePath": file_path,
+        "relativePath": rel_path,
+        "subfolder": subfolder,
+        "name": name_base,
+        "displayName": display,
+        "checkpointTitle": title,
+        "previewPath": preview_path,
+        "triggerWords": [],
+        "defaultWeight": None,
+        "baseModel": "",
+        "tags": [],
+        "description": "",
+        "civitaiModelId": None,
+        "insertTemplate": None,
+        "preferredBlock": None,
+        "shorthash": shorthash,
+    }
+
+
+def _compute_checkpoint_fingerprint(folders):
+    fingerprint_parts = []
+    for folder_path in folders:
+        if not os.path.isdir(folder_path):
+            continue
+        file_count = 0
+        newest_mtime = 0
+        for root, dirs, files in os.walk(folder_path, followlinks=True):
+            for f in files:
+                if not _is_checkpoint_file(f):
+                    continue
+                file_count += 1
+                try:
+                    mtime = os.path.getmtime(os.path.join(root, f))
+                    newest_mtime = max(newest_mtime, mtime)
+                except OSError:
+                    pass
+        fingerprint_parts.append(f"{folder_path}:{file_count}:{newest_mtime:.0f}")
+    return "|".join(fingerprint_parts)
 
 
 def _compute_dir_fingerprint(folders):
@@ -327,8 +445,10 @@ def _save_cache(assets, folders):
 
 def get_asset_by_id(asset_id):
     """Find an asset by its ID."""
-    assets = scan_all_assets()
-    for asset in assets:
+    for asset in scan_all_assets():
+        if asset["id"] == asset_id:
+            return asset
+    for asset in list_checkpoints():
         if asset["id"] == asset_id:
             return asset
     return None
@@ -336,7 +456,10 @@ def get_asset_by_id(asset_id):
 
 def get_subfolders(asset_type=None):
     """Get list of unique subfolders for filtering, optionally by type."""
-    assets = scan_all_assets()
+    if asset_type == "checkpoint":
+        assets = list_checkpoints()
+    else:
+        assets = scan_all_assets()
     subfolders = set()
     for asset in assets:
         if asset_type and asset.get("type") != asset_type:
@@ -362,10 +485,76 @@ def get_subfolders(asset_type=None):
     return sorted(subfolders, key=_natural_key)
 
 
+def list_checkpoints(force=False):
+    """
+    List checkpoint models by scanning checkpoint folders on disk.
+    Uses WebUI's CheckpointInfo / registry when available for stable titles.
+    """
+    global _checkpoints_cache, _checkpoints_fingerprint
+
+    folders = _get_checkpoint_folders()
+    if not folders:
+        print("[Prompt Composer] No checkpoint folders found")
+        return []
+
+    fingerprint = _compute_checkpoint_fingerprint(folders)
+    if not force and _checkpoints_cache is not None and fingerprint == _checkpoints_fingerprint:
+        return _checkpoints_cache
+
+    registry_by_path = {}
+    try:
+        from modules import sd_models
+        if not sd_models.checkpoints_list:
+            try:
+                sd_models.list_models()
+            except Exception as e:
+                print(f"[Prompt Composer] Warning: sd_models.list_models(): {e}")
+        for title, info in sd_models.checkpoints_list.items():
+            try:
+                registry_by_path[os.path.realpath(info.filename)] = info
+            except OSError:
+                continue
+    except Exception as e:
+        print(f"[Prompt Composer] Warning: checkpoint registry unavailable: {e}")
+
+    assets = []
+    seen_realpaths = set()
+
+    for folder_path in folders:
+        if not os.path.isdir(folder_path):
+            continue
+        for root, dirs, files in os.walk(folder_path, followlinks=True):
+            for filename in files:
+                if not _is_checkpoint_file(filename):
+                    continue
+                file_path = os.path.join(root, filename)
+                try:
+                    real_path = os.path.realpath(file_path)
+                except OSError:
+                    continue
+                if real_path in seen_realpaths or not os.path.isfile(real_path):
+                    continue
+                seen_realpaths.add(real_path)
+                info = registry_by_path.get(real_path)
+                assets.append(_checkpoint_asset_from_file(file_path, folder_path, info))
+
+    assets.sort(key=lambda a: (
+        (a.get("subfolder") or "").lower(),
+        (a.get("displayName") or a.get("name") or "").lower(),
+    ))
+
+    _checkpoints_cache = assets
+    _checkpoints_fingerprint = fingerprint
+    print(f"[Prompt Composer] Listed {len(assets)} checkpoints")
+    return assets
+
+
 def invalidate_cache():
     """Force cache invalidation."""
-    global _assets_cache
+    global _assets_cache, _checkpoints_cache, _checkpoints_fingerprint
     _assets_cache = None
+    _checkpoints_cache = None
+    _checkpoints_fingerprint = None
     if _cache_path and os.path.isfile(_cache_path):
         try:
             os.remove(_cache_path)

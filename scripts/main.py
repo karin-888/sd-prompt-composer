@@ -277,8 +277,8 @@ def on_ui_tabs():
                 with gr.Row():
                     asset_type_filter = gr.Radio(
                         elem_id="pc_asset_type_filter",
-                        choices=["All", "LoRA", "Embedding", "Favorites", "Recent"],
-                        value="All",
+                        choices=["Checkpoint", "LoRA", "Embedding", "Favorites"],
+                        value="LoRA",
                         label="",
                         show_label=False,
                         interactive=True
@@ -390,11 +390,10 @@ def on_ui_tabs():
         # --- Backend Events for UI Interactivity ---
         def update_subfolders(asset_type):
             type_map = {
-                "All": None,
+                "Checkpoint": "checkpoint",
                 "LoRA": "lora",
                 "Embedding": "embedding",
                 "Favorites": None,
-                "Recent": None
             }
             internal_type = type_map.get(asset_type)
             subfolders = asset_indexer.get_subfolders(asset_type=internal_type)

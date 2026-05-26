@@ -9,6 +9,8 @@
     var retryCount = 0;
     var debounceTimer = null;
     var stateTimer = null;
+    var wasForeverActive = false;
+    var lastSeenInterval = null;
 
     function appRoot() {
         try {
@@ -97,20 +99,97 @@
         });
     }
 
+    function bindCloneCancelButton(cloneBtn, sourceBtn) {
+        if (!cloneBtn) return;
+        cloneBtn = replaceWithFreshButton(cloneBtn);
+        cloneBtn.addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            cancelForeverAndSync();
+            if (sourceBtn) sourceBtn.click();
+        });
+    }
+
+    function cancelForeverAndSync() {
+        if (window.PromptSync && typeof window.PromptSync.cancelGenerateForeverTxt2img === 'function') {
+            window.PromptSync.cancelGenerateForeverTxt2img();
+        } else {
+            clearInterval(window.generateOnRepeatInterval);
+            window.generateOnRepeatInterval = null;
+            if (window.PromptSync && typeof window.PromptSync.setGenerateForeverActive === 'function') {
+                window.PromptSync.setGenerateForeverActive(false);
+            }
+        }
+        var mount = document.getElementById('pc_generate_forever_mount');
+        if (mount) {
+            updateForeverActiveState(mount);
+        }
+        scheduleStateSync();
+    }
+
+    function resetStaleForeverOnLoad() {
+        if (window.PromptSync && typeof window.PromptSync.resetGenerateForeverState === 'function') {
+            window.PromptSync.resetGenerateForeverState();
+        } else {
+            clearInterval(window.generateOnRepeatInterval);
+            window.generateOnRepeatInterval = null;
+        }
+        lastSeenInterval = null;
+    }
+
+    function syncForeverFlagFromInterval() {
+        var current = window.generateOnRepeatInterval;
+        if (current === lastSeenInterval) return;
+        lastSeenInterval = current;
+        if (!window.PromptSync || typeof window.PromptSync.setGenerateForeverActive !== 'function') return;
+        if (current != null) {
+            window.PromptSync.setGenerateForeverActive(true);
+        } else {
+            window.PromptSync.setGenerateForeverActive(false);
+        }
+    }
+
+    function ensureStatusBar(mount) {
+        var bar = mount.querySelector('.pc-generate-forever-status');
+        if (!bar) {
+            bar = document.createElement('div');
+            bar.className = 'pc-generate-forever-status';
+            bar.setAttribute('aria-live', 'polite');
+            bar.hidden = true;
+            mount.insertBefore(bar, mount.firstChild);
+        }
+        return bar;
+    }
+
     function updateForeverActiveState(mount) {
         var active = !!(window.PromptSync && window.PromptSync.isGenerateForeverActive
             ? window.PromptSync.isGenerateForeverActive()
             : window.generateOnRepeatInterval);
         mount.classList.toggle('is-forever-active', active);
+
+        var bar = ensureStatusBar(mount);
+        if (active) {
+            bar.hidden = false;
+            bar.textContent = '連続生成中 — Generate Forever が動作しています';
+        } else {
+            bar.hidden = true;
+            bar.textContent = '';
+        }
+
         mount.querySelectorAll('.pc-generate-forever-btn, button').forEach(function (btn) {
             var label = buttonLabel(btn);
             if (/generate forever/.test(label)) {
-                btn.classList.toggle('is-active', active);
-            }
-            if (/cancel forever|cancel generate forever/.test(label)) {
-                btn.classList.toggle('is-active', active);
+                btn.classList.toggle('is-running', active);
+                btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+            } else if (/cancel forever|cancel generate forever/.test(label)) {
+                btn.classList.toggle('is-cancel-ready', active);
             }
         });
+
+        if (active && !wasForeverActive && window.PromptSync && typeof window.PromptSync.startPcProgressWatch === 'function') {
+            window.PromptSync.startPcProgressWatch('txt2img', { foreverSession: true });
+        }
+        wasForeverActive = active;
     }
 
     function scheduleStateSync() {
@@ -120,7 +199,10 @@
         if (stateTimer) clearInterval(stateTimer);
         stateTimer = setInterval(function () {
             updateForeverActiveState(mount);
-            if (!window.generateOnRepeatInterval) {
+            var inactive = window.PromptSync && typeof window.PromptSync.isGenerateForeverActive === 'function'
+                ? !window.PromptSync.isGenerateForeverActive()
+                : !window.generateOnRepeatInterval;
+            if (inactive) {
                 clearInterval(stateTimer);
                 stateTimer = null;
             }
@@ -149,19 +231,17 @@
 
         cancelBtn.addEventListener('click', function (event) {
             event.preventDefault();
-            if (window.PromptSync && typeof window.PromptSync.cancelGenerateForeverTxt2img === 'function') {
-                window.PromptSync.cancelGenerateForeverTxt2img();
-            } else {
-                clearInterval(window.generateOnRepeatInterval);
-                window.generateOnRepeatInterval = null;
-            }
-            scheduleStateSync();
+            cancelForeverAndSync();
         });
     }
 
     function mountGenerateForever() {
         var mount = document.getElementById('pc_generate_forever_mount');
         if (!mount) return false;
+
+        if (mount.dataset.mounted !== '1') {
+            resetStaleForeverOnLoad();
+        }
 
         var source = findTxt2imgForeverSource();
         var sourceKey = source.row
@@ -191,7 +271,7 @@
                 if (isCancelForeverButton(btn)) cloneCancel = btn;
             });
             bindCloneButton(cloneGen, source.genBtn);
-            bindCloneButton(cloneCancel, source.cancelBtn);
+            bindCloneCancelButton(cloneCancel, source.cancelBtn);
         } else {
             buildFallbackButtons(mount);
         }
@@ -214,6 +294,14 @@
     }
 
     window.addEventListener('pc-generate-forever-changed', scheduleStateSync);
+
+    setInterval(function () {
+        syncForeverFlagFromInterval();
+        var mount = document.getElementById('pc_generate_forever_mount');
+        if (mount && mount.dataset.mounted === '1') {
+            updateForeverActiveState(mount);
+        }
+    }, 500);
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', scheduleMount);

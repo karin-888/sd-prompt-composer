@@ -2094,6 +2094,182 @@
     display: none !important;
 }
 
+/* txt2img Script dropdown mirror (below NegPiP; original stays in txt2img) */
+.pc-script-slot {
+    margin-top: 12px;
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+.pc-script-slot:empty {
+    display: none;
+}
+
+.pc-script-mirror {
+    width: 100%;
+}
+
+.pc-script-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: var(--text-sm, 14px);
+    color: var(--body-text-color, #eee);
+}
+
+.pc-script-select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm, 6px);
+    border: 1px solid var(--border-color-primary, #444);
+    background: var(--input-background-fill, #2a2a2a);
+    color: var(--body-text-color, #eee);
+    font-size: var(--text-md, 14px);
+    min-height: 36px;
+}
+
+.pc-script-select:focus {
+    outline: none;
+    border-color: var(--color-accent, #6366f1);
+}
+
+.pc-script-panel-mount {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px 10px 12px;
+    border: 1px solid var(--border-color-primary, #444);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.pc-script-panel-mount.is-empty {
+    display: none;
+}
+
+/* Reparented txt2img script UI — stack fields for narrow Prompt Composer column */
+.pc-script-panel-live {
+    display: block !important;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.pc-script-panel-live.hide,
+.pc-script-panel-live.hidden {
+    display: block !important;
+}
+
+.pc-script-panel-live .gr-group,
+.pc-script-panel-live.gradio-group {
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 10px;
+}
+
+.pc-script-panel-live .gr-row,
+.pc-script-panel-live .gradio-row {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.pc-script-panel-live .gr-row > *,
+.pc-script-panel-live .gradio-row > *,
+.pc-script-panel-live .gr-column,
+.pc-script-panel-live .column {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    flex: 1 1 auto !important;
+}
+
+.pc-script-panel-live .block,
+.pc-script-panel-live .wrap,
+.pc-script-panel-live .gr-form,
+.pc-script-panel-live label,
+.pc-script-panel-live .label-wrap,
+.pc-script-panel-live .form {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
+
+.pc-script-panel-live .block {
+    margin-bottom: 2px;
+}
+
+.pc-script-panel-live label,
+.pc-script-panel-live .label-wrap span {
+    font-size: 12px;
+    line-height: 1.35;
+    margin-bottom: 4px;
+}
+
+.pc-script-panel-live input[type="text"],
+.pc-script-panel-live input[type="number"],
+.pc-script-panel-live textarea,
+.pc-script-panel-live select,
+.pc-script-panel-live .gr-text-input,
+.pc-script-panel-live .gr-dropdown {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
+
+.pc-script-panel-live textarea {
+    min-height: 56px;
+    resize: vertical;
+}
+
+.pc-script-panel-live input[type="range"] {
+    width: 100% !important;
+}
+
+.pc-script-panel-live .gr-checkbox-group,
+.pc-script-panel-live .gr-radio,
+.pc-script-panel-live .wrap[class*="checkbox"] {
+    width: 100% !important;
+}
+
+.pc-script-panel-live .gr-checkbox-group label,
+.pc-script-panel-live .gr-radio label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0;
+    width: 100%;
+}
+
+.pc-script-panel-live button {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: normal;
+    min-height: 32px;
+    line-height: 1.3;
+}
+
+.pc-script-panel-live .gr-button,
+.pc-script-panel-live .tool {
+    margin-top: 2px;
+}
+
+.pc-script-panel-live .input-accordion-m {
+    width: 100%;
+    margin-top: 6px;
+}
+
+.pc-script-panel-live hr,
+.pc-script-panel-live .gr-panel {
+    width: 100%;
+}
+
 /* Order profile manager (save/delete user profiles) */
 .pc-order-profile-manager {
     margin-top: 4px;

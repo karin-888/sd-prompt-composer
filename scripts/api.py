@@ -662,6 +662,29 @@ def register_api(app: FastAPI, extension_dir: str):
             "loadedSections": tag_dictionary.loaded_sections(),
         }
 
+    # --- txt2img Script list (mirror dropdown in Prompt Composer) ---
+
+    @app.get("/prompt-composer/api/txt2img-scripts")
+    async def api_txt2img_scripts():
+        titles = ["None"]
+        try:
+            from modules import scripts as sd_scripts
+            runner = sd_scripts.scripts_txt2img
+            if not getattr(runner, "scripts", None):
+                runner.initialize_scripts(False)
+            selectable = sorted(
+                getattr(runner, "selectable_scripts", []) or [],
+                key=lambda script: script.sorting_priority,
+            )
+            for script in selectable:
+                title = sd_scripts.wrap_call(
+                    script.title, script.filename, "title", default=script.filename
+                )
+                titles.append(title or script.filename)
+        except Exception:
+            pass
+        return {"scripts": titles}
+
     # --- IPS data (Infinite Prompt Studio dictionaries) ---
 
     @app.get("/prompt-composer/api/ips/status")

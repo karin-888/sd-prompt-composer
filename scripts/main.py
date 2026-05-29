@@ -251,6 +251,9 @@ def on_ui_tabs():
                     gr.HTML(
                         '<div id="pc_negpip_mount" class="pc-negpip-slot" data-negpip="1"></div>'
                     )
+                gr.HTML(
+                    '<div id="pc_script_mount" class="pc-script-slot"></div>'
+                )
 
         # ===== MAIN: 3-column layout =====
         with gr.Row(elem_id="pc_main_area"):

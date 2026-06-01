@@ -10,11 +10,18 @@ from typing import Dict, Iterable, Optional, Set, Tuple
 _PREVIEW_EXTS = (".webp", ".png", ".jpg", ".jpeg", ".gif")
 
 # Fullwidth substitutes keep filenames human-readable and reversible.
+# Windows forbids <>:"/\|?* in file names; map them to fullwidth lookalikes.
 _TO_SAFE = str.maketrans(
     {
         "/": "／",
         "\\": "＼",
         ":": "：",
+        "<": "＜",
+        ">": "＞",
+        "?": "？",
+        "*": "＊",
+        "|": "｜",
+        '"': "＂",
         "\n": " ",
         "\r": "",
     }
@@ -24,12 +31,20 @@ _FROM_SAFE = str.maketrans(
         "／": "/",
         "＼": "\\",
         "：": ":",
+        "＜": "<",
+        "＞": ">",
+        "？": "?",
+        "＊": "*",
+        "｜": "|",
+        "＂": '"',
     }
 )
 
 
 def tag_to_preview_basename(tag: str) -> str:
-    return (tag or "").strip().translate(_TO_SAFE)
+    base = (tag or "").strip().translate(_TO_SAFE)
+    # Windows disallows trailing dots/spaces in file names.
+    return base.rstrip(" .")
 
 
 def _normalize_clauses(tag: str) -> str:

@@ -1433,7 +1433,17 @@
     }
 
     function normComposerSpaces(s) {
-        return (s || '').trim().replace(/\s+/g, '_');
+        const raw = (s || '').trim();
+        if (!raw) return '';
+        // Comma-separated fragments: normalize spaces within each tag only, not at separators.
+        if (/[,\u3001]/.test(raw)) {
+            return raw
+                .split(/[,\u3001]/)
+                .map(part => part.trim().replace(/^_+/, '').replace(/\s+/g, '_'))
+                .filter(part => part.length > 0)
+                .join(', ');
+        }
+        return raw.replace(/\s+/g, '_');
     }
 
     /**

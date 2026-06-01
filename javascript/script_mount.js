@@ -190,32 +190,91 @@
         return true;
     }
 
-    function getScriptInput(block) {
-        if (!block) return null;
-        return block.querySelector('input[type="text"]')
-            || block.querySelector('textarea')
-            || block.querySelector('input');
+    function getScriptInput(dropdownRoot) {
+        if (!dropdownRoot) return null;
+        return dropdownRoot.querySelector('input[type="text"]')
+            || dropdownRoot.querySelector('textarea')
+            || dropdownRoot.querySelector('select')
+            || dropdownRoot.querySelector('input:not([type="checkbox"]):not([type="hidden"])');
     }
 
-    function readScriptChoice(block) {
-        var input = getScriptInput(block);
-        if (!input) return 'None';
-        var value = (input.value || '').trim();
-        return value || 'None';
+    function triggerMouseEvent(element, eventName) {
+        if (!element) return;
+        element.dispatchEvent(new MouseEvent(eventName || 'click', {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+        }));
     }
 
-    function writeScriptChoice(block, choice) {
-        var input = getScriptInput(block);
-        if (!input) return false;
-        var next = choice || 'None';
-        if ((input.value || '').trim() === next) return false;
-        input.value = next;
-        if (typeof updateInput === 'function') {
-            try { updateInput(input); } catch (_) { /* ignore */ }
+    function readScriptChoice(dropdownRoot) {
+        if (!dropdownRoot) return 'None';
+        var input = getScriptInput(dropdownRoot);
+        if (input && (input.value || '').trim()) {
+            return (input.value || '').trim();
         }
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-        return true;
+        var selected = dropdownRoot.querySelector('span.single-select, .selected');
+        if (selected && (selected.textContent || '').trim()) {
+            return selected.textContent.trim();
+        }
+        return 'None';
+    }
+
+    function findDropdownListItem(dropdownRoot, choice) {
+        if (!dropdownRoot || !choice) return null;
+        var items = Array.from(dropdownRoot.querySelectorAll('ul li'));
+        var target = (choice || '').trim();
+        for (var i = 0; i < items.length; i++) {
+            var text = (items[i].textContent || '').replace(/\s+/g, ' ').trim();
+            if (text === target) return items[i];
+        }
+        var lower = target.toLowerCase();
+        for (var j = 0; j < items.length; j++) {
+            var t2 = (items[j].textContent || '').replace(/\s+/g, ' ').trim();
+            if (t2.toLowerCase() === lower) return items[j];
+        }
+        return null;
+    }
+
+    /**
+     * Gradio 3 Dropdown must be changed by selecting a list item (setting input.value alone
+     * does not run script visibility handlers).
+     */
+    function selectGradioDropdownOption(dropdownRoot, choice) {
+        var next = (choice || 'None').trim() || 'None';
+        if (!dropdownRoot) return Promise.resolve(false);
+
+        var current = readScriptChoice(dropdownRoot);
+        if (current === next) return Promise.resolve(false);
+
+        var input = getScriptInput(dropdownRoot);
+        if (!input) return Promise.resolve(false);
+
+        return new Promise(function (resolve) {
+            triggerMouseEvent(input, 'mousedown');
+            input.focus();
+
+            setTimeout(function () {
+                var item = findDropdownListItem(dropdownRoot, next);
+                if (item) {
+                    triggerMouseEvent(item, 'mousedown');
+                    triggerMouseEvent(item, 'click');
+                } else {
+                    input.value = next;
+                    if (typeof updateInput === 'function') {
+                        try { updateInput(input); } catch (_) { /* ignore */ }
+                    }
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+                triggerMouseEvent(input, 'blur');
+                setTimeout(function () { resolve(true); }, 120);
+            }, 120);
+        });
+    }
+
+    function writeScriptChoice(dropdownRoot, choice) {
+        return selectGradioDropdownOption(dropdownRoot, choice);
     }
 
     function populateSelect(select, scripts) {
@@ -267,7 +326,7 @@
         return readScriptChoice(sourceDropdown);
     }
 
-    function applyScriptChoice(wrap, sourceDropdown, choice, scriptTitles) {
+    function applyScriptChoice(wrap, sourceDropdown, choice, scriptTitles, attempt) {
         if (!wrap || !sourceDropdown) return;
 
         var panelMount = wrap.querySelector('.pc-script-panel-mount');
@@ -277,6 +336,7 @@
         if (!container) return;
 
         wrap._pcActiveChoice = choice;
+        attempt = attempt || 0;
 
         if (!choice || choice === 'None') {
             restoreReparentedPanel();
@@ -287,6 +347,12 @@
 
         var panel = findSelectablePanelForChoice(container, choice, scriptTitles);
         if (!panel) {
+            if (attempt < 6) {
+                setTimeout(function () {
+                    applyScriptChoice(wrap, sourceDropdown, choice, scriptTitles, attempt + 1);
+                }, 250);
+                return;
+            }
             restoreReparentedPanel();
             panelMount.dataset.panelKey = '';
             panelMount.classList.add('is-empty');
@@ -310,8 +376,8 @@
         if (panelDebounceTimer) clearTimeout(panelDebounceTimer);
         panelDebounceTimer = setTimeout(function () {
             panelDebounceTimer = null;
-            applyScriptChoice(wrap, sourceDropdown, choice, scriptTitles);
-        }, delay == null ? 200 : delay);
+            applyScriptChoice(wrap, sourceDropdown, choice, scriptTitles, 0);
+        }, delay == null ? 350 : delay);
     }
 
     function ensureSelectOption(select, value) {
@@ -336,11 +402,9 @@
         function pushPcChoiceToSource() {
             var pcChoice = select.value;
             if (!pcChoice) return;
-            if (writeScriptChoice(source, pcChoice)) {
-                scheduleApplyChoice(wrap, source, pcChoice, scriptTitles, 350);
-            } else {
-                applyScriptChoice(wrap, source, pcChoice, scriptTitles);
-            }
+            writeScriptChoice(source, pcChoice).then(function () {
+                scheduleApplyChoice(wrap, source, pcChoice, scriptTitles, 450);
+            });
         }
 
         select.addEventListener('change', function () {
@@ -355,7 +419,15 @@
                 var srcChoice = readScriptChoice(source);
                 ensureSelectOption(select, srcChoice);
                 select.value = srcChoice;
-                scheduleApplyChoice(wrap, source, srcChoice, scriptTitles, 200);
+                scheduleApplyChoice(wrap, source, srcChoice, scriptTitles, 350);
+            });
+            sourceInput.addEventListener('input', function () {
+                if (wrap._pcScriptLead) return;
+                var srcChoice = readScriptChoice(source);
+                if (srcChoice === select.value) return;
+                ensureSelectOption(select, srcChoice);
+                select.value = srcChoice;
+                scheduleApplyChoice(wrap, source, srcChoice, scriptTitles, 350);
             });
         }
 
@@ -363,7 +435,7 @@
         var initialChoice = readScriptChoice(source);
         ensureSelectOption(select, initialChoice);
         select.value = initialChoice;
-        scheduleApplyChoice(wrap, source, initialChoice, scriptTitles, 300);
+        scheduleApplyChoice(wrap, source, initialChoice, scriptTitles, 400);
 
         if (pollTimer) clearInterval(pollTimer);
         pollTimer = setInterval(function () {
@@ -372,7 +444,9 @@
 
             if (wrap._pcScriptLead) {
                 if (srcChoice !== pcChoice) {
-                    writeScriptChoice(source, pcChoice);
+                    writeScriptChoice(source, pcChoice).then(function () {
+                        scheduleApplyChoice(wrap, source, pcChoice, scriptTitles, 450);
+                    });
                 } else {
                     wrap._pcScriptLead = false;
                 }
@@ -383,7 +457,7 @@
                 ensureSelectOption(select, srcChoice);
                 select.value = srcChoice;
                 if (srcChoice !== wrap._pcActiveChoice) {
-                    scheduleApplyChoice(wrap, source, srcChoice, scriptTitles, 200);
+                    scheduleApplyChoice(wrap, source, srcChoice, scriptTitles, 350);
                 }
             }
         }, 3000);
@@ -397,7 +471,13 @@
         if (!source) return Promise.resolve(false);
 
         if (mount.dataset.mounted === '1' && mount.querySelector('.pc-script-select')) {
-            return Promise.resolve(true);
+            var existingSelect = mount.querySelector('.pc-script-select');
+            if (existingSelect.dataset.bound === '1' && getScriptInput(source)) {
+                return Promise.resolve(true);
+            }
+            restoreReparentedPanel();
+            mount.dataset.mounted = '';
+            mount.innerHTML = '';
         }
 
         return fetchScriptTitles().then(function (scripts) {

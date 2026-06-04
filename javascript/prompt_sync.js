@@ -109,33 +109,10 @@
         });
     }
 
-    function showProgressUi(show) {
-        const bar = appRoot().getElementById('pc_generate_progress');
-        if (bar) bar.style.display = show ? 'block' : 'none';
-    }
+    /* 進捗表示は WebUI 標準の .progressDiv（Output タブ・ギャラリー上）のみ使用 */
+    function showProgressUi() { /* no-op */ }
 
-    function updateProgressUi(res) {
-        const bar = appRoot().getElementById('pc_generate_progress');
-        if (!bar) return;
-        const fill = bar.querySelector('.pc-generate-progress-fill');
-        const textEl = bar.querySelector('.pc-generate-progress-text');
-        const pct = Math.max(0, Math.min(100, Math.round((res.progress || 0) * 100)));
-        if (fill) {
-            fill.style.width = pct + '%';
-            fill.style.opacity = res.progress > 0 ? '1' : '0.35';
-        }
-        let label = '生成中...';
-        if (res.textinfo && String(res.textinfo).indexOf('\n') === -1) {
-            label = String(res.textinfo).trim();
-        }
-        if (res.progress > 0) {
-            label += (label ? ' ' : '') + pct + '%';
-        }
-        if (res.eta) {
-            label += ' ETA: ' + formatTime(res.eta);
-        }
-        if (textEl) textEl.textContent = label.trim();
-    }
+    function updateProgressUi() { /* no-op */ }
 
     let _pcPreviewLightboxBound = false;
 
@@ -219,6 +196,11 @@
         if (closeBtn) closeBtn.focus();
     }
 
+    function getProgressPreviewHost() {
+        return appRoot().getElementById('pc_generate_live_preview')
+            || appRoot().getElementById('pc_generate_preview');
+    }
+
     function setPreviewImage(preview, src, isLive) {
         if (!preview || !src) return;
         if (preview.dataset.pcPreviewSrc === src && !isLive) return;
@@ -277,7 +259,7 @@
         });
 
         const taskKey = _pcProgressTarget === 'img2img' ? 'img2img_task_id' : 'txt2img_task_id';
-        const preview = appRoot().getElementById('pc_generate_preview');
+        const preview = getProgressPreviewHost();
         const startedAt = Date.now();
         let lastTaskId = null;
 
@@ -358,31 +340,19 @@
         tick();
     }
 
-    function syncGeneratePreview(target) {
-        const preview = appRoot().getElementById('pc_generate_preview');
-        if (!preview) return;
-
-        const imgs = getGalleryImages(target || 'txt2img');
-        if (!imgs.length) {
-            preview.innerHTML = '<span class="pc-generate-preview-empty">まだ画像がありません</span>';
-            delete preview.dataset.pcPreviewSrc;
-            return;
-        }
-
-        const last = imgs[imgs.length - 1];
-        const src = last.currentSrc || last.src;
-        setPreviewImage(preview, src, false);
+    function syncGeneratePreview() {
+        /* 画像は Output タブのギャラリーに表示（右サイドバーには出さない） */
     }
 
     function ensureGalleryObserver() {
         if (_galleryObserver) return;
-        const container = appRoot().querySelector('#txt2img_gallery_container')
+        const container = appRoot().querySelector('#pc_txt2img_output_col_left #txt2img_gallery_container')
+            || appRoot().querySelector('#txt2img_gallery_container')
             || appRoot().querySelector('#txt2img_gallery');
         if (!container) return;
 
         _galleryObserver = new MutationObserver(() => syncGeneratePreview('txt2img'));
         _galleryObserver.observe(container, { childList: true, subtree: true, attributes: true, attributeFilter: ['src'] });
-        syncGeneratePreview('txt2img');
     }
 
     /** Switch to the top-level txt2img tab (Gradio 3/4 + extension tabs). */
@@ -441,7 +411,8 @@
 
     function scrollToTxt2imgGallery() {
         const root = appRoot();
-        const gallery = root.querySelector('#txt2img_gallery')
+        const gallery = root.querySelector('#pc_txt2img_output_col_left #txt2img_gallery')
+            || root.querySelector('#txt2img_gallery')
             || root.querySelector('#txt2img_gallery_container');
         const tabPanel = root.getElementById('tab_txt2img');
         const target = gallery || tabPanel;
@@ -478,6 +449,13 @@
                     openPreviewLightbox(previewImg.currentSrc || previewImg.src, ev);
                     return;
                 }
+                const galleryImg = ev.target && ev.target.closest
+                    ? ev.target.closest('#pc_txt2img_output_col_left #txt2img_gallery img, #txt2img_gallery img')
+                    : null;
+                if (galleryImg && galleryImg.src) {
+                    openPreviewLightbox(galleryImg.currentSrc || galleryImg.src, ev);
+                    return;
+                }
                 const hit = ev.target && ev.target.closest
                     ? ev.target.closest('#pc_open_txt2img_gallery')
                     : null;
@@ -485,6 +463,56 @@
             });
         }
         ensureGalleryObserver();
+    }
+
+    function readGradioFieldValue(elemId) {
+        const host = appRoot().getElementById(elemId);
+        if (!host) return '';
+        const ta = host.querySelector('textarea');
+        if (ta) return (ta.value || '').trim();
+        const input = host.querySelector('input');
+        if (input) return (input.value || '').trim();
+        const selected = host.querySelector('span.single-select, .selected');
+        if (selected) return (selected.textContent || '').trim();
+        return '';
+    }
+
+    function readTxt2imgScriptChoice() {
+        const scriptList = appRoot().querySelector('#script_list');
+        if (!scriptList) return 'None';
+        const input = scriptList.querySelector('input, textarea');
+        if (input && (input.value || '').trim()) return input.value.trim();
+        const selected = scriptList.querySelector('span.single-select, .selected');
+        if (selected && (selected.textContent || '').trim()) return selected.textContent.trim();
+        return 'None';
+    }
+
+    /** X/Y/Z plot with empty axis values yields 0 images (xyz_grid.py). */
+    function getXyzPlotZeroImageMessage() {
+        const script = readTxt2imgScriptChoice();
+        if (!script || script === 'None' || script.toLowerCase().indexOf('x/y/z') < 0) {
+            return null;
+        }
+        const axes = [
+            { axis: 'X', typeId: 'script_txt2img_xyz_plot_x_type', valuesId: 'script_txt2img_xyz_plot_x_values' },
+            { axis: 'Y', typeId: 'script_txt2img_xyz_plot_y_type', valuesId: 'script_txt2img_xyz_plot_y_values' },
+            { axis: 'Z', typeId: 'script_txt2img_xyz_plot_z_type', valuesId: 'script_txt2img_xyz_plot_z_values' },
+        ];
+        for (let i = 0; i < axes.length; i++) {
+            const { axis, typeId, valuesId } = axes[i];
+            const typeLabel = readGradioFieldValue(typeId);
+            if (!typeLabel || typeLabel === 'Nothing') continue;
+            if (!readGradioFieldValue(valuesId)) {
+                return (
+                    'X/Y/Z plot が有効ですが、' + axis + ' 軸（' + typeLabel + '）の値が空のため画像が 0 枚になります。\n\n' +
+                    '対処:\n' +
+                    '・Generation タブの Script を「None」にする\n' +
+                    '・または ' + axis + ' values に数値を入力（例: 1-3 や -1）\n' +
+                    '・または ' + axis + ' type を「Nothing」にする'
+                );
+            }
+        }
+        return null;
     }
 
     function generateTxt2img() {
@@ -495,13 +523,13 @@
             return;
         }
 
-        applyToTarget('txt2img');
-
-        const preview = appRoot().getElementById('pc_generate_preview');
-        if (preview) {
-            preview.innerHTML = '<span class="pc-generate-preview-empty">生成を開始しています...</span>';
-            delete preview.dataset.pcPreviewSrc;
+        const xyzMsg = getXyzPlotZeroImageMessage();
+        if (xyzMsg) {
+            alert(xyzMsg);
+            return;
         }
+
+        applyToTarget('txt2img');
 
         setTimeout(() => {
             const genBtn = getGenerateButton('txt2img');
@@ -527,13 +555,9 @@
         const negative = getFinalNegative();
         if (!prompt && !negative) return false;
 
-        applyToTarget('txt2img');
+        if (getXyzPlotZeroImageMessage()) return false;
 
-        const preview = appRoot().getElementById('pc_generate_preview');
-        if (preview && !preview.querySelector('.pc-generate-preview-img, .pc-generate-preview-img-live')) {
-            preview.innerHTML = '<span class="pc-generate-preview-empty">生成を開始しています...</span>';
-            delete preview.dataset.pcPreviewSrc;
-        }
+        applyToTarget('txt2img');
 
         const genBtn = getGenerateButton('txt2img');
         if (!genBtn) return false;
@@ -648,18 +672,19 @@
         }, 400);
     }
 
-    function getFinalPrompt() {
-        const el = appRoot().getElementById('pc_final_prompt');
+    function getTextareaValue(elemId) {
+        const el = appRoot().getElementById(elemId);
         if (!el) return '';
         const ta = el.querySelector('textarea');
         return ta ? ta.value : '';
     }
 
+    function getFinalPrompt() {
+        return getTextareaValue('txt2img_prompt') || getTextareaValue('pc_final_prompt');
+    }
+
     function getFinalNegative() {
-        const el = appRoot().getElementById('pc_final_negative');
-        if (!el) return '';
-        const ta = el.querySelector('textarea');
-        return ta ? ta.value : '';
+        return getTextareaValue('txt2img_neg_prompt') || getTextareaValue('pc_final_negative');
     }
 
     function applyToTarget(target) {

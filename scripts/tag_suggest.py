@@ -236,4 +236,3 @@ def translate_exact(tag: str) -> str:
     if not t:
         return ""
     return (_jp_by_tag.get(t) or "").strip()
-

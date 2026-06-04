@@ -176,15 +176,19 @@
         if (art) art.classList.remove('is-preview-error');
     }
 
+    function collapseTagCardToTextOnly(card) {
+        if (!card || card.classList.contains('pc-tag-card-text-only')) return;
+        card.classList.remove('has-preview');
+        card.classList.add('pc-tag-card-text-only');
+        card.removeAttribute('data-preview-url');
+        const art = card.querySelector('.pc-tag-card-art');
+        if (art) art.remove();
+    }
+
     function markTagPreviewError(img) {
         if (!img) return;
-        img.classList.add('pc-tag-preview-error');
-        img.classList.remove('pc-tag-preview-pending');
-        img.removeAttribute('src');
-        const art = img.closest('.pc-tag-card-art');
-        if (art) art.classList.add('is-preview-error');
         const card = img.closest('.pc-tag-card');
-        if (card) card.classList.remove('has-preview');
+        collapseTagCardToTextOnly(card);
     }
 
     function loadTagPreviewImage(img) {
@@ -518,23 +522,25 @@
         const tag = escapeHtml(item.tag);
         const jp = escapeHtml(displayJpLabel(item));
         const previewUrl = normalizePreviewUrl(item.previewUrl || '');
-        const previewAttr = previewUrl ? ` data-preview-url="${escapeHtml(previewUrl)}"` : '';
-        const hasPreview = Boolean(previewUrl);
-        const art = hasPreview
-            ? `<div class="pc-tag-card-art">
-                    <img class="pc-tag-preview pc-tag-preview-pending" data-src="${escapeHtml(previewUrl)}" alt="" decoding="async" />
-                    <span class="pc-tag-card-no-image">No image</span>
-               </div>`
-            : `<div class="pc-tag-card-art pc-tag-card-art-empty"><span class="pc-tag-card-art-icon" aria-hidden="true">🏷️</span></div>`;
-        return `
-            <button type="button" class="pc-tag-card${hasPreview ? ' has-preview' : ''}" data-tag="${tag}" data-jp="${jp}"${previewAttr}>
-                ${art}
+        const body = `
                 <div class="pc-tag-card-body">
                     <span class="pc-tag-en" title="${tag}">${tag}</span>
                     ${jp ? `<span class="pc-tag-jp" title="${jp}">${jp}</span>` : ''}
+                </div>`;
+        if (!previewUrl) {
+            return `
+            <button type="button" class="pc-tag-card pc-tag-card-text-only" data-tag="${tag}" data-jp="${jp}">
+                ${body}
+            </button>`;
+        }
+        const previewAttr = ` data-preview-url="${escapeHtml(previewUrl)}"`;
+        return `
+            <button type="button" class="pc-tag-card has-preview" data-tag="${tag}" data-jp="${jp}"${previewAttr}>
+                <div class="pc-tag-card-art">
+                    <img class="pc-tag-preview pc-tag-preview-pending" data-src="${escapeHtml(previewUrl)}" alt="" decoding="async" />
                 </div>
-            </button>
-        `;
+                ${body}
+            </button>`;
     }
 
     function renderTagLeavesHtml(items) {

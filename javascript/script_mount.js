@@ -509,10 +509,15 @@
         scheduleMount();
     }
 
-    try {
+        try {
         new MutationObserver(function () {
             var mount = findMount();
-            if (!mount) return;
+            if (!mount) {
+                if (reparentState.panel) {
+                    restoreReparentedPanel();
+                }
+                return;
+            }
             if (!findTxt2imgScriptBlock()) {
                 if (mount.dataset.mounted === '1') {
                     restoreReparentedPanel();

@@ -454,12 +454,39 @@ def get_asset_by_id(asset_id):
     return None
 
 
-def get_subfolders(asset_type=None):
+def _assets_from_disk_cache():
+    """Load cached asset list without scanning disks (for fast UI build / reload)."""
+    global _assets_cache
+    if _assets_cache is not None:
+        return _assets_cache
+
+    folders = _get_model_folders()
+    if not folders or not _cache_path or not os.path.isfile(_cache_path):
+        return None
+
+    try:
+        with open(_cache_path, "r", encoding="utf-8") as f:
+            cache_data = json.load(f)
+        if cache_data.get("fingerprint", "") != _compute_dir_fingerprint(folders):
+            return None
+        assets = cache_data.get("assets", [])
+        if assets:
+            _assets_cache = assets
+        return assets or None
+    except (json.JSONDecodeError, OSError):
+        return None
+
+
+def get_subfolders(asset_type=None, *, allow_full_scan=True):
     """Get list of unique subfolders for filtering, optionally by type."""
     if asset_type == "checkpoint":
         assets = list_checkpoints()
     else:
-        assets = scan_all_assets()
+        assets = _assets_from_disk_cache()
+        if assets is None and allow_full_scan:
+            assets = scan_all_assets()
+        elif assets is None:
+            return []
     subfolders = set()
     for asset in assets:
         if asset_type and asset.get("type") != asset_type:

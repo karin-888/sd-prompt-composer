@@ -8,6 +8,16 @@
     const CACHE = new Map(); // scopedKey -> { token_count, max_length, tokens }
     const inflight = new Set(); // scopedKey
 
+    const PANES = [
+        {
+            promptId: 'txt2img_prompt',
+            negId: 'txt2img_neg_prompt',
+            viewId: 'pc_tokenizer_view',
+            buttonId: 'pc_tokenizer_button',
+            scopePrefix: ''
+        }
+    ];
+
     function appRoot() {
         try {
             if (typeof window.gradioApp === 'function') return window.gradioApp();
@@ -15,47 +25,50 @@
         return document;
     }
 
-    function init() {
+    function initPane(cfg) {
         const root = appRoot();
-        const promptBox = root.getElementById('pc_final_prompt');
-        const negBox = root.getElementById('pc_final_negative');
-        const view = root.getElementById('pc_tokenizer_view');
-        const button = root.getElementById('pc_tokenizer_button');
-        if (!promptBox || !view) {
-            setTimeout(init, 800);
-            return;
-        }
+        const promptBox = root.getElementById(cfg.promptId);
+        const negBox = root.getElementById(cfg.negId);
+        const view = root.getElementById(cfg.viewId);
+        const button = root.getElementById(cfg.buttonId);
+        if (!promptBox || !view) return false;
 
         const posTa = promptBox.querySelector('textarea');
         const negTa = negBox ? negBox.querySelector('textarea') : null;
-        if (!posTa) {
-            setTimeout(init, 800);
-            return;
-        }
+        if (!posTa) return false;
 
         let debounceTimer = null;
         const handler = () => {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
-                // Approx のみ更新（正確トークン数は保持済みデータがあれば表示）
-                updateTokenizerPair(posTa.value || '', negTa ? (negTa.value || '') : '');
+                updateTokenizerPair(
+                    posTa.value || '',
+                    negTa ? (negTa.value || '') : '',
+                    cfg
+                );
             }, 250);
         };
 
         posTa.addEventListener('input', handler);
         if (negTa) negTa.addEventListener('input', handler);
-        // 手動計算ボタン
+
         if (button && !button.dataset._pcBound) {
             button.dataset._pcBound = '1';
             button.addEventListener('click', () => {
-                requestExactTokenize('pos', posTa.value || '');
-                if (negTa) requestExactTokenize('neg', negTa.value || '');
+                requestExactTokenize('pos', posTa.value || '', cfg);
+                if (negTa) requestExactTokenize('neg', negTa.value || '', cfg);
             });
         }
 
-        // 初期表示（Approx のみ）
-        updateTokenizerPair(posTa.value || '', negTa ? (negTa.value || '') : '');
+        updateTokenizerPair(posTa.value || '', negTa ? (negTa.value || '') : '', cfg);
+        return true;
+    }
 
+    function init() {
+        if (!initPane(PANES[0])) {
+            setTimeout(init, 800);
+            return;
+        }
         console.log('[Prompt Composer] Lightweight tokenizer initialized (manual exact count)');
     }
 
@@ -75,12 +88,12 @@
         return tokens;
     }
 
-    function updateTokenizerPair(posText, negText) {
-        const view = appRoot().getElementById('pc_tokenizer_view');
+    function updateTokenizerPair(posText, negText, cfg) {
+        const view = appRoot().getElementById(cfg.viewId);
         if (!view) return;
 
-        const posHtml = renderOne('Positive', 'pos', posText);
-        const negHtml = renderOne('Negative', 'neg', negText);
+        const posHtml = renderOne('Positive', 'pos', posText, cfg);
+        const negHtml = renderOne('Negative', 'neg', negText, cfg);
         view.innerHTML = `<div class="pc-tokenizer-dual">${posHtml}${negHtml}</div>`;
     }
 
@@ -113,14 +126,13 @@
         return len <= 0 ? 0 : Math.ceil(len / 75);
     }
 
-    function renderOne(title, scope, text) {
+    function renderOne(title, scope, text, cfg) {
         const tokens = tokenizeApprox(text);
-        const scopedKey = normalizeKey(scope, text);
+        const scopedKey = normalizeKey(scope, text, cfg);
         const exact = CACHE.get(scopedKey);
 
         const paneClass = scope === 'pos' ? 'pc-tokenizer-pane-pos' : 'pc-tokenizer-pane-neg';
 
-        // Empty
         if (!tokens.length) {
             const exactPart = exact ? ` / exact: ${exact.token_count}` : '';
             return `
@@ -142,7 +154,6 @@
             `Approx: ${total} / BREAK区切り: ${segments.length}セグメント${breakCount ? ` (${breakCount} BREAK)` : ''} / 75換算chunks: ${chunkTotal}${exactText}` +
             `</div>`;
 
-        // Warnings: whole-prompt (legacy) + per-segment when exact available
         if (exact && exact.token_count > 75 && breakCount === 0) {
             const over = exact.token_count - 75;
             const exactChunks = Math.ceil(exact.token_count / 75);
@@ -191,14 +202,15 @@
         return html;
     }
 
-    function normalizeKey(scope, text) {
+    function normalizeKey(scope, text, cfg) {
         const maxLen = 2048;
         const body = (text || '').slice(0, maxLen);
-        return `${scope}:${body}`;
+        const prefix = cfg && cfg.scopePrefix ? cfg.scopePrefix : '';
+        return `${prefix}${scope}:${body}`;
     }
 
-    async function requestExactTokenize(scope, text) {
-        const scopedKey = normalizeKey(scope, text);
+    async function requestExactTokenize(scope, text, cfg) {
+        const scopedKey = normalizeKey(scope, text, cfg);
         const body = (text || '').trim();
         if (!body) return;
         if (CACHE.has(scopedKey)) return;
@@ -217,14 +229,13 @@
                 tokens: Array.isArray(data.tokens) ? data.tokens : []
             });
 
-            // refresh view if still showing same text
             const root = appRoot();
-            const promptBox = root.getElementById('pc_final_prompt');
-            const negBox = root.getElementById('pc_final_negative');
+            const promptBox = root.getElementById(cfg.promptId);
+            const negBox = root.getElementById(cfg.negId);
             const posTa = promptBox ? promptBox.querySelector('textarea') : null;
             const negTa = negBox ? negBox.querySelector('textarea') : null;
             if (posTa) {
-                updateTokenizerPair(posTa.value || '', negTa ? (negTa.value || '') : '');
+                updateTokenizerPair(posTa.value || '', negTa ? (negTa.value || '') : '', cfg);
             }
         } catch (e) {
             // ignore
@@ -241,7 +252,6 @@
 
     function normalizeDisplayToken(tok) {
         let s = String(tok ?? '');
-        // OpenCLIP BPE often returns tokens with word-end markers like </w>
         s = s.replaceAll('</w>', '');
         s = s.replaceAll('<w>', '');
         return s;
@@ -254,4 +264,3 @@
     }
 
 })();
-

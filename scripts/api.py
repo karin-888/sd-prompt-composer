@@ -28,6 +28,7 @@ import tag_suggest
 import wildcards
 import ips_data_loader
 import ips_collections_store
+import image_caption
 from modules import shared, sd_hijack
 import open_clip.tokenizer
 import urllib.parse
@@ -304,9 +305,19 @@ def _google_translate_tag(mt_key: str, qtext: str) -> str:
         return ""
 
 
+_registered_fastapi_app_id: int | None = None
+
+
 def register_api(app: FastAPI, extension_dir: str):
     """Register all API routes with the FastAPI app."""
-    
+    # Skip duplicate registration on the same FastAPI instance (app_started may run twice).
+    # After Reload UI, Gradio creates a new app object — register routes again on that instance.
+    global _registered_fastapi_app_id
+    app_id = id(app)
+    if _registered_fastapi_app_id == app_id:
+        return
+    _registered_fastapi_app_id = app_id
+
     @app.get("/prompt-composer/api/assets")
     async def api_get_assets(
         type: Optional[str] = None,
@@ -989,4 +1000,23 @@ def register_api(app: FastAPI, extension_dir: str):
             "tokens": tokens,
             "token_count": int(token_count),
             "max_length": int(max_length),
+        }
+
+    @app.get("/prompt-composer/api/vision-models")
+    async def api_vision_models(provider: str = "openai"):
+        """List vision-capable model IDs for a provider (openai, gemini, ollama)."""
+        p = image_caption.normalize_provider(provider)
+        models = image_caption.get_vision_models_for_provider(p)
+        return {"provider": p, "models": models}
+
+    @app.get("/prompt-composer/api/vision-split")
+    async def api_vision_split(text: str = "", style: str = "detailed"):
+        """Split vision caption into prompt phrases (comma-separated)."""
+        style = image_caption.normalize_output_style(style)
+        tags = image_caption.split_caption_to_tags(text, style)
+        return {
+            "tags": tags,
+            "formatted": ", ".join(tags),
+            "count": len(tags),
+            "style": style,
         }

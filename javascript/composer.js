@@ -2298,6 +2298,8 @@
         const finalNegative = buildPromptString(negParts);
 
         // Update Gradio textboxes
+        setGradioValue('txt2img_prompt', finalPrompt);
+        setGradioValue('txt2img_neg_prompt', finalNegative);
         setGradioValue('pc_final_prompt', finalPrompt);
         setGradioValue('pc_final_negative', finalNegative);
     }
@@ -2586,6 +2588,26 @@
         return true;
     }
 
+    /**
+     * Apply caption text to a block by type (Vision tab).
+     * @param {string} blockType e.g. outfit, appearance, character, background
+     * @param {string} text
+     * @param {'append'|'replace'} [mode]
+     */
+    function applyTextToBlockType(blockType, text, mode = 'append') {
+        const block = findBlockByType(blockType);
+        if (!block) return false;
+        const raw = String(text || '').trim();
+        if (!raw) return false;
+        if (mode === 'replace') {
+            clearBlockTokensSilent(block.id);
+        }
+        fillBlockFromText(block.id, raw);
+        renderBlocks();
+        focusBlock(block.id);
+        return true;
+    }
+
     // ===== Public API =====
     window.PromptComposer = {
         init,
@@ -2602,6 +2624,7 @@
         focusBlock,
         findBlockByType,
         clearBlockTokensSilent,
+        applyTextToBlockType,
         get blocks() { return blocks; },
         get negativeBlocks() { return negativeBlocks; }
     };

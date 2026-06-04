@@ -8,6 +8,7 @@ When ``group_tags/manifest.json`` exists, sections are loaded on demand from
 import json
 import os
 import pickle
+import threading
 import time
 import urllib.parse
 from typing import List, Dict, Optional, Tuple, Set
@@ -38,6 +39,9 @@ _manifest_sections_ordered: List[Dict] = []
 _search_index: List[Dict] = []
 _loaded_sections: Set[str] = set()
 _global_tag_keys: Set[str] = set()
+_previews_scanned: bool = False
+_preview_scan_lock = threading.Lock()
+_preview_scan_started: bool = False
 _MANIFEST_VERSION = 2
 _SECTION_CACHE_VERSION = 2
 _LEGACY_CACHE_VERSION = 1
@@ -510,7 +514,7 @@ def _init_lazy() -> None:
     print(
         f"[Prompt Composer] Tag dictionary ready (lazy): "
         f"{len(_manifest_sections)} sections, {len(_search_index)} indexed tags "
-        f"(~{total_tags} total, previews={len(_preview_by_tag)})"
+        f"(~{total_tags} total, section YAML on demand, previews deferred)"
     )
 
 
@@ -562,8 +566,9 @@ def init(extension_dir: str):
 
     _extension_dir = extension_dir
     _previews_dir = user_storage.tag_previews_dir(extension_dir)
-    _scan_previews(force=True)
-    preview_mtime = _preview_dir_mtime
+    globals()["_previews_scanned"] = False
+    globals()["_preview_scan_started"] = False
+    preview_mtime = 0.0
 
     if _lazy_available():
         _init_lazy()
@@ -577,6 +582,8 @@ def init(extension_dir: str):
         _build_indexes(_tags)
         return
 
+    _ensure_previews_scanned()
+    preview_mtime = _preview_dir_mtime
     _init_legacy(yaml_paths, preview_mtime)
 
 
@@ -611,6 +618,38 @@ def _rebuild_preview_alias_index() -> None:
                 add_alias(part.split(":", 1)[0][1:].strip(), kt, path)
 
     _preview_alias_index = {alias: path for alias, (_known, path) in index.items()}
+
+
+def _ensure_previews_scanned() -> None:
+    """Build the preview filename index once (expensive; not run at startup)."""
+    global _previews_scanned
+    if _previews_scanned:
+        return
+    with _preview_scan_lock:
+        if _previews_scanned:
+            return
+        _scan_previews(force=True)
+        _previews_scanned = True
+
+
+def _maybe_start_preview_scan_background() -> None:
+    """Index tag-previews folder in a background thread after the dictionary is first used."""
+    global _preview_scan_started
+    if not _previews_dir or not os.path.isdir(_previews_dir):
+        return
+    with _preview_scan_lock:
+        if _preview_scan_started or _previews_scanned:
+            return
+        _preview_scan_started = True
+
+    def _run() -> None:
+        try:
+            _ensure_previews_scanned()
+            print(f"[Prompt Composer] Tag preview index ready ({len(_preview_by_tag)} files)")
+        except Exception as e:
+            print(f"[Prompt Composer] Tag preview index failed: {e}")
+
+    threading.Thread(target=_run, name="pc-tag-previews", daemon=True).start()
 
 
 def _scan_previews(force: bool = False) -> None:
@@ -650,7 +689,6 @@ def _find_related_preview_path(tag: str) -> Optional[str]:
 
 
 def _resolve_preview_path(tag: str, yaml_preview: str = "", *, allow_related: bool = True) -> Optional[str]:
-    _scan_previews()
     tag = (tag or "").strip()
     if not tag:
         return None
@@ -668,10 +706,11 @@ def _resolve_preview_path(tag: str, yaml_preview: str = "", *, allow_related: bo
             if os.path.isfile(candidate):
                 return candidate
 
-    for variant in preview_filenames.preview_lookup_variants(tag):
-        hit = _preview_by_tag.get(variant)
-        if hit:
-            return hit
+    if _previews_scanned:
+        for variant in preview_filenames.preview_lookup_variants(tag):
+            hit = _preview_by_tag.get(variant)
+            if hit:
+                return hit
 
     for variant in preview_filenames.preview_lookup_variants(tag):
         safe_base = preview_filenames.tag_to_preview_basename(variant)
@@ -699,6 +738,7 @@ def preview_url_for_tag(tag: str, yaml_preview: str = "") -> Optional[str]:
 
 
 def get_preview_file(tag: str) -> Optional[str]:
+    _ensure_previews_scanned()
     item = _tag_by_name.get((tag or "").strip())
     if item is None and _lazy_mode:
         for row in _search_index:
@@ -711,14 +751,25 @@ def get_preview_file(tag: str) -> Optional[str]:
 
 
 def rescan_previews() -> int:
+    global _previews_scanned, _preview_scan_started
     _scan_previews(force=True)
+    _previews_scanned = True
+    _preview_scan_started = True
     return len(_preview_by_tag)
 
 
 def _public_item(item: Dict) -> Dict:
     out = dict(item)
     yaml_preview = (item.get("preview") or "").strip()
-    url = preview_url_for_tag(item.get("tag") or "", yaml_preview)
+    tag = (item.get("tag") or "").strip()
+    url = None
+    if yaml_preview or _previews_scanned:
+        url = preview_url_for_tag(tag, yaml_preview)
+    elif tag:
+        path = _resolve_preview_path(tag, yaml_preview, allow_related=False)
+        if path:
+            encoded_tag = urllib.parse.quote(tag, safe="")
+            url = f"/prompt-composer/api/tags/preview?tag={encoded_tag}"
     out["previewUrl"] = url
     return out
 
@@ -857,6 +908,8 @@ def search_tags(
 
     limit = max(1, min(int(limit or 50), 500))
     offset = max(0, int(offset or 0))
+
+    _maybe_start_preview_scan_background()
 
     if _lazy_mode:
         return _search_tags_lazy(query, limit, offset, section, category, group)

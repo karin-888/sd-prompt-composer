@@ -52,48 +52,366 @@
 
 /* ===== Output Area ===== */
 .pc-output-area {
+    --pc-output-scroll-max: min(78vh, calc(100dvh - 12rem));
+    --pc-output-gallery-min: calc(var(--pc-output-scroll-max) - 10rem);
     border-bottom: 2px solid var(--border-color-primary, #444);
     padding-bottom: 12px !important;
     margin-bottom: 12px !important;
+    align-items: flex-start !important;
 }
 
-/* ===== Inline generate preview (Prompt Composer tab) ===== */
-.pc-generate-preview-wrap {
+/* 中央タブ列: 高さ上限 + タブ内スクロール（右の生成ボタン列は固定） */
+.pc-output-tabs-col {
+    min-height: 0 !important;
+    max-height: var(--pc-output-scroll-max) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Final Prompt tabs (prompt / Generation / Output) */
+#pc_final_prompt_tabs {
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: var(--pc-output-scroll-max);
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 8px;
 }
 
-.pc-generate-progress {
-    display: none;
-    margin-bottom: 4px;
+#pc_final_prompt_tabs .tab-nav {
+    flex: 0 0 auto;
 }
 
-.pc-generate-progress-track {
+/* 非アクティブタブは Gradio の hidden / display:none を尊重（全タブ同時表示を防ぐ） */
+#pc_final_prompt_tabs > div:not(.tab-nav).hidden,
+#pc_final_prompt_tabs .tabitem.hidden,
+#pc_final_prompt_tabs > div:not(.tab-nav)[hidden],
+#pc_final_prompt_tabs > div:not(.tab-nav)[style*="display: none"],
+#pc_final_prompt_tabs > div:not(.tab-nav)[style*="display:none"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    pointer-events: none !important;
+}
+
+#pc_final_prompt_tabs > div:not(.tab-nav):not(.hidden):not([hidden]),
+#pc_final_prompt_tabs .tabitem:not(.hidden):not([hidden]) {
+    padding-top: 8px;
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: var(--pc-output-scroll-max);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+#pc_final_prompt_tabs > div:not(.tab-nav):not(.hidden)::-webkit-scrollbar,
+#pc_final_prompt_tabs .tabitem:not(.hidden)::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+#pc_final_prompt_tabs > div:not(.tab-nav):not(.hidden)::-webkit-scrollbar-thumb,
+#pc_final_prompt_tabs .tabitem:not(.hidden)::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.45);
+    border-radius: 4px;
+}
+
+/* prompt タブに Generation / Output の中身が混ざらないよう保険 */
+#pc_final_tab_1 .pc-generation-two-col,
+#pc_final_tab_1 .pc-txt2img-settings-col,
+#pc_final_tab_1 .pc-output-two-col,
+#pc_final_tab_1 #txt2img_settings,
+#pc_final_tab_1 #txt2img_script_container {
+    display: none !important;
+}
+
+/* 誤って prompt タブに入った results 全体だけ非表示（移動済みギャラリー/プロンプトは対象外） */
+#pc_final_tab_1 > #txt2img_results,
+#pc_final_tab_1 .tabitem > #txt2img_results {
+    display: none !important;
+}
+
+/* Generation: 左右カラムそれぞれスクロール */
+#pc_final_prompt_tabs #pc_final_tab_2:not(.hidden),
+#pc_final_tab_2.tabitem:not(.hidden) {
+    overflow: hidden !important;
+}
+
+/* Generation tab: 2-column layout (settings | scripts), each column scrolls */
+.pc-generation-two-col {
     width: 100%;
-    height: 18px;
-    border-radius: 6px;
+    max-height: var(--pc-output-scroll-max);
+    align-items: stretch !important;
+    gap: 12px !important;
+}
+
+.pc-txt2img-settings-col {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-height: var(--pc-output-scroll-max);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+.pc-txt2img-settings-col::-webkit-scrollbar {
+    width: 8px;
+}
+
+.pc-txt2img-settings-col::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.45);
+    border-radius: 4px;
+}
+
+.pc-txt2img-settings-col:empty::after {
+    content: "読み込み中…";
+    display: block;
+    padding: 10px;
+    font-size: 0.85em;
+    color: var(--body-text-color-subdued, #888);
+}
+
+.pc-txt2img-settings-col .block,
+.pc-txt2img-settings-col .form,
+.pc-txt2img-settings-col #txt2img_script_container {
+    width: 100%;
+    max-width: 100%;
+}
+
+.pc-txt2img-settings-col #txt2img_script_container .input-accordion-m,
+.pc-txt2img-settings-col #txt2img_script_container .block {
+    width: 100%;
+}
+
+/* Output tab: image (left) | generation info (right) */
+.pc-output-two-col {
+    width: 100%;
+    align-items: flex-start !important;
+    gap: 12px !important;
+}
+
+#pc_final_tab_output .pc-output-two-col {
+    align-items: stretch !important;
+    min-height: var(--pc-output-scroll-max);
+}
+
+.pc-txt2img-output-col {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    min-height: 120px;
+}
+
+.pc-txt2img-output-col:empty::after {
+    content: "読み込み中…";
+    display: block;
+    padding: 10px;
+    font-size: 0.85em;
+    color: var(--body-text-color-subdued, #888);
+}
+
+/* prompt タブ: txt2img ネイティブプロンプト */
+.pc-prompt-tab-prompt-mount,
+#pc_prompt_tab_prompt_mount {
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+#pc_prompt_tab_prompt_mount #txt2img_prompt_container {
+    width: 100% !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+#pc_prompt_tab_prompt_mount #txt2img_prompt textarea,
+#pc_prompt_tab_prompt_mount #txt2img_neg_prompt textarea {
+    min-height: 6.5em !important;
+}
+
+.pc-prompt-tab-prompt-mount:empty::after {
+    content: "txt2img プロンプト欄を読み込み中…";
+    display: block;
+    padding: 12px;
+    font-size: 0.85em;
+    color: var(--body-text-color-subdued, #888);
+}
+
+#pc_final_tab_1:not(.hidden) {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Output 左: ギャラリー */
+.pc-txt2img-output-col-left,
+#pc_txt2img_output_col_left {
+    position: relative;
+}
+
+.pc-txt2img-output-col-left #txt2img_results,
+.pc-txt2img-output-col-left #txt2img_gallery_container,
+.pc-txt2img-output-col-left #txt2img_results_panel {
+    position: static !important;
+    top: auto !important;
+    width: 100%;
+    max-width: 100%;
+}
+
+.pc-txt2img-output-col-left .progressDiv,
+#pc_txt2img_output_col_left .progressDiv,
+#pc_final_tab_output .progressDiv {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 22px !important;
+    margin: 0 0 10px 0 !important;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+#pc_final_tab_output #pc_txt2img_output_col_left,
+#pc_final_tab_output .pc-txt2img-output-col-left {
+    display: flex !important;
+    flex-direction: column !important;
+    align-self: stretch !important;
+    min-height: var(--pc-output-scroll-max) !important;
+    max-height: var(--pc-output-scroll-max) !important;
+    overflow: hidden !important;
+}
+
+#pc_final_tab_output .pc-txt2img-output-col-left #txt2img_gallery_container {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin-top: 0;
+}
+
+#pc_final_tab_output .pc-txt2img-output-col-left #txt2img_gallery,
+#pc_final_tab_output .pc-txt2img-output-col-left #txt2img_gallery.block.gradio-gallery {
+    flex: 1 1 auto !important;
+    min-height: var(--pc-output-gallery-min, min(62vh, 640px)) !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+#pc_final_tab_output .pc-txt2img-output-col-left #txt2img_gallery .preview img,
+#pc_final_tab_output .pc-txt2img-output-col-left #txt2img_gallery .main img,
+#pc_final_tab_output .pc-txt2img-output-col-left #txt2img_gallery img:not(.thumbnail-small) {
+    max-height: calc(var(--pc-output-gallery-min, 480px) - 5rem) !important;
+    width: auto !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#pc_final_tab_output .pc-txt2img-output-col-left #image_buttons_txt2img,
+#pc_final_tab_output .pc-txt2img-output-col-left .image-buttons {
+    flex: 0 0 auto !important;
+    margin-top: auto !important;
+}
+
+/* Output 右: プロンプトは prompt タブへ移動済み */
+.pc-txt2img-output-col-right #txt2img_prompt_container,
+.pc-txt2img-output-col-right #txt2img_prompt,
+.pc-txt2img-output-col-right #txt2img_neg_prompt,
+#pc_txt2img_output_col_right #txt2img_prompt_container,
+#pc_txt2img_output_col_right #txt2img_prompt,
+#pc_txt2img_output_col_right #txt2img_neg_prompt {
+    display: none !important;
+}
+
+.pc-txt2img-output-col-right {
+    max-height: var(--pc-output-scroll-max);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+}
+
+.pc-txt2img-output-col-left {
+    max-height: var(--pc-output-scroll-max);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+}
+
+.pc-txt2img-output-col-right #html_info_txt2img.infotext,
+.pc-txt2img-output-col-right .infotext {
+    max-height: none;
+    overflow-y: visible;
+    margin-top: 8px;
+}
+
+.pc-txt2img-output-col-right #html_log_txt2img {
+    margin-top: 6px;
+    font-size: 0.85em;
+}
+
+#pc_final_tab_output.tabitem {
+    min-height: var(--pc-output-scroll-max, 480px);
+    overflow: hidden !important;
+}
+
+#pc_final_tab_output.tabitem:not(.hidden) {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* 右サイドバー: ボタンのみ（画像プレビュー非表示） */
+.pc-generate-actions-col .pc-generate-preview,
+.pc-generate-actions-col #pc_generate_preview {
+    display: none !important;
+}
+
+.pc-generate-actions-col .pc-generate-open-tab,
+.pc-generate-actions-col #pc_open_txt2img_gallery {
+    display: none !important;
+}
+
+.pc-generate-live-preview-host {
+    display: none !important;
+    width: 0;
+    height: 0;
     overflow: hidden;
-    background: var(--background-fill-secondary, #2a2a2a);
-    border: 1px solid var(--border-color-primary, #444);
 }
 
-.pc-generate-progress-fill {
-    height: 100%;
-    width: 0%;
-    border-radius: 5px;
-    background: linear-gradient(90deg, #5b9bd5, #76b9ed);
-    transition: width 0.25s ease;
-    box-sizing: border-box;
+@media (max-width: 1100px) {
+    .pc-output-two-col {
+        flex-direction: column !important;
+    }
+
+    .pc-txt2img-output-col {
+        width: 100% !important;
+    }
+
+    .pc-generation-two-col {
+        flex-direction: column !important;
+    }
+
+    .pc-txt2img-settings-col {
+        flex: 1 1 auto !important;
+        width: 100% !important;
+    }
 }
 
+/* サイドバー用の独自進捗バーは廃止（Output タブの WebUI 標準バーのみ） */
+#pc_generate_progress,
+.pc-generate-progress,
+.pc-generate-progress-track,
+.pc-generate-progress-fill,
 .pc-generate-progress-text {
-    margin-top: 4px;
-    font-size: 0.72em;
-    line-height: 1.35;
-    color: var(--body-text-color-subdued, #aaa);
-    min-height: 1.2em;
+    display: none !important;
 }
 
 .pc-generate-preview-img-live {
@@ -597,8 +915,9 @@
 }
 
 #pc_dict_tabs {
-    flex: 0 1 auto !important;
-    min-height: 0 !important;
+    flex: 1 1 auto !important;
+    min-height: 10rem !important;
+    max-height: var(--pc-panel-max, min(68vh, calc(100dvh - 18rem))) !important;
     display: flex !important;
     flex-direction: column !important;
     overflow: hidden !important;
@@ -624,6 +943,120 @@
     overflow-x: auto !important;
     flex-wrap: nowrap !important;
     max-width: 100% !important;
+}
+
+/* Tag Dictionary tab (full width) */
+#pc_dict_tab_tags {
+    min-height: 0;
+}
+
+/* プロンプト大辞典 tab (between Tag Dictionary and Wildcards) */
+#pc_dict_tab_prompt_dictionary {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: var(--pc-panel-max, min(68vh, calc(100dvh - 18rem))) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+#pc_dict_tab_prompt_dictionary #prompt_dictionary_panel.pd-composer-embed,
+#pc_dict_tab_prompt_dictionary #prompt_dictionary_panel {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    max-width: none;
+    margin: 0;
+    padding: 0 4px 8px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: visible !important;
+}
+
+#pc_dict_tab_prompt_dictionary #prompt_dictionary_panel.pd-composer-embed .pd-header h2 {
+    font-size: 1.15rem;
+}
+
+#pc_dict_tab_prompt_dictionary #prompt_dictionary_panel.pd-composer-embed .pd-header p {
+    font-size: 0.88em;
+}
+
+#pc_dict_tab_prompt_dictionary #prompt_dictionary_panel.pd-composer-embed .pd-status {
+    font-size: 0.88em;
+}
+
+/* 検索欄・ボタン・ステータスは固定、候補リストだけスクロール */
+#pc_dict_tab_prompt_dictionary #prompt_dictionary_panel > .block:not(#pd_results),
+#pc_dict_tab_prompt_dictionary #prompt_dictionary_panel > .form:not(#pd_results),
+#pc_dict_tab_prompt_dictionary #prompt_dictionary_panel > .gr-row:not(:has(#pd_results)) {
+    flex: 0 0 auto !important;
+    flex-shrink: 0 !important;
+}
+
+#pc_dict_tab_prompt_dictionary #pd_results,
+#pc_dict_tab_prompt_dictionary #pd_results.block,
+#pc_dict_tab_prompt_dictionary #prompt_dictionary_panel #pd_results {
+    flex: 1 1 auto !important;
+    min-height: 8rem !important;
+    /* flex だけでは高さが決まらないため明示 max-height（親の overflow:hidden で切れるのを防ぐ） */
+    max-height: min(46vh, calc(var(--pc-panel-max, 68vh) - 13rem)) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+    padding-bottom: 8px;
+    box-sizing: border-box;
+}
+
+#pc_dict_tab_prompt_dictionary #pd_results > .wrap,
+#pc_dict_tab_prompt_dictionary #pd_results .html-container,
+#pc_dict_tab_prompt_dictionary #pd_results .prose {
+    min-height: 0 !important;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+#pc_dict_tab_prompt_dictionary #pd_results::-webkit-scrollbar {
+    width: 6px;
+}
+
+#pc_dict_tab_prompt_dictionary #pd_results::-webkit-scrollbar-thumb {
+    background: var(--border-color-primary, #555);
+    border-radius: 3px;
+}
+
+#pc_dict_tab_prompt_dictionary #prompt_dictionary_panel.pd-composer-embed .pd-results,
+#pc_dict_tab_prompt_dictionary #prompt_dictionary_panel .pd-results {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px;
+    grid-template-columns: unset !important;
+}
+
+#prompt_dictionary_panel.pd-composer-embed {
+    max-width: none;
+    margin: 0;
+    padding: 0 2px 0;
+    width: 100%;
+}
+
+.pc-pd-missing {
+    padding: 12px;
+    font-size: 0.85em;
+    color: var(--body-text-color-subdued, #888);
+    border: 1px dashed var(--border-color-primary, #555);
+    border-radius: 8px;
+}
+
+@media (max-width: 1100px) {
+    #pc_dict_tab_prompt_dictionary #prompt_dictionary_panel.pd-composer-embed .pd-results {
+        grid-template-columns: unset;
+    }
 }
 
 .pc-dict-source-bar {
@@ -668,7 +1101,16 @@
 #pc_main_area #pc_ips_panel {
     flex: 1 1 auto !important;
     min-height: 0 !important;
+    max-height: var(--pc-panel-max, min(68vh, calc(100dvh - 18rem))) !important;
     overflow: hidden !important;
+}
+
+#pc_main_area #pc_dict_tab_prompt_dictionary {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: var(--pc-panel-max, min(68vh, calc(100dvh - 18rem))) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
 }
 
 #pc_main_area #pc_tag_list > .wrap,
@@ -909,6 +1351,31 @@
     grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
     gap: 10px;
     padding: 4px 2px 8px;
+}
+
+.pc-tag-card.pc-tag-card-text-only {
+    min-height: 0;
+}
+
+.pc-tag-card.pc-tag-card-text-only .pc-tag-card-body {
+    padding: 10px 10px 11px;
+}
+
+.pc-tag-card.pc-tag-card-text-only .pc-tag-en {
+    font-size: 0.78em;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.pc-tag-card.pc-tag-card-text-only .pc-tag-jp {
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .pc-tag-card {
@@ -2997,6 +3464,90 @@
     display: flex;
     gap: 6px;
     justify-content: flex-end;
+}
+
+/* ===== Vision tab (画像→文章) ===== */
+.pc-vision-intro {
+    margin: 0 0 12px;
+    font-size: 0.92em;
+    line-height: 1.5;
+    color: var(--body-text-color-subdued, #aaa);
+}
+
+.pc-vision-main-row {
+    align-items: flex-start !important;
+    gap: 16px;
+}
+
+.pc-vision-input-col,
+.pc-vision-result-col {
+    min-height: 0;
+}
+
+.pc-vision-apply-row {
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pc-vision-status {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.9em;
+    line-height: 1.45;
+}
+
+.pc-vision-status-ok {
+    color: #81c784;
+}
+
+.pc-vision-status-error {
+    color: #e57373;
+}
+
+#pc_workspace_vision .pc-section-header {
+    margin-top: 4px;
+}
+
+.pc-vision-result-actions {
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.pc-vision-tags-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    margin: 8px 0 12px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: var(--background-fill-secondary, rgba(0, 0, 0, 0.2));
+    border: 1px solid var(--border-color-primary, #444);
+    min-height: 36px;
+}
+
+.pc-vision-tags-count {
+    font-size: 0.85em;
+    color: var(--body-text-color-subdued, #999);
+    margin-right: 4px;
+    flex: 0 0 auto;
+}
+
+.pc-vision-tags-empty {
+    font-size: 0.9em;
+    color: var(--body-text-color-subdued, #888);
+}
+
+.pc-vision-tag-chip {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.88em;
+    background: var(--background-fill-primary, #333);
+    border: 1px solid var(--border-color-accent, #555);
+    color: var(--body-text-color, #ddd);
+    line-height: 1.3;
 }
 
 /* ===== Responsive ===== */

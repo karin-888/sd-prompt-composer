@@ -1871,6 +1871,15 @@
     text-overflow: ellipsis;
 }
 
+/* Asset Browser: long LoRA folder lists */
+#pc_asset_subfolder ul.options,
+#pc_asset_subfolder ul {
+    max-height: min(52vh, 420px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+}
+
 .pc-asset-trigger {
     font-size: 0.68em;
     color: var(--body-text-color-subdued, #888);

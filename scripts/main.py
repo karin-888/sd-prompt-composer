@@ -420,10 +420,22 @@ def _build_prompt_editor_workspace():
                     interactive=True
                 )
             
+            def _initial_subfolder_choices():
+                subfolders = asset_indexer.get_subfolders(
+                    asset_type="lora",
+                    allow_full_scan=False,
+                )
+                if not subfolders:
+                    subfolders = asset_indexer.get_subfolders(
+                        asset_type="lora",
+                        allow_full_scan=True,
+                    )
+                return ["(すべて)"] + subfolders
+
             asset_subfolder_filter = gr.Dropdown(
                 elem_id="pc_asset_subfolder",
                 label="フォルダ",
-                choices=["(すべて)"] + asset_indexer.get_subfolders(allow_full_scan=False),
+                choices=_initial_subfolder_choices(),
                 value="(すべて)",
                 interactive=True,
                 allow_custom_value=True

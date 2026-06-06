@@ -87,6 +87,9 @@
             renderAssetCards(displayedAssets, data.total, append);
             currentOffset = displayedAssets.length;
             markActiveCheckpointCards();
+            if (!append) {
+                loadSubfolders(currentSubfolder || '(すべて)');
+            }
 
             // Show/hide load more button
             const loadMoreBtn = document.getElementById('pc_asset_load_more');
@@ -110,22 +113,79 @@
         }
     }
 
-    async function loadSubfolders() {
+    function setSubfolderDropdownValue(root, value, options = {}) {
+        if (!root) return;
+        const next = value || '(すべて)';
+        const input = root.querySelector('input');
+        const selected = root.querySelector('span.single-select, .selected');
+
+        if (input) {
+            input.value = next;
+            if (typeof updateInput === 'function') {
+                try { updateInput(input); } catch (_) { /* ignore */ }
+            }
+            if (!options.silent) {
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+        if (selected) {
+            selected.textContent = next;
+        }
+
+        root.querySelectorAll('ul.options li.item, ul li.item, ul.options li, ul li').forEach((item) => {
+            const text = (item.textContent || '').replace(/\s+/g, ' ').trim();
+            item.classList.toggle('selected', text === next);
+        });
+    }
+
+    function populateSubfolderDropdown(subfolders, selectedValue) {
+        const root = document.getElementById('pc_asset_subfolder');
+        if (!root) return false;
+
+        const choices = ['(すべて)'].concat((subfolders || []).filter(Boolean));
+        const value = selectedValue || '(すべて)';
+        let optionsList = root.querySelector('ul.options, ul');
+
+        if (!optionsList) {
+            const wrap = root.querySelector('.wrap-inner, .wrap');
+            if (!wrap) return false;
+            optionsList = document.createElement('ul');
+            optionsList.className = 'options';
+            wrap.appendChild(optionsList);
+        }
+
+        optionsList.innerHTML = '';
+        choices.forEach((choice) => {
+            const item = document.createElement('li');
+            item.className = 'item' + (choice === value ? ' selected' : '');
+            item.textContent = choice;
+            item.addEventListener('mousedown', (event) => {
+                event.preventDefault();
+                currentSubfolder = choice === '(すべて)' ? '' : choice;
+                setSubfolderDropdownValue(root, choice);
+                loadAssets();
+            });
+            optionsList.appendChild(item);
+        });
+
+        setSubfolderDropdownValue(root, value, { silent: true });
+        window._pcSubfolders = subfolders || [];
+        return true;
+    }
+
+    async function loadSubfolders(selectedValue) {
         try {
-            const resp = await fetch('/prompt-composer/api/assets/subfolders');
+            let url = '/prompt-composer/api/assets/subfolders';
+            if (currentTypeFilter) {
+                url += `?type=${encodeURIComponent(currentTypeFilter)}`;
+            }
+
+            const resp = await fetch(url);
             if (!resp.ok) return;
             const data = await resp.json();
-            
-            const dropdown = document.getElementById('pc_asset_subfolder');
-            if (!dropdown) return;
-            
-            const input = dropdown.querySelector('input');
-            if (input && input.closest('.gradio-dropdown')) {
-                // Gradio dropdown - we need to update choices
-                // For now, we'll handle this through the Gradio update mechanism
-                // Store subfolders for reference
-                window._pcSubfolders = data.subfolders;
-            }
+            const keepValue = selectedValue || currentSubfolder || '(すべて)';
+            populateSubfolderDropdown(data.subfolders, keepValue === '' ? '(すべて)' : keepValue);
         } catch (err) {
             console.warn('[Prompt Composer] Failed to load subfolders:', err);
         }
@@ -307,9 +367,10 @@
                     // Clear subfolder when specifically looking at favorites
                     currentSubfolder = '';
                     const sfInput = document.querySelector('#pc_asset_subfolder input');
-                    if (sfInput) sfInput.value = '';
+                    if (sfInput) sfInput.value = '(すべて)';
                 }
-                
+
+                loadSubfolders('(すべて)');
                 loadAssets();
             });
         }
@@ -319,22 +380,21 @@
         if (subfolderEl) {
             const input = subfolderEl.querySelector('input');
             if (input) {
-                const handleSubfolderChange = (e) => {
+                const handleSubfolderChange = () => {
                     // Use timeout because Gradio might not have updated the input value yet
                     setTimeout(() => {
-                        const newVal = input.value || '';
+                        const rawVal = (input.value || '').trim();
+                        const newVal = rawVal === '(すべて)' ? '' : rawVal;
                         if (currentSubfolder !== newVal) {
-                            console.log('[Prompt Composer] Subfolder changed to:', newVal);
+                            console.log('[Prompt Composer] Subfolder changed to:', newVal || '(すべて)');
                             currentSubfolder = newVal;
-                            
+
                             // If a subfolder is selected, we usually want to see everything in it,
                             // so clear the Favorites special filter
                             if (currentSpecialFilter) {
                                 currentSpecialFilter = '';
-                                // We don't reset the Radio UI here to avoid jumpiness, 
-                                // but the API will get the right params.
                             }
-                            
+
                             loadAssets();
                         }
                     }, 100);
@@ -355,6 +415,7 @@
                 
                 try {
                     await fetch('/prompt-composer/api/assets/rescan');
+                    await loadSubfolders('(すべて)');
                     await loadAssets();
                 } catch (err) {
                     console.error('[Prompt Composer] Rescan failed:', err);

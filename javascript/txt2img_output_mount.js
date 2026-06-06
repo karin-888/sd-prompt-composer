@@ -18,6 +18,8 @@
 
     var debounceTimer = null;
 
+    var domObserver = null;
+
     var moved = false;
 
 
@@ -282,7 +284,23 @@
 
 
 
+    function stopDomWatch() {
+
+        if (domObserver) {
+
+            domObserver.disconnect();
+
+            domObserver = null;
+
+        }
+
+    }
+
+
+
     function moveOutputToMount() {
+
+        if (moved) return true;
 
         var root = appRoot();
 
@@ -310,6 +328,8 @@
 
                 moved = true;
 
+                stopDomWatch();
+
                 unhideElement(leftMount);
 
                 unhideElement(rightMount);
@@ -321,14 +341,6 @@
             }
 
             return false;
-
-        }
-
-
-
-        if (moved && alreadySplit(leftMount, rightMount, promptMount) && !results.parentElement) {
-
-            return true;
 
         }
 
@@ -370,6 +382,8 @@
 
         moved = true;
 
+        stopDomWatch();
+
         console.log('[Prompt Composer] txt2img: prompts→prompt tab, gallery→Output');
 
         return true;
@@ -379,6 +393,8 @@
 
 
     function scheduleMove(delay) {
+
+        if (moved) return;
 
         if (debounceTimer) clearTimeout(debounceTimer);
 
@@ -410,15 +426,17 @@
 
     function watchDom() {
 
+        if (domObserver || moved) return;
+
         try {
 
-            var obs = new MutationObserver(function () {
+            domObserver = new MutationObserver(function () {
 
-                scheduleMove(200);
+                if (!moved) scheduleMove(250);
 
             });
 
-            obs.observe(appRoot(), { childList: true, subtree: true });
+            domObserver.observe(appRoot(), { childList: true, subtree: true });
 
         } catch (_) { /* ignore */ }
 
@@ -434,7 +452,7 @@
 
         setInterval(function () {
 
-            scheduleMove(500);
+            if (!moved) scheduleMove(500);
 
         }, 2500);
 

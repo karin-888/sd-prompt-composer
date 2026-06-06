@@ -8,6 +8,9 @@
 
     var retryCount = 0;
     var debounceTimer = null;
+    var tabSyncTimer = null;
+    var syncingTabs = false;
+    var domObserver = null;
     var moved = false;
 
     function appRoot() {
@@ -18,12 +21,16 @@
     }
 
     function findColumnMount(root, side) {
-        return root.getElementById('pc_txt2img_settings_col_' + side)
-            || root.querySelector('#pc_generation_two_col #pc_txt2img_settings_col_' + side);
+        var id = 'pc_txt2img_settings_col_' + side;
+        return root.getElementById(id)
+            || root.querySelector('#pc_generation_two_col #' + id)
+            || document.getElementById(id)
+            || document.querySelector('#pc_generation_two_col #' + id);
     }
 
     function findSettingsColumn(root) {
-        var el = root.querySelector('#txt2img_settings');
+        var el = root.querySelector('#txt2img_settings')
+            || document.querySelector('#txt2img_settings');
         if (el) return el;
 
         var width = root.querySelector('#txt2img_width');
@@ -99,6 +106,7 @@
         if (leftMount.querySelector('#txt2img_width, #txt2img_sampling, #txt2img_steps')
             || rightMount.querySelector('#txt2img_script_container')) {
             moved = true;
+            stopDomWatch();
             leftMount.classList.remove('is-empty');
             rightMount.classList.remove('is-empty');
             unhideElement(leftMount);
@@ -114,9 +122,32 @@
         unhideElement(rightMount);
 
         moved = true;
-        syncFinalPromptTabPanels();
+        stopDomWatch();
+        scheduleTabSync();
         console.log('[Prompt Composer] txt2img settings split into Generation 2-column layout');
         return true;
+    }
+
+    function stopDomWatch() {
+        if (domObserver) {
+            domObserver.disconnect();
+            domObserver = null;
+        }
+    }
+
+    function scheduleTabSync() {
+        if (tabSyncTimer) clearTimeout(tabSyncTimer);
+        tabSyncTimer = setTimeout(function () {
+            tabSyncTimer = null;
+            try { syncFinalPromptTabPanels(); } catch (_) { /* ignore */ }
+        }, 0);
+    }
+
+    function panelIsShown(panel) {
+        if (!panel) return false;
+        if (panel.classList.contains('hidden') || panel.hasAttribute('hidden')) return false;
+        var display = panel.style && panel.style.display;
+        return display !== 'none';
     }
 
     function scheduleMove(delay) {
@@ -136,74 +167,81 @@
     }
 
     function syncFinalPromptTabPanels() {
-        var tabs = root.getElementById('pc_final_prompt_tabs');
-        if (!tabs) return;
-        var nav = tabs.querySelector('.tab-nav');
-        if (!nav) return;
-        var buttons = nav.querySelectorAll('button');
-        if (!buttons.length) return;
-        var panels = [];
-        var children = tabs.children;
-        for (var i = 0; i < children.length; i++) {
-            var ch = children[i];
-            if (ch === nav || ch.classList.contains('tab-nav')) continue;
-            panels.push(ch);
-        }
-        if (!panels.length) return;
-        var activeIdx = 0;
-        for (var b = 0; b < buttons.length; b++) {
-            if (buttons[b].classList.contains('selected') || buttons[b].getAttribute('aria-selected') === 'true') {
-                activeIdx = b;
-                break;
+        if (syncingTabs) return;
+        syncingTabs = true;
+        try {
+            var root = appRoot();
+            var tabs = root.getElementById('pc_final_prompt_tabs');
+            if (!tabs) return;
+            var nav = tabs.querySelector('.tab-nav');
+            if (!nav) return;
+            var buttons = nav.querySelectorAll('button');
+            if (!buttons.length) return;
+            var panels = [];
+            var children = tabs.children;
+            for (var i = 0; i < children.length; i++) {
+                var ch = children[i];
+                if (ch === nav || ch.classList.contains('tab-nav')) continue;
+                panels.push(ch);
             }
-        }
-        for (var p = 0; p < panels.length; p++) {
-            var panel = panels[p];
-            var show = p === activeIdx;
-            if (show) {
-                panel.classList.remove('hidden');
-                panel.removeAttribute('hidden');
-                panel.style.display = '';
-                panel.style.visibility = '';
-            } else {
-                panel.classList.add('hidden');
-                panel.setAttribute('hidden', '');
-                panel.style.display = 'none';
-                panel.style.visibility = 'hidden';
+            if (!panels.length) return;
+            var activeIdx = 0;
+            for (var b = 0; b < buttons.length; b++) {
+                if (buttons[b].classList.contains('selected') || buttons[b].getAttribute('aria-selected') === 'true') {
+                    activeIdx = b;
+                    break;
+                }
             }
+            for (var p = 0; p < panels.length; p++) {
+                var panel = panels[p];
+                var show = p === activeIdx;
+                if (show === panelIsShown(panel)) continue;
+                if (show) {
+                    panel.classList.remove('hidden');
+                    panel.removeAttribute('hidden');
+                    panel.style.display = '';
+                    panel.style.visibility = '';
+                } else {
+                    panel.classList.add('hidden');
+                    panel.setAttribute('hidden', '');
+                    panel.style.display = 'none';
+                    panel.style.visibility = 'hidden';
+                }
+            }
+        } finally {
+            syncingTabs = false;
         }
     }
 
     function bindFinalPromptTabs() {
+        var root = appRoot();
         var tabs = root.getElementById('pc_final_prompt_tabs');
         if (!tabs || tabs.dataset.pcTabBound === '1') return;
         tabs.dataset.pcTabBound = '1';
         var nav = tabs.querySelector('.tab-nav');
         if (!nav) return;
         nav.addEventListener('click', function () {
-            setTimeout(syncFinalPromptTabPanels, 0);
+            scheduleTabSync();
         });
-        syncFinalPromptTabPanels();
-        try {
-            var obs = new MutationObserver(function () {
-                syncFinalPromptTabPanels();
-            });
-            obs.observe(tabs, { attributes: true, subtree: true, attributeFilter: ['class', 'style', 'hidden', 'aria-selected'] });
-        } catch (_) { /* ignore */ }
+        scheduleTabSync();
     }
 
     function watchDom() {
+        if (domObserver || moved) return;
         try {
-            var obs = new MutationObserver(function () {
-                if (!moved) scheduleMove(200);
-                syncFinalPromptTabPanels();
+            domObserver = new MutationObserver(function () {
+                if (!moved) scheduleMove(250);
             });
-            obs.observe(appRoot(), { childList: true, subtree: true });
+            domObserver.observe(appRoot(), { childList: true, subtree: true });
         } catch (_) { /* ignore */ }
     }
 
     function init() {
-        bindFinalPromptTabs();
+        try {
+            bindFinalPromptTabs();
+        } catch (err) {
+            console.warn('[Prompt Composer] Final prompt tab binding failed:', err);
+        }
         scheduleMove(400);
         watchDom();
         setInterval(function () {
@@ -211,12 +249,22 @@
         }, 2500);
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(init, 800);
-        });
-    } else {
+    function scheduleInit() {
         setTimeout(init, 800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', scheduleInit);
+    } else {
+        scheduleInit();
+    }
+    if (typeof onUiLoaded === 'function') {
+        onUiLoaded(scheduleInit);
+    }
+    if (typeof onUiUpdate === 'function') {
+        onUiUpdate(function () {
+            if (!moved) scheduleMove(400);
+        });
     }
 
     window.PcTxt2imgSettingsMount = {

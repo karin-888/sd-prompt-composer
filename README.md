@@ -74,7 +74,7 @@ Tag Dictionary は、次の優先順でYAMLを読みます。
 
 1. **Asset Browser** で LoRA / Embedding を検索・クリック挿入
 2. **Prompt Composer** でブロックごとにタグを編集
-   - 各ブロック内の **保存名** 欄で自由に名前を付けて **新規保存 / 読込 / 上書き / 削除**（`data/sd-prompt-composer/ips-collections.json`）
+   - 各ブロック内の **保存名** 欄で自由に名前を付けて **新規保存 / 読込 / 上書き / 削除**（`sd-prompt-composer/block-saves.json` — Preset Manager の `presets.json` とは別ファイル）
    - Final Prompt 横の **生成 (txt2img)** でプロンプト適用・進捗バー・ライブプレビュー表示
    - 個別タグはチップの **✎** で編集、**×** で削除
 3. **順序プロファイル** を選択して並びを整形

@@ -9,6 +9,22 @@
         'composition', 'background', 'lighting', 'style', 'lora', 'embedding', 'negative'
     ]);
 
+    const BLOCK_TYPE_LABELS = {
+        quality: '🏆 品質',
+        subject: '🎯 主題',
+        character: '👤 キャラ',
+        appearance: '✨ 外見',
+        outfit: '👗 衣装',
+        expression: '😊 表情',
+        composition: '📐 構図',
+        background: '🌄 背景',
+        lighting: '💡 光',
+        style: '🎨 画風',
+        lora: '🔧 LoRA',
+        embedding: '📦 Embedding',
+        negative: '🚫 Negative'
+    };
+
     let collectionsCache = [];
     let cacheTime = 0;
     const CACHE_MS = 5000;
@@ -17,39 +33,91 @@
     /** @type {Set<string> | null} */
     let embeddingNamesCache = null;
     let embeddingNamesLoading = null;
+    let pickUiBound = false;
+
+    function appRoot() {
+        try {
+            if (typeof window.gradioApp === 'function') return window.gradioApp();
+        } catch (_) { /* ignore */ }
+        return document;
+    }
+
+    function blocksContainer() {
+        const byDoc = document.getElementById('pc_blocks_container');
+        if (byDoc) return byDoc;
+        try {
+            const root = appRoot();
+            if (root && typeof root.getElementById === 'function') {
+                const byRoot = root.getElementById('pc_blocks_container');
+                if (byRoot) return byRoot;
+            }
+            if (root && root.querySelector) {
+                return root.querySelector('#pc_blocks_container');
+            }
+        } catch (_) { /* ignore */ }
+        return null;
+    }
+
+    function queryAllBars(selector) {
+        const seen = new Set();
+        const out = [];
+        const add = (nodeList) => {
+            nodeList.forEach((el) => {
+                if (!seen.has(el)) {
+                    seen.add(el);
+                    out.push(el);
+                }
+            });
+        };
+        add(document.querySelectorAll(selector));
+        try {
+            const root = appRoot();
+            if (root && root !== document && root.querySelectorAll) {
+                add(root.querySelectorAll(selector));
+            }
+        } catch (_) { /* ignore */ }
+        return out;
+    }
 
     function normalizeBlockType(blockType) {
         const t = (blockType || '').trim();
+        if (!t) return 'character';
         if (BLOCK_TYPES.has(t)) return t;
-        // Order-profile custom column ids (e.g. ________) — group with same normalized key
-        if (t && /^_+$/.test(t)) return t;
-        return 'character';
+        if (/^_+$/.test(t)) return t;
+        return t;
+    }
+
+    function blockTypeLabel(blockType) {
+        const norm = normalizeBlockType(blockType);
+        return BLOCK_TYPE_LABELS[norm] || norm || 'その他';
     }
 
     function normalizeBlockLabel(label) {
         return String(label || '').trim();
     }
 
-    /** Saved sets visible in this column (match display name memo and/or block type). */
-    function collectionsForBar(blockOrType, optLabel) {
-        let blockType;
+    /** Saved sets for this column only (match display label / memo; legacy rows may match block type). */
+    function collectionsForBar(blockOrType) {
+        let blockType = '';
         let label = '';
         if (blockOrType && typeof blockOrType === 'object') {
             blockType = blockOrType.type;
             label = normalizeBlockLabel(blockOrType.label);
         } else {
             blockType = blockOrType;
-            label = normalizeBlockLabel(optLabel);
         }
         const norm = normalizeBlockType(blockType);
-        return collectionsCache.filter(c => {
+        const normLabel = normalizeBlockLabel(label);
+        return collectionsCache.filter((c) => {
             const cMemo = normalizeBlockLabel(c.memo);
-            const cNorm = normalizeBlockType(c.block);
-            if (label && cMemo && cMemo === label) return true;
-            if (cNorm !== norm) return false;
-            if (cMemo && label && cMemo !== label) return false;
-            return true;
-        });
+            const cBlock = normalizeBlockType(c.block);
+            if (normLabel) {
+                if (cMemo && cMemo === normLabel) return true;
+                if (!cMemo && cBlock === norm) return true;
+                return false;
+            }
+            return cBlock === norm;
+        }).sort((left, right) => String(right.updatedAt || '').localeCompare(String(left.updatedAt || '')));
     }
 
     function showTagsetMessage(message) {
@@ -63,7 +131,8 @@
     }
 
     function getBar(blockId) {
-        return document.querySelector(`.pc-block-tagset-bar[data-block-id="${CSS.escape(blockId)}"]`);
+        const sel = `.pc-block-tagset-bar[data-block-id="${CSS.escape(blockId)}"]`;
+        return document.querySelector(sel) || appRoot().querySelector(sel);
     }
 
     function getNameInput(blockId) {
@@ -71,9 +140,19 @@
         return bar ? bar.querySelector('.pc-block-tagset-name') : null;
     }
 
-    function getSelect(blockId) {
+    function getPickWrap(blockId) {
         const bar = getBar(blockId);
-        return bar ? bar.querySelector('.pc-block-tagset-select') : null;
+        return bar ? bar.querySelector('.pc-block-tagset-pick') : null;
+    }
+
+    function getPickButton(blockId) {
+        const wrap = getPickWrap(blockId);
+        return wrap ? wrap.querySelector('.pc-block-tagset-pick-btn') : null;
+    }
+
+    function getPickMenu(blockId) {
+        const wrap = getPickWrap(blockId);
+        return wrap ? wrap.querySelector('.pc-block-tagset-pick-menu') : null;
     }
 
     function getEnteredName(blockId) {
@@ -223,7 +302,22 @@
     function findCollectionByName(blockOrType, name) {
         const n = (name || '').trim();
         if (!n) return null;
-        return collectionsForBar(blockOrType).find(c => c.name === n) || null;
+        let blockType = blockOrType;
+        let label = '';
+        if (blockOrType && typeof blockOrType === 'object') {
+            blockType = blockOrType.type;
+            label = normalizeBlockLabel(blockOrType.label);
+        }
+        const norm = normalizeBlockType(blockType);
+        const normLabel = normalizeBlockLabel(label);
+        const matches = collectionsCache.filter(c => c.name === n);
+        if (!matches.length) return null;
+        if (normLabel) {
+            return matches.find(c => normalizeBlockLabel(c.memo) === normLabel)
+                || matches.find(c => normalizeBlockType(c.block) === norm)
+                || matches[0];
+        }
+        return matches.find(c => normalizeBlockType(c.block) === norm) || matches[0];
     }
 
     function setSelection(blockId, collectionId) {
@@ -237,97 +331,209 @@
         }
     }
 
+    function formatPickLabel(col, block) {
+        const memo = normalizeBlockLabel(col.memo);
+        const currentLabel = block ? normalizeBlockLabel(block.label) : '';
+        const name = col.name || '';
+        if (currentLabel && memo === currentLabel) {
+            return name;
+        }
+        if (memo) {
+            return `${name} (${memo})`;
+        }
+        return `[${blockTypeLabel(col.block)}] ${name}`;
+    }
+
+    function setPickSelection(blockId, collectionId) {
+        const btn = getPickButton(blockId);
+        const menu = getPickMenu(blockId);
+        if (!collectionId) {
+            setSelection(blockId, '');
+            if (btn) btn.textContent = '保存済み';
+            if (menu) {
+                menu.querySelectorAll('.pc-block-tagset-pick-item').forEach((el) => {
+                    el.classList.toggle('is-selected', false);
+                });
+            }
+            return;
+        }
+        const col = collectionsCache.find(c => c.id === collectionId);
+        if (!col) return;
+        setSelection(blockId, collectionId);
+        const block = findBlock(blockId);
+        if (btn) btn.textContent = formatPickLabel(col, block);
+        if (menu) {
+            menu.querySelectorAll('.pc-block-tagset-pick-item').forEach((el) => {
+                el.classList.toggle('is-selected', el.dataset.collectionId === collectionId);
+            });
+        }
+    }
+
     function syncSelectToName(blockId) {
-        const sel = getSelect(blockId);
         const name = getEnteredName(blockId);
-        if (!sel) return;
         if (!name) {
-            sel.value = '';
-            delete selectionState[blockId];
+            setPickSelection(blockId, '');
             return;
         }
         const block = findBlock(blockId);
         if (!block) return;
         const hit = findCollectionByName(block, name);
         if (hit) {
-            sel.value = hit.id;
-            setSelection(blockId, hit.id);
+            setPickSelection(blockId, hit.id);
         } else {
-            sel.value = '';
-            delete selectionState[blockId];
+            setPickSelection(blockId, '');
         }
     }
 
-    function onSelectChange(blockId) {
-        const sel = getSelect(blockId);
+    function onSelectChange(blockId, collectionId) {
         const input = getNameInput(blockId);
-        if (!sel || !input) return;
-        const id = sel.value;
+        const id = collectionId || '';
         if (!id) {
             delete selectionState[blockId];
+            setPickSelection(blockId, '');
             return;
         }
         const col = collectionsCache.find(c => c.id === id);
         if (col) {
-            input.value = col.name;
-            setSelection(blockId, id);
+            if (input) input.value = col.name;
+            setPickSelection(blockId, id);
         }
     }
 
-    function restoreBarSelection(blockId, sel, nameInput, list, blockType, preserve) {
+    function restorePickSelection(blockId, nameInput, list, preserve) {
         const st = selectionState[blockId];
-        const prevSel = (preserve && preserve.selId) || '';
+        const prevId = (preserve && preserve.selId) || (st && st.collectionId) || '';
         const prevName = (preserve && preserve.name) || '';
-        let restoreId = (st && st.collectionId) || prevSel || '';
+        let restoreId = prevId;
         if (!restoreId && prevName && blockId) {
             const block = findBlock(blockId);
             const hit = block ? findCollectionByName(block, prevName) : null;
             restoreId = hit ? hit.id : '';
         }
         if (restoreId && list.some(c => c.id === restoreId)) {
-            sel.value = restoreId;
             const col = list.find(c => c.id === restoreId);
-            if (nameInput && col) {
-                nameInput.value = col.name;
-            }
-            setSelection(blockId, restoreId);
+            if (nameInput && col) nameInput.value = col.name;
+            setPickSelection(blockId, restoreId);
             return;
         }
         if (nameInput && prevName) {
             nameInput.value = prevName;
             syncSelectToName(blockId);
+            return;
         }
+        setPickSelection(blockId, '');
     }
 
-    function populateTagsetSelect(sel, list, blockId, nameInput, blockType, preserve) {
-        if (!sel) return;
-        sel.innerHTML = '<option value="">保存済み</option>';
-        list.forEach(c => {
-            const opt = document.createElement('option');
-            opt.value = c.id;
-            opt.textContent = c.name;
-            opt.title = `${c.tagCount} 件`;
-            sel.appendChild(opt);
-        });
-        restoreBarSelection(blockId, sel, nameInput, list, blockType, preserve);
+    function populateTagsetPick(menu, list, blockId, nameInput, preserve) {
+        if (!menu) return;
+        const block = blockId ? findBlock(blockId) : null;
+        menu.innerHTML = '';
+        if (!list.length) {
+            const empty = document.createElement('div');
+            empty.className = 'pc-block-tagset-pick-empty';
+            empty.textContent = '保存がありません';
+            menu.appendChild(empty);
+        } else {
+            list.forEach((c) => {
+                const item = document.createElement('button');
+                item.type = 'button';
+                item.className = 'pc-block-tagset-pick-item';
+                item.dataset.collectionId = c.id;
+                item.dataset.blockId = blockId;
+                item.textContent = formatPickLabel(c, block);
+                item.title = `${c.tagCount || 0} 件`;
+                menu.appendChild(item);
+            });
+        }
+        restorePickSelection(blockId, nameInput, list, preserve);
     }
 
     function populateBarFromBlock(bar, forceList) {
         const blockId = bar.dataset.blockId;
-        const sel = bar.querySelector('.pc-block-tagset-select');
+        const menu = bar.querySelector('.pc-block-tagset-pick-menu');
         const nameInput = bar.querySelector('.pc-block-tagset-name');
-        if (!sel || !blockId) return;
+        const btn = bar.querySelector('.pc-block-tagset-pick-btn');
+        if (!menu || !blockId) return;
         const block = findBlock(blockId);
         const list = forceList || (block ? collectionsForBar(block) : collectionsForBar(bar.dataset.blockType));
         const preserve = {
-            selId: sel.value,
+            selId: selectionState[blockId]?.collectionId || '',
             name: nameInput ? nameInput.value.trim() : ''
         };
-        populateTagsetSelect(sel, list, blockId, nameInput, block ? block.type : bar.dataset.blockType, preserve);
+        populateTagsetPick(menu, list, blockId, nameInput, preserve);
+        if (btn && !selectionState[blockId]?.collectionId) {
+            btn.textContent = list.length ? `保存済み (${list.length})` : '保存済み';
+        }
+    }
+
+    function positionPickMenu(blockId) {
+        const menu = getPickMenu(blockId);
+        const btn = getPickButton(blockId);
+        if (!menu || !btn) return;
+        const rect = btn.getBoundingClientRect();
+        const maxH = Math.min(window.innerHeight * 0.46, 320);
+        menu.style.position = 'fixed';
+        menu.style.left = `${Math.max(8, rect.left)}px`;
+        menu.style.top = `${rect.bottom + 4}px`;
+        menu.style.width = `${Math.max(rect.width, 180)}px`;
+        menu.style.right = 'auto';
+        menu.style.maxHeight = `${maxH}px`;
+        menu.style.zIndex = '1200';
+    }
+
+    function resetPickMenuPosition(menu) {
+        if (!menu) return;
+        menu.style.position = '';
+        menu.style.left = '';
+        menu.style.top = '';
+        menu.style.width = '';
+        menu.style.right = '';
+        menu.style.maxHeight = '';
+        menu.style.zIndex = '';
+    }
+
+    function closeAllPickMenus(exceptBlockId) {
+        queryAllBars('.pc-block-tagset-pick-menu').forEach((menu) => {
+            const bid = menu.dataset.blockId;
+            if (exceptBlockId && bid === exceptBlockId) return;
+            menu.hidden = true;
+            resetPickMenuPosition(menu);
+        });
+    }
+
+    function togglePickMenu(blockId) {
+        const menu = getPickMenu(blockId);
+        if (!menu) return;
+        const willOpen = menu.hidden;
+        closeAllPickMenus();
+        if (willOpen) {
+            positionPickMenu(blockId);
+            menu.hidden = false;
+        }
+    }
+
+    function setupPickUi() {
+        if (pickUiBound) return;
+        pickUiBound = true;
+        document.addEventListener('click', (e) => {
+            const pickItem = e.target.closest('.pc-block-tagset-pick-item');
+            if (pickItem) {
+                e.preventDefault();
+                e.stopPropagation();
+                onSelectChange(pickItem.dataset.blockId, pickItem.dataset.collectionId);
+                closeAllPickMenus();
+                return;
+            }
+            if (!e.target.closest('.pc-block-tagset-pick')) {
+                closeAllPickMenus();
+            }
+        });
+        window.addEventListener('resize', () => closeAllPickMenus());
+        window.addEventListener('scroll', () => closeAllPickMenus(), true);
     }
 
     function refreshBarsForBlockType(blockType, forceFetch) {
-        const container = document.getElementById('pc_blocks_container');
+        const container = blocksContainer();
         if (!container) return Promise.resolve();
         const norm = normalizeBlockType(blockType);
         const run = async () => {
@@ -342,21 +548,28 @@
     }
 
     async function refreshAllBlockTagSetBars() {
-        const container = document.getElementById('pc_blocks_container');
+        const container = blocksContainer();
         if (!container) return;
-        await fetchCollections(false);
-
-        container.querySelectorAll('.pc-block-tagset-bar').forEach(bar => {
+        setupPickUi();
+        try {
+            await fetchCollections(false);
+        } catch (err) {
+            console.warn('[Prompt Composer] Block saves fetch failed:', err);
+            return;
+        }
+        container.querySelectorAll('.pc-block-tagset-bar').forEach((bar) => {
             populateBarFromBlock(bar);
         });
     }
 
     function resolveCollectionId(blockId) {
-        const sel = getSelect(blockId);
-        if (sel && sel.value) return sel.value;
+        if (selectionState[blockId]?.collectionId) {
+            return selectionState[blockId].collectionId;
+        }
         const block = findBlock(blockId);
         if (!block) return '';
         const name = getEnteredName(blockId);
+        if (!name) return '';
         const hit = findCollectionByName(block, name);
         return hit ? hit.id : '';
     }
@@ -434,11 +647,9 @@
         });
         cacheTime = Date.now();
         await refreshAllBlockTagSetBars();
-        const sel = getSelect(blockId);
         const input = getNameInput(blockId);
         if (input) input.value = saved.name || name;
-        if (sel) sel.value = saved.id;
-        setSelection(blockId, saved.id);
+        setPickSelection(blockId, saved.id);
 
         const verb = overwriteId ? '更新' : '保存';
         showTagsetMessage(`「${saved.name || name}」を${verb}しました`);
@@ -478,11 +689,16 @@
             showTagsetMessage('保存内容が空です');
             return false;
         }
+        if (block && normalizeBlockType(col.block) !== normalizeBlockType(block.type)) {
+            const ok = confirm(
+                `この保存は「${blockTypeLabel(col.block)}」用です。\n`
+                + `現在の欄「${block.label}」に読み込みますか？`
+            );
+            if (!ok) return false;
+        }
         const input = getNameInput(blockId);
-        const sel = getSelect(blockId);
         if (input) input.value = col.name || '';
-        if (sel) sel.value = collectionId;
-        setSelection(blockId, collectionId);
+        setPickSelection(blockId, collectionId);
 
         const mode = append ? 'append' : 'replace';
         if (block.tokens.length) {
@@ -543,9 +759,8 @@
             return false;
         }
         const input = getNameInput(blockId);
-        const sel = getSelect(blockId);
         if (input) input.value = '';
-        if (sel) sel.value = '';
+        setPickSelection(blockId, '');
         delete selectionState[blockId];
         const block = findBlock(blockId);
         const blockKey = block ? normalizeBlockType(block.type) : '';
@@ -563,6 +778,7 @@
         load: loadBlockTagSet,
         overwrite: overwriteBlockTagSet,
         delete: deleteBlockTagSet,
+        togglePickMenu,
         onSelectChange,
         onNameInput: syncSelectToName
     };
@@ -572,6 +788,7 @@
             setTimeout(init, 400);
             return;
         }
+        setupPickUi();
         ensureEmbeddingNamesCache().catch(() => {});
         refreshAllBlockTagSetBars().catch(err => {
             console.warn('[Prompt Composer] Presets refresh failed:', err);
@@ -586,5 +803,15 @@
     }
     if (typeof onUiLoaded === 'function') {
         onUiLoaded(() => setTimeout(init, 1200));
+    }
+    let refreshBarsDebounce = null;
+    if (typeof onUiUpdate === 'function') {
+        onUiUpdate(() => {
+            if (refreshBarsDebounce) clearTimeout(refreshBarsDebounce);
+            refreshBarsDebounce = setTimeout(() => {
+                refreshBarsDebounce = null;
+                refreshAllBlockTagSetBars();
+            }, 800);
+        });
     }
 })();

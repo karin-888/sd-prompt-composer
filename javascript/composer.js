@@ -274,9 +274,10 @@
                 </div>
                 <div class="pc-block-tagset-bar" data-block-id="${block.id}" data-block-type="${block.type}">
                     <input type="text" class="pc-block-tagset-name" data-block-id="${block.id}" placeholder="保存名..." autocomplete="off" />
-                    <select class="pc-block-tagset-select" data-block-id="${block.id}">
-                        <option value="">保存済み</option>
-                    </select>
+                    <div class="pc-block-tagset-pick" data-block-id="${block.id}">
+                        <button type="button" class="pc-block-tagset-pick-btn" data-block-id="${block.id}" aria-haspopup="listbox">保存済み</button>
+                        <div class="pc-block-tagset-pick-menu" data-block-id="${block.id}" role="listbox" hidden></div>
+                    </div>
                     <div class="pc-block-tagset-actions">
                         <button type="button" class="pc-block-tagset-btn pc-block-tagset-save-new" data-block-id="${block.id}" title="新規保存" aria-label="新規保存">＋</button>
                         <button type="button" class="pc-block-tagset-btn pc-block-tagset-load" data-block-id="${block.id}" title="読込（Shift+クリックで追加）" aria-label="読込">↓</button>
@@ -810,13 +811,24 @@
         pcContainerDelegated = true;
 
         container.addEventListener('mousedown', (e) => {
-            if (e.target.closest('.pc-block-toggle, .pc-block-clear, .pc-block-delete, .pc-block-tagset-btn, .pc-token-edit, .pc-token-remove')) {
+            if (e.target.closest('.pc-block-toggle, .pc-block-clear, .pc-block-delete, .pc-block-tagset-btn, .pc-block-tagset-pick-btn, .pc-block-tagset-pick-item, .pc-token-edit, .pc-token-remove')) {
                 e.stopPropagation();
             }
         });
 
         container.addEventListener('click', async (e) => {
             const TAG = window.PromptComposerBlockTagsets;
+
+            const pickBtn = e.target.closest('.pc-block-tagset-pick-btn');
+            if (pickBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const blockId = pickBtn.dataset.blockId;
+                if (blockId && TAG && typeof TAG.togglePickMenu === 'function') {
+                    TAG.togglePickMenu(blockId);
+                }
+                return;
+            }
 
             const saveNewBtn = e.target.closest('.pc-block-tagset-save-new');
             if (saveNewBtn) {
@@ -985,14 +997,6 @@
                 onTokenDragEnd(e);
             } else if (e.target.closest('.pc-block-header-draggable')) {
                 onDragEnd(e);
-            }
-        });
-
-        container.addEventListener('change', (e) => {
-            const TAG = window.PromptComposerBlockTagsets;
-            const sel = e.target.closest('.pc-block-tagset-select');
-            if (sel && TAG && sel.dataset.blockId) {
-                TAG.onSelectChange(sel.dataset.blockId);
             }
         });
 

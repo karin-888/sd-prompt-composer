@@ -1,6 +1,7 @@
 """ -*- coding: UTF-8 -*-
-Preset store for sd-prompt-composer.
-Handles CRUD operations for named prompt presets.
+Preset store for sd-prompt-composer (Preset Manager / presets.json only).
+
+Per-column block saves live in block-saves.json via ips_collections_store — not here.
 """
 
 import os
@@ -11,6 +12,10 @@ import time
 import user_storage
 
 _presets_path = None
+
+
+def storage_path():
+    return _presets_path
 
 
 def init(extension_dir):

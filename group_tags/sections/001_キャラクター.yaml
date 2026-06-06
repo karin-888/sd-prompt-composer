@@ -17295,26 +17295,31 @@
         wing_tattoo: ウィングタトゥー
   - name: 髪パーツ
     groups:
-    - name: 髪の色
+    - name: 髪の色・単色
       color: rgba(199, 199, 199, 1)
       tags:
+        black_hair: 黒髪
+        blonde_hair: 金髪
+        brown_hair: 茶髪
+        blue_hair: 青髪
+        gray_hair: 灰色髪
+        green_hair: 緑髪
+        pink_hair: ピンク髪
+        red_hair: 赤髪
+        white_hair: 白髪
         aqua_hair: アクアヘア
-        colored_inner_hair: インナーカラー
-        colored_tips: 毛先カラー
-        gradient_hair: グラデーションヘア
         orange_hair: オレンジ髪
         pink_hair: ピンク髪
-        rainbow_hair: 虹の髪
-        split-color_hair: スプリットカラーの髪
-        colored_tips_hair: カラーリングした毛先
-        dip-dye_hair: カラーリングした毛先
-        gradient_hair_from_blue_to_purple: グラデーション
+        purple_hair: 紫髪
+        teal_hair: ターコイズ髪
+        violet_hair: 紫髪
+        yellow_hair: 黄髪
+        orange_hair: 橙髪
+        navy_hair: 紺髪
+        pink_hair: ピンク髪
+
         pastel-colored_hair: パステル
-        split-color_hair_with_white_and_red: ツートンカラー
-        two-tone_hair_with_red_and_yellow: ２色染めした髪
-        Gradient_hair_color: グラデーション
-        multicolored_hair, X, X: 複数の髪色
-        rainbow_hair_color: レインボーカラーの髪
+        
         streaked_X: ヘアメッシュ
         colored_inner: インナー
         green_yellow: 黄緑
@@ -17400,6 +17405,24 @@
         silver_metallic_shimmer_hair: 銀のメタリック光沢髪
         translucent_aqua_hair: 透明感アクア髪
         translucent_blue_hair: ガラス質ブルー髪
+    - name: 髪の色・複数色
+      color: rgba(199, 199, 199, 1)
+      tags:
+        colored_inner_hair: インナーカラー
+        gradient_hair: グラデーションヘア
+        rainbow_hair: 虹の髪
+        split-color_hair: スプリットカラーの髪
+        colored_tips_hair: カラーリングした毛先
+        dip-dye_hair: カラーリングした毛先
+        gradient_hair_from_blue_to_purple: グラデーション
+        split-color_hair_with_white_and_red: ツートンカラー
+        two-tone_hair_with_red_and_yellow: ２色染めした髪
+        Gradient_hair_color: グラデーション
+        multicolored_hair, X, X: 複数の髪色
+        rainbow_hair_color: レインボーカラーの髪
+
+
+
     - name: 長さ
       color: rgba(83, 102, 255, 1)
       tags:

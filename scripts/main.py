@@ -85,6 +85,13 @@ def on_app_started(demo, app):
     ips_collections_store.init(EXTENSION_PATH)
     import user_data
     user_data.init(EXTENSION_PATH)
+
+    block_path = ips_collections_store.storage_path()
+    preset_path = preset_store.storage_path()
+    if block_path:
+        print(f"[Prompt Composer] Block saves (per-column): {block_path}")
+    if preset_path:
+        print(f"[Prompt Composer] Presets (Preset Manager): {preset_path}")
     
     # Register API routes
     composer_api.register_api(app, EXTENSION_PATH)

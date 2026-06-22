@@ -515,6 +515,12 @@
         return null;
     }
 
+    function notifyTxt2imgGenerationStart() {
+        try {
+            window.dispatchEvent(new CustomEvent('pc-txt2img-generation-start'));
+        } catch (_) { /* ignore */ }
+    }
+
     function generateTxt2img() {
         const prompt = getFinalPrompt();
         const negative = getFinalNegative();
@@ -539,6 +545,7 @@
                 return;
             }
             genBtn.click();
+            notifyTxt2imgGenerationStart();
             ensureGalleryObserver();
             startPcProgressWatch('txt2img', { foreverSession: isGenerateForeverActive() });
         }, 150);
@@ -562,6 +569,7 @@
         const genBtn = getGenerateButton('txt2img');
         if (!genBtn) return false;
         genBtn.click();
+        notifyTxt2imgGenerationStart();
         ensureGalleryObserver();
         if (isGenerateForeverActive()) {
             if (!_pcForeverProgressSession || !_pcProgressTimer) {
@@ -622,6 +630,7 @@
                 triggerTxt2imgGenerateOnce();
             }
         }, 500);
+        notifyTxt2imgGenerationStart();
         notifyGenerateForeverChanged();
         return true;
     }

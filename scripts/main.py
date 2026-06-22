@@ -370,6 +370,9 @@ def _build_prompt_editor_workspace():
                     variant="primary",
                 )
                 gr.HTML(
+                    '<div id="pc_generate_controls_mount" class="pc-generate-controls-slot"></div>'
+                )
+                gr.HTML(
                     '<div id="pc_generate_forever_mount" class="pc-generate-forever-slot"></div>'
                 )
                 gr.HTML('<div style="margin-top:14px;"></div>')

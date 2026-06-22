@@ -13,6 +13,7 @@
     let currentSubfolder = '';
     let currentSpecialFilter = ''; // 'favorites'
     let isLoading = false;
+    let rescanInProgress = false;
     const PAGE_SIZE = 50;
     const MAX_DOM_CARDS = 250; // safety cap for DOM size
     let imageObserver = null;
@@ -46,7 +47,10 @@
         isLoading = true;
 
         const gallery = document.getElementById('pc_asset_cards');
-        if (!gallery) return;
+        if (!gallery) {
+            isLoading = false;
+            return;
+        }
 
         if (!append) {
             gallery.innerHTML = '<div class="pc-loading">読み込み中...</div>';
@@ -317,6 +321,19 @@
     }
 
     // ===== Event Handlers =====
+    function readSubfolderDropdownValue(subfolderEl) {
+        if (!subfolderEl) return '';
+        const input = subfolderEl.querySelector('input');
+        let rawVal = (input && input.value ? input.value : '').trim();
+        if (!rawVal) {
+            const selected = subfolderEl.querySelector('span.single-select, .selected');
+            if (selected) {
+                rawVal = (selected.textContent || '').replace(/\s+/g, ' ').trim();
+            }
+        }
+        return rawVal === '(すべて)' ? '' : rawVal;
+    }
+
     function setupEventListeners() {
         // Search input
         const searchEl = document.getElementById('pc_asset_search');
@@ -383,8 +400,7 @@
                 const handleSubfolderChange = () => {
                     // Use timeout because Gradio might not have updated the input value yet
                     setTimeout(() => {
-                        const rawVal = (input.value || '').trim();
-                        const newVal = rawVal === '(すべて)' ? '' : rawVal;
+                        const newVal = readSubfolderDropdownValue(subfolderEl);
                         if (currentSubfolder !== newVal) {
                             console.log('[Prompt Composer] Subfolder changed to:', newVal || '(すべて)');
                             currentSubfolder = newVal;
@@ -410,15 +426,24 @@
         const rescanBtn = document.getElementById('pc_asset_rescan');
         if (rescanBtn) {
             rescanBtn.addEventListener('click', async () => {
+                if (rescanInProgress) return;
+                rescanInProgress = true;
                 const gallery = document.getElementById('pc_asset_cards');
+                const keepSubfolder = currentSubfolder || '(すべて)';
                 if (gallery) gallery.innerHTML = '<div class="pc-loading">再スキャン中...</div>';
-                
+
                 try {
-                    await fetch('/prompt-composer/api/assets/rescan');
-                    await loadSubfolders('(すべて)');
-                    await loadAssets();
+                    const resp = await fetch('/prompt-composer/api/assets/rescan');
+                    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                    await loadSubfolders(keepSubfolder);
+                    rescanInProgress = false;
+                    await loadAssets(false);
                 } catch (err) {
                     console.error('[Prompt Composer] Rescan failed:', err);
+                    rescanInProgress = false;
+                    if (gallery) {
+                        gallery.innerHTML = '<div class="pc-error">再スキャンに失敗しました</div>';
+                    }
                 }
             });
         }

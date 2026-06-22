@@ -477,6 +477,30 @@ def _assets_from_disk_cache():
         return None
 
 
+def normalize_subfolder_path(path: str) -> str:
+    """Normalize subfolder path for consistent comparison."""
+    return (path or "").replace("\\", "/").strip("/")
+
+
+def subfolder_matches(asset_subfolder: str, target_subfolder: str, *, include_nested: bool = True) -> bool:
+    """
+    Return True if asset belongs to the selected folder filter.
+
+    When include_nested is True, assets in child folders also match
+    (e.g. selecting ``Illustrious/8. アイテム`` includes
+    ``Illustrious/8. アイテム/楽器/...``).
+    """
+    asset_sf = normalize_subfolder_path(asset_subfolder)
+    target_sf = normalize_subfolder_path(target_subfolder)
+    if not target_sf:
+        return True
+    if asset_sf == target_sf:
+        return True
+    if include_nested and asset_sf.startswith(target_sf + "/"):
+        return True
+    return False
+
+
 def get_subfolders(asset_type=None, *, allow_full_scan=True):
     """Get list of unique subfolders for filtering, optionally by type."""
     if asset_type == "checkpoint":

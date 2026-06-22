@@ -336,14 +336,12 @@ def register_api(app: FastAPI, extension_dir: str):
             if type:
                 assets = [a for a in assets if a["type"] == type]
         
-        # Specifically handle subfolder filter
+        # Subfolder filter: include assets in nested folders under the selection
         if subfolder is not None and subfolder != "(すべて)":
-             # Match exactly, but normalize separators and ignore leading/trailing ones
-             target_sf = subfolder.replace("\\", "/").strip("/")
-             assets = [
-                 a for a in assets 
-                 if a.get("subfolder", "").replace("\\", "/").strip("/") == target_sf
-             ]
+            assets = [
+                a for a in assets
+                if asset_indexer.subfolder_matches(a.get("subfolder", ""), subfolder)
+            ]
         
         if search:
             search_lower = search.lower()

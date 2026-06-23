@@ -672,13 +672,32 @@
     }
 
     let _setupButtonsDebounce = null;
+    const _promptSyncButtonIds = [
+        'pc_apply_txt2img',
+        'pc_apply_img2img',
+        'pc_copy_clipboard',
+        'pc_generate_txt2img'
+    ];
+
+    function promptSyncButtonsReady() {
+        return _promptSyncButtonIds.every((elemId) => {
+            const btn = getButtonEl(elemId);
+            return btn && btn.dataset.pcPromptSyncBound === '1';
+        });
+    }
+
     function scheduleSetupButtons() {
         if (_setupButtonsDebounce) clearTimeout(_setupButtonsDebounce);
         _setupButtonsDebounce = setTimeout(() => {
             _setupButtonsDebounce = null;
             setupButtons();
             setupGeneratePreview();
-        }, 400);
+            if (promptSyncButtonsReady()) {
+                try { observer.disconnect(); } catch (_) { /* ignore */ }
+            } else {
+                startPromptSyncObserver();
+            }
+        }, 600);
     }
 
     function getTextareaValue(elemId) {
@@ -815,9 +834,10 @@
         setTimeout(init, 2000);
     }
 
-    // Tab switches and Gradio updates mutate the whole tree; debounce and only
+    // Tab switches and Gradio updates mutate the tree; debounce and only
     // re-bind buttons (idempotent) — never stack duplicate click listeners.
     const observer = new MutationObserver(() => {
+        if (promptSyncButtonsReady()) return;
         scheduleSetupButtons();
     });
     function startPromptSyncObserver() {
@@ -833,11 +853,16 @@
             return;
         }
         try {
+            observer.disconnect();
             observer.observe(target, { childList: true, subtree: true });
         } catch (_) {
             requestAnimationFrame(startPromptSyncObserver);
         }
     }
     startPromptSyncObserver();
+
+    if (typeof onUiUpdate === 'function') {
+        onUiUpdate(scheduleSetupButtons);
+    }
 
 })();

@@ -89,6 +89,9 @@
         const selected = presets.find(p => p.id === selectedPresetId) || presets[0];
         const dateStr = selected?.updatedAt ? new Date(selected.updatedAt).toLocaleDateString('ja-JP') : '';
         const fullName = selected?.name ? escapeHtml(selected.name) : '';
+        const memoBadge = selected?.hasMemo
+            ? '<span class="pc-preset-memo-badge" title="Markdownメモ付き">📝 MD</span>'
+            : '';
 
         const html = `
             <div class="pc-preset-compact">
@@ -104,6 +107,7 @@
                 </div>
                 <div class="pc-preset-compact-meta">
                     <span class="pc-preset-compact-name">${fullName}</span>
+                    ${memoBadge}
                     ${dateStr ? `<span class="pc-preset-compact-date">${escapeHtml(dateStr)}</span>` : ''}
                 </div>
             </div>
@@ -158,7 +162,9 @@
             name: name,
             blocks: state.blocks,
             negativeBlocks: state.negativeBlocks,
-            orderProfile: state.orderProfile
+            orderProfile: state.orderProfile,
+            memo: state.characterMemo || '',
+            memoFormat: state.characterMemo ? (state.memoFormat || 'markdown') : ''
         };
 
         try {
@@ -207,7 +213,9 @@
             name: preset.name,
             blocks: state.blocks,
             negativeBlocks: state.negativeBlocks,
-            orderProfile: state.orderProfile
+            orderProfile: state.orderProfile,
+            memo: state.characterMemo || '',
+            memoFormat: state.characterMemo ? (state.memoFormat || 'markdown') : ''
         };
 
         try {

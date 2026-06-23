@@ -164,13 +164,42 @@
         bindSwitchEdit();
     }
 
+    const visionButtonIds = [
+        'pc_vision_apply_outfit',
+        'pc_vision_apply_appearance',
+        'pc_vision_apply_character',
+        'pc_vision_apply_background',
+        'pc_vision_switch_edit'
+    ];
+
+    function visionButtonsReady() {
+        const root = appRoot();
+        return visionButtonIds.every((elemId) => {
+            const host = root.getElementById(elemId);
+            if (!host) return false;
+            const btn = host.tagName === 'BUTTON' ? host : host.querySelector('button');
+            return btn && btn.dataset.pcVisionBound === '1';
+        });
+    }
+
     let debounce = null;
+    let domObserver = null;
+
+    function stopDomObserver() {
+        if (!domObserver) return;
+        try {
+            domObserver.disconnect();
+        } catch (_) { /* ignore */ }
+        domObserver = null;
+    }
+
     function scheduleSetup() {
         if (debounce) clearTimeout(debounce);
         debounce = setTimeout(function () {
             debounce = null;
             setup();
-        }, 120);
+            if (visionButtonsReady()) stopDomObserver();
+        }, 200);
     }
 
     if (document.readyState === 'loading') {
@@ -180,11 +209,19 @@
     }
 
     try {
-        new MutationObserver(scheduleSetup).observe(document.documentElement, {
+        domObserver = new MutationObserver(function () {
+            if (visionButtonsReady()) return;
+            scheduleSetup();
+        });
+        domObserver.observe(document.documentElement, {
             childList: true,
             subtree: true,
         });
     } catch (_) { /* ignore */ }
+
+    if (typeof onUiUpdate === 'function') {
+        onUiUpdate(scheduleSetup);
+    }
 
     window.PromptComposerVision = {
         applyToBlock,

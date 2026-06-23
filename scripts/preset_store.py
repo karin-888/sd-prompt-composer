@@ -8,6 +8,7 @@ import os
 import json
 import uuid
 import time
+from typing import Any, Dict, List, Optional
 
 import user_storage
 
@@ -24,6 +25,120 @@ def init(extension_dir):
     _presets_path = user_storage.bootstrap_json(
         extension_dir, "presets.json", default_factory=dict
     )
+
+
+def _preset_notes_dir() -> Optional[str]:
+    if not _presets_path:
+        return None
+    return os.path.join(os.path.dirname(_presets_path), "preset-notes")
+
+
+def _preset_markdown_path(preset_id: str) -> Optional[str]:
+    notes_dir = _preset_notes_dir()
+    if not notes_dir or not preset_id:
+        return None
+    return os.path.join(notes_dir, f"{preset_id}.md")
+
+
+def _token_lines(tokens: Any) -> List[str]:
+    lines: List[str] = []
+    if not isinstance(tokens, list):
+        return lines
+    for tok in tokens:
+        if not isinstance(tok, dict):
+            continue
+        text = str(tok.get("text") or tok.get("label") or "").strip()
+        if not text:
+            continue
+        label = str(tok.get("label") or "").strip()
+        if label and label != text:
+            lines.append(f"- `{text}` — {label}")
+        else:
+            lines.append(f"- `{text}`")
+    return lines
+
+
+def build_preset_markdown(preset: Dict[str, Any], preset_id: str = "") -> str:
+    """Build a human-readable Markdown document for a preset."""
+    name = str(preset.get("name") or preset_id or "preset").strip()
+    lines: List[str] = [f"# {name}", ""]
+    if preset_id:
+        lines.extend([f"- preset id: `{preset_id}`", ""])
+
+    memo = str(preset.get("memo") or "").strip()
+    if memo:
+        lines.extend(["## キャラメモ", "", memo, ""])
+
+    lines.extend(["## プロンプト構成", ""])
+    blocks = preset.get("blocks") or []
+    if isinstance(blocks, list):
+        for block in blocks:
+            if not isinstance(block, dict):
+                continue
+            label = str(block.get("label") or block.get("type") or "block").strip()
+            token_lines = _token_lines(block.get("tokens"))
+            if not token_lines:
+                continue
+            lines.append(f"### {label}")
+            lines.extend(token_lines)
+            lines.append("")
+
+    neg_blocks = preset.get("negativeBlocks") or []
+    if isinstance(neg_blocks, list):
+        neg_lines: List[str] = []
+        for block in neg_blocks:
+            if not isinstance(block, dict):
+                continue
+            label = str(block.get("label") or block.get("type") or "negative").strip()
+            token_lines = _token_lines(block.get("tokens"))
+            if not token_lines:
+                continue
+            neg_lines.append(f"### {label}")
+            neg_lines.extend(token_lines)
+            neg_lines.append("")
+        if neg_lines:
+            lines.extend(["## Negative", ""])
+            lines.extend(neg_lines)
+
+    meta = [
+        ("orderProfile", preset.get("orderProfile")),
+        ("updatedAt", preset.get("updatedAt")),
+        ("createdAt", preset.get("createdAt")),
+    ]
+    meta_lines = [f"- {key}: `{value}`" for key, value in meta if value]
+    if meta_lines:
+        lines.extend(["## メタ情報", ""])
+        lines.extend(meta_lines)
+        lines.append("")
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def _write_preset_markdown(preset_id: str, preset: Dict[str, Any]) -> None:
+    path = _preset_markdown_path(preset_id)
+    notes_dir = _preset_notes_dir()
+    if not path or not notes_dir:
+        return
+    try:
+        os.makedirs(notes_dir, exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(build_preset_markdown(preset, preset_id))
+    except OSError as e:
+        print(f"[Prompt Composer] Error writing preset markdown: {e}")
+
+
+def _delete_preset_markdown(preset_id: str) -> None:
+    path = _preset_markdown_path(preset_id)
+    if not path or not os.path.isfile(path):
+        return
+    try:
+        os.remove(path)
+    except OSError:
+        pass
+
+
+def preset_notes_dir() -> Optional[str]:
+    return _preset_notes_dir()
 
 
 def _load_presets():
@@ -59,12 +174,15 @@ def list_presets():
     presets = _load_presets()
     result = []
     for preset_id, preset in presets.items():
+        memo = str(preset.get("memo") or "").strip()
         result.append({
             "id": preset_id,
             "name": preset.get("name", ""),
             "orderProfile": preset.get("orderProfile", ""),
             "tags": preset.get("tags", []),
-            "memo": preset.get("memo", ""),
+            "memo": memo,
+            "memoFormat": preset.get("memoFormat", "markdown" if memo else ""),
+            "hasMemo": bool(memo),
             "createdAt": preset.get("createdAt", ""),
             "updatedAt": preset.get("updatedAt", ""),
         })
@@ -136,20 +254,24 @@ def save_preset(data):
     else:
         created_at = presets[preset_id].get("createdAt", now)
     
+    memo = str(data.get("memo") or "").strip()
     preset = {
         "name": normalized_name,
         "blocks": data.get("blocks", []),
         "negativeBlocks": data.get("negativeBlocks", []),
         "orderProfile": data.get("orderProfile", "illustrious_standard"),
         "tags": data.get("tags", []),
-        "memo": data.get("memo", ""),
+        "memo": memo,
         "createdAt": created_at,
         "updatedAt": now,
     }
+    if memo:
+        preset["memoFormat"] = str(data.get("memoFormat") or "markdown").strip() or "markdown"
     
     presets[preset_id] = preset
     
     if _save_presets(presets):
+        _write_preset_markdown(preset_id, preset)
         preset["id"] = preset_id
         return preset
     return None
@@ -160,5 +282,7 @@ def delete_preset(preset_id):
     presets = _load_presets()
     if preset_id in presets:
         del presets[preset_id]
-        return _save_presets(presets)
+        if _save_presets(presets):
+            _delete_preset_markdown(preset_id)
+            return True
     return False

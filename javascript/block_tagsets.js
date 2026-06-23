@@ -448,7 +448,7 @@
         restorePickSelection(blockId, nameInput, list, preserve);
     }
 
-    function populateBarFromBlock(bar, forceList) {
+    function populateBarFromBlock(bar, forceList, options) {
         const blockId = bar.dataset.blockId;
         const menu = bar.querySelector('.pc-block-tagset-pick-menu');
         const nameInput = bar.querySelector('.pc-block-tagset-name');
@@ -460,7 +460,10 @@
             selId: selectionState[blockId]?.collectionId || '',
             name: nameInput ? nameInput.value.trim() : ''
         };
-        populateTagsetPick(menu, list, blockId, nameInput, preserve);
+        const populateMenu = !!(options && options.populateMenu) || !menu.hidden;
+        if (populateMenu) {
+            populateTagsetPick(menu, list, blockId, nameInput, preserve);
+        }
         if (btn && !selectionState[blockId]?.collectionId) {
             btn.textContent = list.length ? `保存済み (${list.length})` : '保存済み';
         }
@@ -507,6 +510,8 @@
         const willOpen = menu.hidden;
         closeAllPickMenus();
         if (willOpen) {
+            const bar = menu.closest('.pc-block-tagset-bar');
+            if (bar) populateBarFromBlock(bar, null, { populateMenu: true });
             positionPickMenu(blockId);
             menu.hidden = false;
         }
@@ -557,6 +562,12 @@
             console.warn('[Prompt Composer] Block saves fetch failed:', err);
             return;
         }
+        refreshBarsFromCache();
+    }
+
+    function refreshBarsFromCache() {
+        const container = blocksContainer();
+        if (!container) return;
         container.querySelectorAll('.pc-block-tagset-bar').forEach((bar) => {
             populateBarFromBlock(bar);
         });
@@ -773,6 +784,7 @@
 
     window.PromptComposerBlockTagsets = {
         refreshAllBlockTagSetBars,
+        refreshBarsFromCache,
         refreshBarsForBlockType,
         saveNew: saveNewBlockTagSet,
         load: loadBlockTagSet,

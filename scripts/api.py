@@ -517,6 +517,18 @@ def register_api(app: FastAPI, extension_dir: str):
             content={"error": "Failed to save preset"}
         )
     
+    @app.get("/prompt-composer/api/presets/{preset_id}/markdown")
+    async def api_get_preset_markdown(preset_id: str):
+        """Return full preset as Markdown (memo + block summary)."""
+        preset = preset_store.get_preset(preset_id)
+        if not preset:
+            return JSONResponse(status_code=404, content={"error": "Preset not found"})
+        from starlette.responses import PlainTextResponse
+        return PlainTextResponse(
+            preset_store.build_preset_markdown(preset, preset_id),
+            media_type="text/markdown; charset=utf-8",
+        )
+
     @app.delete("/prompt-composer/api/presets/{preset_id}")
     async def api_delete_preset(preset_id: str):
         """Delete a preset."""

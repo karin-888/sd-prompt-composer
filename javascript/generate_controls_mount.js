@@ -29,20 +29,9 @@
         return host.querySelector('button') || host;
     }
 
-    function isElementVisible(el) {
-        if (!el) return false;
-        var node = el;
-        while (node && node !== document.body) {
-            var style = window.getComputedStyle(node);
-            if (style.display === 'none' || style.visibility === 'hidden') return false;
-            node = node.parentElement;
-        }
-        return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
-    }
-
-    function isHostVisible(target, kind) {
-        var host = getControlHost(target, kind);
-        return isElementVisible(host);
+    function isControlVisible(target, kind) {
+        var btn = getControlButton(target, kind);
+        return !!(btn && btn.offsetParent);
     }
 
     function isGenerateForeverActive() {
@@ -64,9 +53,9 @@
     }
 
     function isTxt2imgGenerating() {
-        if (isHostVisible('txt2img', 'skip')) return true;
-        if (isHostVisible('txt2img', 'interrupt')) return true;
-        if (isHostVisible('txt2img', 'interrupting')) return true;
+        if (isControlVisible('txt2img', 'skip')) return true;
+        if (isControlVisible('txt2img', 'interrupt')) return true;
+        if (isControlVisible('txt2img', 'interrupting')) return true;
         return hasTxt2imgTaskId();
     }
 
@@ -101,7 +90,7 @@
 
         var skipSrc = getControlButton('txt2img', 'skip');
         var interruptSrc = getControlButton('txt2img', 'interrupt');
-        var interruptingVisible = isHostVisible('txt2img', 'interrupting');
+        var interruptingVisible = isControlVisible('txt2img', 'interrupting');
 
         var skipBtn = mount.querySelector('.pc-generate-skip-btn');
         var interruptBtn = mount.querySelector('.pc-generate-interrupt-btn');
@@ -174,8 +163,9 @@
         syncTimer = setInterval(function () {
             var mount = document.getElementById('pc_generate_controls_mount');
             if (!mount || mount.dataset.mounted !== '1') return;
+            if (!isControlsSessionActive()) return;
             updateControlsVisibility(mount);
-        }, 250);
+        }, 500);
     }
 
     if (document.readyState === 'loading') {
@@ -203,10 +193,11 @@
         }
     });
 
-    try {
-        new MutationObserver(scheduleMount).observe(document.documentElement, {
-            childList: true,
-            subtree: true,
+    if (typeof onUiUpdate === 'function') {
+        onUiUpdate(function () {
+            var mount = document.getElementById('pc_generate_controls_mount');
+            if (mount && mount.dataset.mounted === '1') return;
+            scheduleMount();
         });
-    } catch (_) { /* ignore */ }
+    }
 })();

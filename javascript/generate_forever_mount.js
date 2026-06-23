@@ -9,6 +9,7 @@
     var retryCount = 0;
     var debounceTimer = null;
     var stateTimer = null;
+    var domObserver = null;
     var wasForeverActive = false;
     var lastSeenInterval = null;
 
@@ -281,11 +282,22 @@
         return true;
     }
 
+    function stopDomObserver() {
+        if (!domObserver) return;
+        try {
+            domObserver.disconnect();
+        } catch (_) { /* ignore */ }
+        domObserver = null;
+    }
+
     function scheduleMount() {
         if (debounceTimer) clearTimeout(debounceTimer);
         debounceTimer = setTimeout(function () {
             debounceTimer = null;
-            if (mountGenerateForever()) return;
+            if (mountGenerateForever()) {
+                stopDomObserver();
+                return;
+            }
             if (retryCount < 40) {
                 retryCount++;
                 setTimeout(scheduleMount, 500);
@@ -310,9 +322,22 @@
     }
 
     try {
-        new MutationObserver(scheduleMount).observe(document.documentElement, {
+        domObserver = new MutationObserver(function () {
+            var mount = document.getElementById('pc_generate_forever_mount');
+            if (mount && mount.dataset.mounted === '1') return;
+            scheduleMount();
+        });
+        domObserver.observe(document.documentElement, {
             childList: true,
             subtree: true,
         });
     } catch (_) { /* ignore */ }
+
+    if (typeof onUiUpdate === 'function') {
+        onUiUpdate(function () {
+            var mount = document.getElementById('pc_generate_forever_mount');
+            if (mount && mount.dataset.mounted === '1') return;
+            scheduleMount();
+        });
+    }
 })();

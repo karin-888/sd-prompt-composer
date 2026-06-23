@@ -32,6 +32,7 @@
     ];
 
     // ===== State =====
+    let characterMemo = '';
     let blocks = [];
     let negativeBlocks = [];
     let currentOrderProfile = 'illustrious_standard';
@@ -70,6 +71,91 @@
         scheduleRenderBlocks();
     }
 
+    function getCharacterMemoEl() {
+        return document.getElementById('pc_character_memo');
+    }
+
+    function getCharacterMemo() {
+        const el = getCharacterMemoEl();
+        return el ? String(el.value || '') : characterMemo;
+    }
+
+    function setCharacterMemo(value, options = {}) {
+        characterMemo = String(value || '');
+        const el = getCharacterMemoEl();
+        if (el && el.value !== characterMemo) {
+            el.value = characterMemo;
+        }
+        if (characterMemoMode === 'preview') {
+            updateCharacterMemoPreview();
+        }
+        if (!options.silent && !isRestoring) {
+            scheduleAutoSave();
+        }
+    }
+
+    function getCharacterMemoPreviewEl() {
+        return document.getElementById('pc_character_memo_preview');
+    }
+
+    let characterMemoMode = 'edit';
+
+    function updateCharacterMemoPreview() {
+        const preview = getCharacterMemoPreviewEl();
+        if (!preview) return;
+        const render = window.PcMarkdown && typeof window.PcMarkdown.render === 'function'
+            ? window.PcMarkdown.render
+            : (text) => `<pre class="pc-md-fallback">${(text || '').replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}</pre>`;
+        preview.innerHTML = render(getCharacterMemo());
+    }
+
+    function setCharacterMemoMode(mode) {
+        const next = mode === 'preview' ? 'preview' : 'edit';
+        characterMemoMode = next;
+        const textarea = getCharacterMemoEl();
+        const preview = getCharacterMemoPreviewEl();
+        const wrap = document.querySelector('.pc-character-memo-wrap');
+        if (wrap) {
+            wrap.querySelectorAll('.pc-memo-tab').forEach((btn) => {
+                const active = btn.dataset.mode === next;
+                btn.classList.toggle('is-active', active);
+                btn.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+        }
+        if (textarea) textarea.hidden = next === 'preview';
+        if (preview) {
+            preview.hidden = next !== 'preview';
+            if (next === 'preview') updateCharacterMemoPreview();
+        }
+    }
+
+    function setupCharacterMemoTabs() {
+        const wrap = document.querySelector('.pc-character-memo-wrap');
+        if (!wrap || wrap.dataset.pcMemoTabsBound === '1') return;
+        wrap.dataset.pcMemoTabsBound = '1';
+        wrap.querySelectorAll('.pc-memo-tab').forEach((btn) => {
+            btn.addEventListener('click', (event) => {
+                event.preventDefault();
+                setCharacterMemoMode(btn.dataset.mode || 'edit');
+            });
+        });
+        setCharacterMemoMode(characterMemoMode);
+    }
+
+    function setupCharacterMemoListener() {
+        const el = getCharacterMemoEl();
+        if (!el || el.dataset.pcMemoBound === '1') return;
+        el.dataset.pcMemoBound = '1';
+        el.addEventListener('input', () => {
+            characterMemo = String(el.value || '');
+            if (characterMemoMode === 'preview') {
+                updateCharacterMemoPreview();
+            }
+            scheduleAutoSave();
+        });
+        setupCharacterMemoTabs();
+    }
+
     // ===== Initialization =====
     function init() {
         // Wait for DOM
@@ -80,6 +166,9 @@
         }
         // DOMContentLoaded + onUiLoaded both schedule init; avoid duplicate listeners / reset.
         if (container.dataset.pcComposerInit === '1') {
+            setupCharacterMemoListener();
+            setupCharacterMemoTabs();
+            setCharacterMemo(characterMemo, { silent: true });
             return;
         }
 
@@ -107,6 +196,8 @@
             renderBlocks();
         }
         setupEventListeners();
+        setupCharacterMemoListener();
+        setCharacterMemo(characterMemo, { silent: true });
 
         container.dataset.pcComposerInit = '1';
         console.log('[Prompt Composer] Composer initialized');
@@ -160,6 +251,22 @@
     }
 
     // ===== Rendering =====
+    let tagsetRefreshTimer = null;
+
+    function scheduleTagsetBarRefresh() {
+        clearTimeout(tagsetRefreshTimer);
+        tagsetRefreshTimer = setTimeout(() => {
+            tagsetRefreshTimer = null;
+            const tagsets = window.PromptComposerBlockTagsets;
+            if (!tagsets) return;
+            if (typeof tagsets.refreshBarsFromCache === 'function') {
+                tagsets.refreshBarsFromCache();
+            } else if (typeof tagsets.refreshAllBlockTagSetBars === 'function') {
+                tagsets.refreshAllBlockTagSetBars().catch(() => {});
+            }
+        }, 150);
+    }
+
     function renderBlocksImmediate() {
         const container = document.getElementById('pc_blocks_container');
         if (!container) return;
@@ -186,10 +293,7 @@
         attachBlockListeners();
         updateFinalPrompt();
 
-        const tagsets = window.PromptComposerBlockTagsets;
-        if (tagsets && typeof tagsets.refreshAllBlockTagSetBars === 'function') {
-            tagsets.refreshAllBlockTagSetBars().catch(() => {});
-        }
+        scheduleTagsetBarRefresh();
 
         dispatchStateChange('render');
 
@@ -2341,12 +2445,19 @@
                     jp: t.jp || null
                 }))
             })),
-            orderProfile: currentOrderProfile
+            orderProfile: currentOrderProfile,
+            characterMemo: getCharacterMemo(),
+            memoFormat: getCharacterMemo().trim() ? 'markdown' : ''
         };
     }
 
     function loadState(state) {
         if (!state) return;
+
+        const nextMemo = state.characterMemo != null
+            ? state.characterMemo
+            : (state.memo != null ? state.memo : '');
+        setCharacterMemo(nextMemo, { silent: true });
 
         if (state.blocks && Array.isArray(state.blocks)) {
             blocks = state.blocks.map(b => ({
@@ -2399,6 +2510,12 @@
         }, 50);
 
         renderBlocks();
+        setupCharacterMemoListener();
+        setupCharacterMemoTabs();
+        setCharacterMemo(characterMemo, { silent: true });
+        if (characterMemoMode === 'preview') {
+            updateCharacterMemoPreview();
+        }
     }
 
     function scheduleJpBackfill(delayMs = 80) {
@@ -2406,6 +2523,24 @@
         jpBackfillTimer = setTimeout(() => {
             backfillMissingJp({ batchSize: 120, continueUntilDone: true }).catch(() => {});
         }, delayMs);
+    }
+
+    function patchTokenJpInDom(tokenId, jp) {
+        if (!tokenId || !jp) return;
+        const selector = `.pc-token[data-token-id="${CSS.escape(String(tokenId))}"]`;
+        document.querySelectorAll(selector).forEach((tokenEl) => {
+            let jpEl = tokenEl.querySelector('.pc-token-jp');
+            if (jpEl) {
+                jpEl.textContent = jp;
+                return;
+            }
+            const label = tokenEl.querySelector('.pc-token-label');
+            if (!label) return;
+            jpEl = document.createElement('span');
+            jpEl.className = 'pc-token-jp';
+            jpEl.textContent = jp;
+            label.appendChild(jpEl);
+        });
     }
 
     async function backfillMissingJp(options = {}) {
@@ -2431,13 +2566,14 @@
             if (jp) {
                 t.jp = jp;
                 jpLookupTried.delete(t.id);
+                patchTokenJpInDom(t.id, jp);
                 updated = true;
             } else {
                 const key = getTokenJpLookupKey(t);
                 if (key) jpLookupTried.set(t.id, key);
             }
         }
-        if (updated) scheduleRenderBlocks();
+        if (updated) scheduleAutoSave();
 
         const remaining = missing.length - Math.min(batchSize, missing.length);
         if (continueUntilDone && remaining > 0) {
@@ -2547,7 +2683,9 @@
         
         const textarea = container.querySelector('textarea');
         if (textarea) {
-            textarea.value = value;
+            const next = String(value ?? '');
+            if (textarea.value === next) return;
+            textarea.value = next;
             textarea.dispatchEvent(new Event('input', { bubbles: true }));
         }
         checkWarnings();
@@ -2555,13 +2693,14 @@
 
     function dispatchStateChange(reason) {
         try {
-            window.dispatchEvent(new CustomEvent('pc:state-changed', {
-                detail: {
-                    reason: reason || 'unknown',
-                    state: getState(),
-                    activeBlockId: window.PromptComposerActiveBlockId || null
-                }
-            }));
+            const detail = {
+                reason: reason || 'unknown',
+                activeBlockId: window.PromptComposerActiveBlockId || null
+            };
+            if (reason !== 'render') {
+                detail.state = getState();
+            }
+            window.dispatchEvent(new CustomEvent('pc:state-changed', { detail }));
         } catch (_) {}
     }
 

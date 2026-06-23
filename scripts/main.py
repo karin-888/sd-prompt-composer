@@ -92,6 +92,9 @@ def on_app_started(demo, app):
         print(f"[Prompt Composer] Block saves (per-column): {block_path}")
     if preset_path:
         print(f"[Prompt Composer] Presets (Preset Manager): {preset_path}")
+    notes_dir = preset_store.preset_notes_dir()
+    if notes_dir:
+        print(f"[Prompt Composer] Preset Markdown notes: {notes_dir}")
     
     # Register API routes
     composer_api.register_api(app, EXTENSION_PATH)
@@ -480,6 +483,18 @@ def _build_prompt_editor_workspace():
                     '<button type="button" id="pc_clear_blocks" class="pc-toolbar-btn">🗑️ 全クリア</button>'
                     '</div>'
                     '<div id="pc_blocks_container" class="pc-blocks-container"></div>'
+                    '<div class="pc-character-memo-wrap">'
+                    '<div class="pc-character-memo-head">'
+                    '<label class="pc-character-memo-label" for="pc_character_memo">📝 キャラメモ <span class="pc-character-memo-badge">Markdown</span></label>'
+                    '<div class="pc-character-memo-tabs" role="tablist" aria-label="メモ表示切替">'
+                    '<button type="button" class="pc-memo-tab is-active" data-mode="edit" role="tab" aria-selected="true">編集</button>'
+                    '<button type="button" class="pc-memo-tab" data-mode="preview" role="tab" aria-selected="false">プレビュー</button>'
+                    '</div>'
+                    '</div>'
+                    '<textarea id="pc_character_memo" class="pc-character-memo" rows="4" '
+                    'placeholder="Markdownでメモ（見出し ## / 太字 ** / リンク [text](url) / リスト - ）&#10;プリセット保存時に JSON と .md ファイルの両方へ保存されます"></textarea>'
+                    '<div id="pc_character_memo_preview" class="pc-character-memo-preview" hidden></div>'
+                    '</div>'
                     "</div>"
                 ),
             )

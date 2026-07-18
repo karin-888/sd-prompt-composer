@@ -6,6 +6,7 @@
 
     let presets = [];
     let selectedPresetId = null;
+    const collapsedPresetFolders = new Set();
 
     function init() {
         const container = document.getElementById('pc_presets_container');
@@ -44,6 +45,17 @@
         return { category: s.slice(0, idx), shortName: s.slice(idx + 1) };
     }
 
+    function formatSaveDate(iso) {
+        if (!iso) return '';
+        try {
+            const d = new Date(iso);
+            if (Number.isNaN(d.getTime())) return '';
+            return d.toLocaleDateString('ja-JP', { year: 'numeric', month: 'numeric', day: 'numeric' });
+        } catch (_) {
+            return '';
+        }
+    }
+
     function renderPresetList() {
         const container = document.getElementById('pc_presets_container');
         if (!container) return;
@@ -53,7 +65,6 @@
             return;
         }
 
-        // Compact preset UI (dropdown with category + buttons) to avoid a long right column
         const groups = {};
         presets.forEach(p => {
             const { category } = splitCategory(p.name || '');
@@ -68,70 +79,154 @@
             if (b === '(未分類)') return -1;
             return a.localeCompare(b, 'ja');
         });
+        groupNames.forEach(g => {
+            groups[g].sort((a, b) => {
+                const an = splitCategory(a.name || '').shortName || a.name || '';
+                const bn = splitCategory(b.name || '').shortName || b.name || '';
+                return an.localeCompare(bn, 'ja');
+            });
+        });
 
-        // keep selection if possible
         if (!selectedPresetId || !presets.some(p => p.id === selectedPresetId)) {
             selectedPresetId = presets[0]?.id || null;
         }
 
-        let optionsHtml = '';
-        groupNames.forEach(group => {
-            optionsHtml += `<optgroup label="${escapeHtml(group)}">`;
-            groups[group].forEach(p => {
-                const parts = splitCategory(p.name || '');
-                const displayName = parts.shortName || p.name || '';
-                const sel = p.id === selectedPresetId ? ' selected' : '';
-                optionsHtml += `<option value="${escapeHtml(p.id)}"${sel}>${escapeHtml(displayName)}</option>`;
-            });
-            optionsHtml += `</optgroup>`;
-        });
-
         const selected = presets.find(p => p.id === selectedPresetId) || presets[0];
-        const dateStr = selected?.updatedAt ? new Date(selected.updatedAt).toLocaleDateString('ja-JP') : '';
-        const fullName = selected?.name ? escapeHtml(selected.name) : '';
+        const selectedShort = selected
+            ? (splitCategory(selected.name || '').shortName || selected.name || '')
+            : '';
+        const dateStr = formatSaveDate(selected?.updatedAt);
         const memoBadge = selected?.hasMemo
-            ? '<span class="pc-preset-memo-badge" title="Markdownメモ付き">📝 MD</span>'
+            ? '<span class="pc-preset-memo-badge" title="Markdownメモ付き">MD</span>'
             : '';
 
-        const html = `
-            <div class="pc-preset-compact">
-                <div class="pc-preset-compact-row">
-                    <select id="pc_preset_select" class="pc-preset-select">
-                        ${optionsHtml}
-                    </select>
-                    <div class="pc-preset-actions">
-                        <button class="pc-preset-load" data-preset-id="${escapeHtml(selectedPresetId || '')}" title="読込">📥</button>
-                        <button class="pc-preset-overwrite" data-preset-id="${escapeHtml(selectedPresetId || '')}" title="上書き">💾</button>
-                        <button class="pc-preset-delete" data-preset-id="${escapeHtml(selectedPresetId || '')}" title="削除">🗑️</button>
+        let treeHtml = '';
+        groupNames.forEach(group => {
+            const open = !collapsedPresetFolders.has(group);
+            const items = groups[group];
+            treeHtml += `
+                <div class="pc-file-tree-folder${open ? ' is-open' : ''}" data-folder="${escapeHtml(group)}">
+                    <button type="button" class="pc-file-tree-folder-head" data-folder="${escapeHtml(group)}" title="${escapeHtml(group)}">
+                        <span class="pc-file-tree-caret">${open ? '▾' : '▸'}</span>
+                        <span class="pc-file-tree-folder-name">${escapeHtml(group)}</span>
+                        <span class="pc-file-tree-count">${items.length}</span>
+                    </button>
+                    <div class="pc-file-tree-children"${open ? '' : ' hidden'}>
+            `;
+            items.forEach((p, idx) => {
+                const parts = splitCategory(p.name || '');
+                const shortName = parts.shortName || p.name || '';
+                const isSel = p.id === selectedPresetId;
+                const itemDate = formatSaveDate(p.updatedAt);
+                const itemMemo = p.hasMemo ? '<span class="pc-preset-memo-badge" title="Markdownメモ付き">MD</span>' : '';
+                const branch = idx === items.length - 1 ? '└──' : '├──';
+                treeHtml += `
+                    <button type="button"
+                        class="pc-file-tree-item${isSel ? ' is-selected' : ''}"
+                        data-preset-id="${escapeHtml(p.id)}"
+                        title="${escapeHtml(p.name || '')}">
+                        <span class="pc-file-tree-branch" aria-hidden="true">${branch}</span>
+                        <span class="pc-file-tree-item-main">
+                            <span class="pc-file-tree-col-name">${escapeHtml(shortName)}</span>
+                            ${itemMemo}
+                        </span>
+                        ${itemDate ? `<span class="pc-file-tree-item-date">${escapeHtml(itemDate)}</span>` : ''}
+                    </button>
+                `;
+            });
+            treeHtml += `</div></div>`;
+        });
+
+        container.innerHTML = `
+            <div class="pc-preset-tree-wrap">
+                <div class="pc-file-tree-meta">
+                    <span class="pc-preset-compact-name" title="${escapeHtml(selected?.name || selectedShort)}">${escapeHtml(selectedShort)}</span>
+                    ${dateStr ? `<span class="pc-preset-compact-date">${escapeHtml(dateStr)}</span>` : ''}
+                    ${memoBadge}
+                    <div class="pc-file-tree-actions">
+                        <button type="button" class="pc-preset-load" data-preset-id="${escapeHtml(selectedPresetId || '')}" title="読込">読込</button>
+                        <button type="button" class="pc-preset-overwrite" data-preset-id="${escapeHtml(selectedPresetId || '')}" title="上書き">上書き</button>
+                        <button type="button" class="pc-preset-delete" data-preset-id="${escapeHtml(selectedPresetId || '')}" title="削除">削除</button>
                     </div>
                 </div>
-                <div class="pc-preset-compact-meta">
-                    <span class="pc-preset-compact-name">${fullName}</span>
-                    ${memoBadge}
-                    ${dateStr ? `<span class="pc-preset-compact-date">${escapeHtml(dateStr)}</span>` : ''}
+                <div class="pc-file-tree" role="tree" aria-label="プリセット一覧">
+                    ${treeHtml}
                 </div>
             </div>
         `;
 
-        container.innerHTML = html;
-
-        const select = container.querySelector('#pc_preset_select');
-        if (select) {
-            select.addEventListener('change', (e) => {
-                selectedPresetId = e.target.value;
-                renderPresetList(); // refresh meta + button dataset
+        container.querySelectorAll('.pc-file-tree-folder-head').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const folder = btn.dataset.folder || '';
+                if (collapsedPresetFolders.has(folder)) collapsedPresetFolders.delete(folder);
+                else collapsedPresetFolders.add(folder);
+                renderPresetList();
             });
-        }
+        });
+
+        container.querySelectorAll('.pc-file-tree-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectedPresetId = btn.dataset.presetId || null;
+                renderPresetList();
+            });
+            btn.addEventListener('dblclick', () => {
+                selectedPresetId = btn.dataset.presetId || null;
+                if (selectedPresetId) onLoadPreset(selectedPresetId);
+            });
+        });
 
         const loadBtn = container.querySelector('.pc-preset-load');
         const owBtn = container.querySelector('.pc-preset-overwrite');
         const delBtn = container.querySelector('.pc-preset-delete');
-        if (loadBtn) loadBtn.addEventListener('click', (e) => onLoadPreset(e.currentTarget.dataset.presetId));
-        if (owBtn) owBtn.addEventListener('click', (e) => onOverwritePreset(e.currentTarget.dataset.presetId));
-        if (delBtn) delBtn.addEventListener('click', (e) => onDeletePreset(e.currentTarget.dataset.presetId));
+        if (loadBtn) loadBtn.addEventListener('click', () => onLoadPreset(loadBtn.dataset.presetId));
+        if (owBtn) owBtn.addEventListener('click', () => onOverwritePreset(owBtn.dataset.presetId));
+        if (delBtn) delBtn.addEventListener('click', () => onDeletePreset(delBtn.dataset.presetId));
+
+        requestAnimationFrame(() => {
+            layoutPresetTreeScroll();
+            setTimeout(layoutPresetTreeScroll, 100);
+            setTimeout(layoutPresetTreeScroll, 300);
+        });
+    }
+
+    function layoutPresetTreeScroll() {
+        const tree = document.querySelector('#pc_presets_container .pc-file-tree');
+        if (!tree) return;
+
+        // Prefer remaining viewport below the tree top so Gradio flex quirks can't block scroll.
+        const top = tree.getBoundingClientRect().top;
+        const bottomPad = 28;
+        const available = Math.floor(window.innerHeight - top - bottomPad);
+        const maxH = Math.max(180, available);
+        tree.style.maxHeight = maxH + 'px';
+        tree.style.height = maxH + 'px';
+        tree.style.overflowY = 'auto';
+        tree.style.overflowX = 'hidden';
+        tree.style.minHeight = '0';
+
+        if (tree.dataset.pcScrollBound !== '1') {
+            tree.dataset.pcScrollBound = '1';
+            tree.addEventListener('wheel', (e) => {
+                e.stopPropagation();
+            }, { passive: true });
+        }
+    }
+
+    function setupPresetLayoutWatchers() {
+        if (window._pcPresetScrollWatch) return;
+        window._pcPresetScrollWatch = true;
+        window.addEventListener('resize', () => layoutPresetTreeScroll());
+        // Left tab switches / layout settles
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#pc_left_tabs .tab-nav')) {
+                setTimeout(layoutPresetTreeScroll, 50);
+                setTimeout(layoutPresetTreeScroll, 200);
+            }
+        });
     }
 
     function setupEventListeners() {
+        setupPresetLayoutWatchers();
         // Save button
         const saveBtn = document.getElementById('pc_preset_save');
         if (saveBtn) {

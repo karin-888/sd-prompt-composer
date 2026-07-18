@@ -187,7 +187,7 @@
                 if (isLimit) {
                     html += `<div class="pc-tokenizer-limit-marker">75トークン（BREAK目安） ― セグメント内 ${idx + 1}番目</div>`;
                 }
-                const cls = `pc-token-chip pc-token-chip-${si % 4}` + (isLimit ? ' pc-token-chip-limit' : '');
+                const cls = `pc-token-chip pc-token-chip-${idx % 7}` + (isLimit ? ' pc-token-chip-limit' : '');
                 const chipTitle = isLimit
                     ? `セグメント${segmentIdx} 内 #${idx + 1}（75の境界）`
                     : `セグメント${segmentIdx} 内 #${idx + 1}`;

@@ -27,7 +27,16 @@
     let tagPathTreeRoot = null;
     let tagChildrenRendered = new Set();
     let tagPageState = new Map(); // pathKey -> { items, total, hasMore }
+    let searchHitCounts = null; // Map pathKey -> hit count (leaf + ancestors)
+    let searchHitLeafKeys = null; // Set of leaf path keys that matched
+    let searchHitTotal = 0;
     let wildcardsLoaded = false;
+    let wildcardSearchQuery = '';
+    let wildcardSearchDebounce = null;
+    let selectedWildcardPath = '';
+    let wildcardDirty = false;
+    let wildcardEditorMode = 'edit'; // 'edit' | 'create'
+    let wildcardRootPath = '';
 
     const TAG_PATH_SEP = '\x1f';
     const TAG_PAGE_SIZE = 120;
@@ -177,12 +186,20 @@
     }
 
     function collapseTagCardToTextOnly(card) {
-        if (!card || card.classList.contains('pc-tag-card-text-only')) return;
+        if (!card) return;
         card.classList.remove('has-preview');
         card.classList.add('pc-tag-card-text-only');
         card.removeAttribute('data-preview-url');
-        const art = card.querySelector('.pc-tag-card-art');
-        if (art) art.remove();
+        let art = card.querySelector('.pc-tag-card-art');
+        if (!art) {
+            art = document.createElement('div');
+            art.className = 'pc-tag-card-art pc-tag-card-art-empty';
+            art.innerHTML = '<span class="pc-tag-card-no-image">No Image</span>';
+            card.insertBefore(art, card.firstChild);
+            return;
+        }
+        art.classList.add('pc-tag-card-art-empty', 'is-preview-error');
+        art.innerHTML = '<span class="pc-tag-card-no-image">No Image</span>';
     }
 
     function markTagPreviewError(img) {
@@ -228,6 +245,7 @@
         hideTagsListContainer();
         reorderTagDictionaryLayout();
         renderWildcardsHint();
+        loadWildcards('');
         loadPathsAndInitialTags();
         console.log('[Prompt Composer] Tag dictionary initialized');
     }
@@ -238,8 +256,559 @@
         wcHost.classList.add('pc-wc-container');
         wcHost.innerHTML = `
             <div class="pc-wc-header">🪄 Wildcards</div>
-            <div class="pc-wc-more">ワイルドカード検索欄にキーワードを入力すると読み込みます（例: pose, hair, nsfw）。</div>
+            <div class="pc-wc-more">読込中…（sd-dynamic-prompts/wildcards）</div>
         `;
+    }
+
+    async function loadWildcards(query, opts) {
+        const options = opts || {};
+        const force = !!options.force || !wildcardsLoaded;
+        try {
+            if (force) {
+                const params = new URLSearchParams();
+                params.set('limit', '8000');
+                params.set('force', '1');
+                const resp = await fetch('/prompt-composer/api/wildcards?' + params.toString());
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                const data = await resp.json();
+                wildcardItems = data.items || [];
+                wildcardSources = data.sources || [];
+                wildcardRootPath = data.root || '';
+                wildcardsLoaded = true;
+            }
+            const wcInput = document.querySelector('#pc_wc_inline_search, #pc_wc_search input, #pc_wc_search textarea');
+            const q = (query != null ? query : (wildcardSearchQuery || ((wcInput && wcInput.value) || ''))).trim();
+            wildcardSearchQuery = q;
+            renderWildcards(q);
+        } catch (err) {
+            console.warn('[Prompt Composer] Failed to load wildcards:', err);
+            wildcardItems = [];
+            wildcardSources = [];
+            wildcardsLoaded = false;
+            const wcHost = document.getElementById('pc_wildcards_container');
+            if (wcHost) {
+                wcHost.classList.add('pc-wc-container');
+                wcHost.innerHTML = `
+                    <div class="pc-wc-header">🪄 Wildcards</div>
+                    <div class="pc-wc-more">読込に失敗しました。extensions/sd-dynamic-prompts/wildcards を確認してください。</div>
+                `;
+            }
+        }
+    }
+
+    function groupWildcardItems(items) {
+        const groups = new Map();
+        (items || []).forEach(it => {
+            const path = (it.path || '').trim();
+            if (!path) return;
+            let group = 'その他';
+            const slash = path.indexOf('/');
+            if (slash > 0) {
+                group = path.slice(0, slash);
+            } else {
+                const m = path.match(/^(\d{2})/);
+                if (m) group = m[1];
+            }
+            if (!groups.has(group)) groups.set(group, []);
+            groups.get(group).push(it);
+        });
+        const keys = Array.from(groups.keys()).sort((a, b) => {
+            if (a === 'その他') return 1;
+            if (b === 'その他') return -1;
+            return a.localeCompare(b, 'en', { numeric: true });
+        });
+        return keys.map(k => {
+            const list = groups.get(k).slice().sort((a, b) =>
+                (a.path || '').localeCompare(b.path || '', 'en', { numeric: true })
+            );
+            return { name: k, items: list };
+        });
+    }
+
+    function shortWildcardName(path) {
+        const p = (path || '').trim();
+        const slash = p.lastIndexOf('/');
+        return slash >= 0 ? p.slice(slash + 1) : p;
+    }
+
+    function insertWildcardToken(token) {
+        if (!token || !window.PromptComposer) return;
+        const blocks = (window.PromptComposer.blocks || []).concat(window.PromptComposer.negativeBlocks || []);
+        let target = null;
+        const activeId = window.PromptComposerActiveBlockId;
+        if (activeId) target = blocks.find(b => b.id === activeId);
+        if (!target) target = blocks.find(b => b.enabled) || blocks[0];
+        if (!target) return;
+        window.PromptComposer.addToken(target.id, token, token, {
+            sourceType: 'wildcard',
+            isTrigger: false
+        });
+    }
+
+    function confirmDiscardWildcardEdits() {
+        if (!wildcardDirty) return true;
+        return confirm('編集内容が保存されていません。破棄しますか？');
+    }
+
+    async function loadWildcardContent(path) {
+        const p = (path || '').trim();
+        if (!p) return;
+        try {
+            const resp = await fetch('/prompt-composer/api/wildcards/content?path=' + encodeURIComponent(p));
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            const data = await resp.json();
+            selectedWildcardPath = data.path || p;
+            wildcardEditorMode = 'edit';
+            wildcardDirty = false;
+            fillWildcardEditor(data);
+            updateWildcardTreeSelection();
+        } catch (err) {
+            console.warn('[Prompt Composer] Failed to load wildcard content:', err);
+            alert('ワイルドカードの読込に失敗しました: ' + p);
+        }
+    }
+
+    function fillWildcardEditor(data) {
+        const nameEl = document.getElementById('pc_wc_editor_name');
+        const tokenEl = document.getElementById('pc_wc_editor_token');
+        const pathInput = document.getElementById('pc_wc_new_path');
+        const editPathInput = document.getElementById('pc_wc_edit_path');
+        const textarea = document.getElementById('pc_wc_editor_text');
+        const statusEl = document.getElementById('pc_wc_editor_status');
+        const createRow = document.getElementById('pc_wc_create_row');
+        const editMeta = document.getElementById('pc_wc_edit_meta');
+        if (!textarea) return;
+
+        if (wildcardEditorMode === 'create') {
+            if (createRow) createRow.hidden = false;
+            if (editMeta) editMeta.hidden = true;
+            if (pathInput) pathInput.value = selectedWildcardPath || '';
+            if (editPathInput) {
+                editPathInput.value = '';
+                editPathInput.disabled = true;
+            }
+            textarea.value = (data && data.content) || '';
+            if (statusEl) statusEl.textContent = '新規作成 — 保存先: sd-dynamic-prompts/wildcards';
+        } else {
+            if (createRow) createRow.hidden = true;
+            if (editMeta) editMeta.hidden = false;
+            const path = data.path || selectedWildcardPath || '';
+            if (nameEl) nameEl.textContent = path || '（未選択）';
+            if (editPathInput) {
+                editPathInput.disabled = !path;
+                editPathInput.readOnly = false;
+                editPathInput.value = path;
+                editPathInput.oninput = () => {
+                    const next = (editPathInput.value || '').trim().replace(/\.txt$/i, '');
+                    const tok = document.getElementById('pc_wc_editor_token');
+                    if (tok) tok.textContent = next ? `__${next}__` : '';
+                };
+            }
+            if (tokenEl) tokenEl.textContent = data.token || (path ? `__${path}__` : '');
+            textarea.value = (data && data.content) != null ? data.content : '';
+            if (statusEl) {
+                statusEl.textContent = wildcardRootPath
+                    ? `保存先: ${wildcardRootPath}`
+                    : '保存先: extensions/sd-dynamic-prompts/wildcards';
+            }
+        }
+        wildcardDirty = false;
+        textarea.oninput = () => {
+            wildcardDirty = true;
+            if (statusEl && !statusEl.textContent.includes('未保存')) {
+                statusEl.textContent = (statusEl.textContent || '') + ' · 未保存';
+            }
+        };
+    }
+
+    function startCreateWildcard() {
+        if (!confirmDiscardWildcardEdits()) return;
+        wildcardEditorMode = 'create';
+        selectedWildcardPath = '';
+        fillWildcardEditor({ content: '' });
+        updateWildcardTreeSelection();
+        const pathInput = document.getElementById('pc_wc_new_path');
+        if (pathInput) {
+            pathInput.focus();
+            pathInput.select();
+        }
+    }
+
+    async function renameSelectedWildcard() {
+        if (wildcardEditorMode === 'create' || !selectedWildcardPath) {
+            alert('変更するワイルドカードを選択してください。');
+            return;
+        }
+        const editPathInput = document.getElementById('pc_wc_edit_path');
+        const statusEl = document.getElementById('pc_wc_editor_status');
+        const newPath = ((editPathInput && editPathInput.value) || '').trim().replace(/\.txt$/i, '');
+        if (!newPath) {
+            alert('新しいファイル名を入力してください（例: 00color または colors/red）');
+            return;
+        }
+        if (newPath === selectedWildcardPath) {
+            if (statusEl) statusEl.textContent = 'ファイル名は変更されていません';
+            return;
+        }
+        if (!confirm(`"${selectedWildcardPath}.txt" を "${newPath}.txt" に変更しますか？`)) return;
+
+        try {
+            const resp = await fetch('/prompt-composer/api/wildcards/rename', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ path: selectedWildcardPath, newPath })
+            });
+            const data = await resp.json().catch(() => ({}));
+            if (!resp.ok) {
+                throw new Error(data.error || ('HTTP ' + resp.status));
+            }
+            const renamedPath = data.path || newPath;
+            // Update local list immediately so the left tree reflects the new name.
+            const prevPath = selectedWildcardPath;
+            wildcardItems = (wildcardItems || []).map((it) => {
+                if ((it.path || '') !== prevPath) return it;
+                return {
+                    ...it,
+                    path: renamedPath,
+                    token: data.token || `__${renamedPath}__`
+                };
+            });
+            selectedWildcardPath = renamedPath;
+            wildcardEditorMode = 'edit';
+            wildcardDirty = false;
+            if (statusEl) statusEl.textContent = `名前を変更しました: ${selectedWildcardPath}`;
+            wildcardsLoaded = false;
+            await loadWildcards(wildcardSearchQuery, { force: true });
+            await loadWildcardContent(selectedWildcardPath);
+        } catch (err) {
+            console.warn('[Prompt Composer] Failed to rename wildcard:', err);
+            alert('名前変更に失敗しました: ' + (err && err.message ? err.message : err));
+        }
+    }
+
+    async function saveWildcardEditor() {
+        const textarea = document.getElementById('pc_wc_editor_text');
+        const statusEl = document.getElementById('pc_wc_editor_status');
+        if (!textarea) return;
+
+        let path = selectedWildcardPath;
+        if (wildcardEditorMode === 'create') {
+            const pathInput = document.getElementById('pc_wc_new_path');
+            path = ((pathInput && pathInput.value) || '').trim();
+            if (!path) {
+                alert('ファイル名を入力してください（例: my_poses または folder/name）');
+                return;
+            }
+        }
+        if (!path) {
+            alert('ワイルドカードを選択するか、新規作成してください。');
+            return;
+        }
+
+        const content = textarea.value;
+        const isCreate = wildcardEditorMode === 'create';
+        const url = isCreate
+            ? '/prompt-composer/api/wildcards/create'
+            : '/prompt-composer/api/wildcards/content';
+
+        try {
+            const resp = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ path, content })
+            });
+            const data = await resp.json().catch(() => ({}));
+            if (!resp.ok) {
+                throw new Error(data.error || ('HTTP ' + resp.status));
+            }
+            selectedWildcardPath = data.path || path;
+            wildcardEditorMode = 'edit';
+            wildcardDirty = false;
+            if (statusEl) statusEl.textContent = '保存しました';
+            wildcardsLoaded = false;
+            await loadWildcards(wildcardSearchQuery);
+            await loadWildcardContent(selectedWildcardPath);
+        } catch (err) {
+            console.warn('[Prompt Composer] Failed to save wildcard:', err);
+            alert('保存に失敗しました: ' + (err && err.message ? err.message : err));
+        }
+    }
+
+    async function deleteSelectedWildcard() {
+        if (wildcardEditorMode === 'create' || !selectedWildcardPath) return;
+        if (!confirm(`"${selectedWildcardPath}.txt" を削除しますか？`)) return;
+        try {
+            const resp = await fetch(
+                '/prompt-composer/api/wildcards/content?path=' + encodeURIComponent(selectedWildcardPath),
+                { method: 'DELETE' }
+            );
+            const data = await resp.json().catch(() => ({}));
+            if (!resp.ok) throw new Error(data.error || ('HTTP ' + resp.status));
+            selectedWildcardPath = '';
+            wildcardDirty = false;
+            wildcardsLoaded = false;
+            await loadWildcards('');
+            fillWildcardEditor({ path: '', token: '', content: '' });
+            const nameEl = document.getElementById('pc_wc_editor_name');
+            const tokenEl = document.getElementById('pc_wc_editor_token');
+            if (nameEl) nameEl.textContent = '（未選択）';
+            if (tokenEl) tokenEl.textContent = '';
+        } catch (err) {
+            alert('削除に失敗しました: ' + (err && err.message ? err.message : err));
+        }
+    }
+
+    function updateWildcardTreeSelection() {
+        const host = document.getElementById('pc_wildcards_container');
+        if (!host) return;
+        host.querySelectorAll('.pc-file-tree-item').forEach(btn => {
+            const p = btn.getAttribute('data-wc-path') || '';
+            btn.classList.toggle('is-selected', p === selectedWildcardPath && wildcardEditorMode === 'edit');
+        });
+    }
+
+    function renderWildcards(query) {
+        let wcHost = document.getElementById('pc_wildcards_container');
+        if (!wcHost) {
+            if (wildcardRenderRetryCount < 20) {
+                wildcardRenderRetryCount++;
+                setTimeout(() => renderWildcards(query), 300);
+            }
+            return;
+        }
+
+        wildcardRenderRetryCount = 0;
+        wcHost.classList.add('pc-wc-container');
+
+        const activeBefore = document.activeElement;
+        const keepSearchFocus = !!(activeBefore && activeBefore.id === 'pc_wc_inline_search');
+        const prevSearchEl = document.getElementById('pc_wc_inline_search');
+        const prevSelStart = prevSearchEl ? prevSearchEl.selectionStart : null;
+        const prevSelEnd = prevSearchEl ? prevSearchEl.selectionEnd : null;
+
+        const q = (query != null ? query : wildcardSearchQuery).trim();
+        wildcardSearchQuery = q;
+        const qLower = q.toLowerCase();
+        const filtered = qLower
+            ? (wildcardItems || []).filter(it => {
+                const hay = ((it.path || '') + ' ' + (it.token || '')).toLowerCase();
+                return hay.includes(qLower);
+            })
+            : (wildcardItems || []);
+        const groups = groupWildcardItems(filtered);
+        const total = filtered.length;
+        if (!qLower && !wcExpanded.size && groups.length) {
+            wcExpanded.add(groups[0].name);
+        }
+        const prevText = (document.getElementById('pc_wc_editor_text') || {}).value;
+        const prevPathInput = (document.getElementById('pc_wc_new_path') || {}).value;
+        const keepEditor = !!document.getElementById('pc_wc_editor_text');
+        const wasDirty = wildcardDirty;
+
+        let treeHtml = '';
+        if (!groups.length) {
+            treeHtml = `<div class="pc-wc-more">${q ? '一致するワイルドカードがありません。' : 'ワイルドカードがありません。'}</div>`;
+        } else {
+            groups.forEach(group => {
+                const hasSelected = selectedWildcardPath && group.items.some(it => it.path === selectedWildcardPath);
+                const open = qLower ? true : (wcExpanded.has(group.name) || !!hasSelected);
+                if (open) wcExpanded.add(group.name);
+                const items = group.items;
+                treeHtml += `
+                    <div class="pc-file-tree-folder${open ? ' is-open' : ''}" data-wc-folder="${escapeHtmlAttr(group.name)}">
+                        <button type="button" class="pc-file-tree-folder-head" data-wc-folder-toggle="${escapeHtmlAttr(group.name)}">
+                            <span class="pc-file-tree-caret">${open ? '▾' : '▸'}</span>
+                            <span class="pc-file-tree-folder-name">${escapeHtml(group.name)}</span>
+                            <span class="pc-file-tree-count">${items.length}</span>
+                        </button>
+                        <div class="pc-file-tree-children"${open ? '' : ' hidden'}>
+                `;
+                items.forEach((it, idx) => {
+                    const path = it.path || '';
+                    const branch = idx === items.length - 1 ? '└──' : '├──';
+                    const isSel = path === selectedWildcardPath && wildcardEditorMode === 'edit';
+                    treeHtml += `
+                        <button type="button"
+                            class="pc-file-tree-item${isSel ? ' is-selected' : ''}"
+                            data-wc-path="${escapeHtmlAttr(path)}"
+                            data-wc-token="${escapeHtmlAttr(it.token || '')}"
+                            title="${escapeHtmlAttr(it.token || path)}">
+                            <span class="pc-file-tree-branch" aria-hidden="true">${branch}</span>
+                            <span class="pc-file-tree-item-main">
+                                <span class="pc-file-tree-col-name">${escapeHtml(shortWildcardName(path))}</span>
+                            </span>
+                        </button>
+                    `;
+                });
+                treeHtml += `</div></div>`;
+            });
+        }
+
+        const editorName = selectedWildcardPath || '（未選択）';
+        const editorToken = selectedWildcardPath ? `__${selectedWildcardPath}__` : '';
+        const isCreate = wildcardEditorMode === 'create';
+
+        wcHost.innerHTML = `
+            <div class="pc-wc-header">
+                <span>🪄 Wildcards <span class="pc-wc-count">(${total})</span></span>
+                <button type="button" class="pc-wc-new-btn" id="pc_wc_btn_new" title="新規ワイルドカード">＋ 新規</button>
+            </div>
+            <div class="pc-wc-search-wrap">
+                <input type="search" id="pc_wc_inline_search" class="pc-wc-inline-search"
+                    placeholder="Wildcards（.txt）を検索..."
+                    value="${escapeHtmlAttr(q)}"
+                    autocomplete="off" spellcheck="false" />
+                <button type="button" class="pc-wc-search-clear" id="pc_wc_search_clear"
+                    title="検索をクリア" aria-label="検索をクリア"${q ? '' : ' hidden'}>
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="pc-wc-layout">
+                <div class="pc-wc-col-tree">
+                    <div class="pc-file-tree" role="tree" aria-label="ワイルドカード一覧">
+                        ${treeHtml}
+                    </div>
+                </div>
+                <div class="pc-wc-col-editor">
+                    <div class="pc-wc-editor-toolbar">
+                        <div class="pc-wc-edit-meta" id="pc_wc_edit_meta"${isCreate ? ' hidden' : ''}>
+                            <label class="pc-wc-edit-path-label" for="pc_wc_edit_path">ファイル名</label>
+                            <input type="text" id="pc_wc_edit_path" class="pc-wc-edit-path"
+                                placeholder="例: 00color または colors/red"
+                                value="${escapeHtmlAttr(editorName === '（未選択）' ? '' : editorName)}"
+                                autocomplete="off" spellcheck="false" />
+                            <code class="pc-wc-editor-token" id="pc_wc_editor_token">${escapeHtml(editorToken)}</code>
+                            <span class="pc-wc-editor-name" id="pc_wc_editor_name" hidden>${escapeHtml(editorName)}</span>
+                        </div>
+                        <div class="pc-wc-create-row" id="pc_wc_create_row"${isCreate ? '' : ' hidden'}>
+                            <label class="pc-wc-create-label" for="pc_wc_new_path">ファイル名</label>
+                            <input type="text" id="pc_wc_new_path" class="pc-wc-new-path"
+                                placeholder="例: my_poses または poses/standing"
+                                value="${escapeHtmlAttr(isCreate ? (prevPathInput || '') : '')}" />
+                            <span class="pc-wc-create-hint">.txt は自動付与</span>
+                        </div>
+                        <div class="pc-file-tree-actions pc-wc-editor-actions">
+                            <button type="button" id="pc_wc_btn_save" title="内容を保存">保存</button>
+                            <button type="button" id="pc_wc_btn_rename" title="ファイル名を変更">名前変更</button>
+                            <button type="button" id="pc_wc_btn_insert" title="プロンプトに挿入">挿入</button>
+                            <button type="button" id="pc_wc_btn_delete" title="削除">削除</button>
+                        </div>
+                    </div>
+                    <textarea id="pc_wc_editor_text" class="pc-wc-editor-text" spellcheck="false"
+                        placeholder="1行に1エントリ（dynamic prompts 形式）"></textarea>
+                    <div class="pc-wc-editor-status" id="pc_wc_editor_status"></div>
+                </div>
+            </div>
+        `;
+
+        const searchInput = document.getElementById('pc_wc_inline_search');
+        const searchClear = document.getElementById('pc_wc_search_clear');
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                clearTimeout(wildcardSearchDebounce);
+                const value = searchInput.value || '';
+                if (searchClear) searchClear.hidden = !value.trim();
+                wildcardSearchDebounce = setTimeout(() => {
+                    wildcardSearchQuery = value.trim();
+                    renderWildcards(wildcardSearchQuery);
+                }, 180);
+            });
+            if (keepSearchFocus) {
+                searchInput.focus();
+                if (prevSelStart != null && prevSelEnd != null) {
+                    try { searchInput.setSelectionRange(prevSelStart, prevSelEnd); } catch (_) { /* ignore */ }
+                }
+            }
+        }
+        if (searchClear) {
+            searchClear.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                clearTimeout(wildcardSearchDebounce);
+                wildcardSearchQuery = '';
+                renderWildcards('');
+                const again = document.getElementById('pc_wc_inline_search');
+                if (again) again.focus();
+            });
+        }
+
+        // Restore editor across tree re-renders; load from API only on first mount / new selection.
+        if (keepEditor) {
+            if (wildcardEditorMode === 'create') {
+                fillWildcardEditor({ content: prevText || '' });
+                const pathInput = document.getElementById('pc_wc_new_path');
+                if (pathInput && prevPathInput != null) pathInput.value = prevPathInput;
+            } else {
+                fillWildcardEditor({
+                    path: selectedWildcardPath,
+                    token: selectedWildcardPath ? `__${selectedWildcardPath}__` : '',
+                    content: prevText || ''
+                });
+            }
+            wildcardDirty = wasDirty;
+            const statusEl = document.getElementById('pc_wc_editor_status');
+            if (statusEl && wasDirty && !String(statusEl.textContent || '').includes('未保存')) {
+                statusEl.textContent = (statusEl.textContent || '') + ' · 未保存';
+            }
+        } else if (selectedWildcardPath && wildcardEditorMode === 'edit') {
+            loadWildcardContent(selectedWildcardPath);
+        } else {
+            fillWildcardEditor({
+                path: selectedWildcardPath,
+                token: selectedWildcardPath ? `__${selectedWildcardPath}__` : '',
+                content: ''
+            });
+        }
+
+        // Ensure rename field is editable after tree re-renders.
+        const editPathAfter = document.getElementById('pc_wc_edit_path');
+        if (editPathAfter) {
+            const canEdit = wildcardEditorMode === 'edit' && !!selectedWildcardPath;
+            editPathAfter.disabled = !canEdit;
+            editPathAfter.readOnly = false;
+        }
+
+        wcHost.querySelectorAll('[data-wc-folder-toggle]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.getAttribute('data-wc-folder-toggle');
+                if (!key) return;
+                if (wcExpanded.has(key)) wcExpanded.delete(key);
+                else wcExpanded.add(key);
+                renderWildcards(wildcardSearchQuery);
+            });
+        });
+
+        wcHost.querySelectorAll('.pc-file-tree-item[data-wc-path]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const path = btn.getAttribute('data-wc-path') || '';
+                if (!path) return;
+                if (path === selectedWildcardPath && wildcardEditorMode === 'edit') return;
+                if (!confirmDiscardWildcardEdits()) return;
+                loadWildcardContent(path);
+            });
+            btn.addEventListener('dblclick', () => {
+                const token = btn.getAttribute('data-wc-token') || '';
+                if (token) insertWildcardToken(token);
+            });
+        });
+
+        const btnNew = document.getElementById('pc_wc_btn_new');
+        const btnSave = document.getElementById('pc_wc_btn_save');
+        const btnRename = document.getElementById('pc_wc_btn_rename');
+        const btnInsert = document.getElementById('pc_wc_btn_insert');
+        const btnDelete = document.getElementById('pc_wc_btn_delete');
+        if (btnNew) btnNew.addEventListener('click', startCreateWildcard);
+        if (btnSave) btnSave.addEventListener('click', saveWildcardEditor);
+        if (btnRename) btnRename.addEventListener('click', renameSelectedWildcard);
+        if (btnInsert) {
+            btnInsert.addEventListener('click', () => {
+                const token = selectedWildcardPath
+                    ? `__${selectedWildcardPath}__`
+                    : ((document.getElementById('pc_wc_editor_token') || {}).textContent || '').trim();
+                if (token) insertWildcardToken(token);
+            });
+        }
+        if (btnDelete) btnDelete.addEventListener('click', deleteSelectedWildcard);
     }
 
     function sectionNameFromPathKey(key) {
@@ -296,12 +865,12 @@
         const q = (query || '').trim();
         try {
             if (q) {
-                const result = await fetchTagItems(q, null, null, null, 500, 0);
-                currentItems = result.items;
-                renderSearchResults(currentItems);
+                await applySearchTreeFilter(q);
                 return;
             }
+            clearSearchTreeFilter();
             hideSearchResults();
+            renderTagPathTreeUI(true);
             if (selectedPathKey) {
                 tagLeavesCache.delete(selectedPathKey);
                 tagPageState.delete(selectedPathKey);
@@ -314,183 +883,90 @@
         }
     }
 
-    async function loadWildcards(query) {
+    function clearSearchTreeFilter() {
+        searchHitCounts = null;
+        searchHitLeafKeys = null;
+        searchHitTotal = 0;
+    }
+
+    function buildSearchHitMaps(paths) {
+        const leafCounts = new Map();
+        const allCounts = new Map();
+        const leafKeys = new Set();
+        (paths || []).forEach((entry) => {
+            const key = makePathKey(entry.section, entry.category, entry.group);
+            const count = Number(entry.count) || 0;
+            if (!key || count <= 0) return;
+            leafKeys.add(key);
+            leafCounts.set(key, count);
+            const parts = splitTagPathKey(key);
+            let acc = '';
+            parts.forEach((part) => {
+                acc = acc ? `${acc}${TAG_PATH_SEP}${part}` : part;
+                allCounts.set(acc, (allCounts.get(acc) || 0) + count);
+            });
+        });
+        searchHitLeafKeys = leafKeys;
+        searchHitCounts = allCounts;
+    }
+
+    async function applySearchTreeFilter(query) {
         const q = (query || '').trim();
-        if (!q && !wildcardsLoaded) {
-            renderWildcardsHint();
+        if (!q) {
+            clearSearchTreeFilter();
+            hideSearchResults();
+            renderTagPathTreeUI(true);
             return;
         }
-        try {
-            const params = new URLSearchParams();
-            if (query) params.set('q', query);
-            params.set('limit', '5000');
-            const resp = await fetch('/prompt-composer/api/wildcards?' + params.toString());
-            if (!resp.ok) throw new Error('HTTP ' + resp.status);
-            const data = await resp.json();
-            wildcardItems = data.items || [];
-            wildcardSources = data.sources || [];
-            wildcardsLoaded = true;
-            renderWildcards(query || '');
-        } catch (err) {
-            wildcardItems = [];
-            wildcardSources = [];
-            renderWildcards(query || '');
-        }
-    }
+        const resp = await fetch(
+            '/prompt-composer/api/tag-path-hits?q=' + encodeURIComponent(q)
+        );
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const data = await resp.json();
+        searchHitTotal = Number(data.total) || 0;
+        buildSearchHitMaps(data.paths || []);
+        tagLeavesCache = new Map();
+        tagPageState = new Map();
+        tagChildrenRendered = new Set();
 
-    function buildWildcardTree(items) {
-        const root = { name: '', path: '', children: new Map(), leaves: [] };
-        (items || []).forEach(it => {
-            const path = (it.path || '').trim();
-            const token = (it.token || '').trim();
-            if (!token) return;
-            const parts = path ? path.split('/').filter(Boolean) : [token];
-            let node = root;
-            for (let i = 0; i < parts.length; i++) {
-                const part = parts[i];
-                const isLeaf = (i === parts.length - 1);
-                if (isLeaf) {
-                    node.leaves.push({ label: part, path, token });
-                } else {
-                    if (!node.children.has(part)) {
-                        const childPath = node.path ? `${node.path}/${part}` : part;
-                        node.children.set(part, { name: part, path: childPath, children: new Map(), leaves: [] });
-                    }
-                    node = node.children.get(part);
-                }
+        tagExpanded = new Set();
+        (data.paths || []).forEach((entry) => {
+            const key = makePathKey(entry.section, entry.category, entry.group);
+            if (!key) return;
+            const parts = splitTagPathKey(key);
+            // Open folders that lead to hits, but keep leaf closed until clicked.
+            let acc = '';
+            for (let i = 0; i < Math.max(0, parts.length - 1); i++) {
+                acc = acc ? `${acc}${TAG_PATH_SEP}${parts[i]}` : parts[i];
+                tagExpanded.add(acc);
             }
+            if (parts.length === 1) tagExpanded.add(parts[0]);
         });
-        return root;
+
+        renderSearchFilterBanner(q, searchHitTotal);
+        renderTagPathTreeUI(true);
     }
 
-    function countTree(node) {
-        let count = (node.leaves || []).length;
-        node.children.forEach(child => { count += countTree(child); });
-        return count;
+    function renderSearchFilterBanner(query, total) {
+        if (!tagPathTreeHost) return;
+        const box = tagPathTreeHost.querySelector('.pc-tag-path-search-results');
+        if (!box) return;
+        box.style.display = 'block';
+        if (!total) {
+            box.innerHTML = `<div class="pc-tag-path-search-head">「${escapeHtml(query)}」に一致するタグはありません</div>`;
+            return;
+        }
+        box.innerHTML = `
+            <div class="pc-tag-path-search-head">
+                「${escapeHtml(query)}」の絞り込み — タグ数：${total}
+                <span class="pc-tag-path-search-hint">下のフォルダを開くと該当タグだけ表示されます</span>
+            </div>
+        `;
     }
 
     function escapeHtmlAttr(str) {
         // escapeHtml is fine for attrs too (we use dataset), but keep explicit
         return escapeHtml(str);
-    }
-
-    function renderTreeNode(node, queryLower) {
-        const children = Array.from(node.children.keys()).sort((a, b) => a.localeCompare(b, 'en'));
-        const leaves = (node.leaves || []).slice().sort((a, b) => (a.label || '').localeCompare(b.label || '', 'en'));
-
-        let html = '';
-
-        // children
-        children.forEach(name => {
-            const child = node.children.get(name);
-            const key = child.path;
-
-            // auto expand when searching
-            const shouldExpand = queryLower ? true : wcExpanded.has(key);
-            const caret = shouldExpand ? '▾' : '▸';
-            const childCount = countTree(child);
-
-            html += `
-                <div class="pc-wc-node" data-wc-node="${escapeHtmlAttr(key)}">
-                    <button type="button" class="pc-wc-toggle" data-wc-toggle="${escapeHtmlAttr(key)}">
-                        <span class="pc-wc-caret">${caret}</span>
-                        <span class="pc-wc-folder">${escapeHtml(name)}</span>
-                        <span class="pc-wc-count-mini">${childCount}</span>
-                    </button>
-                    <div class="pc-wc-children" style="display:${shouldExpand ? 'block' : 'none'}">
-                        ${renderTreeNode(child, queryLower)}
-                    </div>
-                </div>
-            `;
-        });
-
-        // leaves
-        leaves.forEach(l => {
-            const label = l.label || l.path || l.token;
-            html += `<button type="button" class="pc-wc-leaf" data-token="${escapeHtmlAttr(l.token)}" title="${escapeHtmlAttr(l.token)}">${escapeHtml(label)}</button>`;
-        });
-
-        return html;
-    }
-
-    function renderWildcards(query) {
-        const container = document.getElementById('pc_tags_container');
-        if (!container) return;
-        let wcHost = document.getElementById('pc_wildcards_container');
-        if (!wcHost) {
-            // Tabs内のDOMがまだマウントされていない可能性があるため、一定回数だけリトライ。
-            if (wildcardRenderRetryCount < 20) {
-                wildcardRenderRetryCount++;
-                setTimeout(() => renderWildcards(query), 300);
-            }
-            return;
-        }
-
-        wildcardRenderRetryCount = 0;
-        if (!wcHost.classList.contains('pc-wc-container')) {
-            wcHost.classList.add('pc-wc-container');
-        }
-
-        if (!wildcardItems || wildcardItems.length === 0) {
-            const srcText = (wildcardSources && wildcardSources.length)
-                ? wildcardSources.map(s => escapeHtml(`${s.source}: ${s.dir}`)).join('<br>')
-                : '';
-            const q = (query || '').trim();
-            const hint = q
-                ? '一致するワイルドカードがありません。'
-                : 'ワイルドカード検索欄にキーワードを入力してください（例: pose, hair, nsfw）。';
-            wcHost.innerHTML = `
-                <div class="pc-wc-header">🪄 Wildcards</div>
-                <div class="pc-wc-more">${hint}</div>
-                ${srcText ? `<div class="pc-wc-sources">${srcText}</div>` : ''}
-            `;
-            return;
-        }
-
-        const q = (query || '').trim();
-        const qLower = q.toLowerCase();
-        const tree = buildWildcardTree(wildcardItems);
-        const total = wildcardItems.length;
-
-        let html = `<div class="pc-wc-header">🪄 Wildcards <span class="pc-wc-count">(${total})</span></div>`;
-        html += `<div class="pc-wc-tree">${renderTreeNode(tree, qLower)}</div>`;
-        html += `<div class="pc-wc-more">クリックで挿入（例: <code>__POSES/all-fours__</code>）</div>`;
-        wcHost.innerHTML = html;
-
-        // toggle folder expand
-        wcHost.querySelectorAll('.pc-wc-toggle').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const key = btn.dataset.wcToggle;
-                if (!key) return;
-                if (wcExpanded.has(key)) wcExpanded.delete(key);
-                else wcExpanded.add(key);
-                renderWildcards(query || '');
-            });
-        });
-
-        // leaf insert
-        wcHost.querySelectorAll('.pc-wc-leaf').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const token = btn.dataset.token;
-                if (!token || !window.PromptComposer) return;
-                const blocks = (window.PromptComposer.blocks || []).concat(window.PromptComposer.negativeBlocks || []);
-
-                let target = null;
-                const activeId = window.PromptComposerActiveBlockId;
-                if (activeId) {
-                    target = blocks.find(b => b.id === activeId);
-                }
-                if (!target) {
-                    target = blocks.find(b => b.enabled) || blocks[0];
-                }
-                if (!target) return;
-
-                window.PromptComposer.addToken(target.id, token, token, {
-                    sourceType: 'manual',
-                    isTrigger: false
-                });
-            });
-        });
     }
 
     function hideTagsListContainer() {
@@ -530,6 +1006,9 @@
         if (!previewUrl) {
             return `
             <button type="button" class="pc-tag-card pc-tag-card-text-only" data-tag="${tag}" data-jp="${jp}">
+                <div class="pc-tag-card-art pc-tag-card-art-empty">
+                    <span class="pc-tag-card-no-image">No Image</span>
+                </div>
                 ${body}
             </button>`;
         }
@@ -538,6 +1017,7 @@
             <button type="button" class="pc-tag-card has-preview" data-tag="${tag}" data-jp="${jp}"${previewAttr}>
                 <div class="pc-tag-card-art">
                     <img class="pc-tag-preview pc-tag-preview-pending" data-src="${escapeHtml(previewUrl)}" alt="" decoding="async" />
+                    <span class="pc-tag-card-no-image">No Image</span>
                 </div>
                 ${body}
             </button>`;
@@ -664,7 +1144,7 @@
             return;
         }
         box.innerHTML = `
-            <div class="pc-tag-path-search-head">検索結果 (${items.length})</div>
+            <div class="pc-tag-path-search-head">検索結果　タグ数：${items.length}</div>
             <div class="pc-tag-path-leaves-inner">${renderTagLeavesHtml(items)}</div>
         `;
         scheduleTagPreviewObserve(box);
@@ -691,12 +1171,11 @@
 
     function syncTreeExpandState() {
         if (!tagPathTreeHost) return;
-        tagPathTreeHost.querySelectorAll('[data-tag-toggle]').forEach(btn => {
-            const key = readPathKeyAttr(btn, 'data-tag-toggle');
+        tagPathTreeHost.querySelectorAll('.pc-tag-path-row [data-tag-select]').forEach(btn => {
+            const key = readPathKeyAttr(btn, 'data-tag-select');
             if (!key) return;
-            const open = tagExpanded.has(key);
-            const caret = btn.querySelector('.pc-wc-caret');
-            if (caret) caret.textContent = open ? '▾' : '▸';
+            const row = btn.closest('.pc-tag-path-row');
+            if (row) row.classList.toggle('is-open', tagExpanded.has(key));
         });
         tagPathTreeHost.querySelectorAll('[data-tag-children]').forEach(el => {
             const key = readPathKeyAttr(el, 'data-tag-children');
@@ -724,7 +1203,7 @@
         currentSection = null;
         currentCategory = null;
         currentGroup = null;
-        hideSearchResults();
+        if (!searchHitCounts) hideSearchResults();
         syncTreeExpandState();
         updateTreeSelectionStyles();
     }
@@ -770,8 +1249,11 @@
         const host = findChildrenHost(key);
         if (!node || !host || !node.children.size) return;
         const qInput = document.querySelector('#pc_tag_search input, #pc_tag_search textarea');
-        const qLower = (qInput ? (qInput.value || '') : '').trim().toLowerCase();
-        host.innerHTML = renderTagPathLevel(node, qLower);
+        const qLower = searchHitCounts
+            ? ''
+            : ((qInput ? (qInput.value || '') : '').trim().toLowerCase());
+        const depth = splitTagPathKey(key).length;
+        host.innerHTML = renderTagPathLevel(node, qLower, depth);
         tagChildrenRendered.add(key);
         syncTreeExpandState();
         updateTreeSelectionStyles();
@@ -872,7 +1354,14 @@
             if (toggle) {
                 e.preventDefault();
                 e.stopPropagation();
-                toggleTagPathNode(readPathKeyAttr(toggle, 'data-tag-toggle'));
+                const key = readPathKeyAttr(toggle, 'data-tag-toggle');
+                toggleTagPathNode(key);
+                selectedPathKey = key;
+                const f = filtersFromPathKey(key);
+                currentSection = f.sec;
+                currentCategory = f.cat;
+                currentGroup = f.grp;
+                updateTreeSelectionStyles();
                 return;
             }
             const tagBtn = e.target.closest('.pc-tag-card, .pc-tag-row');
@@ -888,9 +1377,18 @@
                 collapseAllTagPaths();
                 return;
             }
-            const select = e.target.closest('[data-tag-select]');
-            if (select) {
-                applyTagPathKey(readPathKeyAttr(select, 'data-tag-select'));
+            const select = e.target.closest('[data-tag-select]') || e.target.closest('.pc-tag-path-row')?.querySelector('[data-tag-select]');
+            if (select && e.target.closest('.pc-tag-path-row')) {
+                e.preventDefault();
+                e.stopPropagation();
+                const key = readPathKeyAttr(select, 'data-tag-select');
+                toggleTagPathNode(key);
+                selectedPathKey = key;
+                const f = filtersFromPathKey(key);
+                currentSection = f.sec;
+                currentCategory = f.cat;
+                currentGroup = f.grp;
+                updateTreeSelectionStyles();
             }
         });
     }
@@ -898,40 +1396,85 @@
 
     function setupSearch() {
         const tagRoot = document.getElementById('pc_tag_search');
-        const wcRoot = document.getElementById('pc_wc_search');
 
-        // Tag search: filters tags + also updates wildcards to keep behavior consistent.
+        // Tag search: filters tag dictionary tree only (wildcards have their own inline search).
         if (tagRoot) {
             const tagInput = tagRoot.querySelector('input') || tagRoot.querySelector('textarea');
             if (tagInput && tagInput.dataset.pcSearchBound !== '1') {
                 tagInput.dataset.pcSearchBound = '1';
                 ensureQuickInsertBar(tagRoot);
+                ensureTagSearchClearButton(tagRoot, tagInput);
                 tagInput.addEventListener('input', (e) => {
                     clearTimeout(debounceTimer);
+                    syncTagSearchClearButton(tagRoot, e.target.value);
                     const value = e.target.value;
                     debounceTimer = setTimeout(() => {
-                        const q = value.trim();
-                        loadTags(q);
-                        if (q) loadWildcards(q);
+                        loadTags(value.trim());
                     }, 250);
                 });
+                syncTagSearchClearButton(tagRoot, tagInput.value);
             }
         }
+    }
 
-        // Wildcard search: only filters wildcards.
-        if (wcRoot) {
-            const wcInput = wcRoot.querySelector('input') || wcRoot.querySelector('textarea');
-            if (wcInput && wcInput.dataset.pcSearchBound !== '1') {
-                wcInput.dataset.pcSearchBound = '1';
-                wcInput.addEventListener('input', (e) => {
-                    clearTimeout(wildcardDebounceTimer);
-                    const value = e.target.value;
-                    wildcardDebounceTimer = setTimeout(() => {
-                        loadWildcards(value.trim());
-                    }, 250);
-                });
-            }
-        }
+    function getTagSearchFieldWrap(root) {
+        if (!root) return null;
+        return root.querySelector('.wrap') ||
+            root.querySelector('.form') ||
+            (root.querySelector('input, textarea') || {}).parentElement ||
+            root;
+    }
+
+    function syncTagSearchClearButton(root, value) {
+        if (!root) return;
+        const btn = root.querySelector('.pc-tag-search-clear');
+        if (!btn) return;
+        const hasValue = !!(value || '').trim();
+        btn.hidden = !hasValue;
+        btn.setAttribute('aria-hidden', hasValue ? 'false' : 'true');
+    }
+
+    function ensureTagSearchClearButton(root, input) {
+        if (!root || !input) return;
+        if (root.querySelector('.pc-tag-search-clear')) return;
+
+        const wrap = getTagSearchFieldWrap(root);
+        if (!wrap) return;
+        wrap.classList.add('pc-tag-search-field');
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'pc-tag-search-clear';
+        btn.title = '検索をクリア';
+        btn.setAttribute('aria-label', '検索をクリア');
+        btn.innerHTML = '<span aria-hidden="true">×</span>';
+        btn.hidden = true;
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            clearTagSearch(input, root);
+        });
+        wrap.appendChild(btn);
+    }
+
+    function clearTagSearch(input, root) {
+        clearTimeout(debounceTimer);
+        if (input) input.value = '';
+        syncTagSearchClearButton(root || document.getElementById('pc_tag_search'), '');
+
+        // Restore the full dictionary tree (initial browse state).
+        tagExpanded.clear();
+        tagChildrenRendered.clear();
+        selectedPathKey = '';
+        currentSection = null;
+        currentCategory = null;
+        currentGroup = null;
+        tagLeavesCache = new Map();
+        tagPageState = new Map();
+        clearSearchTreeFilter();
+        hideSearchResults();
+        renderTagPathTreeUI(false);
+        if (input && typeof input.focus === 'function') input.focus();
     }
 
     function ensureQuickInsertBar(root) {
@@ -1028,12 +1571,18 @@
 
     function getTagPathCount(key) {
         if (!key) return 0;
+        if (searchHitCounts) {
+            return searchHitCounts.get(key) || 0;
+        }
         const cached = tagLeavesCache.get(key);
         if (cached && cached.length) return cached.length;
         return tagPathCounts[key] || 0;
     }
 
     function nodeMatchesQuery(node, qLower) {
+        if (searchHitCounts) {
+            return (searchHitCounts.get(node.path) || 0) > 0;
+        }
         if (!qLower) return true;
         if ((node.name || '').toLowerCase().includes(qLower)) return true;
         if (node.pathData) {
@@ -1090,31 +1639,36 @@
         });
     }
 
-    function renderTagPathLevel(node, qLower) {
+    function renderTagPathLevel(node, qLower, depth = 0) {
         const children = orderedTagPathChildKeys(node);
+        const visible = children.filter((name) => {
+            const child = node.children.get(name);
+            if (searchHitCounts) return nodeMatchesQuery(child, '');
+            return !(qLower && !nodeMatchesQuery(child, qLower));
+        });
         let html = '';
 
-        children.forEach(name => {
+        visible.forEach((name, idx) => {
             const child = node.children.get(name);
-            if (qLower && !nodeMatchesQuery(child, qLower)) return;
-
             const key = child.path;
             const pathAttr = encodePathKey(key);
             const hasChildren = child.children.size > 0;
-            const isOpen = qLower ? true : tagExpanded.has(key);
-            const caret = isOpen ? '▾' : '▸';
+            const isOpen = searchHitCounts
+                ? tagExpanded.has(key)
+                : (qLower ? true : tagExpanded.has(key));
             const count = getTagPathCount(key);
             const isSelected = selectedPathKey === key;
             const displayName = tagPathDisplayLabel(name, key);
+            const isRoot = depth === 0;
+            const branch = isRoot ? '' : (idx === visible.length - 1 ? '└──' : '├──');
 
-            html += '<div class="pc-wc-node">';
-            html += `<div class="pc-tag-path-row${isSelected ? ' is-selected' : ''}">`;
+            html += `<div class="pc-wc-node${isRoot ? ' pc-tag-path-root' : ' pc-tag-path-child'}">`;
+            html += `<div class="pc-tag-path-row pc-tag-path-depth-${depth}${isSelected ? ' is-selected' : ''}${isOpen ? ' is-open' : ''}${isRoot ? ' is-root' : ''}" data-depth="${depth}">`;
+            if (branch) {
+                html += `<span class="pc-file-tree-branch" aria-hidden="true">${branch}</span>`;
+            }
             html += `
-                <button type="button" class="pc-wc-toggle pc-tag-path-toggle" data-tag-toggle="${pathAttr}" title="展開 / 折りたたみ">
-                    <span class="pc-wc-caret">${caret}</span>
-                </button>`;
-            html += `
-                <button type="button" class="pc-tag-path-select" data-tag-select="${pathAttr}" title="${escapeHtml(displayName)}">
+                <button type="button" class="pc-tag-path-select" data-tag-select="${pathAttr}" title="${escapeHtml(displayName)}（クリックで開閉）">
                     <span class="pc-wc-folder">${escapeHtml(displayName)}</span>
                     <span class="pc-wc-count-mini">${count}</span>
                 </button>
@@ -1181,22 +1735,29 @@
         const scrollTop = preserveScroll && scrollEl ? scrollEl.scrollTop : 0;
 
         const qInput = document.querySelector('#pc_tag_search input, #pc_tag_search textarea');
-        const qLower = (qInput ? (qInput.value || '') : '').trim().toLowerCase();
+        const qRaw = (qInput ? (qInput.value || '') : '').trim();
+        const qLower = searchHitCounts ? '' : qRaw.toLowerCase();
         tagPathTreeRoot = buildTagPathTree(allPaths);
         let total = 0;
-        tagPathTreeRoot.children.forEach(child => { total += getTagPathCount(child.path); });
+        if (searchHitCounts) {
+            total = searchHitTotal;
+        } else {
+            tagPathTreeRoot.children.forEach(child => { total += getTagPathCount(child.path); });
+        }
 
         let html = `
             <div class="pc-tag-path-tree-head">
                 <span class="pc-tag-path-tree-title">タグ辞書</span>
-                <span class="pc-wc-count">(${total})</span>
+                <span class="pc-wc-count">タグ数：${total}</span>
                 <button type="button" class="pc-tag-path-collapse-all" title="すべて閉じる" aria-label="すべて閉じる">
                     <span class="pc-tag-path-collapse-icon" aria-hidden="true">⊟</span>
                 </button>
             </div>
             <div class="pc-tag-path-search-results" style="display:none"></div>
-            <div class="pc-wc-tree pc-tag-path-tree">${renderTagPathLevel(tagPathTreeRoot, qLower)}</div>
-            <div class="pc-wc-more">▸で展開 — フォルダ内にタグが表示されます</div>
+            <div class="pc-wc-tree pc-tag-path-tree">${renderTagPathLevel(tagPathTreeRoot, qLower, 0)}</div>
+            <div class="pc-wc-more">${searchHitCounts
+                ? '一致するフォルダだけ表示中 — フォルダを開くと該当タグが出ます'
+                : '名前をクリックで開閉 — フォルダ内にタグが表示されます'}</div>
         `;
         tagPathTreeHost.innerHTML = html;
         tagPathTreeScrollEl = tagPathTreeHost.querySelector('.pc-tag-path-tree');
@@ -1206,15 +1767,22 @@
         syncTreeExpandState();
         updateTreeSelectionStyles();
 
+        if (searchHitCounts && qRaw) {
+            renderSearchFilterBanner(qRaw, searchHitTotal);
+        }
+
         tagExpanded.forEach(key => {
             ensureNodeChildrenRendered(key);
             const cached = tagLeavesCache.get(key);
             const host = findLeavesHost(key);
-            if (host && cached) {
+            if (host && cached && !searchHitCounts) {
                 const state = tagPageState.get(key) || { total: cached.length, hasMore: false };
                 host.innerHTML = renderTagLeavesPanel(key, cached, state.total, state.hasMore);
                 host.dataset.loaded = '1';
                 scheduleTagPreviewObserve(host);
+            } else if (host && searchHitCounts && tagExpanded.has(key) && !hasChildFoldersInDom(key)) {
+                host.dataset.loaded = '';
+                ensureNodeTagsLoaded(key, true, false);
             }
         });
 

@@ -75,6 +75,9 @@ def read_civitai_info(info_path):
         "example_prompts": example_prompts,
         "download_count": data.get("stats", {}).get("downloadCount", 0),
         "thumbs_up": data.get("stats", {}).get("thumbsUpCount", 0),
+        "published_at": data.get("publishedAt") or "",
+        "updated_at": data.get("updatedAt") or "",
+        "created_at": data.get("createdAt") or "",
     }
 
     return result

@@ -58,6 +58,7 @@
     function init() {
         resetGenerateForeverState();
         stopPcProgressWatch();
+        setupGenerateDelegation();
         setupButtons();
         setupGeneratePreview();
         if (!_syncLogged) {
@@ -522,6 +523,10 @@
     }
 
     function generateTxt2img() {
+        if (window.PromptComposer && typeof window.PromptComposer.updateFinalPrompt === 'function') {
+            window.PromptComposer.updateFinalPrompt();
+        }
+
         const prompt = getFinalPrompt();
         const negative = getFinalNegative();
         if (!prompt && !negative) {
@@ -635,8 +640,29 @@
         return true;
     }
 
+    /** Survives Gradio DOM replacement (direct bindOnce on the button node does not). */
+    function setupGenerateDelegation() {
+        let doc;
+        try {
+            doc = appRoot();
+        } catch (_) {
+            doc = document;
+        }
+        if (!doc || doc._pcGenerateDelegationBound) return;
+        doc._pcGenerateDelegationBound = true;
+        doc.addEventListener('click', (e) => {
+            const target = e.target;
+            if (!target || typeof target.closest !== 'function') return;
+            if (!target.closest('#pc_generate_txt2img')) return;
+            e.preventDefault();
+            generateTxt2img();
+        }, true);
+    }
+
     /** Bind each button at most once per DOM node (Gradio re-creates nodes without our flag). */
     function setupButtons() {
+        setupGenerateDelegation();
+
         const bindOnce = (elemId, handler) => {
             const btn = getButtonEl(elemId);
             if (!btn || btn.dataset.pcPromptSyncBound === '1') return;
@@ -664,11 +690,6 @@
             e.preventDefault();
             copyToClipboard();
         });
-
-        bindOnce('pc_generate_txt2img', (e) => {
-            e.preventDefault();
-            generateTxt2img();
-        });
     }
 
     let _setupButtonsDebounce = null;
@@ -676,13 +697,12 @@
         'pc_apply_txt2img',
         'pc_apply_img2img',
         'pc_copy_clipboard',
-        'pc_generate_txt2img'
     ];
 
-    function promptSyncButtonsReady() {
-        return _promptSyncButtonIds.every((elemId) => {
+    function needsButtonRebind() {
+        return _promptSyncButtonIds.some((elemId) => {
             const btn = getButtonEl(elemId);
-            return btn && btn.dataset.pcPromptSyncBound === '1';
+            return !btn || btn.dataset.pcPromptSyncBound !== '1';
         });
     }
 
@@ -692,9 +712,7 @@
             _setupButtonsDebounce = null;
             setupButtons();
             setupGeneratePreview();
-            if (promptSyncButtonsReady()) {
-                try { observer.disconnect(); } catch (_) { /* ignore */ }
-            } else {
+            if (!needsButtonRebind()) {
                 startPromptSyncObserver();
             }
         }, 600);
@@ -837,7 +855,7 @@
     // Tab switches and Gradio updates mutate the tree; debounce and only
     // re-bind buttons (idempotent) — never stack duplicate click listeners.
     const observer = new MutationObserver(() => {
-        if (promptSyncButtonsReady()) return;
+        if (!needsButtonRebind()) return;
         scheduleSetupButtons();
     });
     function startPromptSyncObserver() {
@@ -864,5 +882,10 @@
     if (typeof onUiUpdate === 'function') {
         onUiUpdate(scheduleSetupButtons);
     }
+
+    setupGenerateDelegation();
+    setInterval(() => {
+        if (needsButtonRebind()) scheduleSetupButtons();
+    }, 3000);
 
 })();

@@ -344,15 +344,36 @@
         return `[${blockTypeLabel(col.block)}] ${name}`;
     }
 
+    function setPickButtonLabel(btn, text) {
+        if (!btn) return;
+        const label = btn.querySelector('.pc-block-tagset-pick-label');
+        if (label) label.textContent = text;
+        else btn.textContent = text;
+    }
+
+    function isPickMenuOpen(menu) {
+        if (!menu) return false;
+        const wrap = menu.closest('.pc-block-tagset-pick');
+        return !!(wrap && wrap.classList.contains('is-open'));
+    }
+
     function setPickSelection(blockId, collectionId) {
         const btn = getPickButton(blockId);
         const menu = getPickMenu(blockId);
         if (!collectionId) {
             setSelection(blockId, '');
-            if (btn) btn.textContent = '保存済み';
+            if (btn) {
+                const listLen = (() => {
+                    const block = findBlock(blockId);
+                    const list = block ? collectionsForBar(block) : [];
+                    return list.length;
+                })();
+                setPickButtonLabel(btn, listLen ? `保存済み (${listLen})` : '保存済み');
+            }
             if (menu) {
                 menu.querySelectorAll('.pc-block-tagset-pick-item').forEach((el) => {
                     el.classList.toggle('is-selected', false);
+                    el.classList.toggle('selection', false);
                 });
             }
             return;
@@ -361,10 +382,12 @@
         if (!col) return;
         setSelection(blockId, collectionId);
         const block = findBlock(blockId);
-        if (btn) btn.textContent = formatPickLabel(col, block);
+        if (btn) setPickButtonLabel(btn, formatPickLabel(col, block));
         if (menu) {
             menu.querySelectorAll('.pc-block-tagset-pick-item').forEach((el) => {
-                el.classList.toggle('is-selected', el.dataset.collectionId === collectionId);
+                const on = el.dataset.collectionId === collectionId;
+                el.classList.toggle('is-selected', on);
+                el.classList.toggle('selection', on);
             });
         }
     }
@@ -460,12 +483,12 @@
             selId: selectionState[blockId]?.collectionId || '',
             name: nameInput ? nameInput.value.trim() : ''
         };
-        const populateMenu = !!(options && options.populateMenu) || !menu.hidden;
+        const populateMenu = !!(options && options.populateMenu) || isPickMenuOpen(menu);
         if (populateMenu) {
             populateTagsetPick(menu, list, blockId, nameInput, preserve);
         }
         if (btn && !selectionState[blockId]?.collectionId) {
-            btn.textContent = list.length ? `保存済み (${list.length})` : '保存済み';
+            setPickButtonLabel(btn, list.length ? `保存済み (${list.length})` : '保存済み');
         }
     }
 
@@ -475,10 +498,14 @@
         if (!menu || !btn) return;
         const rect = btn.getBoundingClientRect();
         const maxH = Math.min(window.innerHeight * 0.46, 320);
+        const gap = 8;
+        const width = Math.min(Math.max(rect.width, 160), 260);
         menu.style.position = 'fixed';
         menu.style.left = `${Math.max(8, rect.left)}px`;
-        menu.style.top = `${rect.bottom + 4}px`;
-        menu.style.width = `${Math.max(rect.width, 180)}px`;
+        menu.style.top = `${rect.bottom + gap}px`;
+        menu.style.width = `${width}px`;
+        menu.style.maxWidth = '260px';
+        menu.style.minWidth = '0';
         menu.style.right = 'auto';
         menu.style.maxHeight = `${maxH}px`;
         menu.style.zIndex = '1200';
@@ -490,30 +517,38 @@
         menu.style.left = '';
         menu.style.top = '';
         menu.style.width = '';
+        menu.style.maxWidth = '';
+        menu.style.minWidth = '';
         menu.style.right = '';
         menu.style.maxHeight = '';
         menu.style.zIndex = '';
     }
 
     function closeAllPickMenus(exceptBlockId) {
-        queryAllBars('.pc-block-tagset-pick-menu').forEach((menu) => {
-            const bid = menu.dataset.blockId;
+        queryAllBars('.pc-block-tagset-pick').forEach((wrap) => {
+            const bid = wrap.dataset.blockId;
             if (exceptBlockId && bid === exceptBlockId) return;
-            menu.hidden = true;
+            wrap.classList.remove('is-open');
+            const btn = wrap.querySelector('.pc-block-tagset-pick-btn');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+            const menu = wrap.querySelector('.pc-block-tagset-pick-menu');
             resetPickMenuPosition(menu);
         });
     }
 
     function togglePickMenu(blockId) {
+        const wrap = getPickWrap(blockId);
         const menu = getPickMenu(blockId);
-        if (!menu) return;
-        const willOpen = menu.hidden;
+        const btn = getPickButton(blockId);
+        if (!wrap || !menu) return;
+        const willOpen = !wrap.classList.contains('is-open');
         closeAllPickMenus();
         if (willOpen) {
-            const bar = menu.closest('.pc-block-tagset-bar');
+            const bar = wrap.closest('.pc-block-tagset-bar');
             if (bar) populateBarFromBlock(bar, null, { populateMenu: true });
             positionPickMenu(blockId);
-            menu.hidden = false;
+            wrap.classList.add('is-open');
+            if (btn) btn.setAttribute('aria-expanded', 'true');
         }
     }
 
@@ -532,6 +567,18 @@
             if (!e.target.closest('.pc-block-tagset-pick')) {
                 closeAllPickMenus();
             }
+        });
+        document.addEventListener('mouseover', (e) => {
+            const item = e.target.closest('.pc-block-tagset-pick-item');
+            if (!item || !item.matches(':first-of-type')) return;
+            const menu = item.closest('.pc-block-tagset-pick-menu');
+            if (menu) menu.classList.add('option-hover');
+        });
+        document.addEventListener('mouseout', (e) => {
+            const item = e.target.closest('.pc-block-tagset-pick-item');
+            if (!item || !item.matches(':first-of-type')) return;
+            const menu = item.closest('.pc-block-tagset-pick-menu');
+            if (menu) menu.classList.remove('option-hover');
         });
         window.addEventListener('resize', () => closeAllPickMenus());
         window.addEventListener('scroll', () => closeAllPickMenus(), true);

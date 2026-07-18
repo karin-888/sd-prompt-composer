@@ -17314,9 +17314,7 @@
         teal_hair: ターコイズ髪
         violet_hair: 紫髪
         yellow_hair: 黄髪
-        orange_hair: 橙髪
         navy_hair: 紺髪
-        pink_hair: ピンク髪
 
         pastel-colored_hair: パステル
         
@@ -17410,11 +17408,11 @@
       tags:
         colored_inner_hair: インナーカラー
         gradient_hair: グラデーションヘア
+        "[main_hair_color], gradient_hair_from_blue_to_purple": グラデーション
         rainbow_hair: 虹の髪
         split-color_hair: スプリットカラーの髪
         colored_tips_hair: カラーリングした毛先
         dip-dye_hair: カラーリングした毛先
-        gradient_hair_from_blue_to_purple: グラデーション
         split-color_hair_with_white_and_red: ツートンカラー
         two-tone_hair_with_red_and_yellow: ２色染めした髪
         Gradient_hair_color: グラデーション

@@ -311,6 +311,14 @@
             const weightStr = hasWeight ? `:${token.weight}` : '';
             const sourceClass = token.sourceType ? `pc-token-${token.sourceType}` : '';
             const hiddenClass = token.hidden === true ? 'pc-token-hidden' : '';
+            const rawText = String(token.text || token.label || '').trim().toUpperCase();
+            const rawOriginal = String(token.text || token.label || '').trim();
+            const isWildcardToken = token.sourceType === 'wildcard'
+                || /^__[A-Za-z0-9][\w./\-]*__$/.test(rawOriginal)
+                || /^__[^_].*__$/.test(rawOriginal);
+            const specialClass = rawText === 'BREAK' ? 'pc-token-break'
+                : (rawText === 'AND' ? 'pc-token-and'
+                    : (isWildcardToken ? 'pc-token-wildcard' : ''));
             const isLoRA = token.sourceType === 'lora';
             const isEmbedding = token.sourceType === 'embedding';
             const isTW = token.isTrigger === true;
@@ -326,6 +334,9 @@
             } else if (isEmbedding) {
                 badgeClass = 'pc-token-source-embedding';
                 badgeText = 'Emb';
+            } else if (isWildcardToken) {
+                badgeClass = 'pc-token-source-wildcard';
+                badgeText = 'WC';
             }
 
             const sourceBadge = badgeText
@@ -336,6 +347,7 @@
             if (isTW) titleParts.push('[TW]');
             if (isLoRA) titleParts.push('[LoRA]');
             if (isEmbedding) titleParts.push('[Embedding]');
+            if (isWildcardToken) titleParts.push('[Wildcard]');
             if (token.hidden === true) titleParts.push('[HIDDEN]');
             titleParts.push(token.text);
             const title = escapeHtml(titleParts.join(' '));
@@ -349,7 +361,7 @@
                 : '';
 
             tokensHtml += `
-                <span class="pc-token ${sourceClass} ${hiddenClass}" draggable="true" data-token-id="${token.id}" data-block-id="${block.id}" data-token-idx="${tidx}" title="${title}"${previewAttr}>
+                <span class="pc-token ${sourceClass} ${hiddenClass} ${specialClass}" draggable="true" data-token-id="${token.id}" data-block-id="${block.id}" data-token-idx="${tidx}" title="${title}"${previewAttr}>
                     ${sourceBadge}
                     <span class="pc-token-label">
                         <span class="pc-token-label-text">${escapeHtml(token.label)}</span>
@@ -372,21 +384,23 @@
                     <span class="pc-block-drag-handle">⠿</span>
                     <button class="pc-block-toggle" data-block-id="${block.id}">${toggleIcon}</button>
                     <span class="pc-block-label">${block.label}</span>
-                    <button class="pc-block-clear" data-block-id="${block.id}" title="この欄のタグをすべて削除">🧹</button>
-                    <button class="pc-block-delete" data-block-id="${block.id}" title="この欄を削除">🗑️</button>
-                    <span class="pc-block-count">${block.tokens.length}</span>
+                    <button class="pc-block-clear" data-block-id="${block.id}" title="この欄のタグをすべて削除" aria-label="枠内タグクリア">枠内タグクリア</button>
+                    <button class="pc-block-delete" data-block-id="${block.id}" title="この欄を削除" aria-label="枠ごと削除">枠ごと削除</button>
+                    <span class="pc-block-count">タグ数：${block.tokens.length}</span>
                 </div>
                 <div class="pc-block-tagset-bar" data-block-id="${block.id}" data-block-type="${block.type}">
                     <input type="text" class="pc-block-tagset-name" data-block-id="${block.id}" placeholder="保存名..." autocomplete="off" />
                     <div class="pc-block-tagset-pick" data-block-id="${block.id}">
-                        <button type="button" class="pc-block-tagset-pick-btn" data-block-id="${block.id}" aria-haspopup="listbox">保存済み</button>
-                        <div class="pc-block-tagset-pick-menu" data-block-id="${block.id}" role="listbox" hidden></div>
+                        <button type="button" class="pc-block-tagset-pick-btn" data-block-id="${block.id}" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="pc-block-tagset-pick-label">保存済み</span>
+                        </button>
+                        <div class="pc-block-tagset-pick-menu" data-block-id="${block.id}" role="listbox"></div>
                     </div>
                     <div class="pc-block-tagset-actions">
-                        <button type="button" class="pc-block-tagset-btn pc-block-tagset-save-new" data-block-id="${block.id}" title="新規保存" aria-label="新規保存">＋</button>
-                        <button type="button" class="pc-block-tagset-btn pc-block-tagset-load" data-block-id="${block.id}" title="読込（Shift+クリックで追加）" aria-label="読込">↓</button>
-                        <button type="button" class="pc-block-tagset-btn pc-block-tagset-overwrite" data-block-id="${block.id}" title="上書き" aria-label="上書き">↻</button>
-                        <button type="button" class="pc-block-tagset-btn pc-block-tagset-delete" data-block-id="${block.id}" title="削除" aria-label="削除">×</button>
+                        <button type="button" class="pc-block-tagset-btn pc-block-tagset-save-new" data-block-id="${block.id}" title="新規保存" aria-label="新規保存">新規</button>
+                        <button type="button" class="pc-block-tagset-btn pc-block-tagset-load" data-block-id="${block.id}" title="読込（Shift+クリックで追加）" aria-label="読込">読込</button>
+                        <button type="button" class="pc-block-tagset-btn pc-block-tagset-overwrite" data-block-id="${block.id}" title="上書き" aria-label="上書き">上書き</button>
+                        <button type="button" class="pc-block-tagset-btn pc-block-tagset-delete" data-block-id="${block.id}" title="削除" aria-label="削除">削除</button>
                     </div>
                 </div>
                 <div class="pc-block-body">
@@ -495,10 +509,10 @@
             document.addEventListener('dragover', onDocumentDragOverBlockDragAutoScroll, { passive: true });
         }
 
-        // Sort blocks button
+        // Block reorder modal
         const sortBtn = document.getElementById('pc_sort_blocks');
         if (sortBtn) {
-            sortBtn.addEventListener('click', sortBlocksByProfile);
+            sortBtn.addEventListener('click', showBlockReorderModal);
         }
 
         // Clear blocks button
@@ -578,7 +592,12 @@
     function ensureOrderProfileManagerUI() {
         const root = document.getElementById('pc_order_profile');
         if (!root) return;
-        if (root.querySelector('.pc-order-profile-manager')) return;
+        // Rebuild if an older dropdown-based manager is still present
+        const existingMgr = root.querySelector('.pc-order-profile-manager');
+        if (existingMgr) {
+            if (existingMgr.querySelector('.pc-order-profile-tree')) return;
+            existingMgr.remove();
+        }
 
         // Hide Gradio's original dropdown UI to avoid duplicated controls.
         // Capture any pre-existing Gradio <select> NOW — after we inject our UI,
@@ -603,25 +622,33 @@
         wrap.className = 'pc-order-profile-manager';
         wrap.innerHTML = `
             <div class="pc-order-profile-row">
-                <select class="pc-order-profile-select"></select>
-                <button type="button" class="pc-order-profile-load" title="選択した順序を読込">読込</button>
-            </div>
-            <div class="pc-order-profile-row">
-                <input type="text" class="pc-order-profile-name" placeholder="順序プロファイル名...">
+                <input type="text" class="pc-order-profile-name" placeholder="順序プロファイル名...（項目/保存名）">
                 <button type="button" class="pc-order-profile-save" title="新規保存">保存</button>
                 <button type="button" class="pc-order-profile-overwrite" title="上書き保存">上書き</button>
                 <button type="button" class="pc-order-profile-delete" title="削除">削除</button>
             </div>
-            <div class="pc-order-profile-hint">読込 / 保存 / 上書き / 削除（表示順のみ対象）</div>
+            <div class="pc-file-tree-meta">
+                <span class="pc-order-profile-selected-name"></span>
+                <span class="pc-order-profile-selected-date"></span>
+                <div class="pc-file-tree-actions">
+                    <button type="button" class="pc-order-profile-load" title="選択した順序を読込">読込</button>
+                </div>
+            </div>
+            <div class="pc-file-tree pc-order-profile-tree" role="tree" aria-label="順序プロファイル一覧"></div>
+            <div class="pc-order-profile-hint">ダブルクリックまたは「読込」で適用（表示順のみ対象）</div>
         `;
         root.appendChild(wrap);
 
-        const profileSelect = wrap.querySelector('.pc-order-profile-select');
         const nameInput = wrap.querySelector('.pc-order-profile-name');
         const loadBtn = wrap.querySelector('.pc-order-profile-load');
         const saveBtn = wrap.querySelector('.pc-order-profile-save');
         const overwriteBtn = wrap.querySelector('.pc-order-profile-overwrite');
         const delBtn = wrap.querySelector('.pc-order-profile-delete');
+        const treeEl = wrap.querySelector('.pc-order-profile-tree');
+        const selectedNameEl = wrap.querySelector('.pc-order-profile-selected-name');
+        const selectedDateEl = wrap.querySelector('.pc-order-profile-selected-date');
+        const collapsedFolders = new Set();
+        let selectedProfileId = currentOrderProfile || 'illustrious_standard';
 
         const isBuiltinProfile = (id) => {
             return id === 'illustrious_standard' || id === 'character_focus' || id === 'background_focus';
@@ -630,10 +657,9 @@
         const setCurrentProfile = (id) => {
             if (!id) return;
             currentOrderProfile = id;
-            // Mirror only Gradio's original <select>; never dispatch on profileSelect itself.
-            const gradioSel = mirrorGradioSelect && mirrorGradioSelect !== profileSelect
-                ? mirrorGradioSelect
-                : null;
+            selectedProfileId = id;
+            // Mirror only Gradio's original <select>; never dispatch on our tree.
+            const gradioSel = mirrorGradioSelect;
             if (gradioSel && Array.from(gradioSel.options).some(o => o.value === id)) {
                 if (gradioSel.value !== id) gradioSel.value = id;
                 gradioSel.dispatchEvent(new Event('change', { bubbles: true }));
@@ -641,8 +667,7 @@
         };
 
         const getSelectedProfileId = () => {
-            const id = profileSelect ? profileSelect.value : '';
-            return id || currentOrderProfile;
+            return selectedProfileId || currentOrderProfile;
         };
 
         const profileLabel = (profiles, id) => {
@@ -650,48 +675,172 @@
             return p.name || id;
         };
 
+        const splitProfileCategory = (name) => {
+            let s = (name || '').trim();
+            while (s.includes('//')) s = s.replaceAll('//', '/');
+            s = s.replace(/^\/+|\/+$/g, '');
+            const idx = s.indexOf('/');
+            if (idx === -1) return { category: '', shortName: s };
+            return { category: s.slice(0, idx), shortName: s.slice(idx + 1) };
+        };
+
+        const escapeHtmlLocal = (str) => {
+            if (!str) return '';
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        };
+
+        const formatSaveDate = (iso) => {
+            if (!iso) return '';
+            try {
+                const d = new Date(iso);
+                if (Number.isNaN(d.getTime())) return '';
+                return d.toLocaleDateString('ja-JP', { year: 'numeric', month: 'numeric', day: 'numeric' });
+            } catch (_) {
+                return '';
+            }
+        };
+
+        const buildProfileGroups = (profiles) => {
+            const groups = {};
+            const builtins = ['illustrious_standard', 'character_focus', 'background_focus'];
+
+            builtins.forEach(id => {
+                if (!profiles[id]) return;
+                const key = '標準';
+                if (!groups[key]) groups[key] = [];
+                groups[key].push({
+                    id,
+                    name: profileLabel(profiles, id),
+                    builtin: true,
+                    updatedAt: profiles[id].updatedAt || ''
+                });
+            });
+
+            Object.keys(profiles).forEach(id => {
+                if (builtins.includes(id)) return;
+                const fullName = profileLabel(profiles, id);
+                const parts = splitProfileCategory(fullName);
+                const key = parts.category || 'ユーザー';
+                if (!groups[key]) groups[key] = [];
+                groups[key].push({
+                    id,
+                    name: fullName,
+                    shortName: parts.shortName || fullName,
+                    builtin: false,
+                    updatedAt: profiles[id].updatedAt || ''
+                });
+            });
+
+            Object.keys(groups).forEach(g => {
+                groups[g].sort((a, b) => {
+                    const an = a.shortName || a.name || '';
+                    const bn = b.shortName || b.name || '';
+                    return an.localeCompare(bn, 'ja');
+                });
+            });
+            return groups;
+        };
+
+        const renderProfileTree = (profiles) => {
+            if (!treeEl) return;
+            const groups = buildProfileGroups(profiles || {});
+            const groupNames = Object.keys(groups);
+            groupNames.sort((a, b) => {
+                if (a === '標準') return -1;
+                if (b === '標準') return 1;
+                if (a === 'ユーザー') return 1;
+                if (b === 'ユーザー') return -1;
+                return a.localeCompare(b, 'ja');
+            });
+
+            if (!selectedProfileId || !Object.keys(profiles).includes(selectedProfileId)) {
+                selectedProfileId = groupNames.length ? (groups[groupNames[0]][0]?.id || '') : '';
+            }
+
+            let html = '';
+            groupNames.forEach(group => {
+                const open = !collapsedFolders.has(group);
+                const items = groups[group];
+                html += `
+                    <div class="pc-file-tree-folder${open ? ' is-open' : ''}" data-folder="${escapeHtmlLocal(group)}">
+                        <button type="button" class="pc-file-tree-folder-head" data-folder="${escapeHtmlLocal(group)}">
+                            <span class="pc-file-tree-caret">${open ? '▾' : '▸'}</span>
+                            <span class="pc-file-tree-folder-name">${escapeHtmlLocal(group)}</span>
+                            <span class="pc-file-tree-count">${items.length}</span>
+                        </button>
+                        <div class="pc-file-tree-children"${open ? '' : ' hidden'}>
+                `;
+                items.forEach((item, idx) => {
+                    const shortName = item.shortName || item.name || item.id;
+                    const isSel = item.id === selectedProfileId;
+                    const itemDate = formatSaveDate(item.updatedAt);
+                    const branch = idx === items.length - 1 ? '└──' : '├──';
+                    html += `
+                        <button type="button"
+                            class="pc-file-tree-item${isSel ? ' is-selected' : ''}${item.builtin ? ' is-builtin' : ''}"
+                            data-profile-id="${escapeHtmlLocal(item.id)}"
+                            title="${escapeHtmlLocal(item.name || item.id)}">
+                            <span class="pc-file-tree-branch" aria-hidden="true">${branch}</span>
+                            <span class="pc-file-tree-item-main">
+                                <span class="pc-file-tree-col-name">${escapeHtmlLocal(shortName)}</span>
+                            </span>
+                            ${itemDate ? `<span class="pc-file-tree-item-date">${escapeHtmlLocal(itemDate)}</span>` : ''}
+                        </button>
+                    `;
+                });
+                html += `</div></div>`;
+            });
+            treeEl.innerHTML = html || '<div class="pc-empty">プロファイルなし</div>';
+
+            if (selectedNameEl) {
+                const sel = profiles[selectedProfileId];
+                const label = selectedProfileId ? profileLabel(profiles, selectedProfileId) : '';
+                const short = label ? (splitProfileCategory(label).shortName || label) : '';
+                selectedNameEl.textContent = short || '';
+                if (selectedDateEl) {
+                    selectedDateEl.textContent = formatSaveDate(sel?.updatedAt) || '';
+                }
+            }
+
+            treeEl.querySelectorAll('.pc-file-tree-folder-head').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const folder = btn.dataset.folder || '';
+                    if (collapsedFolders.has(folder)) collapsedFolders.delete(folder);
+                    else collapsedFolders.add(folder);
+                    renderProfileTree(profiles);
+                });
+            });
+
+            treeEl.querySelectorAll('.pc-file-tree-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectedProfileId = btn.dataset.profileId || '';
+                    setCurrentProfile(selectedProfileId);
+                    try { checkWarnings(); } catch (_) { /* ignore */ }
+                    renderProfileTree(profiles);
+                    if (nameInput && selectedProfileId && !isBuiltinProfile(selectedProfileId)) {
+                        nameInput.value = profileLabel(profiles, selectedProfileId);
+                    }
+                });
+                btn.addEventListener('dblclick', async () => {
+                    selectedProfileId = btn.dataset.profileId || '';
+                    if (!selectedProfileId) return;
+                    setCurrentProfile(selectedProfileId);
+                    await sortBlocksByProfile(selectedProfileId);
+                    if (nameInput) nameInput.value = profileLabel(profiles, selectedProfileId);
+                });
+            });
+        };
+
         const refreshSelect = async () => {
             const profiles = await fetchOrderProfiles();
-
-            if (profileSelect) {
-                const current = getSelectedProfileId();
-                profileSelect.innerHTML = '';
-                const builtins = ['illustrious_standard', 'character_focus', 'background_focus'];
-
-                const addOpt = (id, label) => {
-                    const opt = document.createElement('option');
-                    opt.value = id;
-                    opt.textContent = label || id;
-                    profileSelect.appendChild(opt);
-                };
-
-                builtins.forEach(id => {
-                    if (profiles[id]) addOpt(id, profileLabel(profiles, id));
-                });
-                Object.keys(profiles).forEach(id => {
-                    if (builtins.includes(id)) return;
-                    addOpt(id, `★ ${profileLabel(profiles, id)}`);
-                });
-
-                if (current && Array.from(profileSelect.options).some(o => o.value === current)) {
-                    profileSelect.value = current;
-                } else if (profileSelect.options.length > 0) {
-                    profileSelect.selectedIndex = 0;
-                }
-                setCurrentProfile(profileSelect.value);
-            }
+            renderProfileTree(profiles);
+            if (selectedProfileId) setCurrentProfile(selectedProfileId);
         };
 
         // initial fill
         refreshSelect().catch(() => {});
-
-        if (profileSelect) {
-            profileSelect.addEventListener('change', () => {
-                const id = profileSelect.value;
-                setCurrentProfile(id);
-                checkWarnings();
-            });
-        }
 
         if (loadBtn) {
             loadBtn.addEventListener('click', async () => {
@@ -745,12 +894,10 @@
                         alert(`保存に失敗しました${reason}`);
                         return;
                     }
-                    await refreshSelect();
                     const savedId = data && data.id;
-                    if (savedId && profileSelect && Array.from(profileSelect.options).some(o => o.value === savedId)) {
-                        profileSelect.value = savedId;
-                        setCurrentProfile(savedId);
-                    }
+                    if (savedId) selectedProfileId = savedId;
+                    await refreshSelect();
+                    if (savedId) setCurrentProfile(savedId);
                     if (nameInput) nameInput.value = '';
                     alert('順序プロファイルを保存しました。');
                 } catch (e) {
@@ -792,11 +939,9 @@
                         alert(`上書き保存に失敗しました${reason}`);
                         return;
                     }
+                    selectedProfileId = id;
                     await refreshSelect();
-                    if (profileSelect && Array.from(profileSelect.options).some(o => o.value === id)) {
-                        profileSelect.value = id;
-                        setCurrentProfile(id);
-                    }
+                    setCurrentProfile(id);
                     alert('順序プロファイルを上書き保存しました。');
                 } catch (e) {
                     alert(`上書き保存に失敗しました\n通信エラー: ${e && e.message ? e.message : e}`);
@@ -818,6 +963,7 @@
                     alert('削除に失敗しました');
                     return;
                 }
+                selectedProfileId = '';
                 await refreshSelect();
                 const nextId = getSelectedProfileId();
                 if (nextId) setCurrentProfile(nextId);
@@ -1650,9 +1796,12 @@
 
     function inferSourceTypeAfterEdit(parsed, prevMeta) {
         if (parsed && parsed.loraParsed) return 'lora';
+        const text = String((parsed && (parsed.emittedText || parsed.label)) || '').trim();
+        if (/^__[^_].*__$/.test(text)) return 'wildcard';
         const prev = (prevMeta && prevMeta.sourceType) ? prevMeta.sourceType : 'manual';
         if (prev === 'embedding') return 'embedding';
         if (prev === 'lora') return 'manual';
+        if (prev === 'wildcard') return 'manual';
         return prev;
     }
 
@@ -2118,16 +2267,23 @@
             }
         });
 
-        // Set profile dropdown value (custom order-profile select inside #pc_order_profile)
+        // Sync order-profile tree / Gradio mirror with currentOrderProfile
         const profileRoot = document.getElementById('pc_order_profile');
-        if (profileRoot) {
-            const selectEl =
-                profileRoot.querySelector('.pc-order-profile-select') ||
-                profileRoot.querySelector('select') ||
-                profileRoot.querySelector('input');
-            if (selectEl) {
-                selectEl.value = currentOrderProfile;
-                selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+        if (profileRoot && currentOrderProfile) {
+            const id = String(currentOrderProfile);
+            const items = profileRoot.querySelectorAll('.pc-file-tree-item[data-profile-id]');
+            let matched = null;
+            items.forEach(el => {
+                if (el.getAttribute('data-profile-id') === id) matched = el;
+            });
+            if (matched) {
+                matched.click();
+            } else {
+                const selectEl = profileRoot.querySelector('select');
+                if (selectEl) {
+                    selectEl.value = currentOrderProfile;
+                    selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+                }
             }
         }
 
@@ -2343,6 +2499,139 @@
         } catch (err) {
             console.warn('[Prompt Composer] Sort failed:', err);
         }
+    }
+
+    function showBlockReorderModal() {
+        const existing = document.getElementById('pc_block_reorder_modal');
+        if (existing) existing.remove();
+
+        const overlay = document.createElement('div');
+        overlay.id = 'pc_block_reorder_modal';
+        overlay.className = 'pc-reorder-modal-overlay';
+        overlay.innerHTML = `
+            <div class="pc-reorder-modal" role="dialog" aria-modal="true" aria-label="ブロック順序入替え">
+                <div class="pc-reorder-modal-head">
+                    <div class="pc-reorder-modal-title">順序入替え</div>
+                    <button type="button" class="pc-reorder-modal-close" title="閉じる" aria-label="閉じる">×</button>
+                </div>
+                <div class="pc-reorder-modal-hint">ドラッグしてブロックの表示順を変更できます</div>
+                <div class="pc-reorder-modal-body">
+                    <div class="pc-reorder-section">
+                        <div class="pc-reorder-section-label">Positive Prompt</div>
+                        <div class="pc-reorder-list" data-side="positive"></div>
+                    </div>
+                    <div class="pc-reorder-section">
+                        <div class="pc-reorder-section-label">Negative Prompt</div>
+                        <div class="pc-reorder-list" data-side="negative"></div>
+                    </div>
+                </div>
+                <div class="pc-reorder-modal-foot">
+                    <button type="button" class="pc-reorder-profile-sort" title="現在の順序プロファイル推奨順に並び替え">推奨順に整形</button>
+                    <button type="button" class="pc-reorder-modal-done">完了</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        const posList = overlay.querySelector('.pc-reorder-list[data-side="positive"]');
+        const negList = overlay.querySelector('.pc-reorder-list[data-side="negative"]');
+
+        const fillList = (listEl, list) => {
+            if (!listEl) return;
+            listEl.innerHTML = list.map((b, idx) => `
+                <div class="pc-reorder-item" draggable="true" data-block-id="${escapeHtml(b.id)}" data-idx="${idx}">
+                    <span class="pc-reorder-handle" aria-hidden="true">⠿</span>
+                    <span class="pc-reorder-item-name">${escapeHtml(b.label || b.type || b.id)}</span>
+                    <span class="pc-reorder-item-count">${(b.tokens || []).length}</span>
+                </div>
+            `).join('') || '<div class="pc-reorder-empty">ブロックなし</div>';
+        };
+
+        const refreshLists = () => {
+            fillList(posList, blocks);
+            fillList(negList, negativeBlocks);
+            bindListDnD(posList, false);
+            bindListDnD(negList, true);
+        };
+
+        let dragEl = null;
+
+        const bindListDnD = (listEl, isNegative) => {
+            if (!listEl) return;
+            listEl.querySelectorAll('.pc-reorder-item').forEach(item => {
+                item.addEventListener('dragstart', (e) => {
+                    dragEl = item;
+                    item.classList.add('is-dragging');
+                    try {
+                        e.dataTransfer.effectAllowed = 'move';
+                        e.dataTransfer.setData('text/plain', item.dataset.blockId || '');
+                    } catch (_) { /* ignore */ }
+                });
+                item.addEventListener('dragend', () => {
+                    item.classList.remove('is-dragging');
+                    listEl.querySelectorAll('.pc-reorder-item').forEach(el => {
+                        el.classList.remove('pc-reorder-drag-above', 'pc-reorder-drag-below');
+                    });
+                    dragEl = null;
+                });
+                item.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    if (!dragEl || dragEl === item || dragEl.parentElement !== listEl) return;
+                    const rect = item.getBoundingClientRect();
+                    const before = (e.clientY - rect.top) < rect.height / 2;
+                    item.classList.toggle('pc-reorder-drag-above', before);
+                    item.classList.toggle('pc-reorder-drag-below', !before);
+                });
+                item.addEventListener('dragleave', () => {
+                    item.classList.remove('pc-reorder-drag-above', 'pc-reorder-drag-below');
+                });
+                item.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    if (!dragEl || dragEl === item || dragEl.parentElement !== listEl) return;
+                    const rect = item.getBoundingClientRect();
+                    const before = (e.clientY - rect.top) < rect.height / 2;
+                    const list = isNegative ? negativeBlocks : blocks;
+                    const fromId = dragEl.dataset.blockId;
+                    const toId = item.dataset.blockId;
+                    const fromIdx = list.findIndex(b => b.id === fromId);
+                    if (fromIdx < 0) return;
+                    const [moved] = list.splice(fromIdx, 1);
+                    let nextIdx = list.findIndex(b => b.id === toId);
+                    if (nextIdx < 0) nextIdx = list.length;
+                    else if (!before) nextIdx += 1;
+                    list.splice(nextIdx, 0, moved);
+                    list.forEach((b, i) => { b.order = i; });
+                    renderBlocks();
+                    refreshLists();
+                });
+            });
+        };
+
+        refreshLists();
+
+        const close = () => {
+            if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        };
+        const closeBtn = overlay.querySelector('.pc-reorder-modal-close');
+        const doneBtn = overlay.querySelector('.pc-reorder-modal-done');
+        const profileSortBtn = overlay.querySelector('.pc-reorder-profile-sort');
+        if (closeBtn) closeBtn.addEventListener('click', close);
+        if (doneBtn) doneBtn.addEventListener('click', close);
+        if (profileSortBtn) {
+            profileSortBtn.addEventListener('click', async () => {
+                await sortBlocksByProfile();
+                refreshLists();
+            });
+        }
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) close();
+        });
+        document.addEventListener('keydown', function onEsc(ev) {
+            if (ev.key === 'Escape') {
+                document.removeEventListener('keydown', onEsc);
+                close();
+            }
+        });
     }
 
     // ===== Final Prompt Generation =====
@@ -2677,8 +2966,15 @@
         return div.innerHTML;
     }
 
+    function appRoot() {
+        try {
+            if (typeof window.gradioApp === 'function') return window.gradioApp();
+        } catch (_) { /* ignore */ }
+        return document;
+    }
+
     function setGradioValue(elemId, value) {
-        const container = document.getElementById(elemId);
+        const container = appRoot().getElementById(elemId);
         if (!container) return;
         
         const textarea = container.querySelector('textarea');
@@ -2687,6 +2983,7 @@
             if (textarea.value === next) return;
             textarea.value = next;
             textarea.dispatchEvent(new Event('input', { bubbles: true }));
+            textarea.dispatchEvent(new Event('change', { bubbles: true }));
         }
         checkWarnings();
     }
@@ -2768,6 +3065,8 @@
         findBlockByType,
         clearBlockTokensSilent,
         applyTextToBlockType,
+        updateFinalPrompt,
+        ensureOrderProfileManagerUI,
         get blocks() { return blocks; },
         get negativeBlocks() { return negativeBlocks; }
     };

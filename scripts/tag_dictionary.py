@@ -392,10 +392,24 @@ def load_section(section_name: str) -> bool:
     if not name or name not in _manifest_sections:
         return False
     if name in _loaded_sections:
-        return True
+        # Retry when a prior YAML failure marked the section loaded with 0 tags.
+        if any((t.get("section") or "").strip() == name for t in _tags):
+            return True
+        _loaded_sections.discard(name)
 
     t0 = time.time()
+    yaml_path = _section_yaml_path(name)
     raw_items = _load_section_items(name)
+    # YAML parse failure returns []; do not mark loaded so a fixed file can retry.
+    if not raw_items and yaml_path and os.path.isfile(yaml_path):
+        cached = _try_load_section_cache(name)
+        if cached is None:
+            print(
+                f"[Prompt Composer] Section {name!r} not marked loaded "
+                f"(0 tags from YAML — fix the file and retry)."
+            )
+            return False
+
     items = _merge_section_items(raw_items)
     if not items and raw_items:
         _loaded_sections.add(name)
@@ -893,6 +907,61 @@ def _search_tags_lazy(
         }
 
     return {"items": [], "total": 0, "hasMore": False, "offset": offset, "limit": limit}
+
+
+def search_tag_path_hits(query: str) -> Dict:
+    """Aggregate matching tags by section/category/group for tree filtering."""
+    if not _loaded:
+        return {"total": 0, "paths": []}
+
+    q = (query or "").strip().lower()
+    if not q:
+        return {"total": 0, "paths": []}
+
+    counts: Dict[Tuple[str, str, str], int] = {}
+    total = 0
+
+    rows = _search_index if _lazy_mode else None
+    if rows is not None:
+        for row in rows:
+            tag_l = (row.get("tag") or "").lower()
+            jp_l = (row.get("jp") or "").lower()
+            if q not in tag_l and q not in jp_l:
+                continue
+            total += 1
+            key = (
+                (row.get("section") or "").strip(),
+                (row.get("category") or "").strip(),
+                (row.get("group") or "").strip(),
+            )
+            counts[key] = counts.get(key, 0) + 1
+    else:
+        for item in _tags:
+            tag_l = (item.get("tag") or "").lower()
+            jp_l = (item.get("jp") or "").lower()
+            if q not in tag_l and q not in jp_l:
+                continue
+            total += 1
+            key = (
+                (item.get("section") or "").strip(),
+                (item.get("category") or "").strip(),
+                (item.get("group") or "").strip(),
+            )
+            counts[key] = counts.get(key, 0) + 1
+
+    paths = [
+        {
+            "section": sec,
+            "category": cat,
+            "group": grp,
+            "count": count,
+        }
+        for (sec, cat, grp), count in sorted(
+            counts.items(),
+            key=lambda kv: (-kv[1], kv[0][0], kv[0][1], kv[0][2]),
+        )
+    ]
+    return {"total": total, "paths": paths}
 
 
 def search_tags(

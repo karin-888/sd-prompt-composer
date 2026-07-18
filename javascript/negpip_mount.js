@@ -54,6 +54,37 @@
         input.dispatchEvent(new Event('change', { bubbles: true }));
     }
 
+    function setCheckboxInputSilent(input, checked) {
+        if (!input || input.checked === checked) return;
+        input.checked = checked;
+        if (typeof updateInput === 'function') {
+            try { updateInput(input); } catch (err) { /* ignore */ }
+        }
+    }
+
+    function syncSourceAccordionState(sourceAcc, checked) {
+        if (!sourceAcc) return;
+
+        if (typeof ensureInputAccordion === 'function') {
+            ensureInputAccordion(sourceAcc.id);
+        } else if (typeof setupAccordion === 'function' && !sourceAcc.onVisibleCheckboxChange) {
+            setupAccordion(sourceAcc);
+        }
+
+        if (sourceAcc.onVisibleCheckboxChange && sourceAcc.visibleCheckbox) {
+            sourceAcc.visibleCheckbox.checked = checked;
+            sourceAcc.onVisibleCheckboxChange();
+            return;
+        }
+
+        var labelWrap = sourceAcc.querySelector('.label-wrap');
+        if (!labelWrap) return;
+        var isOpen = labelWrap.classList.contains('open');
+        if (isOpen !== checked) {
+            labelWrap.click();
+        }
+    }
+
     function replaceWithFreshCheckbox(oldInput) {
         if (!oldInput || !oldInput.parentNode) return oldInput;
         var fresh = document.createElement('input');
@@ -92,16 +123,12 @@
         function syncSourceFromClone() {
             if (syncing || !srcGradio || !cloneVis) return;
             syncing = true;
-            setCheckboxInput(srcGradio, cloneVis.checked);
+            setCheckboxInputSilent(srcGradio, cloneVis.checked);
             var srcVis = getVisibleCheckbox(sourceAcc);
             if (srcVis && srcVis !== srcGradio) {
                 srcVis.checked = cloneVis.checked;
             }
-            if (typeof inputAccordionChecked === 'function') {
-                try {
-                    inputAccordionChecked(sourceAcc.id, cloneVis.checked);
-                } catch (err) { /* ignore */ }
-            }
+            syncSourceAccordionState(sourceAcc, cloneVis.checked);
             syncing = false;
         }
 

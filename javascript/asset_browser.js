@@ -13,6 +13,10 @@
     let currentSubfolder = '';
     let currentSpecialFilter = ''; // 'favorites'
     let isLoading = false;
+    let hasMoreAssets = true;
+    let loadGeneration = 0;
+    let activeRequestController = null;
+    let loadedAssetIds = new Set();
     let rescanInProgress = false;
     const PAGE_SIZE = 50;
     const MAX_DOM_CARDS = 250; // safety cap for DOM size
@@ -43,38 +47,72 @@
 
     // ===== Data Loading =====
     async function loadAssets(append = false) {
-        if (isLoading) return;
+        // The sentinel can remain visible after the final page.  Do not issue
+        // another request once the API has told us there is nothing left.
+        if (append && (!hasMoreAssets || isLoading)) return;
+
+        // A filter change supersedes an outstanding request.  Without this,
+        // a slow response from the previous folder can overwrite the new one.
+        if (!append && activeRequestController) {
+            activeRequestController.abort();
+        }
+        if (append && isLoading) return;
+
+        const generation = ++loadGeneration;
+        const controller = new AbortController();
+        activeRequestController = controller;
         isLoading = true;
 
         const gallery = document.getElementById('pc_asset_cards');
         if (!gallery) {
             isLoading = false;
+            if (activeRequestController === controller) {
+                activeRequestController = null;
+            }
             return;
         }
 
         if (!append) {
             gallery.innerHTML = '<div class="pc-loading">読み込み中...</div>';
             currentOffset = 0;
+            hasMoreAssets = false;
+            loadedAssetIds = new Set();
         }
 
+        const requestOffset = currentOffset;
+
         try {
-            let url = `/prompt-composer/api/assets?limit=${PAGE_SIZE}&offset=${currentOffset}`;
+            let url = `/prompt-composer/api/assets?limit=${PAGE_SIZE}&offset=${requestOffset}`;
             if (currentTypeFilter) url += `&type=${currentTypeFilter}`;
             if (currentSpecialFilter) url += `&special=${currentSpecialFilter}`;
             if (currentSubfolder) url += `&subfolder=${encodeURIComponent(currentSubfolder)}`;
             if (currentSearch) url += `&search=${encodeURIComponent(currentSearch)}`;
 
-            const resp = await fetch(url);
+            const resp = await fetch(url, { signal: controller.signal });
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             let data = await resp.json();
 
+            // Ignore a response that belongs to a previous folder/search.
+            if (generation !== loadGeneration) return;
+
             // Sort assets by displayName / name for stable ordering
-            let filteredAssets = (data.assets || []).slice().sort((a, b) => {
+            const pageAssets = (data.assets || []).slice()
+                .filter((asset) => {
+                    const n = String(asset.fileName || asset.name || asset.displayName || '');
+                    // macOS AppleDouble sidecars (._VIA_Hair_Length_1 …)
+                    return !n.startsWith('._') && !/(^|\/)\._/.test(n);
+                })
+                .sort((a, b) => {
                 const aName = (a.displayName || a.name || '').toLowerCase();
                 const bName = (b.displayName || b.name || '').toLowerCase();
                 if (aName < bName) return -1;
                 if (aName > bName) return 1;
                 return 0;
+            });
+            const filteredAssets = pageAssets.filter((asset) => {
+                if (!asset.id || loadedAssetIds.has(asset.id)) return false;
+                loadedAssetIds.add(asset.id);
+                return true;
             });
 
             if (!append) {
@@ -88,8 +126,12 @@
                 displayedAssets = displayedAssets.slice(-MAX_DOM_CARDS * 2);
             }
 
-            renderAssetCards(displayedAssets, data.total, append);
-            currentOffset = displayedAssets.length;
+            renderAssetCards(displayedAssets, data.total, append, filteredAssets);
+            // Never derive the next API offset from the capped display list.
+            // Once it reaches its safety cap, doing so requests the same page
+            // forever and makes cards appear repeatedly.
+            currentOffset = requestOffset + pageAssets.length;
+            hasMoreAssets = currentOffset < data.total && pageAssets.length > 0;
             markActiveCheckpointCards();
             if (!append) {
                 loadSubfolders(currentSubfolder || '(すべて)');
@@ -100,7 +142,7 @@
             if (loadMoreBtn) {
                 const parent = loadMoreBtn.closest('.gradio-button, button');
                 const actual = parent || loadMoreBtn;
-                if (displayedAssets.length >= data.total) {
+                if (!hasMoreAssets) {
                     actual.style.display = 'none';
                 } else {
                     actual.style.display = '';
@@ -108,12 +150,18 @@
             }
 
         } catch (err) {
+            if (err && err.name === 'AbortError') return;
             console.error('[Prompt Composer] Failed to load assets:', err);
             if (!append) {
                 gallery.innerHTML = '<div class="pc-error">アセットの読み込みに失敗しました</div>';
             }
         } finally {
-            isLoading = false;
+            if (generation === loadGeneration) {
+                isLoading = false;
+                if (activeRequestController === controller) {
+                    activeRequestController = null;
+                }
+            }
         }
     }
 
@@ -175,7 +223,19 @@
 
         setSubfolderDropdownValue(root, value, { silent: true });
         window._pcSubfolders = subfolders || [];
+        bindSubfolderOptionsScroll(optionsList);
         return true;
+    }
+
+    function bindSubfolderOptionsScroll(optionsList) {
+        if (!optionsList || optionsList.dataset.pcScrollBound === '1') return;
+        optionsList.dataset.pcScrollBound = '1';
+        const stopParentScroll = (e) => {
+            // Keep wheel/trackpad scroll inside the dropdown list
+            e.stopPropagation();
+        };
+        optionsList.addEventListener('wheel', stopParentScroll, { passive: true });
+        optionsList.addEventListener('touchmove', stopParentScroll, { passive: true });
     }
 
     async function loadSubfolders(selectedValue) {
@@ -196,7 +256,31 @@
     }
 
     // ===== Rendering =====
-    function renderAssetCards(assets, total, append = false) {
+    function formatAssetDateParts(iso) {
+        if (!iso) return null;
+        const d = new Date(iso);
+        if (Number.isNaN(d.getTime())) return null;
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return { key: `${y}-${m}-${day}`, label: `${y}/${m}/${day}` };
+    }
+
+    function buildAssetDateLabel(asset) {
+        const published = formatAssetDateParts(asset.publishedAt);
+        const updated = formatAssetDateParts(asset.updatedAt);
+        const fileModified = formatAssetDateParts(asset.fileModifiedAt);
+
+        if (published && updated && published.key !== updated.key) {
+            return `公開 ${published.label} · 更新 ${updated.label}`;
+        }
+        if (published) return `公開 ${published.label}`;
+        if (updated) return `更新 ${updated.label}`;
+        if (fileModified) return `更新 ${fileModified.label}`;
+        return '';
+    }
+
+    function renderAssetCards(assets, total, append = false, appendedAssets = []) {
         const gallery = document.getElementById('pc_asset_cards');
         if (!gallery) return;
 
@@ -214,10 +298,15 @@
         const grid = gallery.querySelector('.pc-asset-grid');
         if (!grid) return;
 
-        // Remove oldest cards if DOM grows too big
+        const cardsToRender = append ? appendedAssets : assets;
+
+        // Keep the DOM bounded, while preserving the newest cards.  Rendering
+        // only the just-fetched page is important: rendering a suffix of the
+        // full cached list re-adds cards that are already on screen.
         const existingCards = Array.from(grid.querySelectorAll('.pc-asset-card'));
-        if (existingCards.length > MAX_DOM_CARDS) {
-            const toRemove = existingCards.length - MAX_DOM_CARDS;
+        const maxExistingCards = Math.max(0, MAX_DOM_CARDS - cardsToRender.length);
+        if (existingCards.length > maxExistingCards) {
+            const toRemove = existingCards.length - maxExistingCards;
             for (let i = 0; i < toRemove; i++) {
                 existingCards[i].remove();
             }
@@ -225,7 +314,7 @@
 
         const fragment = document.createDocumentFragment();
 
-        assets.slice(existingCards.length).forEach(asset => {
+        cardsToRender.forEach(asset => {
             const previewSrc = asset.previewUrl || '';
             const triggerStr = (asset.triggerWords || []).join(', ');
             const isCheckpoint = asset.type === 'checkpoint';
@@ -235,6 +324,7 @@
                 : (asset.type === 'lora' ? 'LoRA' : 'Emb');
             const weightStr = asset.defaultWeight ? `w:${asset.defaultWeight}` : '';
             const subfolder = asset.subfolder || '';
+            const dateStr = buildAssetDateLabel(asset);
             const favClass = asset.isFavorite ? 'pc-fav-active' : '';
             const baseName = asset.name || asset.displayName || '';
             const civitaiUrl = asset.civitaiUrl
@@ -264,8 +354,11 @@
                 : escapeHtml(asset.displayName);
 
             wrapper.innerHTML = `
-                    ${isCheckpoint ? '' : `<button class="pc-asset-fav-btn ${favClass}" data-asset-id="${asset.id}" title="お気に入り">⭐</button>`}
-                    ${isCheckpoint ? '' : `<button class="pc-asset-remove-btn" data-asset-id="${asset.id}" title="削除（フォルダから）">×</button>`}
+                    ${isCheckpoint
+                        ? `<button class="pc-asset-details-btn" data-asset-id="${asset.id}" title="詳細・メタデータ編集（Description / VAE / Notes）">ℹ</button>`
+                        : `<button class="pc-asset-fav-btn ${favClass}" data-asset-id="${asset.id}" title="お気に入り">⭐</button>
+                           <button class="pc-asset-remove-btn" data-asset-id="${asset.id}" title="削除（フォルダから）">×</button>`
+                    }
                     <div class="pc-asset-preview">
                         ${previewSrc 
                             ? `<img loading="lazy" data-src="${previewSrc}" alt="${escapeHtml(asset.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -279,8 +372,9 @@
                         <div class="pc-asset-name">${escapeHtml(asset.displayName || asset.name)}</div>
                         ${subfolder ? `<div class="pc-asset-subfolder">${escapeHtml(subfolder)}</div>` : ''}
                         ${triggerStr ? `<div class="pc-asset-trigger" title="${escapeHtml(triggerStr)}">🏷️ ${escapeHtml(triggerStr)}</div>` : ''}
+                        ${dateStr ? `<div class="pc-asset-date" title="${escapeHtml(dateStr)}">📅 ${escapeHtml(dateStr)}</div>` : ''}
                         ${weightStr ? `<div class="pc-asset-weight">${weightStr}</div>` : ''}
-                        ${isCheckpoint ? '<div class="pc-asset-checkpoint-hint">クリックで反映</div>' : ''}
+                        ${isCheckpoint ? '<div class="pc-asset-checkpoint-hint">クリックで反映 / ℹで詳細</div>' : ''}
                     </div>
                     ${blockHint}
             `;
@@ -297,6 +391,8 @@
                 if (favBtn) favBtn.addEventListener('click', onFavoriteToggle);
                 const rmBtn = card.querySelector('.pc-asset-remove-btn');
                 if (rmBtn) rmBtn.addEventListener('click', onAssetRemoveClick);
+                const detailsBtn = card.querySelector('.pc-asset-details-btn');
+                if (detailsBtn) detailsBtn.addEventListener('click', onCheckpointDetailsClick);
                 const civIcon = card.querySelector('.pc-asset-civitai-icon');
                 if (civIcon) civIcon.addEventListener('click', onCivitaiOpen);
                 card.dataset._pcHandlersAttached = '1';
@@ -351,7 +447,7 @@
             }
         }
 
-        // Type filter radio
+        // Type filter radio (Checkpoint / LoRA / Embedding / Favorites only)
         const typeFilter = document.getElementById('pc_asset_type_filter');
         if (typeFilter) {
             typeFilter.addEventListener('change', (e) => {
@@ -385,6 +481,8 @@
                     currentSubfolder = '';
                     const sfInput = document.querySelector('#pc_asset_subfolder input');
                     if (sfInput) sfInput.value = '(すべて)';
+                } else {
+                    return;
                 }
 
                 loadSubfolders('(すべて)');
@@ -420,6 +518,14 @@
                 // Listen to Gradio's specific input event if possible
                 input.addEventListener('input', handleSubfolderChange);
             }
+            const optionsList = subfolderEl.querySelector('ul.options, ul');
+            if (optionsList) bindSubfolderOptionsScroll(optionsList);
+            // Gradio may recreate the options list on open — observe and rebind
+            const mo = new MutationObserver(() => {
+                const list = subfolderEl.querySelector('ul.options, ul');
+                if (list) bindSubfolderOptionsScroll(list);
+            });
+            mo.observe(subfolderEl, { childList: true, subtree: true });
         }
 
         // Rescan button
@@ -549,9 +655,11 @@
     }
 
     async function onAssetCardClick(e) {
-        // Ignore if clicking the favorite button
+        // Ignore if clicking action buttons
         if (e.target.closest('.pc-asset-fav-btn')) return;
         if (e.target.closest('.pc-asset-remove-btn')) return;
+        if (e.target.closest('.pc-asset-details-btn')) return;
+        if (e.target.closest('.pc-asset-civitai-icon')) return;
 
         const card = e.target.closest('.pc-asset-card');
         if (!card) return;
@@ -578,6 +686,72 @@
             card.classList.add('pc-asset-inserted');
             setTimeout(() => card.classList.remove('pc-asset-inserted'), 600);
         }
+    }
+
+    function getGradioRoot() {
+        try {
+            if (typeof gradioApp === 'function') return gradioApp();
+        } catch (_) { /* ignore */ }
+        return document;
+    }
+
+    function openCheckpointUserMetadataEditor(nameForExtra) {
+        const tabname = 'txt2img';
+        const extraPage = 'checkpoints';
+        const id = `${tabname}_${extraPage}_edit_user_metadata`;
+        const root = getGradioRoot();
+
+        const editorPage = root.getElementById(id);
+        const nameTextarea = root.querySelector(`#${id}_name textarea`) || root.querySelector(`#${id}_name input`);
+        const button = root.querySelector(`#${id}_button`);
+
+        if (!editorPage || !nameTextarea || !button) {
+            alert('Checkpoint 詳細エディタが見つかりません。\ntxt2img の Extra Networks（Checkpoints）を一度開いてから再試行してください。');
+            return false;
+        }
+
+        nameTextarea.value = nameForExtra;
+        try {
+            if (typeof updateInput === 'function') updateInput(nameTextarea);
+            else nameTextarea.dispatchEvent(new Event('input', { bubbles: true }));
+        } catch (_) {
+            nameTextarea.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+
+        button.click();
+
+        try {
+            if (typeof popup === 'function') popup(editorPage);
+            else if (typeof popupId === 'function') popupId(id);
+            else {
+                editorPage.style.display = '';
+                editorPage.style.visibility = 'visible';
+            }
+        } catch (err) {
+            console.warn('[Prompt Composer] popup() failed, showing editor inline:', err);
+            editorPage.style.display = '';
+        }
+        return true;
+    }
+
+    function onCheckpointDetailsClick(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        const btn = e.currentTarget;
+        const assetId = btn && btn.dataset ? btn.dataset.assetId : null;
+        if (!assetId) return;
+
+        const asset = displayedAssets.find(a => a.id === assetId);
+        if (!asset) return;
+
+        // Extra Networks editor expects CheckpointInfo.name_for_extra (basename without ext)
+        const nameForExtra = asset.name || (asset.fileName ? String(asset.fileName).replace(/\.[^.]+$/, '') : '');
+        if (!nameForExtra) {
+            alert('Checkpoint 名を取得できませんでした');
+            return;
+        }
+
+        openCheckpointUserMetadataEditor(nameForExtra);
     }
 
     async function onAssetRemoveClick(e) {

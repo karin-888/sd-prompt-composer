@@ -401,76 +401,155 @@ def _build_prompt_editor_workspace():
                     variant="secondary"
                 )
 
-    # ===== MAIN: 3-column layout =====
+    # ===== MAIN: 2-column layout =====
+    # Left: Tabs (Assets / Order / Preset / Tag Dictionary)
+    # Right: Prompt Composer
     with gr.Row(elem_id="pc_main_area"):
 
-        # --- LEFT: Asset Browser ---
+        # --- LEFT: side panel tabs ---
         with gr.Column(scale=1, min_width=280, elem_id="pc_asset_browser_col"):
-            gr.HTML('<div class="pc-section-header">🎨 Asset Browser</div>')
-            
-            with gr.Row():
-                asset_search = gr.Textbox(
-                    elem_id="pc_asset_search",
-                    placeholder="検索...",
-                    label="",
-                    show_label=False,
-                    scale=3
-                )
-                asset_rescan_btn = gr.Button(
-                    "🔄",
-                    elem_id="pc_asset_rescan",
-                    scale=1,
-                    min_width=40
-                )
-            
-            with gr.Row():
-                asset_type_filter = gr.Radio(
-                    elem_id="pc_asset_type_filter",
-                    choices=["Checkpoint", "LoRA", "Embedding", "Favorites"],
-                    value="LoRA",
-                    label="",
-                    show_label=False,
-                    interactive=True
-                )
-            
-            def _initial_subfolder_choices():
-                subfolders = asset_indexer.get_subfolders(
-                    asset_type="lora",
-                    allow_full_scan=False,
-                )
-                if not subfolders:
-                    subfolders = asset_indexer.get_subfolders(
-                        asset_type="lora",
-                        allow_full_scan=True,
-                    )
-                return ["(すべて)"] + subfolders
+            with gr.Tabs(elem_id="pc_left_tabs"):
+                # --- Assets (Checkpoint / LoRA / Embedding / Favorites) ---
+                with gr.TabItem("🎨 Assets", id="pc_left_tab_assets"):
+                    with gr.Row(elem_id="pc_asset_search_row"):
+                        asset_search = gr.Textbox(
+                            elem_id="pc_asset_search",
+                            placeholder="検索...",
+                            label="",
+                            show_label=False,
+                            scale=3
+                        )
+                        asset_rescan_btn = gr.Button(
+                            "🔄",
+                            elem_id="pc_asset_rescan",
+                            scale=1,
+                            min_width=40
+                        )
 
-            asset_subfolder_filter = gr.Dropdown(
-                elem_id="pc_asset_subfolder",
-                label="フォルダ",
-                choices=_initial_subfolder_choices(),
-                value="(すべて)",
-                interactive=True,
-                allow_custom_value=True
-            )
-            
-            # Asset cards - rendered by JavaScript
-            asset_gallery = gr.HTML(
-                elem_id="pc_asset_gallery",
-                value='<div id="pc_asset_cards" class="pc-asset-cards"><div class="pc-loading">読み込み中...</div></div>'
-            )
-            
-            with gr.Row():
-                asset_load_more_btn = gr.Button(
-                    "もっと読み込む",
-                    elem_id="pc_asset_load_more",
-                    visible=True
-                )
-        
-        # --- CENTER: Prompt Composer ---
-        with gr.Column(scale=2, min_width=400, elem_id="pc_composer_col"):
+                    with gr.Row():
+                        asset_type_filter = gr.Radio(
+                            elem_id="pc_asset_type_filter",
+                            choices=[
+                                "Checkpoint",
+                                "LoRA",
+                                "Embedding",
+                                "Favorites",
+                            ],
+                            value="LoRA",
+                            label="",
+                            show_label=False,
+                            interactive=True,
+                            elem_classes=["pc-asset-type-tabs"],
+                        )
+
+                    with gr.Group(elem_id="pc_asset_browser_panel"):
+                        def _initial_subfolder_choices():
+                            subfolders = asset_indexer.get_subfolders(
+                                asset_type="lora",
+                                allow_full_scan=False,
+                            )
+                            if not subfolders:
+                                subfolders = asset_indexer.get_subfolders(
+                                    asset_type="lora",
+                                    allow_full_scan=True,
+                                )
+                            return ["(すべて)"] + subfolders
+
+                        asset_subfolder_filter = gr.Dropdown(
+                            elem_id="pc_asset_subfolder",
+                            label="フォルダ",
+                            choices=_initial_subfolder_choices(),
+                            value="(すべて)",
+                            interactive=True,
+                            allow_custom_value=True
+                        )
+
+                        asset_gallery = gr.HTML(
+                            elem_id="pc_asset_gallery",
+                            value='<div id="pc_asset_cards" class="pc-asset-cards"><div class="pc-loading">読み込み中...</div></div>'
+                        )
+
+                        with gr.Row():
+                            asset_load_more_btn = gr.Button(
+                                "もっと読み込む",
+                                elem_id="pc_asset_load_more",
+                                visible=True
+                            )
+
+                # --- Order Profile ---
+                with gr.TabItem("📐 順序プロファイル", id="pc_left_tab_order"):
+                    with gr.Group(elem_id="pc_order_profile_panel", elem_classes=["pc-asset-side-panel"]):
+                        gr.HTML(
+                            '<div class="pc-order-profile-section">'
+                            '<div id="pc_order_profile" class="pc-order-profile-slot"></div>'
+                            "</div>"
+                        )
+
+                # --- Preset Manager ---
+                with gr.TabItem("💾 Preset", id="pc_left_tab_preset"):
+                    with gr.Group(elem_id="pc_preset_manager_panel", elem_classes=["pc-asset-side-panel"]):
+                        with gr.Row():
+                            preset_name_input = gr.Textbox(
+                                elem_id="pc_preset_name",
+                                placeholder="プリセット名...",
+                                label="",
+                                show_label=False,
+                                scale=3
+                            )
+                            preset_save_btn = gr.Button(
+                                "💾",
+                                elem_id="pc_preset_save",
+                                scale=1,
+                                min_width=40,
+                                variant="primary"
+                            )
+                        preset_list = gr.HTML(
+                            elem_id="pc_preset_list",
+                            value='<div id="pc_presets_container" class="pc-preset-list"></div>'
+                        )
+
+                # --- Tag Dictionary / プロンプト大辞典 / Wildcards ---
+                with gr.TabItem("🏷️ Tag Dictionary", id="pc_left_tab_tags"):
+                    with gr.Group(elem_id="pc_tag_dictionary_panel", elem_classes=["pc-asset-side-panel", "pc-dict-col"]):
+                        with gr.Column(elem_id="pc_preset_col", elem_classes=["pc-preset-col-stack"]):
+                            with gr.Tabs(elem_id="pc_dict_tabs"):
+                                with gr.TabItem("🏷️ Tags", id="pc_dict_tab_tags"):
+                                    tag_search = gr.Textbox(
+                                        elem_id="pc_tag_search",
+                                        placeholder="タグ / 日本語で検索...",
+                                        label="",
+                                        show_label=False,
+                                    )
+                                    gr.HTML('<div id="pc_tag_path_label" class="pc-tag-path-label"></div>')
+                                    tag_list = gr.HTML(
+                                        elem_id="pc_tag_list",
+                                        value='<div id="pc_tags_container" class="pc-tags-container"></div>',
+                                    )
+                                with gr.TabItem("📖 プロンプト大辞典", id="pc_dict_tab_prompt_dictionary"):
+                                    if _prompt_dictionary_installed():
+                                        _embed_prompt_dictionary_ui()
+                                    else:
+                                        gr.HTML(
+                                            '<div class="pc-pd-missing">'
+                                            'sd-webui-prompt-dictionary 拡張が見つかりません。'
+                                            '</div>'
+                                        )
+                                with gr.TabItem("🪄 Wildcards", id="pc_dict_tab_wildcards"):
+                                    wc_search = gr.Textbox(
+                                        elem_id="pc_wc_search",
+                                        placeholder="Wildcards（.txt）を検索...",
+                                        label="",
+                                        show_label=False
+                                    )
+                                    wc_list = gr.HTML(
+                                        elem_id="pc_wc_list",
+                                        value='<div id="pc_wildcards_container" class="pc-wc-container"></div>'
+                                    )
+
+        # --- RIGHT: Prompt Composer only ---
+        with gr.Column(scale=1, min_width=280, elem_id="pc_composer_col"):
             gr.HTML('<div class="pc-section-header">🧩 Prompt Composer</div>')
-            
+
             # Toolbar above blocks (same #pc_composer_area scroll) so actions stay clear of the
             # WebUI footer / version line that can overlap the lower part of long block lists.
             composer_area = gr.HTML(
@@ -479,7 +558,7 @@ def _build_prompt_editor_workspace():
                     '<div class="pc-composer-body">'
                     '<div class="pc-composer-toolbar-actions" role="toolbar" aria-label="Prompt Composer actions">'
                     '<button type="button" id="pc_add_block" class="pc-toolbar-btn">➕ ブロック追加</button>'
-                    '<button type="button" id="pc_sort_blocks" class="pc-toolbar-btn">📐 順序整形</button>'
+                    '<button type="button" id="pc_sort_blocks" class="pc-toolbar-btn">⇅ 順序入替え</button>'
                     '<button type="button" id="pc_clear_blocks" class="pc-toolbar-btn">🗑️ 全クリア</button>'
                     '</div>'
                     '<div id="pc_blocks_container" class="pc-blocks-container"></div>'
@@ -498,77 +577,8 @@ def _build_prompt_editor_workspace():
                     "</div>"
                 ),
             )
-            
-            # Special tokens were moved to Tag Dictionary quickbar
-        
-        # --- RIGHT: Order profile + Preset + Tag Dictionary ---
-        # Order profile UI is mounted here (not in the top sync column) so it stacks with
-        # Preset Manager and does not overlap it in tight / equal-height Gradio layouts.
-        with gr.Column(scale=1, min_width=260, elem_id="pc_preset_col", elem_classes=["pc-preset-col-stack"]):
-            gr.HTML(
-                '<div class="pc-order-profile-section">'
-                '<div class="pc-section-header pc-section-header-sub">📐 順序プロファイル</div>'
-                '<div id="pc_order_profile" class="pc-order-profile-slot"></div>'
-                "</div>"
-            )
-            gr.HTML('<div class="pc-section-header">💾 Preset Manager</div>')
-            
-            with gr.Row():
-                preset_name_input = gr.Textbox(
-                    elem_id="pc_preset_name",
-                    placeholder="プリセット名...",
-                    label="",
-                    show_label=False,
-                    scale=3
-                )
-                preset_save_btn = gr.Button(
-                    "💾",
-                    elem_id="pc_preset_save",
-                    scale=1,
-                    min_width=40,
-                    variant="primary"
-                )
-            
-            # Preset list - rendered by JavaScript
-            preset_list = gr.HTML(
-                elem_id="pc_preset_list",
-                value='<div id="pc_presets_container" class="pc-preset-list"></div>'
-            )
 
-            # Tag Dictionary / プロンプト大辞典 / Wildcards
-            with gr.Tabs(elem_id="pc_dict_tabs"):
-                with gr.TabItem("🏷️ Tag Dictionary", id="pc_dict_tab_tags"):
-                    tag_search = gr.Textbox(
-                        elem_id="pc_tag_search",
-                        placeholder="タグ / 日本語で検索...",
-                        label="",
-                        show_label=False,
-                    )
-                    gr.HTML('<div id="pc_tag_path_label" class="pc-tag-path-label"></div>')
-                    tag_list = gr.HTML(
-                        elem_id="pc_tag_list",
-                        value='<div id="pc_tags_container" class="pc-tags-container"></div>',
-                    )
-                with gr.TabItem("📖 プロンプト大辞典", id="pc_dict_tab_prompt_dictionary"):
-                    if _prompt_dictionary_installed():
-                        _embed_prompt_dictionary_ui()
-                    else:
-                        gr.HTML(
-                            '<div class="pc-pd-missing">'
-                            'sd-webui-prompt-dictionary 拡張が見つかりません。'
-                            '</div>'
-                        )
-                with gr.TabItem("🪄 Wildcards", id="pc_dict_tab_wildcards"):
-                    wc_search = gr.Textbox(
-                        elem_id="pc_wc_search",
-                        placeholder="Wildcards（.txt）を検索...",
-                        label="",
-                        show_label=False
-                    )
-                    wc_list = gr.HTML(
-                        elem_id="pc_wc_list",
-                        value='<div id="pc_wildcards_container" class="pc-wc-container"></div>'
-                    )
+            # Special tokens were moved to Tag Dictionary quickbar
     # --- Backend Events for UI Interactivity ---
     def update_subfolders(asset_type):
         type_map = {
@@ -577,10 +587,12 @@ def _build_prompt_editor_workspace():
             "Embedding": "embedding",
             "Favorites": None,
         }
+        if asset_type not in type_map:
+            return gr.update()
         internal_type = type_map.get(asset_type)
         subfolders = asset_indexer.get_subfolders(asset_type=internal_type)
         return gr.update(choices=["(すべて)"] + subfolders, value="(すべて)")
-        
+
     asset_type_filter.change(
         fn=update_subfolders,
         inputs=[asset_type_filter],

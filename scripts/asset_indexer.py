@@ -27,6 +27,20 @@ MODEL_EXTS = {".safetensors", ".ckpt", ".pt", ".bin"}
 CHECKPOINT_EXTS = {".safetensors", ".ckpt"}
 CHECKPOINT_EXT_BLACKLIST = (".vae.ckpt", ".vae.safetensors")
 
+# Bump when asset schema changes (forces cache rebuild).
+CACHE_SCHEMA_VERSION = 3
+
+
+def _is_apple_double_name(name: str) -> bool:
+    """macOS AppleDouble / resource-fork sidecar (._VIA_Hair_Length_1.safetensors)."""
+    base = os.path.basename(name or "")
+    return base.startswith("._")
+
+
+def _prune_apple_double_dirs(dirs: list) -> None:
+    """Drop AppleDouble dirs in-place during os.walk."""
+    dirs[:] = [d for d in dirs if not _is_apple_double_name(d)]
+
 # Cache file path (set during init)
 _cache_path = None
 _assets_cache = None
@@ -109,6 +123,8 @@ def _get_checkpoint_folders():
 
 
 def _is_checkpoint_file(filename):
+    if _is_apple_double_name(filename):
+        return False
     low = filename.lower()
     if any(low.endswith(suffix) for suffix in CHECKPOINT_EXT_BLACKLIST):
         return False
@@ -176,7 +192,10 @@ def _compute_checkpoint_fingerprint(folders):
         file_count = 0
         newest_mtime = 0
         for root, dirs, files in os.walk(folder_path, followlinks=True):
+            _prune_apple_double_dirs(dirs)
             for f in files:
+                if _is_apple_double_name(f):
+                    continue
                 if not _is_checkpoint_file(f):
                     continue
                 file_count += 1
@@ -204,7 +223,10 @@ def _compute_dir_fingerprint(folders):
         newest_mtime = 0
         
         for root, dirs, files in os.walk(folder_path, followlinks=True):
+            _prune_apple_double_dirs(dirs)
             for f in files:
+                if _is_apple_double_name(f):
+                    continue
                 _, ext = os.path.splitext(f)
                 if ext.lower() in MODEL_EXTS:
                     file_count += 1
@@ -231,7 +253,10 @@ def _scan_directory(folder_path, asset_type):
         return assets
     
     for root, dirs, files in os.walk(folder_path, followlinks=True):
+        _prune_apple_double_dirs(dirs)
         for filename in files:
+            if _is_apple_double_name(filename):
+                continue
             _, ext = os.path.splitext(filename)
             if ext.lower() not in MODEL_EXTS:
                 continue
@@ -261,6 +286,11 @@ def _scan_directory(folder_path, asset_type):
             # Find preview image
             preview_path = civitai_reader.find_preview_image(file_path)
             
+            try:
+                file_mtime = os.path.getmtime(file_path)
+            except OSError:
+                file_mtime = None
+
             # Build asset entry
             asset = {
                 "id": asset_id,
@@ -280,6 +310,12 @@ def _scan_directory(folder_path, asset_type):
                 "civitaiModelId": None,
                 "downloadCount": 0,
                 "thumbsUp": 0,
+                "publishedAt": "",
+                "updatedAt": "",
+                "fileModifiedAt": (
+                    time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(file_mtime))
+                    if file_mtime is not None else ""
+                ),
             }
             
             # Enrich with civitai info
@@ -294,6 +330,8 @@ def _scan_directory(folder_path, asset_type):
                 asset["civitaiDownloadUrl"] = civitai_info.get("download_url")
                 asset["downloadCount"] = civitai_info["download_count"]
                 asset["thumbsUp"] = civitai_info["thumbs_up"]
+                asset["publishedAt"] = civitai_info.get("published_at") or ""
+                asset["updatedAt"] = civitai_info.get("updated_at") or ""
             
             # Build insert template
             if asset_type == "lora":
@@ -391,9 +429,16 @@ def scan_all_assets(force=False):
             
             cached_fingerprint = cache_data.get("fingerprint", "")
             current_fingerprint = _compute_dir_fingerprint(folders)
+            cached_schema = cache_data.get("schemaVersion", 1)
             
-            if cached_fingerprint == current_fingerprint:
-                _assets_cache = cache_data.get("assets", [])
+            if cached_fingerprint == current_fingerprint and cached_schema == CACHE_SCHEMA_VERSION:
+                raw = cache_data.get("assets", []) or []
+                _assets_cache = [
+                    a for a in raw
+                    if not _is_apple_double_name(a.get("fileName") or "")
+                    and not _is_apple_double_name(a.get("name") or "")
+                    and not _is_apple_double_name(a.get("displayName") or "")
+                ]
                 print(f"[Prompt Composer] Loaded {len(_assets_cache)} assets from cache")
                 return _assets_cache
         except (json.JSONDecodeError, OSError):
@@ -429,6 +474,7 @@ def _save_cache(assets, folders):
     fingerprint = _compute_dir_fingerprint(folders)
     
     cache_data = {
+        "schemaVersion": CACHE_SCHEMA_VERSION,
         "fingerprint": fingerprint,
         "scanned_at": time.time(),
         "assets": assets
@@ -468,6 +514,8 @@ def _assets_from_disk_cache():
         with open(_cache_path, "r", encoding="utf-8") as f:
             cache_data = json.load(f)
         if cache_data.get("fingerprint", "") != _compute_dir_fingerprint(folders):
+            return None
+        if cache_data.get("schemaVersion", 1) != CACHE_SCHEMA_VERSION:
             return None
         assets = cache_data.get("assets", [])
         if assets:
@@ -575,6 +623,7 @@ def list_checkpoints(force=False):
         if not os.path.isdir(folder_path):
             continue
         for root, dirs, files in os.walk(folder_path, followlinks=True):
+            _prune_apple_double_dirs(dirs)
             for filename in files:
                 if not _is_checkpoint_file(filename):
                     continue

@@ -335,6 +335,14 @@ def register_api(app: FastAPI, extension_dir: str):
             assets = asset_indexer.scan_all_assets()
             if type:
                 assets = [a for a in assets if a["type"] == type]
+
+        # Hide macOS AppleDouble sidecars (._VIA_Hair_Length_1 …)
+        assets = [
+            a for a in assets
+            if not asset_indexer._is_apple_double_name(a.get("fileName") or "")
+            and not asset_indexer._is_apple_double_name(a.get("name") or "")
+            and not asset_indexer._is_apple_double_name(a.get("displayName") or "")
+        ]
         
         # Subfolder filter: include assets in nested folders under the selection
         if subfolder is not None and subfolder != "(すべて)":
@@ -667,6 +675,11 @@ def register_api(app: FastAPI, extension_dir: str):
             "lazy": tag_dictionary.lazy_mode(),
         }
 
+    @app.get("/prompt-composer/api/tag-path-hits")
+    async def api_tag_path_hits(q: Optional[str] = None):
+        """Return folders that contain tags matching q (for tree filtering)."""
+        return tag_dictionary.search_tag_path_hits(q or "")
+
     @app.post("/prompt-composer/api/tags/sections/load")
     async def api_load_tag_section(section: str = ""):
         """Load one tag-dictionary section YAML into memory."""
@@ -779,7 +792,6 @@ def register_api(app: FastAPI, extension_dir: str):
     # --- Wildcards endpoints ---
 
     @app.get("/prompt-composer/api/wildcards")
-    @app.get("/prompt-composer/api/wildcards")
     async def api_list_wildcards(force: bool = False, q: Optional[str] = None, limit: int = 5000):
         """
         List wildcard files for insertion. Returns tokens like '__folder/name__'.
@@ -787,6 +799,7 @@ def register_api(app: FastAPI, extension_dir: str):
         """
         items = wildcards.list_wildcards(force=force, limit=0 if q and q.strip() else limit)
         sources = wildcards.list_sources()
+        root = wildcards.get_wildcards_root()
         if q:
             qq = q.strip().lower()
             if qq:
@@ -798,7 +811,71 @@ def register_api(app: FastAPI, extension_dir: str):
                     items = items[:limit]
         elif limit and len(items) > limit:
             items = items[:limit]
-        return {"items": items, "sources": sources}
+        return {"items": items, "sources": sources, "root": root or ""}
+
+    @app.get("/prompt-composer/api/wildcards/content")
+    async def api_get_wildcard_content(path: str = ""):
+        """Read a wildcard .txt from sd-dynamic-prompts/wildcards."""
+        data = wildcards.read_wildcard(path)
+        if not data:
+            return JSONResponse(status_code=404, content={"error": "Wildcard not found"})
+        return data
+
+    @app.post("/prompt-composer/api/wildcards/content")
+    async def api_save_wildcard_content(data: dict):
+        """Overwrite an existing wildcard .txt."""
+        path = (data or {}).get("path") or ""
+        content = (data or {}).get("content")
+        if content is None:
+            content = ""
+        result = wildcards.write_wildcard(path, str(content), create=False)
+        if not result:
+            return JSONResponse(status_code=400, content={"error": "Failed to save (missing or invalid path)"})
+        return result
+
+    @app.post("/prompt-composer/api/wildcards/create")
+    async def api_create_wildcard(data: dict):
+        """Create a new wildcard .txt under sd-dynamic-prompts/wildcards."""
+        path = (data or {}).get("path") or ""
+        content = (data or {}).get("content")
+        if content is None:
+            content = ""
+        safe = wildcards._safe_rel_path(path)
+        if not safe:
+            return JSONResponse(status_code=400, content={"error": "Invalid path"})
+        existing = wildcards.read_wildcard(safe)
+        if existing:
+            return JSONResponse(status_code=409, content={"error": "Already exists", "path": safe})
+        result = wildcards.write_wildcard(safe, str(content), create=True)
+        if not result:
+            return JSONResponse(status_code=500, content={"error": "Failed to create"})
+        return result
+
+    @app.post("/prompt-composer/api/wildcards/rename")
+    async def api_rename_wildcard(data: dict):
+        """Rename/move a wildcard .txt under sd-dynamic-prompts/wildcards."""
+        old_path = (data or {}).get("path") or (data or {}).get("from") or ""
+        new_path = (data or {}).get("newPath") or (data or {}).get("to") or ""
+        old_safe = wildcards._safe_rel_path(old_path)
+        new_safe = wildcards._safe_rel_path(new_path)
+        if not old_safe or not new_safe:
+            return JSONResponse(status_code=400, content={"error": "Invalid path"})
+        if not wildcards.read_wildcard(old_safe):
+            return JSONResponse(status_code=404, content={"error": "Wildcard not found"})
+        # Allow case-only renames on case-insensitive filesystems.
+        if old_safe.casefold() != new_safe.casefold() and wildcards.read_wildcard(new_safe):
+            return JSONResponse(status_code=409, content={"error": "Already exists", "path": new_safe})
+        result = wildcards.rename_wildcard(old_safe, new_safe)
+        if not result:
+            return JSONResponse(status_code=500, content={"error": "Failed to rename"})
+        return result
+
+    @app.delete("/prompt-composer/api/wildcards/content")
+    async def api_delete_wildcard(path: str = ""):
+        """Delete a wildcard .txt under sd-dynamic-prompts/wildcards."""
+        if not wildcards.delete_wildcard(path):
+            return JSONResponse(status_code=404, content={"error": "Wildcard not found"})
+        return {"message": "Deleted", "path": path}
 
     # --- Tag autocomplete endpoints (Prompt Composer local) ---
 

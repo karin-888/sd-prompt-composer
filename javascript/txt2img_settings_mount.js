@@ -2,6 +2,10 @@
  * Move txt2img settings into Prompt Composer "Generation" tab (2 columns).
  * Left: sampler / size / CFG / seed / etc.
  * Right: #txt2img_script_container (ADetailer, scripts, …)
+ *
+ * Forge-safe: do NOT use a sticky "goRight" flag. On Forge, dimensions/CFG
+ * often share a parent wrapper with #txt2img_script_container; the old logic
+ * moved that whole wrapper (including width/CFG/seed) to the right column.
  */
 (function () {
     'use strict';
@@ -64,47 +68,91 @@
         }
     }
 
-    function shouldGoRight(child, scriptContainer) {
-        if (!child || child.nodeType !== Node.ELEMENT_NODE) return false;
-        if (!scriptContainer) return false;
-        if (child === scriptContainer) return true;
-        if (child.id === 'txt2img_script_container') return true;
-        if (child.contains(scriptContainer)) return true;
-        return false;
+    function findScriptContainer(root) {
+        return (root && root.querySelector('#txt2img_script_container'))
+            || document.querySelector('#txt2img_script_container');
     }
 
+    /**
+     * Scripts → right. Everything else under #txt2img_settings → left.
+     * If script container is nested, pull it out first so siblings stay on left.
+     */
     function splitSettingsIntoColumns(settings, leftMount, rightMount) {
-        var scriptContainer = settings.querySelector('#txt2img_script_container');
-        var goRight = false;
+        var scriptContainer = findScriptContainer(settings) || findScriptContainer(appRoot());
+        if (scriptContainer) {
+            rightMount.appendChild(scriptContainer);
+        }
 
         while (settings.firstChild) {
-            var child = settings.firstChild;
-            if (!goRight && shouldGoRight(child, scriptContainer)) {
-                goRight = true;
-            }
-            if (goRight) {
-                rightMount.appendChild(child);
-            } else {
-                leftMount.appendChild(child);
-            }
+            leftMount.appendChild(settings.firstChild);
         }
+
+        // Any leftover non-script nodes that ended up under right with scripts
+        // (from a previous buggy split) get pulled back to left.
+        recoverMisplacedSettings(leftMount, rightMount);
 
         if (settings.parentElement && !settings.childElementCount) {
             settings.remove();
         }
     }
 
-    function moveSettingsToMount() {
-        if (moved) return true;
+    function recoverMisplacedSettings(leftMount, rightMount) {
+        if (!rightMount) return;
+        var scriptContainer = findScriptContainer(rightMount);
+        var kids = Array.prototype.slice.call(rightMount.children || []);
+        kids.forEach(function (child) {
+            if (child === scriptContainer) return;
+            if (scriptContainer && child.contains && child.contains(scriptContainer)) {
+                // Unwrap: move non-script descendants to left, keep script on right
+                var nested = Array.prototype.slice.call(child.children || []);
+                nested.forEach(function (n) {
+                    if (n === scriptContainer || (scriptContainer && n.contains && n.contains(scriptContainer))) {
+                        return;
+                    }
+                    leftMount.appendChild(n);
+                });
+                if (scriptContainer.parentElement !== rightMount) {
+                    rightMount.appendChild(scriptContainer);
+                }
+                if (!child.childElementCount) {
+                    child.remove();
+                }
+                return;
+            }
+            // Settings-looking nodes that belong on the left
+            if (child.querySelector && child.querySelector(
+                '#txt2img_width, #txt2img_height, #txt2img_cfg_scale, #txt2img_seed, #txt2img_batch_count, #txt2img_hr'
+            )) {
+                leftMount.appendChild(child);
+            }
+        });
+    }
 
+    function layoutLooksComplete(leftMount, rightMount) {
+        if (!leftMount || !rightMount) return false;
+        var hasCore = !!(
+            leftMount.querySelector('#txt2img_steps')
+            && leftMount.querySelector('#txt2img_width, #txt2img_cfg_scale, #txt2img_seed')
+        );
+        var hasScripts = !!rightMount.querySelector('#txt2img_script_container');
+        return hasCore && hasScripts;
+    }
+
+    function layoutLooksPartial(leftMount, rightMount) {
+        if (!leftMount) return false;
+        var hasSteps = !!leftMount.querySelector('#txt2img_steps, #txt2img_sampling');
+        var missingCore = !leftMount.querySelector('#txt2img_width, #txt2img_cfg_scale, #txt2img_seed');
+        return hasSteps && missingCore;
+    }
+
+    function moveSettingsToMount() {
         var root = appRoot();
         var leftMount = findColumnMount(root, 'left');
         var rightMount = findColumnMount(root, 'right');
-        var settings = findSettingsColumn(root);
-        if (!leftMount || !rightMount || !settings) return false;
+        if (!leftMount || !rightMount) return false;
 
-        if (leftMount.querySelector('#txt2img_width, #txt2img_sampling, #txt2img_steps')
-            || rightMount.querySelector('#txt2img_script_container')) {
+        // Already good
+        if (layoutLooksComplete(leftMount, rightMount)) {
             moved = true;
             stopDomWatch();
             leftMount.classList.remove('is-empty');
@@ -114,6 +162,26 @@
             return true;
         }
 
+        // Partial/broken prior split (Forge): recover then mark done if possible
+        if (layoutLooksPartial(leftMount, rightMount) || rightMount.querySelector('#txt2img_script_container')) {
+            recoverMisplacedSettings(leftMount, rightMount);
+            if (layoutLooksComplete(leftMount, rightMount)) {
+                moved = true;
+                stopDomWatch();
+                leftMount.classList.remove('is-empty');
+                rightMount.classList.remove('is-empty');
+                unhideElement(leftMount);
+                unhideElement(rightMount);
+                console.log('[Prompt Composer] Recovered misplaced txt2img settings into left column');
+                return true;
+            }
+        }
+
+        if (moved) return true;
+
+        var settings = findSettingsColumn(root);
+        if (!settings) return false;
+
         splitSettingsIntoColumns(settings, leftMount, rightMount);
 
         leftMount.classList.remove('is-empty');
@@ -121,11 +189,12 @@
         unhideElement(leftMount);
         unhideElement(rightMount);
 
-        moved = true;
-        stopDomWatch();
+        moved = layoutLooksComplete(leftMount, rightMount)
+            || !!(leftMount.querySelector('#txt2img_steps') || rightMount.querySelector('#txt2img_script_container'));
+        if (moved) stopDomWatch();
         scheduleTabSync();
         console.log('[Prompt Composer] txt2img settings split into Generation 2-column layout');
-        return true;
+        return moved;
     }
 
     function stopDomWatch() {
@@ -151,7 +220,10 @@
     }
 
     function scheduleMove(delay) {
-        if (moved) return;
+        if (moved && !layoutLooksPartial(
+            findColumnMount(appRoot(), 'left'),
+            findColumnMount(appRoot(), 'right')
+        )) return;
         if (debounceTimer) clearTimeout(debounceTimer);
         debounceTimer = setTimeout(function () {
             debounceTimer = null;
@@ -222,6 +294,14 @@
         if (!nav) return;
         nav.addEventListener('click', function () {
             scheduleTabSync();
+            // Retry recovery when opening Generation tab
+            if (!moved || layoutLooksPartial(
+                findColumnMount(appRoot(), 'left'),
+                findColumnMount(appRoot(), 'right')
+            )) {
+                moved = false;
+                scheduleMove(100);
+            }
         });
         scheduleTabSync();
     }
@@ -245,7 +325,12 @@
         scheduleMove(400);
         watchDom();
         setInterval(function () {
-            if (!moved) scheduleMove(500);
+            var left = findColumnMount(appRoot(), 'left');
+            var right = findColumnMount(appRoot(), 'right');
+            if (!moved || layoutLooksPartial(left, right)) {
+                if (layoutLooksPartial(left, right)) moved = false;
+                scheduleMove(500);
+            }
         }, 2500);
     }
 
@@ -263,7 +348,12 @@
     }
     if (typeof onUiUpdate === 'function') {
         onUiUpdate(function () {
-            if (!moved) scheduleMove(400);
+            if (!moved || layoutLooksPartial(
+                findColumnMount(appRoot(), 'left'),
+                findColumnMount(appRoot(), 'right')
+            )) {
+                scheduleMove(400);
+            }
         });
     }
 

@@ -522,7 +522,19 @@
         } catch (_) { /* ignore */ }
     }
 
+    let _pcGenerateLockUntil = 0;
+
+    function beginGenerateLock(ms) {
+        const now = Date.now();
+        if (now < _pcGenerateLockUntil) return false;
+        _pcGenerateLockUntil = now + (ms || 1200);
+        return true;
+    }
+
     function generateTxt2img() {
+        // Guard against double submit (delegation bound twice, or Gradio + PC both firing).
+        if (!beginGenerateLock(1200)) return;
+
         if (window.PromptComposer && typeof window.PromptComposer.updateFinalPrompt === 'function') {
             window.PromptComposer.updateFinalPrompt();
         }
@@ -530,12 +542,14 @@
         const prompt = getFinalPrompt();
         const negative = getFinalNegative();
         if (!prompt && !negative) {
+            _pcGenerateLockUntil = 0;
             alert('プロンプトが空です');
             return;
         }
 
         const xyzMsg = getXyzPlotZeroImageMessage();
         if (xyzMsg) {
+            _pcGenerateLockUntil = 0;
             alert(xyzMsg);
             return;
         }
@@ -545,6 +559,7 @@
         setTimeout(() => {
             const genBtn = getGenerateButton('txt2img');
             if (!genBtn) {
+                _pcGenerateLockUntil = 0;
                 alert('txt2img の生成ボタンが見つかりません');
                 stopPcProgressWatch();
                 return;
@@ -563,16 +578,27 @@
     }
 
     function triggerTxt2imgGenerateOnce() {
+        if (!beginGenerateLock(800)) return false;
+
         const prompt = getFinalPrompt();
         const negative = getFinalNegative();
-        if (!prompt && !negative) return false;
+        if (!prompt && !negative) {
+            _pcGenerateLockUntil = 0;
+            return false;
+        }
 
-        if (getXyzPlotZeroImageMessage()) return false;
+        if (getXyzPlotZeroImageMessage()) {
+            _pcGenerateLockUntil = 0;
+            return false;
+        }
 
         applyToTarget('txt2img');
 
         const genBtn = getGenerateButton('txt2img');
-        if (!genBtn) return false;
+        if (!genBtn) {
+            _pcGenerateLockUntil = 0;
+            return false;
+        }
         genBtn.click();
         notifyTxt2imgGenerationStart();
         ensureGalleryObserver();
@@ -642,19 +668,17 @@
 
     /** Survives Gradio DOM replacement (direct bindOnce on the button node does not). */
     function setupGenerateDelegation() {
-        let doc;
-        try {
-            doc = appRoot();
-        } catch (_) {
-            doc = document;
-        }
-        if (!doc || doc._pcGenerateDelegationBound) return;
-        doc._pcGenerateDelegationBound = true;
-        doc.addEventListener('click', (e) => {
+        // Always bind once on document. Binding to gradioApp()/gradio-app as well
+        // caused two capture listeners and double txt2img submit on Forge.
+        if (window._pcGenerateDelegationBound) return;
+        window._pcGenerateDelegationBound = true;
+        document.addEventListener('click', (e) => {
             const target = e.target;
             if (!target || typeof target.closest !== 'function') return;
             if (!target.closest('#pc_generate_txt2img')) return;
             e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
             generateTxt2img();
         }, true);
     }
